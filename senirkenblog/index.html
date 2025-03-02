@@ -3,19 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Senirkent Myo Blog</title>
+    <title>Senirkent MYO Blog</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
-    <script src="js/main.js"></script>
+    <script src="js/main.js" defer></script>
 </head>
 <body>
     <header>
-        <h1>Senirkent Myo Blog</h1>
-        <nav>
-            <a href="index.html">Ana Sayfa</a>
-            <a href="https://www.umitozdagamektup.com?mektuplar=tum-mektuplar">Tüm Mektuplar</a>
-            <a href="https://www.umitozdagamektup.com/yeni-mektup">Mektup Yaz</a>
-            <a href="https://www.umitozdagamektup.com?mektuplar=populer">Popüler</a>
-        </nav>
+        <div class="header-left">
+            <a href="index.html" class="logo-link">
+                <h1>Senirkent MYO Blog</h1>
+            </a>
+        </div>
+        <div class="header-right">
+            <div class="search-container">
+                <input type="text" placeholder="Blog'larda ara..." class="search-input">
+                <button class="search-button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div class="auth-buttons">
+                <button class="btn-login">Oturum Aç</button>
+                <button class="btn-register">Kayıt Ol</button>
+            </div>
+            <div class="profile-container">
+                <div class="profile-menu">
+                    <img src="https://via.placeholder.com/32" alt="Profil" class="profile-image">
+                    <div class="profile-dropdown">
+                        <a href="#"><i class="fas fa-user"></i> Profilim</a>
+                        <a href="#"><i class="fas fa-cog"></i> Ayarlar</a>
+                        <a href="#"><i class="fas fa-sign-out-alt"></i> Çıkış</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </header>
     <main>
         <article class="blog-post">
@@ -48,13 +69,44 @@
                     <span class="social-count">0</span>
                 </button>
                 <button class="social-btn letter-btn">
-                    <svg class="svg-inline--fa fa-up-right-and-down-left-from-center" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="up-right-and-down-left-from-center" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M208 281.4c-12.5-12.5-32.76-12.5-45.26-.002l-78.06 78.07l-30.06-30.06c-6.125-6.125-14.31-9.367-22.63-9.367c-4.125 0-8.279 .7891-12.25 2.43c-11.97 4.953-19.75 16.62-19.75 29.56v135.1C.0013 501.3 10.75 512 24 512h136c12.94 0 24.63-7.797 29.56-19.75c4.969-11.97 2.219-25.72-6.938-34.87l-30.06-30.06l78.06-78.07c12.5-12.49 12.5-32.75 .002-45.25L208 281.4zM487.1 0h-136c-12.94 0-24.63 7.797-29.56 19.75c-4.969 11.97-2.219 25.72 6.938 34.87l30.06 30.06l-78.06 78.07c-12.5 12.5-12.5 32.76 0 45.26l22.62 22.62c12.5 12.5 32.76 12.5 45.26 0l78.06-78.07l30.06 30.06c9.156 9.141 22.87 11.84 34.87 6.937C504.2 184.6 512 172.9 512 159.1V23.1C512 10.74 501.3 0 487.1 0z"></path></svg>
+                    <svg class="svg-inline--fa fa-up-right-and-down-left-from-center" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="up-right-and-down-left-from-center" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M208 281.4c-12.5-12.5-32.76-12.5-45.26-.002l-78.06 78.07l-30.06-30.06c-6.125-6.125-14.31-9.367-22.63-9.367c-4.125 0-8.279 .7891-12.25 2.43c-11.97 4.953-19.75 16.62-19.75 29.56v135.1C.0013 501.3 10.75 512 24 512h136c12.94 0 24.63-7.797 29.56-19.75c4.969-11.97 2.219-25.72-6.938-34.87l-30.06-30.06l78.06-78.07c12.5-12.5 12.5-32.76 0-45.26l-22.62-22.62c-12.5-12.5-32.76-12.5-45.26 0l-78.06 78.07l-30.06-30.06c-9.156-9.141-22.87-11.84-34.87-6.937C48.62 355.1 17.34 304 2.461 268.3C-.8205 260.4-.8205 251.6 2.461 243.7C17.34 207.1 48.62 156 95.42 112.6C142.5 68.84 207.2 32 288 32C368.8 32 433.5 68.84 480.6 112.6V112.6zM288 112C208.5 112 144 176.5 144 256C144 335.5 208.5 400 288 400C367.5 400 432 335.5 432 256C432 176.5 367.5 112 288 112z"></path></svg>
                 </button>
             </div>
         </article>
     </main>
     <footer>
-        <p>&copy; 2025 Senirken Blog. Tüm hakları saklıdır.</p>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Hakkımızda</h3>
+                <p>Senirkent MYO Blog, öğrenciler ve akademisyenler için bilgi paylaşım platformudur. Teknoloji, eğitim ve güncel konular hakkında içerikler üretiyoruz.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Hızlı Bağlantılar</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Ana Sayfa</a></li>
+                    <li><a href="#">Kategoriler</a></li>
+                    <li><a href="#">Yazarlar</a></li>
+                    <li><a href="#">İletişim</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>İletişim</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-envelope"></i> info@senirkentmyo.edu.tr</a></li>
+                    <li><a href="#"><i class="fas fa-phone"></i> +90 246 XXX XX XX</a></li>
+                    <li><a href="#"><i class="fas fa-map-marker-alt"></i> Senirkent, Isparta</a></li>
+                </ul>
+                <div class="footer-social">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Senirkent MYO Blog. Tüm hakları saklıdır.</p>
+        </div>
     </footer>
     <div class="overlay"></div>
 </body>
