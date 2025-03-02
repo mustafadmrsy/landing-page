@@ -67,7 +67,7 @@ header {
 .nav-link#write-button {
     background-color: var(--primary-color);
     color: #ffffff;
-    padding: 0.15rem 0.5rem;
+    padding: 0.05rem 0.3rem;
     border-radius: 5px;
     font-weight: normal;
     transition: background-color 0.3s ease, transform 0.3s ease;
@@ -578,6 +578,23 @@ footer {
     display: flex;
     gap: 0.5rem;
     flex-wrap: wrap;
+}
+
+.category-tag {
+    background-color: rgba(34, 198, 94, 0.2); /* Tatlı bir arka plan rengi eklendi */
+    color: var(--primary-color); /* Ana renk ile yazı rengi ayarlandı */
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    margin-right: 0.5rem;
+    display: inline-block;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Hafif gölge efekti eklendi */
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+}
+
+.category-tag:hover {
+    background-color: rgba(34, 198, 94, 0.4); /* Hover durumunda arka plan rengi artırıldı */
 }
 
 .tag {
