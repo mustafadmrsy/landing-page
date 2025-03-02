@@ -4,6 +4,50 @@ document.addEventListener('DOMContentLoaded', function() {
     overlay.className = 'content-overlay';
     document.body.appendChild(overlay);
 
+    // Devamını Oku butonu işlevselliği
+    document.querySelectorAll('.read-more-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const article = this.closest('.blog-post');
+            const readMoreText = this.querySelector('.read-more-text');
+            const viewCount = article.querySelector('.view-btn .social-count');
+            
+            if (!article.classList.contains('expanded')) {
+                // İçeriği genişlet
+                article.classList.add('expanded');
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                readMoreText.textContent = 'Küçült';
+                
+                // Görüntülenme sayısını artır
+                if (!this.classList.contains('viewed')) {
+                    let count = parseInt(viewCount.textContent);
+                    count++;
+                    viewCount.textContent = count;
+                    viewCount.classList.add('count-animate');
+                    setTimeout(() => viewCount.classList.remove('count-animate'), 500);
+                    this.classList.add('viewed');
+                }
+            } else {
+                // İçeriği küçült
+                article.classList.remove('expanded');
+                overlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+                readMoreText.textContent = 'Devamını Oku';
+            }
+        });
+    });
+
+    // Overlay'e tıklandığında içeriği küçült
+    overlay.addEventListener('click', function() {
+        const expandedArticle = document.querySelector('.blog-post.expanded');
+        if (expandedArticle) {
+            expandedArticle.classList.remove('expanded');
+            this.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            expandedArticle.querySelector('.read-more-text').textContent = 'Devamını Oku';
+        }
+    });
+
     // Beğeni butonu işlevselliği
     document.querySelectorAll('.like-btn').forEach(btn => {
         btn.addEventListener('click', function() {
@@ -22,81 +66,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 countElement.textContent = count;
             }
         });
-    });
-
-    // Devamını Oku butonu işlevselliği
-    document.querySelectorAll('.read-more-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const article = this.closest('.blog-post');
-            const readMoreText = this.querySelector('.read-more-text');
-            const viewCount = article.querySelector('.view-btn .social-count');
-            const fullContent = article.querySelector('.post-full-content');
-            
-            if (!article.classList.contains('expanded')) {
-                // İçeriği genişlet ve overlay'i aktifleştir
-                article.classList.add('expanded');
-                overlay.classList.add('active');
-                document.body.style.overflow = 'hidden';
-                readMoreText.textContent = 'Küçült';
-                
-                // Görüntülenme sayısını artır ve animasyon ekle
-                if (!this.classList.contains('viewed')) {
-                    let count = parseInt(viewCount.textContent);
-                    count++;
-                    viewCount.textContent = count;
-                    viewCount.classList.add('count-animate');
-                    setTimeout(() => viewCount.classList.remove('count-animate'), 500);
-                    this.classList.add('viewed');
-                }
-
-                // Tam içeriği göster
-                if (fullContent) {
-                    fullContent.style.display = 'block';
-                    setTimeout(() => {
-                        fullContent.style.opacity = '1';
-                        fullContent.style.transform = 'translateY(0)';
-                    }, 10);
-                }
-            } else {
-                // İçeriği küçült ve overlay'i kaldır
-                article.classList.remove('expanded');
-                overlay.classList.remove('active');
-                document.body.style.overflow = 'auto';
-                readMoreText.textContent = 'Devamını Oku';
-
-                // Tam içeriği gizle
-                if (fullContent) {
-                    fullContent.style.opacity = '0';
-                    fullContent.style.transform = 'translateY(-20px)';
-                    setTimeout(() => {
-                        fullContent.style.display = 'none';
-                    }, 300);
-                }
-            }
-        });
-    });
-
-    // Overlay'e tıklandığında içeriği küçült
-    overlay.addEventListener('click', function() {
-        const expandedArticle = document.querySelector('.blog-post.expanded');
-        if (expandedArticle) {
-            const readMoreBtn = expandedArticle.querySelector('.read-more-btn');
-            const fullContent = expandedArticle.querySelector('.post-full-content');
-            
-            expandedArticle.classList.remove('expanded');
-            this.classList.remove('active');
-            document.body.style.overflow = 'auto';
-            readMoreBtn.querySelector('.read-more-text').textContent = 'Devamını Oku';
-
-            // Tam içeriği gizle
-            if (fullContent) {
-                fullContent.style.opacity = '0';
-                fullContent.style.transform = 'translateY(-20px)';
-                setTimeout(() => {
-                    fullContent.style.display = 'none';
-                }, 300);
-            }
-        }
     });
 
     // Paylaşım butonları işlevselliği

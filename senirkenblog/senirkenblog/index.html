@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="js/main.js" defer></script>
+    <style>
+        .post { display: inline-block; width: calc(50% - 10px); margin: 5px; vertical-align: top; }
+        .category-button { margin-right: 5px; }
+    </style>
 </head>
 <body>
     <header>
@@ -16,6 +20,7 @@
             </a>
             <nav class="main-nav">
                 <a href="index.html" class="nav-link">Ana Sayfa</a>
+                <a href="#" class="nav-link" id="write-button">Sende Yaz</a>
                 <a href="kategoriler.html" class="nav-link">Kategoriler</a>
                 <a href="hakkimizda.html" class="nav-link">Hakkımızda</a>
                 <a href="iletisim.html" class="nav-link">İletişim</a>
@@ -112,7 +117,6 @@
                     </div>
                 </div>
             </article>
-
             <article class="blog-post">
                 <div class="post-header">
                     <h2 class="post-title">Yapay Zeka ve Eğitimin Geleceği</h2>
@@ -155,6 +159,134 @@
                         <span class="tag"><i class="fas fa-tag"></i> Yapay Zeka</span>
                         <span class="tag"><i class="fas fa-tag"></i> Eğitim Teknolojileri</span>
                         <span class="tag"><i class="fas fa-tag"></i> Öğrenme</span>
+                    </div>
+                    <button class="read-more-btn">
+                        <span class="read-more-text">Devamını Oku</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="social-interaction">
+                        <div class="social-bar">
+                            <button class="social-btn like-btn" title="Beğen">
+                                <i class="fas fa-heart"></i>
+                                <span class="social-count">0</span>
+                            </button>
+                            <button class="social-btn view-btn" title="Görüntülenme">
+                                <i class="fas fa-eye"></i>
+                                <span class="social-count">0</span>
+                            </button>
+                            <button class="social-btn share-btn twitter" title="Twitter'da Paylaş">
+                                <i class="fab fa-twitter"></i>
+                            </button>
+                            <button class="social-btn share-btn facebook" title="Facebook'ta Paylaş">
+                                <i class="fab fa-facebook-f"></i>
+                            </button>
+                            <button class="social-btn share-btn linkedin" title="LinkedIn'de Paylaş">
+                                <i class="fab fa-linkedin-in"></i>
+                            </button>
+                            <button class="social-btn share-btn copy-link" title="Bağlantıyı Kopyala">
+                                <i class="fas fa-link"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            <article class="blog-post">
+                <div class="post-header">
+                    <h2 class="post-title">Teknolojinin Geleceği: Yapay Zeka ve Robotik</h2>
+                    <div class="post-meta">
+                        <span class="meta-item"><i class="far fa-calendar-alt"></i> 3 Mart 2025</span>
+                        <span class="meta-separator">•</span>
+                        <span class="meta-item"><i class="far fa-user"></i> Eren Kaya</span>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <div class="post-preview">
+                        <p>Yapay zeka ve robotik teknolojileri, gelecekte birçok sektörde devrim yaratacak. Bu yazıda, bu teknolojilerin potansiyeli ve etkileri üzerinde duracağız.</p>
+                        <p>Yapay zeka ve robotik teknolojileri, birçok sektörde devrim niteliğinde değişikliklere yol açıyor.</p>
+                        <p>Bu teknolojiler, insanların yaşamını kolaylaştırmak ve daha verimli hale getirmek için tasarlandı.</p>
+                        <p>Yapay zeka ve robotik teknolojileri, gelecekte birçok sektörde devrim yaratacak.</p>
+                    </div>
+                    <div class="post-full-content">
+                        <p>Blog sistemi, modern tasarım prensipleri göz önünde bulundurularak geliştirilmiştir. Kullanıcı deneyimi ön planda tutulmuş, kolay navigasyon ve sezgisel bir arayüz tasarlanmıştır.</p>
+                        <p>Öne çıkan özellikler arasında:</p>
+                        <ul>
+                            <li>Responsive tasarım</li>
+                            <li>Gelişmiş içerik yönetimi</li>
+                            <li>Sosyal medya entegrasyonu</li>
+                            <li>Kategori ve etiket sistemi</li>
+                        </ul>
+                        <p>Sistem sürekli olarak geliştirilmekte ve yeni özellikler eklenmektedir.</p>
+                    </div>
+                </div>
+                <div class="post-footer">
+                    <div class="tags">
+                        <span class="tag"><i class="fas fa-tag"></i> Web Geliştirme</span>
+                        <span class="tag"><i class="fas fa-tag"></i> Blog</span>
+                        <span class="tag"><i class="fas fa-tag"></i> Eğitim</span>
+                    </div>
+                    <button class="read-more-btn">
+                        <span class="read-more-text">Devamını Oku</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="social-interaction">
+                        <div class="social-bar">
+                            <button class="social-btn like-btn" title="Beğen">
+                                <i class="fas fa-heart"></i>
+                                <span class="social-count">0</span>
+                            </button>
+                            <button class="social-btn view-btn" title="Görüntülenme">
+                                <i class="fas fa-eye"></i>
+                                <span class="social-count">0</span>
+                            </button>
+                            <button class="social-btn share-btn twitter" title="Twitter'da Paylaş">
+                                <i class="fab fa-twitter"></i>
+                            </button>
+                            <button class="social-btn share-btn facebook" title="Facebook'ta Paylaş">
+                                <i class="fab fa-facebook-f"></i>
+                            </button>
+                            <button class="social-btn share-btn linkedin" title="LinkedIn'de Paylaş">
+                                <i class="fab fa-linkedin-in"></i>
+                            </button>
+                            <button class="social-btn share-btn copy-link" title="Bağlantıyı Kopyala">
+                                <i class="fas fa-link"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            <article class="blog-post">
+                <div class="post-header">
+                    <h2 class="post-title">Sürdürülebilir Enerji Çözümleri</h2>
+                    <div class="post-meta">
+                        <span class="meta-item"><i class="far fa-calendar-alt"></i> 4 Mart 2025</span>
+                        <span class="meta-separator">•</span>
+                        <span class="meta-item"><i class="far fa-user"></i> Eren Kaya</span>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <div class="post-preview">
+                        <p>Sürdürülebilir enerji çözümleri, çevresel etkileri azaltmak ve enerji verimliliğini artırmak için önemlidir. Bu yazıda, yenilenebilir enerji kaynaklarını keşfedeceğiz.</p>
+                        <p>Sürdürülebilir enerji çözümleri, geleceğimiz için önemlidir.</p>
+                        <p>Çevresel etkileri azaltmak ve enerji verimliliğini artırmak için yenilenebilir enerji kaynaklarına yöneliyoruz.</p>
+                        <p>Sürdürülebilir enerji çözümleri, birçok sektörde devrim niteliğinde değişikliklere yol açıyor.</p>
+                    </div>
+                    <div class="post-full-content">
+                        <p>Blog sistemi, modern tasarım prensipleri göz önünde bulundurularak geliştirilmiştir. Kullanıcı deneyimi ön planda tutulmuş, kolay navigasyon ve sezgisel bir arayüz tasarlanmıştır.</p>
+                        <p>Öne çıkan özellikler arasında:</p>
+                        <ul>
+                            <li>Responsive tasarım</li>
+                            <li>Gelişmiş içerik yönetimi</li>
+                            <li>Sosyal medya entegrasyonu</li>
+                            <li>Kategori ve etiket sistemi</li>
+                        </ul>
+                        <p>Sistem sürekli olarak geliştirilmekte ve yeni özellikler eklenmektedir.</p>
+                    </div>
+                </div>
+                <div class="post-footer">
+                    <div class="tags">
+                        <span class="tag"><i class="fas fa-tag"></i> Web Geliştirme</span>
+                        <span class="tag"><i class="fas fa-tag"></i> Blog</span>
+                        <span class="tag"><i class="fas fa-tag"></i> Eğitim</span>
                     </div>
                     <button class="read-more-btn">
                         <span class="read-more-text">Devamını Oku</span>
