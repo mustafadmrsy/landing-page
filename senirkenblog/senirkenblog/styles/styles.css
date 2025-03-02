@@ -217,12 +217,275 @@ header {
 }
 
 main {
-    margin-top: 80px;
+    max-width: 1200px;
+    margin: 0 auto;
     padding: 2rem;
+}
+
+.blog-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.blog-post {
+    position: relative;
+    background: var(--surface-color);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 0;
+    transition: all 0.3s ease;
+    height: 100%;
     display: flex;
+    flex-direction: column;
+}
+
+.blog-post .post-header {
+    margin-bottom: 1.5rem;
+}
+
+.blog-post .post-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.blog-post .post-preview {
+    flex: 1;
+}
+
+.blog-post .post-footer {
+    margin-top: auto;
+    padding-top: 1rem;
+}
+
+.post-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.post-title {
+    font-size: 1.8rem;
+    color: var(--text-primary);
+    margin: 0 0 1rem 0;
+}
+
+.post-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.meta-item i {
+    color: var(--primary-color);
+}
+
+.category-tag {
+    background: var(--background-color);
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    color: var(--primary-color);
+}
+
+.post-content {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-primary);
+}
+
+.post-preview {
+    position: relative;
+}
+
+.post-full-content {
+    display: none;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.3s ease;
+}
+
+.blog-post.expanded {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    z-index: 1000;
+    background: var(--surface-color);
+    padding: 30px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.blog-post.expanded .post-content {
+    font-size: 1.1em;
+    line-height: 1.8;
+}
+
+.blog-post.expanded .post-full-content {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.post-footer {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding-top: 1rem;
+    margin-top: 1rem;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.tag {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: var(--background-color);
+    color: var(--primary-color);
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+}
+
+.tag:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.read-more-btn {
+    align-self: center;
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+.read-more-btn:hover {
+    background: var(--background-color);
+}
+
+.read-more-btn i {
+    transition: transform 0.3s ease;
+}
+
+.blog-post.expanded .read-more-btn i {
+    transform: rotate(180deg);
+}
+
+.social-interaction {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.social-bar {
+    display: flex;
+    gap: 1rem;
+}
+
+.social-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+.social-btn:hover {
+    background: var(--background-color);
+    color: var(--primary-color);
+}
+
+.social-btn.active {
+    color: var(--primary-color);
+}
+
+.social-count {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.count-animate {
+    animation: countPop 0.5s ease-out;
+}
+
+@keyframes countPop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+}
+
+.share-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.share-btn {
+    background: none;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
     justify-content: center;
-    align-items: flex-start;
-    min-height: calc(100vh - 80px);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.share-btn:hover {
+    background: var(--background-color);
+    transform: translateY(-2px);
+}
+
+.share-btn.twitter:hover {
+    color: #1DA1F2;
+}
+
+.share-btn.facebook:hover {
+    color: #4267B2;
+}
+
+.share-btn.linkedin:hover {
+    color: #0077B5;
+}
+
+.share-btn.copy-link:hover {
+    color: var(--primary-color);
 }
 
 footer {
@@ -340,149 +603,20 @@ footer {
     cursor: pointer;
 }
 
-.overlay {
+.content-overlay {
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0);
-    backdrop-filter: blur(0);
-    z-index: 999;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.overlay.expanded {
-    background: rgba(0, 0, 0, 0.5);
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(5px);
-    opacity: 1;
-    visibility: visible;
+    z-index: 999;
 }
 
-@keyframes overlayFade {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-.blog-post {
-    background: var(--surface-color);
-    border-radius: 15px;
-    padding: 2rem;
-    width: 500px;
-    height: 500px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(180, 180, 180, 0.2);
-    display: flex;
-    flex-direction: column;
-}
-
-.blog-post:not(.article-expanded):hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
-}
-
-.post-title {
-    color: #333;
-    font-size: 1.8rem;
-    margin-bottom: 1rem;
-    font-weight: 600;
-}
-
-.post-meta {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.9em;
-    color: #666;
-    margin-bottom: 20px;
-    padding: 8px;
-    border-radius: 4px;
-    background-color: rgba(0, 0, 0, 0.05);
-}
-
-.meta-separator {
-    color: #999;
-}
-
-.meta-item {
-    display: inline-block;
-}
-
-.post-content {
-    flex: 1;
-    overflow-y: auto;
-    margin: 1rem 0;
-}
-
-/* Büyütme stilleri */
-.article-expanded {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.9);
-    width: 600px;
-    height: 600px;
-    z-index: 1000;
-    background: var(--surface-color);
-    border-radius: 15px;
-    padding: 2rem;
-    overflow: hidden;
-    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.2);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    display: flex;
-    flex-direction: column;
-    opacity: 0;
-    border: 1px solid rgba(180, 180, 180, 0.2);
-}
-
-.article-expanded.active {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 1;
-}
-
-.article-expanded .post-content {
-    flex: 1;
-    overflow-y: auto;
-    margin: 1rem 0;
-    padding-right: 1rem;
-}
-
-.article-expanded:hover {
-    transform: translate(-50%, -50%);
-}
-
-/* Özel scrollbar */
-.post-content::-webkit-scrollbar {
-    width: 8px;
-}
-
-.post-content::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.05);
-    border-radius: 4px;
-}
-
-.post-content::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-}
-
-.post-content::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.3);
-}
-
-@keyframes articleExpand {
-    from {
-        opacity: 0;
-        transform: translate(-50%, -48%);
-    }
-    to {
-        opacity: 1;
-        transform: translate(-50%, -50%);
-    }
+.content-overlay.active {
+    display: block;
 }
 
 .footer-content {
@@ -544,4 +678,10 @@ footer {
     color: var(--footer-text);
     opacity: 0.8;
     font-size: 0.9rem;
+}
+
+@media (max-width: 1024px) {
+    .blog-grid {
+        grid-template-columns: 1fr;
+    }
 }
