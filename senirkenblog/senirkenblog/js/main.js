@@ -99,29 +99,22 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // İletişim formu işlevselliği
-    document.getElementById("contact-form").addEventListener("submit", function(event) {
+    document.getElementById("contact-form")?.addEventListener("submit", function(event) {
         event.preventDefault();
-        const form = document.getElementById("contact-form");
-        const formData = new FormData(form);
+        const formData = new FormData(this);
         const name = formData.get("name");
         const email = formData.get("email");
         const message = formData.get("message");
 
-        // Form verilerini işle
         console.log(name, email, message);
-
         alert("Mesajınız başarıyla gönderildi!");
     });
 
-    // JavaScript for Hakkımızda page interactivity (if needed)
-    // Example: Add event listeners for any interactive elements
+    // Hakkımızda sayfası etkileşimi
     const hakkimizdaPage = document.getElementById('hakkimizda-page');
     if (hakkimizdaPage) {
-        // Add event listeners for interactive elements on Hakkımızda page
-        const interactiveElements = hakkimizdaPage.querySelectorAll('.interactive-element');
-        interactiveElements.forEach(element => {
+        hakkimizdaPage.querySelectorAll('.interactive-element').forEach(element => {
             element.addEventListener('click', function() {
-                // Add interactivity logic here
                 console.log('Interactive element clicked!');
             });
         });
