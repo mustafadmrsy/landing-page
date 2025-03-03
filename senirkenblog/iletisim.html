@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="js/main.js" defer></script>
+    <style>
+        .post { display: inline-block; width: calc(50% - 10px); margin: 5px; vertical-align: top; }
+        .category-button { margin-right: 5px; }
+    </style>
+    <title>İletişim</title>
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <a href="index.html" class="logo-link">
+                <h1>Senirkent MYO Blog</h1>
+            </a>
+            <nav class="main-nav">
+                <a href="index.html" class="nav-link">Ana Sayfa</a>
+                <a href="#" class="nav-link" id="write-button">Sende Yaz</a>
+                <a href="kategoriler.html" class="nav-link">Kategoriler</a>
+                <a href="hakkimizda.html" class="nav-link">Hakkımızda</a>
+                <a href="iletisim.html" class="nav-link">İletişim</a>
+            </nav>
+        </div>
+        <div class="header-right">
+            <div class="search-container">
+                <input type="text" placeholder="Blog'larda ara..." class="search-input">
+                <button class="search-button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div class="auth-buttons">
+                <button class="btn-login">Oturum Aç</button>
+                <button class="btn-register">Kayıt Ol</button>
+            </div>
+            <div class="profile-container">
+                <div class="profile-menu">
+                    <img src="https://via.placeholder.com/32" alt="Profil" class="profile-image">
+                    <div class="profile-dropdown">
+                        <a href="#"><i class="fas fa-user"></i> Profilim</a>
+                        <a href="#"><i class="fas fa-cog"></i> Ayarlar</a>
+                        <a href="#"><i class="fas fa-sign-out-alt"></i> Çıkış</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="contact-section">
+        <div class="container">
+            <h1 style="text-align: center; margin-bottom: 20px;">İletişim</h1>
+            <div class="row">
+                <div class="col-lg-6" style="background-color: #f0fdf4; padding: 20px;">
+                    <h2 class="contact-title">İletişime Geçin</h2>
+                    <form class="form-contact contact_form" action="https://api.web3forms.com/submit" method="POST">
+                        <input type="hidden" name="access_key" value="6480ec10-b3fe-4e5f-98a6-3248bd0fbd91">
+                        <input type="hidden" name="from_name" value="contact">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <textarea class="form-control w-100" name="message" cols="30" rows="9" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Mesajınızı Girin'" placeholder="Mesajınızı Girin" required=""></textarea>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <input class="form-control valid" name="name" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'İsiminizi Girin'" placeholder="İsminizi Girin" required="">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <input class="form-control valid" name="email" type="email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Mail adresinizi giriniz'" placeholder="Email" required="">
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <input class="form-control" name="subject" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Mesaj Başlığını Girin'" placeholder="Mesaj Başlığını Girin" required="">
+                                </div>
+                            </div>
+                        </div>
+                        <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+                        <div class="h-captcha" data-captcha="true"></div>
+                        <input type="hidden" name="redirect" value="https://web3forms.com/success">
+                        <div class="form-group mt-3">
+                            <button type="submit" class="button button-contactForm">Gönder</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-6" style="background-color: #ffffff; padding: 20px;">
+                    <h3>Güncel İletişim Bilgileri</h3>
+                    <p>Telefon: +90 123 456 7890</p>
+                    <p>E-posta: info@example.com</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="contact-info">
+                <a href="#" class="contact-link"><i class="fas fa-envelope"></i> info@senirkentmyo.edu.tr</a>
+                <a href="#" class="contact-link"><i class="fas fa-phone"></i> +90 246 XXX XX XX</a>
+                <a href="#" class="contact-link"><i class="fas fa-map-marker-alt"></i> Senirkent, Isparta</a>
+            </div>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Senirkent MYO Blog. Tüm hakları saklıdır.</p>
+        </div>
+    </footer>
+    <div class="overlay"></div>
+</body>
+</html>
