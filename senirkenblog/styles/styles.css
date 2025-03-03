@@ -893,3 +893,31 @@ footer {
         padding: 2rem 1rem;
     }
 }
+
+/* Styles for Hakkımızda page */
+
+#introduction, #founders, #goals {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.founders-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.founder {
+    flex: 1;
+    margin: 0 10px;
+}
+
+.founder {
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #e9ecef;
+    border-radius: 5px;
+}

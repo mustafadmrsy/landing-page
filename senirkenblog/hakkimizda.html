@@ -7,6 +7,41 @@
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="js/main.js" defer></script>
+    <style>
+        /* Additional styles from index.html and iletisim.html */
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+        .header-right {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .search-container {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+        }
+        .auth-buttons {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+        }
+        .profile-container {
+            display: flex;
+            align-items: center;
+        }
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .social-links {
+            display: flex;
+            align-items: center;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -16,22 +51,65 @@
             </a>
             <nav class="main-nav">
                 <a href="index.html" class="nav-link">Ana Sayfa</a>
+                <a href="#" class="nav-link" id="write-button">Sende Yaz</a>
                 <a href="kategoriler.html" class="nav-link">Kategoriler</a>
-                <a href="hakkımızda.html" class="nav-link">Hakkımızda</a>
+                <a href="hakkimizda.html" class="nav-link active">Hakkımızda</a>
                 <a href="iletisim.html" class="nav-link">İletişim</a>
             </nav>
         </div>
+        <div class="header-right">
+            <div class="search-container">
+                <input type="text" placeholder="Blog'larda ara..." class="search-input">
+                <button class="search-button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div class="auth-buttons">
+                <button class="btn-login">Oturum Aç</button>
+                <button class="btn-register">Kayıt Ol</button>
+            </div>
+            <div class="profile-container">
+                <div class="profile-menu">
+                    <img src="https://via.placeholder.com/32" alt="Profil" class="profile-image">
+                    <div class="profile-dropdown">
+                        <a href="#"><i class="fas fa-user"></i> Profilim</a>
+                        <a href="#"><i class="fas fa-cog"></i> Ayarlar</a>
+                        <a href="#"><i class="fas fa-sign-out-alt"></i> Çıkış</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </header>
+
     <main>
-        <h2>Hakkımızda</h2>
-        <p>Bu blog, Senirkent MYO hakkında bilgi vermek amacıyla kurulmuştur.</p>
+        <div style="display: flex; justify-content: center;">
+            <section id="about-goals" style="width: 45%; margin-right: 20px;">
+                <h2 style="text-align: center;">Hakkımızda</h2>
+                <p>Bu site, Senirkent MYO öğrencilerinin deneyimlerini ve bilgilerini paylaşmak amacıyla kurulmuştur. Amacımız, öğrencilere bilgi paylaşımı ve destek sağlamaktır.</p>
+            </section>
+            <section id="who-are-we" style="width: 45%; text-align: right;">
+                <h2 style="text-align: center;">Biz Kimiz</h2>
+                <div class="founders-container">
+                    <div class="founder">
+                        <p>Bizler, Senirkent MYO öğrencileri Eren ve Mustafa, okulumuza ait deneyimleri ve bilgileri bu platformda paylaşmak için bir araya geldik. Amacımız, öğrencilere faydalı içerikler sunarak bilgi paylaşımını ve desteği artırmaktır. Blogumuzda, okul hayatınızla ilgili önemli bilgiler ve duyurulara ulaşabilirsiniz.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
     </main>
+
     <footer>
         <div class="footer-content">
             <div class="contact-info">
                 <a href="#" class="contact-link"><i class="fas fa-envelope"></i> info@senirkentmyo.edu.tr</a>
                 <a href="#" class="contact-link"><i class="fas fa-phone"></i> +90 246 XXX XX XX</a>
                 <a href="#" class="contact-link"><i class="fas fa-map-marker-alt"></i> Senirkent, Isparta</a>
+            </div>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
             </div>
         </div>
         <div class="footer-bottom">

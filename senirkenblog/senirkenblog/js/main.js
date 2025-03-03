@@ -112,4 +112,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
         alert("Mesajınız başarıyla gönderildi!");
     });
+
+    // JavaScript for Hakkımızda page interactivity (if needed)
+    // Example: Add event listeners for any interactive elements
+    const hakkimizdaPage = document.getElementById('hakkimizda-page');
+    if (hakkimizdaPage) {
+        // Add event listeners for interactive elements on Hakkımızda page
+        const interactiveElements = hakkimizdaPage.querySelectorAll('.interactive-element');
+        interactiveElements.forEach(element => {
+            element.addEventListener('click', function() {
+                // Add interactivity logic here
+                console.log('Interactive element clicked!');
+            });
+        });
+    }
 });
