@@ -6,10 +6,6 @@
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="js/main.js" defer></script>
-    <style>
-        .post { display: inline-block; width: calc(50% - 10px); margin: 5px; vertical-align: top; }
-        .category-button { margin-right: 5px; }
-    </style>
     <title>İletişim</title>
 </head>
 <body>
@@ -50,51 +46,38 @@
         </div>
     </header>
 
-    <section class="contact-section">
-        <div class="container">
-            <h1 style="text-align: center; margin-bottom: 20px;">İletişim</h1>
-            <div class="row">
-                <div class="col-lg-6" style="background-color: #f0fdf4; padding: 20px;">
-                    <h2 class="contact-title">İletişime Geçin</h2>
-                    <form class="form-contact contact_form" action="https://api.web3forms.com/submit" method="POST">
-                        <input type="hidden" name="access_key" value="6480ec10-b3fe-4e5f-98a6-3248bd0fbd91">
-                        <input type="hidden" name="from_name" value="contact">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <textarea class="form-control w-100" name="message" cols="30" rows="9" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Mesajınızı Girin'" placeholder="Mesajınızı Girin" required=""></textarea>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <input class="form-control valid" name="name" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'İsiminizi Girin'" placeholder="İsminizi Girin" required="">
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <input class="form-control valid" name="email" type="email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Mail adresinizi giriniz'" placeholder="Email" required="">
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <input class="form-control" name="subject" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Mesaj Başlığını Girin'" placeholder="Mesaj Başlığını Girin" required="">
-                                </div>
-                            </div>
-                        </div>
-                        <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
-                        <div class="h-captcha" data-captcha="true"></div>
-                        <input type="hidden" name="redirect" value="https://web3forms.com/success">
-                        <div class="form-group mt-3">
-                            <button type="submit" class="button button-contactForm">Gönder</button>
-                        </div>
-                    </form>
-                </div>
-                <div class="col-lg-6" style="background-color: #ffffff; padding: 20px;">
-                    <h3>Güncel İletişim Bilgileri</h3>
-                    <p>Telefon: +90 123 456 7890</p>
-                    <p>E-posta: info@example.com</p>
-                </div>
-            </div>
+    <section class="contact-container">
+        <h1>İletişime Geçin</h1>
+        <p>Herhangi bir sorunuz varsa bizimle iletişime geçmekten çekinmeyin.</p>
+        
+        <form id="contact-form">
+            <label for="name">Adınız Soyadınız</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">E-Posta Adresiniz</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="phone">Telefon Numaranız</label>
+            <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" placeholder="5551234567" required>
+
+            <label for="message">Mesajınız</label>
+            <textarea id="message" name="message" placeholder="Mesajınızı buraya yazın..." required></textarea>
+
+            <button type="submit" style="background-color: #16a34a;">Gönder</button>
+        </form>
+        
+        <div class="contact-info">
+            <p><strong>E-Posta:</strong> <a href="mailto:info@ornek.com">info@ornek.com</a></p>
+            <p><strong>Telefon:</strong> +90 555 555 55 55</p>
+            <p><strong>Adres:</strong> Örnek Mahallesi, Isparta, Türkiye</p>
+        </div>
+        
+        <div id="map">Google Maps Entegrasyonu Buraya Gelecek</div>
+        
+        <div class="social-links">
+            <a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a>
+            <a href="#"><i class="fab fa-github"></i> GitHub</a>
+            <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
         </div>
     </section>
 
