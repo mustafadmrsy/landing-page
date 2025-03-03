@@ -1,0 +1,44 @@
+{
+    "blogPosts": [
+        {
+            "title": "Web Geliştirme Nedir?",
+            "link": "web-gelistirme.html",
+            "date": "2 Mart 2025",
+            "author": "Mustafa Demirsoy",
+            "preview": "Senirkent MYO Blog sistemi, modern web teknolojileri kullanılarak geliştirilmiş, kullanıcı dostu bir blog platformudur.",
+            "tags": ["Web Geliştirme", "Blog"]
+        },
+        {
+            "title": "JavaScript ile Dinamik Web Sayfaları",
+            "link": "javascript-web.html",
+            "date": "3 Mart 2025",
+            "author": "Mustafa Demirsoy",
+            "preview": "Platform, kullanıcıların düşüncelerini ve akademik çalışmalarını paylaşabilecekleri, etkileşimde bulunabilecekleri bir ortam sunmaktadır.",
+            "tags": ["JavaScript", "Web Geliştirme"]
+        },
+        {
+            "title": "Eğitimde Teknoloji Kullanımı",
+            "link": "egitim-teknoloji.html",
+            "date": "4 Mart 2025",
+            "author": "Mustafa Demirsoy",
+            "preview": "Eğitimde teknoloji kullanımı, öğretim yöntemlerini ve öğrenme süreçlerini geliştirmektedir.",
+            "tags": ["Eğitim", "Teknoloji"]
+        },
+        {
+            "title": "Yapay Zeka Nedir?",
+            "link": "yapay-zeka.html",
+            "date": "5 Mart 2025",
+            "author": "Mustafa Demirsoy",
+            "preview": "Yapay zeka, gelecekte birçok sektörde devrim yaratacak bir teknolojidir.",
+            "tags": ["Yapay Zeka", "Teknoloji"]
+        },
+        {
+            "title": "Blog Yazmanın Önemi",
+            "link": "blog-yazma.html",
+            "date": "6 Mart 2025",
+            "author": "Mustafa Demirsoy",
+            "preview": "Blog yazmak, düşüncelerinizi paylaşmanın harika bir yoludur.",
+            "tags": ["Blog", "Yazmak"]
+        }
+    ]
+}

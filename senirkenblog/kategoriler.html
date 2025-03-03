@@ -6,7 +6,7 @@
     <title>Kategoriler - Senirkent MYO Blog</title>
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="js/main.js" defer></script>
+    <script src="senirkenblog/js/main.js" defer></script>
 </head>
 <body>
     <header>
@@ -23,7 +23,31 @@
     </header>
     <main>
         <h2>Kategoriler</h2>
-        <p>Blog kategorileri burada listelenecektir.</p>
+        <div class="category-list">
+            <div class="category-item card">
+                <h3 class="category-title card-title">Web Geliştirme</h3>
+                <p class="category-description card-text">Web geliştirme ile ilgili en son yazılar.</p>
+                <a href="#" class="category-button btn btn-primary" data-category="Web Geliştirme">Devamını Oku</a>
+            </div>
+            <div class="category-item card">
+                <h3 class="category-title card-title">Eğitim</h3>
+                <p class="category-description card-text">Eğitim teknolojileri ve yenilikçi yöntemler.</p>
+                <a href="#" class="category-button btn btn-primary" data-category="Eğitim">Devamını Oku</a>
+            </div>
+            <div class="category-item card">
+                <h3 class="category-title card-title">Yapay Zeka</h3>
+                <p class="category-description card-text">Yapay zeka ve makine öğrenimi ile ilgili yazılar.</p>
+                <a href="#" class="category-button btn btn-primary" data-category="Yapay Zeka">Devamını Oku</a>
+            </div>
+            <div class="category-item card">
+                <h3 class="category-title card-title">Blog</h3>
+                <p class="category-description card-text">Blog yazma teknikleri ve ipuçları.</p>
+                <a href="#" class="category-button btn btn-primary" data-category="Blog">Devamını Oku</a>
+            </div>
+        </div>
+        <div id="blog-posts" class="blog-posts">
+            <!-- Blog yazıları burada gösterilecek -->
+        </div>
     </main>
     <footer>
         <div class="footer-content">
@@ -37,5 +61,61 @@
             <p>&copy; 2025 Senirkent MYO Blog. Tüm hakları saklıdır.</p>
         </div>
     </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const categoryButtons = document.querySelectorAll('.category-button');
+            const blogPostsContainer = document.getElementById('blog-posts');
+
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const category = this.getAttribute('data-category'); // Kategori adını al
+                    loadBlogPosts(category);
+                });
+            });
+
+            function loadBlogPosts(category) {
+                fetch('blogPosts.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        const filteredPosts = data.blogPosts.filter(post => post.tags.includes(category));
+                        displayPosts(filteredPosts, category);
+                    })
+                    .catch(error => console.error('Error loading blog posts:', error));
+            }
+
+            function displayPosts(posts, category) {
+                blogPostsContainer.innerHTML = '';
+                if (posts.length === 0) {
+                    blogPostsContainer.innerHTML = '<p>Bu kategoriye ait hiç blog yazısı bulunmamaktadır.</p>';
+                    return;
+                }
+                posts.forEach(post => {
+                    const postElement = document.createElement('article');
+                    postElement.className = 'blog-post expanded';
+                    postElement.innerHTML = `
+                        <div class='post-header'>
+                            <h2 class='post-title'>${post.title}</h2>
+                            <div class='post-meta'>
+                                <span class='meta-item'><i class='far fa-calendar-alt'></i> ${post.date}</span>
+                                <span class='meta-separator'>•</span>
+                                <span class='meta-item category-tag'><a href='kategoriler.html'> <i class='far fa-folder'></i> ${category}</a></span>
+                                <span class='meta-separator'>•</span>
+                                <span class='meta-item'><i class='far fa-user'></i> ${post.author}</span>
+                                <span class='meta-separator'>•</span>
+                                <span class='meta-item'><i class='far fa-clock'></i> 5 dk okuma</span>
+                            </div>
+                        </div>
+                        <div class='post-content'>
+                            <div class='post-preview'>
+                                <p>${post.preview}</p>
+                            </div>
+                        </div>
+                    `;
+                    blogPostsContainer.appendChild(postElement);
+                });
+            }
+        });
+    </script>
 </body>
 </html>
