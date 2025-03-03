@@ -95,109 +95,108 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    document.addEventListener('DOMContentLoaded', function() {
-        // İletişim formu işlevselliği
-        const contactForm = document.getElementById("contact-form");
-        if (contactForm) {
-            contactForm.addEventListener("submit", function(event) {
-                event.preventDefault();
-                const formData = new FormData(this);
-                const name = formData.get("name");
-                const email = formData.get("email");
-                const message = formData.get("message");
-    
-                console.log(name, email, message);
-                alert("Mesajınız başarıyla gönderildi!");
-            });
-        }
-    
-        // Kategoriler sayfasında blog yazılarını gösterme
-        function loadBlogPosts(category) {
-            fetch('blogPosts.json')
-                .then(response => response.json())
-                .then(data => {
-                    const normalizedCategory = category.toLowerCase().trim();
-                    const filteredPosts = data.blogPosts.filter(post => 
-                        post.tags.some(tag => tag.toLowerCase() === normalizedCategory)
-                    );
-                    displayPosts(filteredPosts, category);
-                })
-                .catch(error => console.error('Error loading blog posts:', error));
-        }
-    
-        const categoryLinks = document.querySelectorAll('.category-link');
-        categoryLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const category = this.getAttribute('data-category');
-                loadBlogPosts(category);
-            });
+    // İletişim formu işlevselliği
+    const contactForm = document.getElementById("contact-form");
+    if (contactForm) {
+        contactForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const name = formData.get("name");
+            const email = formData.get("email");
+            const message = formData.get("message");
+
+            console.log(name, email, message);
+            alert("Mesajınız başarıyla gönderildi!");
         });
-    
-        const categoryButtons = document.querySelectorAll('.category-button');
-        categoryButtons.forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                const category = this.getAttribute('data-category'); 
-                loadBlogPosts(category);
-            });
+    }
+
+    // Kategoriler sayfasında blog yazılarını gösterme
+    function loadBlogPosts(category) {
+        fetch('blogPosts.json')
+            .then(response => response.json())
+            .then(data => {
+                const normalizedCategory = category.toLowerCase().trim();
+                const filteredPosts = data.blogPosts.filter(post => 
+                    post.tags.some(tag => tag.toLowerCase() === normalizedCategory)
+                );
+                displayPosts(filteredPosts, category);
+            })
+            .catch(error => console.error('Error loading blog posts:', error));
+    }
+
+    const categoryLinks = document.querySelectorAll('.category-link');
+    categoryLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const category = this.getAttribute('data-category');
+            loadBlogPosts(category);
         });
-    
-        const readMoreButtons = document.querySelectorAll('.read-more-btn');
-        readMoreButtons.forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                const category = this.closest('.blog-post').querySelector('.post-meta .meta-item').textContent.trim(); 
-                loadBlogPosts(category);
-            });
-        });
-    
-        function displayPosts(posts, category) {
-            const blogPostsContainer = document.getElementById('blog-posts');
-            blogPostsContainer.innerHTML = '';
-            if (posts.length > 0) {
-                posts.forEach(post => {
-                    const postElement = document.createElement('article');
-                    postElement.className = 'blog-post';
-                    postElement.innerHTML = `
-                        <div class='post-header'>
-                            <h2 class='post-title'>${post.title}</h2>
-                            <div class='post-meta'>
-                                <span class='meta-item'><i class='far fa-calendar-alt'></i> ${post.date}</span>
-                                <span class='meta-separator'>•</span>
-                                <span class='meta-item'><i class='far fa-user'></i> ${post.author}</span>
-                            </div>
-                        </div>
-                        <div class='post-content'>
-                            <div class='post-preview'>
-                                <p>${post.preview}</p>
-                            </div>
-                        </div>
-                    `;
-                    blogPostsContainer.appendChild(postElement);
-                });
-            } else {
-                blogPostsContainer.innerHTML = '<p>Bu kategoride hiç blog yazısı bulunmamaktadır.</p>';
-            }
-        }
-    
-        const tags = document.querySelectorAll('.tag');
-        tags.forEach(tag => {
-            tag.addEventListener('click', function(e) {
-                e.preventDefault();
-                const tagName = this.textContent.trim();
-                window.location.href = `kategoriler.html?category=${tagName}`;
-            });
-        });
-    
-        // Hakkımızda sayfası için interaktivite
-        const hakkimizdaPage = document.getElementById('hakkimizda-page');
-        if (hakkimizdaPage) {
-            const interactiveElements = hakkimizdaPage.querySelectorAll('.interactive-element');
-            interactiveElements.forEach(element => {
-                element.addEventListener('click', function() {
-                    console.log('Interactive element clicked!');
-                });
-            });
-        }
     });
+
+    const categoryButtons = document.querySelectorAll('.category-button');
+    categoryButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const category = this.getAttribute('data-category'); 
+            loadBlogPosts(category);
+        });
+    });
+
+    const readMoreButtons = document.querySelectorAll('.read-more-btn');
+    readMoreButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const category = this.closest('.blog-post').querySelector('.post-meta .meta-item').textContent.trim(); 
+            loadBlogPosts(category);
+        });
+    });
+
+    function displayPosts(posts, category) {
+        const blogPostsContainer = document.getElementById('blog-posts');
+        blogPostsContainer.innerHTML = '';
+        if (posts.length > 0) {
+            posts.forEach(post => {
+                const postElement = document.createElement('article');
+                postElement.className = 'blog-post';
+                postElement.innerHTML = `
+                    <div class='post-header'>
+                        <h2 class='post-title'>${post.title}</h2>
+                        <div class='post-meta'>
+                            <span class='meta-item'><i class='far fa-calendar-alt'></i> ${post.date}</span>
+                            <span class='meta-separator'>•</span>
+                            <span class='meta-item'><i class='far fa-user'></i> ${post.author}</span>
+                        </div>
+                    </div>
+                    <div class='post-content'>
+                        <div class='post-preview'>
+                            <p>${post.preview}</p>
+                        </div>
+                    </div>
+                `;
+                blogPostsContainer.appendChild(postElement);
+            });
+        } else {
+            blogPostsContainer.innerHTML = '<p>Bu kategoride hiç blog yazısı bulunmamaktadır.</p>';
+        }
+    }
+
+    const tags = document.querySelectorAll('.tag');
+    tags.forEach(tag => {
+        tag.addEventListener('click', function(e) {
+            e.preventDefault();
+            const tagName = this.textContent.trim();
+            window.location.href = `kategoriler.html?category=${tagName}`;
+        });
+    });
+
+    // Hakkımızda sayfası için interaktivite
+    const hakkimizdaPage = document.getElementById('hakkimizda-page');
+    if (hakkimizdaPage) {
+        const interactiveElements = hakkimizdaPage.querySelectorAll('.interactive-element');
+        interactiveElements.forEach(element => {
+            element.addEventListener('click', function() {
+                console.log('Interactive element clicked!');
+            });
+        });
+    }
+});
