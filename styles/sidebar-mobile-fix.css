@@ -1,56 +1,77 @@
 /* Mobil Cihazlarda Sidebar Görünürlüğü İyileştirmesi */
 @media screen and (max-width: 768px) {
+    /* Header ve sidebar stilleri */
     header {
         transform: translateX(100%);
         width: 90%;
         max-width: 300px;
         z-index: 1000;
+        transition: transform 0.3s ease;
     }
     
     header.active {
         transform: translateX(0);
     }
     
-    .sidebar-toggle {
-        position: fixed;
-        right: auto;
-        left: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 45px;
-        height: 45px;
-        background-color: var(--primary-color);
-        color: white;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
-        z-index: 101;
-        transition: all 0.3s ease;
+    /* Sidebar toggle butonu - mobil için pozisyon düzeltmesi */
+    header .sidebar-toggle {
+        position: absolute !important;
+        top: 15px !important;
+        left: -60px !important;
+        width: 50px !important;
+        height: 50px !important;
+        background-color: var(--primary-color) !important;
+        color: white !important;
+        border-radius: 50% !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3) !important;
+        z-index: 9999 !important;
+        transition: all 0.3s ease !important;
         opacity: 1 !important;
         visibility: visible !important;
     }
     
-    .sidebar-toggle i {
-        font-size: 1.2rem;
-        transform: rotate(0deg);
+    header .sidebar-toggle i {
+        font-size: 1.5rem !important;
+        transform: rotate(0deg) !important;
     }
     
-    body.sidebar-collapsed .sidebar-toggle {
-        left: 10px;
+    /* Sidebar açıkken button konumu */
+    header.active .sidebar-toggle {
+        left: 15px !important;
     }
     
+    header.active .sidebar-toggle i {
+        transform: rotate(180deg) !important;
+    }
+    
+    /* Main içerik için düzenleme */
     main {
-        padding: 1rem;
-        padding-right: 1rem;
+        padding: 1rem !important;
+        padding-right: 1rem !important;
+        margin-right: 0 !important;
     }
     
-    main.sidebar-collapsed {
-        padding-right: 1rem;
-    }
-    
+    /* Overlay stil düzeltmeleri */
     header::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
         z-index: -1;
+    }
+    
+    header.active::before {
+        opacity: 1;
+        visibility: visible;
+        z-index: 50;
     }
 }

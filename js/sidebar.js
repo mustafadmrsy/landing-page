@@ -15,12 +15,24 @@ document.addEventListener('DOMContentLoaded', function() {
     // Sidebar toggle butonu için event listener
     if (sidebarToggle) {
         sidebarToggle.addEventListener('click', function() {
-            sidebar.classList.toggle('active');
-            if (window.innerWidth > 768) {
+            // Mobil cihazlarda
+            if (window.innerWidth <= 768) {
+                sidebar.classList.toggle('active');
+                document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
+                
+                // icon yönünü değiştir
+                if (sidebar.classList.contains('active')) {
+                    this.querySelector('i').classList.remove('fa-chevron-left');
+                    this.querySelector('i').classList.add('fa-chevron-right');
+                } else {
+                    this.querySelector('i').classList.remove('fa-chevron-right');
+                    this.querySelector('i').classList.add('fa-chevron-left');
+                }
+            } 
+            // Desktop cihazlarda
+            else {
                 sidebar.classList.toggle('collapsed');
                 localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
-            } else {
-                document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
             }
         });
     }
@@ -31,6 +43,15 @@ document.addEventListener('DOMContentLoaded', function() {
             e.stopPropagation();
             sidebar.classList.toggle('active');
             document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
+            
+            // Sidebar toggle butonunun ikonunu değiştir
+            if (sidebar.classList.contains('active') && sidebarToggle) {
+                sidebarToggle.querySelector('i').classList.remove('fa-chevron-left');
+                sidebarToggle.querySelector('i').classList.add('fa-chevron-right');
+            } else if (sidebarToggle) {
+                sidebarToggle.querySelector('i').classList.remove('fa-chevron-right');
+                sidebarToggle.querySelector('i').classList.add('fa-chevron-left');
+            }
         });
     }
 
@@ -48,11 +69,18 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('click', function(e) {
         if (window.innerWidth <= 768) {
             const isClickInside = sidebar.contains(e.target) || 
-                                (mobileMenuBtn && mobileMenuBtn.contains(e.target));
+                                (mobileMenuBtn && mobileMenuBtn.contains(e.target)) ||
+                                (sidebarToggle && sidebarToggle.contains(e.target));
             
             if (!isClickInside && sidebar.classList.contains('active')) {
                 sidebar.classList.remove('active');
                 document.body.style.overflow = '';
+                
+                // Sidebar toggle butonunun ikonunu güncelle
+                if (sidebarToggle) {
+                    sidebarToggle.querySelector('i').classList.remove('fa-chevron-right');
+                    sidebarToggle.querySelector('i').classList.add('fa-chevron-left');
+                }
             }
         }
     });
@@ -63,6 +91,12 @@ document.addEventListener('DOMContentLoaded', function() {
             if (window.innerWidth <= 768) {
                 sidebar.classList.remove('active');
                 document.body.style.overflow = '';
+                
+                // Sidebar toggle butonunun ikonunu güncelle
+                if (sidebarToggle) {
+                    sidebarToggle.querySelector('i').classList.remove('fa-chevron-right');
+                    sidebarToggle.querySelector('i').classList.add('fa-chevron-left');
+                }
             }
         });
     });
@@ -75,8 +109,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 sidebar.classList.add('collapsed');
             }
         } else {
-            sidebar.classList.remove('active');
             sidebar.classList.remove('collapsed');
+            // Sadece yeniden boyutlandırma sırasında aktif durumu kaldırma
+            // sidebar.classList.remove('active');
         }
     });
 

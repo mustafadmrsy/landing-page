@@ -1,4 +1,6 @@
 /* Mobil cihazlar için sidebar toggle butonu ayarları */
+/* Bu ayarlar sidebar-mobile-fix.css dosyasına taşındı */
+/*
 @media screen and (max-width: 768px) {
     .sidebar-toggle {
         position: fixed;
@@ -34,3 +36,4 @@
         left: 10px;
     }
 }
+*/
