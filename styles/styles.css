@@ -2161,157 +2161,572 @@ footer {
     }
 
     .category-card {
-        padding: 1.5rem;
+        padding: 1rem;
     }
 
-    .posts-grid {
+    .category-icon {
+        font-size: 2rem;
+    }
+
+    .category-card h3 {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .categories-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+/* İki Sütunlu Sayfa Düzeni */
+.split-layout {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    min-height: calc(100vh - 200px);
+}
+
+/* Sol Sidebar Kategoriler */
+.categories-sidebar {
+    background: var(--surface-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    height: fit-content;
+    position: sticky;
+    top: 100px;
+    max-height: calc(100vh - 150px);
+    overflow-y: auto;
+}
+
+.categories-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+}
+
+.category-card {
+    background: var(--background-color);
+    border-radius: 8px;
+    padding: 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.category-card:hover {
+    transform: translateY(-3px);
+    background: var(--surface-color);
+    border-color: var(--primary-color);
+}
+
+.category-card.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+.category-card.active .category-icon,
+.category-card.active h3,
+.category-card.active p,
+.category-card.active .post-count {
+    color: white;
+}
+
+.category-icon {
+    font-size: 1.25rem;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface-color);
+    border-radius: 8px;
+    color: var(--primary-color);
+}
+
+.category-content {
+    flex-grow: 1;
+    min-width: 0;
+}
+
+.category-card h3 {
+    font-size: 0.9rem;
+    margin: 0;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.category-card p {
+    display: none; /* Açıklamaları gizle */
+}
+
+.post-count {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    background: var(--surface-color);
+    padding: 0.1rem 0.4rem;
+    border-radius: 10px;
+    display: inline-block;
+    margin-top: 0.25rem;
+}
+
+/* Mobil Responsive Düzen */
+@media (max-width: 1024px) {
+    .split-layout {
+        grid-template-columns: 250px 1fr;
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .categories-list {
+        grid-template-columns: 1fr; /* Tablet'te tek sütun */
+    }
+}
+
+@media (max-width: 768px) {
+    .split-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .categories-sidebar {
+        position: relative;
+        top: 0;
+        max-height: none;
+        overflow-y: visible;
+    }
+
+    .categories-list {
+        grid-template-columns: repeat(3, 1fr); /* Mobilde 3 sütun */
+    }
+
+    .category-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 0.5rem;
+    }
+
+    .category-icon {
+        font-size: 1.5rem;
+        margin-bottom: 0.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .categories-list {
+        grid-template-columns: repeat(2, 1fr); /* Küçük mobilde 2 sütun */
+    }
+}
+
+/* Kategoriler Sayfası */
+.categories-layout {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.categories-sidebar {
+    background: var(--surface-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    height: fit-content;
+    position: sticky;
+    top: 100px;
+}
+
+.categories-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.category-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: var(--background-color);
+}
+
+.category-item:hover {
+    transform: translateX(8px);
+    background: var(--primary-color);
+    color: white;
+}
+
+.category-item.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+.category-icon {
+    font-size: 1.5rem;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface-color);
+    border-radius: 8px;
+    color: var(--primary-color);
+}
+
+.category-item:hover .category-icon,
+.category-item.active .category-icon {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.category-info {
+    flex: 1;
+}
+
+.category-info h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.post-count {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+.blog-posts-section {
+    background: var(--surface-color);
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.section-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--background-color);
+}
+
+.posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.blog-post-card {
+    background: var(--background-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: transform 0.3s ease;
+}
+
+.blog-post-card:hover {
+    transform: translateY(-4px);
+}
+
+.post-meta {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+.post-title {
+    margin: 0 0 1rem 0;
+    font-size: 1.2rem;
+    color: var(--text-primary);
+}
+
+.post-preview {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.tag {
+    background: var(--surface-color);
+    color: var(--primary-color);
+    padding: 0.2rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+}
+
+.read-more {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.read-more:hover {
+    text-decoration: underline;
+}
+
+.no-posts {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-secondary);
+}
+
+.no-posts i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 1024px) {
+    .categories-layout {
+        grid-template-columns: 250px 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .categories-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .categories-sidebar {
+        position: static;
+        margin-bottom: 2rem;
+    }
+
+    .category-item:hover {
+        transform: translateX(4px);
+    }
+}
+
+/* Blog Popup Stilleri */
+.blog-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.blog-popup-overlay.active {
+    display: flex;
+}
+
+.blog-popup {
+    background: var(--surface-color);
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    border-radius: 16px;
+    position: relative;
+    overflow: hidden;
+    animation: popupOpen 0.3s ease;
+}
+
+@keyframes popupOpen {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.blog-popup-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.blog-popup-close:hover {
+    background: var(--background-color);
+    color: var(--primary-color);
+    transform: rotate(90deg);
+}
+
+.blog-popup-content {
+    padding: 2rem;
+    overflow-y: auto;
+    max-height: 90vh;
+}
+
+.blog-post-full {
+    padding: 1rem;
+}
+
+.blog-post-full h2 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+}
+
+.blog-post-full .post-meta {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--background-color);
+}
+
+.blog-post-full .post-content {
+    line-height: 1.8;
+    color: var(--text-primary);
+    margin-bottom: 2rem;
+}
+
+.blog-open-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    width: 100%;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.blog-open-btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+}
+
+.blog-open-btn i {
+    font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+    .blog-popup {
+        width: 95%;
+        margin: 1rem;
+    }
+
+    .blog-popup-content {
+        padding: 1rem;
+    }
+}
+
+/* Kategoriler Grid Düzeni */
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.category-card {
+    background: var(--surface-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.category-icon {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.category-card h3 {
+    color: var(--text-primary);
+    font-size: 1.25rem;
+    margin: 0;
+}
+
+.category-card p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin: 0.5rem 0;
+}
+
+.post-count {
+    background: var(--background-color);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+/* Mobil Responsive Düzen */
+@media (max-width: 768px) {
+    .categories-grid {
+        grid-template-columns: repeat(2, 1fr);
         gap: 1rem;
         padding: 0.5rem;
     }
 
-    .blog-post-card {
-        margin: 0;
+    .category-card {
+        padding: 1rem;
     }
 
-    /* Footer Düzenlemeleri */
-    .footer-content {
-        flex-direction: column;
-        text-align: center;
+    .category-icon {
+        font-size: 2rem;
     }
 
-    .contact-info {
-        flex-direction: column;
-        gap: 1rem;
+    .category-card h3 {
+        font-size: 1.1rem;
     }
 }
 
-/* Tablet Uyumluluk */
-@media screen and (min-width: 769px) and (max-width: 1024px) {
-    .blog-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1.5rem;
-    }
-
+@media (max-width: 480px) {
     .categories-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .posts-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-/* Genel Mobil Optimizasyonları */
-* {
-    -webkit-tap-highlight-color: transparent;
-}
-
-button, 
-a {
-    touch-action: manipulation;
-}
-
-input,
-textarea {
-    font-size: 16px; /* iOS zoom önleme */
-}
-
-.post-content img {
-    max-width: 100%;
-    height: auto;
-}
-
-/* Dokunmatik Cihazlar için İyileştirmeler */
-@media (hover: none) {
-    .category-card:hover,
-    .blog-post-card:hover {
-        transform: none;
-    }
-
-    .read-more:hover {
-        text-decoration: none;
-    }
-}
-
-/* Mobil Menü Stilleri */
-.mobile-menu-btn {
-    display: none;
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    color: #333;
-    cursor: pointer;
-    padding: 0.5rem;
-    margin-left: auto;
-}
-
-@media screen and (max-width: 768px) {
-    .mobile-menu-btn {
-        display: block;
-    }
-
-    .main-nav {
-        display: none;
-        width: 100%;
-    }
-
-    .header-right {
-        display: none;
-        width: 100%;
-    }
-
-    .main-nav.show,
-    .header-right.show {
-        display: flex;
-    }
-
-    .mobile-menu-btn.active {
-        color: #007bff;
-    }
-
-    .profile-dropdown {
-        position: static;
-        width: 100%;
-        box-shadow: none;
-        margin-top: 1rem;
-    }
-
-    .profile-menu:hover .profile-dropdown {
-        display: none;
-    }
-
-    .profile-menu.active .profile-dropdown {
-        display: flex;
-        flex-direction: column;
-    }
-}
-
-/* Dokunmatik Cihaz Optimizasyonları */
-@media (hover: none) {
-    .nav-link:hover,
-    .btn-login:hover,
-    .btn-register:hover {
-        opacity: 1;
-    }
-
-    .search-button:hover {
-        background-color: #007bff;
-    }
-}
-
-/* iOS Safari Optimizasyonları */
-@supports (-webkit-touch-callout: none) {
-    .main-nav,
-    .header-right {
-        -webkit-overflow-scrolling: touch;
-    }
-
-    input[type="text"],
-    input[type="email"],
-    input[type="password"] {
-        -webkit-appearance: none;
-        border-radius: 4px;
+        grid-template-columns: 1fr;
     }
 }
 
@@ -2486,146 +2901,5 @@ textarea {
 @media (max-width: 480px) {
     .categories-grid {
         grid-template-columns: 1fr;
-    }
-}
-
-/* İki Sütunlu Sayfa Düzeni */
-.split-layout {
-    display: grid;
-    grid-template-columns: 300px 1fr;
-    gap: 2rem;
-    padding: 2rem;
-    max-width: 1400px;
-    margin: 0 auto;
-    min-height: calc(100vh - 200px);
-}
-
-/* Sol Sidebar Kategoriler */
-.categories-sidebar {
-    background: var(--surface-color);
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    height: fit-content;
-    position: sticky;
-    top: 100px;
-    max-height: calc(100vh - 150px);
-    overflow-y: auto;
-}
-
-.categories-list {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.75rem;
-}
-
-.category-card {
-    background: var(--background-color);
-    border-radius: 8px;
-    padding: 0.75rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border: 2px solid transparent;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.category-card:hover {
-    transform: translateY(-3px);
-    background: var(--surface-color);
-    border-color: var(--primary-color);
-}
-
-.category-card.active {
-    background: var(--primary-color);
-    color: white;
-}
-
-.category-card.active .category-icon,
-.category-card.active h3,
-.category-card.active p,
-.category-card.active .post-count {
-    color: white;
-}
-
-.category-icon {
-    font-size: 1.25rem;
-    color: var(--primary-color);
-    flex-shrink: 0;
-}
-
-.category-content {
-    flex-grow: 1;
-    min-width: 0;
-}
-
-.category-card h3 {
-    font-size: 0.9rem;
-    margin: 0;
-    color: var(--text-primary);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.category-card p {
-    display: none; /* Açıklamaları gizle */
-}
-
-.post-count {
-    font-size: 0.75rem;
-    color: var(--text-secondary);
-    background: var(--surface-color);
-    padding: 0.1rem 0.4rem;
-    border-radius: 10px;
-    display: inline-block;
-    margin-top: 0.25rem;
-}
-
-/* Mobil Responsive Düzen */
-@media (max-width: 1024px) {
-    .split-layout {
-        grid-template-columns: 250px 1fr;
-        padding: 1rem;
-        gap: 1rem;
-    }
-
-    .categories-list {
-        grid-template-columns: 1fr; /* Tablet'te tek sütun */
-    }
-}
-
-@media (max-width: 768px) {
-    .split-layout {
-        grid-template-columns: 1fr;
-    }
-
-    .categories-sidebar {
-        position: relative;
-        top: 0;
-        max-height: none;
-        overflow-y: visible;
-    }
-
-    .categories-list {
-        grid-template-columns: repeat(3, 1fr); /* Mobilde 3 sütun */
-    }
-
-    .category-card {
-        flex-direction: column;
-        text-align: center;
-        padding: 0.5rem;
-    }
-
-    .category-icon {
-        font-size: 1.5rem;
-        margin-bottom: 0.25rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .categories-list {
-        grid-template-columns: repeat(2, 1fr); /* Küçük mobilde 2 sütun */
     }
 }
