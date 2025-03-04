@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="styles/category-custom.css">
     <link rel="stylesheet" href="styles/mobile-adjust.css">
+    <link rel="stylesheet" href="styles/desktop-sidebar-fix.css">
     <link rel="stylesheet" href="styles/newsletter-blue.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="senirkenblog/senirkenblog/js/main.js" defer></script>
@@ -14,7 +15,7 @@
 </head>
 <body>
     <header class="sidebar">
-        <button class="sidebar-toggle" aria-label="Menüyü Gizle/Göster">
+        <button class="sidebar-toggle" aria-label="Menüyü Gizle/Göster" onclick="toggleSidebar(event)">
             <i class="fas fa-chevron-left"></i>
         </button>
         <div class="header-left">
@@ -176,5 +177,24 @@
             <p>&copy; 2025 Senirkent MYO Blog. Tüm hakları saklıdır.</p>
         </div>
     </footer>
+    <script>
+        // Doğrudan sayfaya gömülü global sidebar kontrol fonksiyonu
+        function toggleSidebar(event) {
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            
+            const sidebar = document.querySelector('.sidebar');
+            if (sidebar) {
+                sidebar.classList.toggle('collapsed');
+                sidebar.classList.toggle('active');
+                
+                if (window.innerWidth > 768) {
+                    localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+                }
+            }
+        }
+    </script>
 </body>
 </html>

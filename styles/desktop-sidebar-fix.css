@@ -1,0 +1,30 @@
+/* Masaüstü cihazlar için sidebar toggle butonu düzeltmesi */
+@media screen and (min-width: 769px) {
+    /* Masaüstü görünümünde sidebar toggle butonunun stilini geri yükle */
+    .sidebar-toggle {
+        position: absolute !important;
+        top: 1rem !important;
+        left: -15px !important;
+        background: var(--surface-color) !important;
+        border: none !important;
+        border-radius: 50% !important;
+        width: 30px !important;
+        height: 30px !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1) !important;
+        cursor: pointer !important;
+        z-index: 101 !important;
+    }
+
+    .sidebar-toggle i {
+        color: var(--primary-color) !important;
+        font-size: 0.8rem !important;
+        transition: transform 0.3s ease !important;
+    }
+
+    .sidebar-collapsed .sidebar-toggle i {
+        transform: rotate(180deg) !important;
+    }
+}

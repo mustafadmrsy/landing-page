@@ -1,39 +1,46 @@
 /* Mobil cihazlar için sidebar toggle butonu ayarları */
 @media screen and (max-width: 768px) {
+    /* Toggle butonu için özel stil - Mobil cihazlarda sabit pozisyonda görünür */
     .sidebar-toggle {
-        position: fixed;
-        right: auto;
-        left: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 40px;
-        height: 40px;
-        background-color: var(--primary-color);
-        color: white;
-        border-radius: 50%;
-        display: flex !important; /* !important ekledim butonun kesinlikle görünmesi için */
-        justify-content: center;
-        align-items: center;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-        z-index: 1000; /* z-index arttırıldı */
-        transition: all 0.3s ease;
-        opacity: 1 !important; /* Göründüğünden emin olmak için */
-        visibility: visible !important; /* Görünürlüğü zorla aktif etmek için */
+        position: fixed !important;
+        right: auto !important;
+        left: 10px !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        width: 50px !important;
+        height: 50px !important;
+        background-color: rgba(0, 86, 179, 0.9) !important;
+        color: white !important;
+        border-radius: 50% !important;
+        display: flex !important; 
+        justify-content: center !important;
+        align-items: center !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+        z-index: 9999 !important;
+        transition: all 0.3s ease !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        border: 2px solid white !important;
     }
 
     .sidebar-toggle:hover,
     .sidebar-toggle:focus {
-        background-color: #0056b3;
-        transform: translateY(-50%) scale(1.1);
+        background-color: #0056b3 !important;
+        transform: translateY(-50%) scale(1.1) !important;
     }
 
     .sidebar-toggle i {
-        font-size: 1.2rem;
-        color: white !important; /* İkon rengi beyaz olarak sabitlendi */
+        font-size: 1.5rem !important;
+        color: white !important;
     }
 
     /* Sidebar açıkken butonun konumu */
     body.sidebar-open .sidebar-toggle {
-        left: 10px;
+        left: 10px !important;
+    }
+    
+    /* Sidebar animasyonu */
+    .sidebar {
+        z-index: 9998 !important;
     }
 }
