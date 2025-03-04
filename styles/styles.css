@@ -1366,7 +1366,6 @@ footer {
     color: var(--text-primary);
     margin-bottom: 12px;
     font-weight: 700;
-    letter-spacing: -0.5px;
 }
 
 .form-subtitle {
@@ -2261,7 +2260,7 @@ footer {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.7);
     display: none;
     justify-content: center;
     align-items: center;
@@ -2298,12 +2297,12 @@ footer {
     position: absolute;
     top: 1rem;
     right: 1rem;
+    z-index: 10;
     background: none;
     border: none;
     color: var(--text-secondary);
     font-size: 1.5rem;
     cursor: pointer;
-    z-index: 10;
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -2643,41 +2642,249 @@ footer {
 /* Mobil menü düğmesi için stiller */
 @media (max-width: 768px) {
     header {
-        width: 100%;
-        height: auto;
-        position: sticky;
+        transform: translateX(-100%);
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 250px;
+        height: 100vh;
+        background: var(--surface-color);
+        z-index: 1000;
+        box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
     }
 
-    .header-left {
-        width: 100%;
-    }
-
-    .main-nav {
-        display: none;
-        width: 100%;
-    }
-
-    .main-nav.active {
-        display: flex;
-    }
-
-    .mobile-menu-btn {
-        display: block;
-        background: none;
-        border: none;
-        color: var(--text-primary);
-        font-size: 1.5rem;
-        cursor: pointer;
-    }
-
-    .header-right {
-        width: 100%;
-        flex-direction: row;
-        justify-content: space-between;
+    header.active {
+        transform: translateX(0);
     }
 
     main {
         margin-left: 0;
+        width: 100%;
+        padding: 1rem;
+    }
+
+    .mobile-menu-btn {
+        display: block;
+        position: fixed;
+        top: 1rem;
+        left: 1rem;
+        z-index: 999;
+        background: var(--surface-color);
+        border: none;
+        padding: 0.5rem;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+    }
+
+    .mobile-menu-btn i {
+        color: var(--primary-color);
+        font-size: 1.5rem;
+    }
+
+    body.sidebar-active {
+        overflow: hidden;
+    }
+
+    header::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        z-index: -1;
+    }
+
+    header.active::before {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+@media screen and (min-width: 769px) {
+    .mobile-menu-btn {
+        display: none;
+    }
+
+    header {
+        transform: none;
+    }
+}
+
+/* Sidebar styles */
+.sidebar {
+    background: var(--surface-color);
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 250px;
+    z-index: 100;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    transition: transform 0.3s ease;
+}
+
+.sidebar.collapsed {
+    transform: translateX(-220px);
+}
+
+.sidebar.collapsed .sidebar-toggle i {
+    transform: rotate(180deg);
+}
+
+.sidebar.collapsed .header-left,
+.sidebar.collapsed .header-right {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.sidebar-toggle {
+    position: absolute;
+    top: 1rem;
+    right: -15px;
+    width: 30px;
+    height: 30px;
+    background: var(--primary-color);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 101;
+    transition: transform 0.3s ease;
+}
+
+.sidebar-toggle:hover {
+    background: var(--primary-hover);
+}
+
+.sidebar-toggle i {
+    transition: transform 0.3s ease;
+}
+
+main {
+    margin-left: 250px;
+    padding: 2rem;
+    transition: margin-left 0.3s ease;
+}
+
+main.sidebar-collapsed {
+    margin-left: 30px;
+}
+
+/* Diğer sidebar stilleri */
+.header-left, .header-right {
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+        width: 100%;
+    }
+
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    .sidebar-toggle {
+        display: none;
+    }
+
+    main {
+        margin-left: 0;
+    }
+
+    main.sidebar-collapsed {
+        margin-left: 0;
+    }
+}
+
+/* Mobile Responsive Sidebar Styles */
+@media screen and (max-width: 768px) {
+    header {
+        transform: translateX(-100%);
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 250px;
+        height: 100vh;
+        background: var(--surface-color);
+        z-index: 1000;
+        box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+    }
+
+    header.active {
+        transform: translateX(0);
+    }
+
+    main {
+        margin-left: 0;
+        width: 100%;
+        padding: 1rem;
+    }
+
+    .mobile-menu-btn {
+        display: block;
+        position: fixed;
+        top: 1rem;
+        left: 1rem;
+        z-index: 999;
+        background: var(--surface-color);
+        border: none;
+        padding: 0.5rem;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+    }
+
+    .mobile-menu-btn i {
+        color: var(--primary-color);
+        font-size: 1.5rem;
+    }
+
+    body.sidebar-active {
+        overflow: hidden;
+    }
+
+    header::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        z-index: -1;
+    }
+
+    header.active::before {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+@media screen and (min-width: 769px) {
+    .mobile-menu-btn {
+        display: none;
+    }
+
+    header {
+        transform: none;
     }
 }
 
@@ -2813,100 +3020,5 @@ footer {
 @media (max-width: 480px) {
     .categories-list {
         grid-template-columns: repeat(2, 1fr); /* Küçük mobilde 2 sütun */
-    }
-}
-
-/* Sidebar styles */
-.sidebar {
-    background: var(--surface-color);
-    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 250px;
-    z-index: 100;
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    transition: transform 0.3s ease;
-}
-
-.sidebar.collapsed {
-    transform: translateX(-220px);
-}
-
-.sidebar.collapsed .sidebar-toggle i {
-    transform: rotate(180deg);
-}
-
-.sidebar.collapsed .header-left,
-.sidebar.collapsed .header-right {
-    opacity: 0;
-    visibility: hidden;
-}
-
-.sidebar-toggle {
-    position: absolute;
-    top: 1rem;
-    right: -15px;
-    width: 30px;
-    height: 30px;
-    background: var(--primary-color);
-    border: none;
-    border-radius: 50%;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 101;
-    transition: transform 0.3s ease;
-}
-
-.sidebar-toggle:hover {
-    background: var(--primary-hover);
-}
-
-.sidebar-toggle i {
-    transition: transform 0.3s ease;
-}
-
-main {
-    margin-left: 250px;
-    padding: 2rem;
-    transition: margin-left 0.3s ease;
-}
-
-main.sidebar-collapsed {
-    margin-left: 30px;
-}
-
-/* Diğer sidebar stilleri */
-.header-left, .header-right {
-    transition: opacity 0.2s ease, visibility 0.2s ease;
-}
-
-@media (max-width: 768px) {
-    .sidebar {
-        transform: translateX(-100%);
-        width: 100%;
-    }
-
-    .sidebar.active {
-        transform: translateX(0);
-    }
-
-    .sidebar-toggle {
-        display: none;
-    }
-
-    main {
-        margin-left: 0;
-    }
-
-    main.sidebar-collapsed {
-        margin-left: 0;
     }
 }
