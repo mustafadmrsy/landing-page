@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Senirkent MYO Blog</title>
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -18,6 +18,9 @@
             <a href="index.html" class="logo-link">
                 <h1>Senirkent MYO Blog</h1>
             </a>
+            <button class="mobile-menu-btn" aria-label="Menüyü Aç/Kapat">
+                <i class="fas fa-bars"></i>
+            </button>
             <nav class="main-nav">
                 <a href="index.html" class="nav-link">Ana Sayfa</a>
                 <a href="#" class="nav-link" id="write-button">Sende Yaz</a>
@@ -347,5 +350,56 @@
         </div>
     </footer>
     <div class="overlay"></div>
+    <script>
+        // Mobil menü işlemleri
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const mainNav = document.querySelector('.main-nav');
+            const headerRight = document.querySelector('.header-right');
+
+            mobileMenuBtn.addEventListener('click', function() {
+                mainNav.classList.toggle('show');
+                headerRight.classList.toggle('show');
+                this.classList.toggle('active');
+            });
+
+            // Ekran genişliği değiştiğinde menüyü sıfırla
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768) {
+                    mainNav.classList.remove('show');
+                    headerRight.classList.remove('show');
+                    mobileMenuBtn.classList.remove('active');
+                }
+            });
+
+            // Blog yazısı "Devamını Oku" butonları
+            const readMoreBtns = document.querySelectorAll('.read-more-btn');
+            readMoreBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const postContent = this.closest('.blog-post').querySelector('.post-content');
+                    const fullContent = postContent.querySelector('.post-full-content');
+                    const btnText = this.querySelector('.read-more-text');
+                    const btnIcon = this.querySelector('i');
+
+                    if (fullContent.style.display === 'none' || !fullContent.style.display) {
+                        fullContent.style.display = 'block';
+                        btnText.textContent = 'Daha Az Göster';
+                        btnIcon.classList.remove('fa-chevron-down');
+                        btnIcon.classList.add('fa-chevron-up');
+                    } else {
+                        fullContent.style.display = 'none';
+                        btnText.textContent = 'Devamını Oku';
+                        btnIcon.classList.remove('fa-chevron-up');
+                        btnIcon.classList.add('fa-chevron-down');
+                    }
+                });
+            });
+
+            // Sayfa yüklendiğinde tam içeriği gizle
+            document.querySelectorAll('.post-full-content').forEach(content => {
+                content.style.display = 'none';
+            });
+        });
+    </script>
 </body>
 </html>

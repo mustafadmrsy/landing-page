@@ -22,33 +22,68 @@
         </div>
     </header>
     <main>
-        <h2>Kategoriler</h2>
-        <div class="category-list">
-            <div class="category-item card">
-                <h3 class="category-title card-title">Web Geliştirme</h3>
-                <p class="category-description card-text">Web geliştirme ile ilgili en son yazılar.</p>
-                <a href="#" class="category-button btn btn-primary" data-category="Web Geliştirme">Devamını Oku</a>
+        <section class="categories-section">
+            <h2 class="section-title">Kategoriler</h2>
+            <div class="categories-grid">
+                <div class="category-card" data-category="Web Geliştirme">
+                    <div class="category-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>Web Geliştirme</h3>
+                    <p>Web teknolojileri ve geliştirme araçları</p>
+                    <span class="post-count">0 Yazı</span>
+                </div>
+                <div class="category-card" data-category="Eğitim">
+                    <div class="category-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Eğitim</h3>
+                    <p>Eğitim teknolojileri ve yöntemleri</p>
+                    <span class="post-count">0 Yazı</span>
+                </div>
+                <div class="category-card" data-category="Yapay Zeka">
+                    <div class="category-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>Yapay Zeka</h3>
+                    <p>Yapay zeka ve makine öğrenimi</p>
+                    <span class="post-count">0 Yazı</span>
+                </div>
+                <div class="category-card" data-category="Mobil Geliştirme">
+                    <div class="category-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Mobil Geliştirme</h3>
+                    <p>Mobil uygulama geliştirme</p>
+                    <span class="post-count">0 Yazı</span>
+                </div>
+                <div class="category-card" data-category="Siber Güvenlik">
+                    <div class="category-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Siber Güvenlik</h3>
+                    <p>Güvenlik ve ağ teknolojileri</p>
+                    <span class="post-count">0 Yazı</span>
+                </div>
+                <div class="category-card" data-category="Veri Bilimi">
+                    <div class="category-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>Veri Bilimi</h3>
+                    <p>Veri analizi ve görselleştirme</p>
+                    <span class="post-count">0 Yazı</span>
+                </div>
             </div>
-            <div class="category-item card">
-                <h3 class="category-title card-title">Eğitim</h3>
-                <p class="category-description card-text">Eğitim teknolojileri ve yenilikçi yöntemler.</p>
-                <a href="#" class="category-button btn btn-primary" data-category="Eğitim">Devamını Oku</a>
+        </section>
+
+        <section class="blog-posts-section" id="blog-posts">
+            <h2 class="section-title">Blog Yazıları</h2>
+            <div class="posts-grid">
+                <!-- Blog yazıları buraya dinamik olarak eklenecek -->
             </div>
-            <div class="category-item card">
-                <h3 class="category-title card-title">Yapay Zeka</h3>
-                <p class="category-description card-text">Yapay zeka ve makine öğrenimi ile ilgili yazılar.</p>
-                <a href="#" class="category-button btn btn-primary" data-category="Yapay Zeka">Devamını Oku</a>
-            </div>
-            <div class="category-item card">
-                <h3 class="category-title card-title">Blog</h3>
-                <p class="category-description card-text">Blog yazma teknikleri ve ipuçları.</p>
-                <a href="#" class="category-button btn btn-primary" data-category="Blog">Devamını Oku</a>
-            </div>
-        </div>
-        <div id="blog-posts" class="blog-posts">
-            <!-- Blog yazıları burada gösterilecek -->
-        </div>
+        </section>
     </main>
+
     <footer>
         <div class="footer-content">
             <div class="contact-info">
@@ -61,60 +96,87 @@
             <p>&copy; 2025 Senirkent MYO Blog. Tüm hakları saklıdır.</p>
         </div>
     </footer>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const categoryButtons = document.querySelectorAll('.category-button');
-            const blogPostsContainer = document.getElementById('blog-posts');
+            const categoryCards = document.querySelectorAll('.category-card');
+            const blogPostsGrid = document.querySelector('.posts-grid');
+            let selectedCategory = null;
 
-            categoryButtons.forEach(button => {
-                button.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const category = this.getAttribute('data-category'); // Kategori adını al
+            function updatePostCounts(data) {
+                const categories = {};
+                data.blogPosts.forEach(post => {
+                    post.tags.forEach(tag => {
+                        categories[tag] = (categories[tag] || 0) + 1;
+                    });
+                });
+
+                categoryCards.forEach(card => {
+                    const category = card.dataset.category;
+                    const count = categories[category] || 0;
+                    const countElement = card.querySelector('.post-count');
+                    countElement.textContent = `${count} Yazı`;
+                });
+            }
+
+            categoryCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const category = this.dataset.category;
+                    
+                    // Seçili kategoriyi güncelle
+                    categoryCards.forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                    
                     loadBlogPosts(category);
                 });
             });
 
             function loadBlogPosts(category) {
-                fetch('blogPosts.json')
+                fetch('senirkenblog/blogPosts.json')
                     .then(response => response.json())
                     .then(data => {
-                        const filteredPosts = data.blogPosts.filter(post => post.tags.includes(category));
+                        updatePostCounts(data);
+                        const filteredPosts = category 
+                            ? data.blogPosts.filter(post => post.tags.includes(category))
+                            : data.blogPosts;
                         displayPosts(filteredPosts, category);
                     })
-                    .catch(error => console.error('Error loading blog posts:', error));
+                    .catch(error => console.error('Blog yazıları yüklenirken hata:', error));
             }
 
             function displayPosts(posts, category) {
-                blogPostsContainer.innerHTML = '';
+                blogPostsGrid.innerHTML = '';
                 if (posts.length === 0) {
-                    blogPostsContainer.innerHTML = '<p>Bu kategoriye ait hiç blog yazısı bulunmamaktadır.</p>';
-                    return;
-                }
-                posts.forEach(post => {
-                    const postElement = document.createElement('article');
-                    postElement.className = 'blog-post expanded';
-                    postElement.innerHTML = `
-                        <div class='post-header'>
-                            <h2 class='post-title'>${post.title}</h2>
-                            <div class='post-meta'>
-                                <span class='meta-item'><i class='far fa-calendar-alt'></i> ${post.date}</span>
-                                <span class='meta-separator'>•</span>
-                                <span class='meta-item category-tag'><a href='kategoriler.html'> <i class='far fa-folder'></i> ${category}</a></span>
-                                <span class='meta-separator'>•</span>
-                                <span class='meta-item'><i class='far fa-user'></i> ${post.author}</span>
-                                <span class='meta-separator'>•</span>
-                                <span class='meta-item'><i class='far fa-clock'></i> 5 dk okuma</span>
-                            </div>
-                        </div>
-                        <div class='post-content'>
-                            <div class='post-preview'>
-                                <p>${post.preview}</p>
-                            </div>
+                    blogPostsGrid.innerHTML = `
+                        <div class="no-posts">
+                            <i class="fas fa-inbox"></i>
+                            <p>Bu kategoride henüz blog yazısı bulunmuyor.</p>
                         </div>
                     `;
-                    blogPostsContainer.appendChild(postElement);
+                    return;
+                }
+
+                posts.forEach(post => {
+                    const postElement = document.createElement('article');
+                    postElement.className = 'blog-post-card';
+                    postElement.innerHTML = `
+                        <div class="post-meta">
+                            <span class="post-date"><i class="far fa-calendar-alt"></i> ${post.date}</span>
+                            <span class="post-author"><i class="far fa-user"></i> ${post.author}</span>
+                        </div>
+                        <h3 class="post-title">${post.title}</h3>
+                        <p class="post-preview">${post.preview}</p>
+                        <div class="post-tags">
+                            ${post.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                        <a href="${post.link}" class="read-more">Devamını Oku <i class="fas fa-arrow-right"></i></a>
+                    `;
+                    blogPostsGrid.appendChild(postElement);
                 });
             }
+
+            // Sayfa yüklendiğinde tüm blog yazılarını göster
+            loadBlogPosts();
         });
     </script>
 </body>

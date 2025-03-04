@@ -5,40 +5,64 @@
             "link": "web-gelistirme.html",
             "date": "2 Mart 2025",
             "author": "Mustafa Demirsoy",
-            "preview": "Senirkent MYO Blog sistemi, modern web teknolojileri kullanılarak geliştirilmiş, kullanıcı dostu bir blog platformudur.",
-            "tags": ["Web Geliştirme", "Blog"]
+            "preview": "Web geliştirme, modern dijital dünyada önemli bir rol oynayan temel bir beceridir. Bu yazıda web geliştirmenin temellerini ve önemini ele alacağız.",
+            "tags": ["Web Geliştirme"]
         },
         {
             "title": "JavaScript ile Dinamik Web Sayfaları",
             "link": "javascript-web.html",
             "date": "3 Mart 2025",
             "author": "Mustafa Demirsoy",
-            "preview": "Platform, kullanıcıların düşüncelerini ve akademik çalışmalarını paylaşabilecekleri, etkileşimde bulunabilecekleri bir ortam sunmaktadır.",
-            "tags": ["JavaScript", "Web Geliştirme"]
+            "preview": "JavaScript, modern web geliştirmenin vazgeçilmez bir parçasıdır. Bu yazıda JavaScript'in temel özelliklerini ve web sayfalarını nasıl dinamik hale getirdiğini öğreneceksiniz.",
+            "tags": ["Web Geliştirme", "JavaScript"]
         },
         {
             "title": "Eğitimde Teknoloji Kullanımı",
             "link": "egitim-teknoloji.html",
             "date": "4 Mart 2025",
             "author": "Mustafa Demirsoy",
-            "preview": "Eğitimde teknoloji kullanımı, öğretim yöntemlerini ve öğrenme süreçlerini geliştirmektedir.",
+            "preview": "Teknolojinin eğitim alanındaki rolü her geçen gün artıyor. Bu yazıda, modern eğitim teknolojilerinin öğrenme sürecine nasıl katkı sağladığını inceleyeceğiz.",
             "tags": ["Eğitim", "Teknoloji"]
         },
         {
-            "title": "Yapay Zeka Nedir?",
+            "title": "Yapay Zeka ve Geleceğimiz",
             "link": "yapay-zeka.html",
             "date": "5 Mart 2025",
             "author": "Mustafa Demirsoy",
-            "preview": "Yapay zeka, gelecekte birçok sektörde devrim yaratacak bir teknolojidir.",
+            "preview": "Yapay zeka teknolojileri hayatımızı nasıl değiştiriyor? Bu yazıda yapay zekanın günümüzdeki kullanım alanlarını ve gelecekteki potansiyelini ele alacağız.",
             "tags": ["Yapay Zeka", "Teknoloji"]
         },
         {
-            "title": "Blog Yazmanın Önemi",
-            "link": "blog-yazma.html",
+            "title": "Mobil Uygulama Geliştirme Temelleri",
+            "link": "mobil-gelistirme.html",
             "date": "6 Mart 2025",
             "author": "Mustafa Demirsoy",
-            "preview": "Blog yazmak, düşüncelerinizi paylaşmanın harika bir yoludur.",
-            "tags": ["Blog", "Yazmak"]
+            "preview": "Mobil uygulama geliştirme sürecini ve temel kavramları öğrenmek isteyenler için kapsamlı bir rehber.",
+            "tags": ["Mobil Geliştirme"]
+        },
+        {
+            "title": "Siber Güvenlik: Temel Kavramlar",
+            "link": "siber-guvenlik.html",
+            "date": "7 Mart 2025",
+            "author": "Mustafa Demirsoy",
+            "preview": "Siber güvenliğin temel kavramlarını ve günümüzde neden bu kadar önemli olduğunu açıklayan detaylı bir rehber.",
+            "tags": ["Siber Güvenlik"]
+        },
+        {
+            "title": "Veri Bilimi ve Python",
+            "link": "veri-bilimi-python.html",
+            "date": "8 Mart 2025",
+            "author": "Mustafa Demirsoy",
+            "preview": "Python programlama dili ile veri bilimi uygulamaları geliştirmeye başlangıç yapacağınız kapsamlı bir rehber.",
+            "tags": ["Veri Bilimi", "Teknoloji"]
+        },
+        {
+            "title": "React.js ile Modern Web Uygulamaları",
+            "link": "react-web.html",
+            "date": "9 Mart 2025",
+            "author": "Mustafa Demirsoy",
+            "preview": "React.js kullanarak modern ve etkileşimli web uygulamaları geliştirmenin temellerini öğrenin.",
+            "tags": ["Web Geliştirme", "JavaScript"]
         }
     ]
 }
