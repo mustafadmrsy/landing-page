@@ -2,13 +2,14 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>İletişim - Senirkent MYO Blog</title>
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="senirkenblog/senirkenblog/js/main.js" defer></script>
+    <script src="js/sidebar.js" defer></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="js/main.js" defer></script>
 </head>
 <body>
     <header class="sidebar">
@@ -21,7 +22,7 @@
             </a>
             <nav class="main-nav">
                 <a href="index.html" class="nav-link">Ana Sayfa</a>
-                <a href="#" class="nav-link" id="write-button">Sende Yaz</a>
+                <a href="sendeyaz.html" class="nav-link" id="write-button">Sende Yaz</a>
                 <a href="kategoriler.html" class="nav-link">Kategoriler</a>
                 <a href="hakkimizda.html" class="nav-link">Hakkımızda</a>
                 <a href="iletisim.html" class="nav-link active">İletişim</a>
@@ -263,6 +264,5 @@
             });
         });
     </script>
-    <script src="js/sidebar.js" defer></script>
 </body>
 </html>

@@ -295,4 +295,116 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     });
+
+    // Sendeyaz sayfası için fonksiyonlar
+    function initSendeyazPage() {
+        const formContainer = document.getElementById("form-container");
+        const submitBtn = document.getElementById("submit-btn");
+        const futuristicInputs = document.querySelectorAll('.futuristic-input');
+        
+        if (formContainer) {
+            // Sayfa yüklendiğinde form containerını göster
+            setTimeout(() => {
+                formContainer.classList.add("show");
+            }, 300);
+        }
+        
+        if (submitBtn) {
+            // Gönder butonuna tıklandığında animasyon efekti
+            submitBtn.addEventListener("click", function (e) {
+                e.preventDefault();
+                
+                // Buton animasyonu
+                this.classList.add('clicked');
+                
+                // Gönderme efekti
+                const buttonIcon = this.querySelector('.button-icon i');
+                buttonIcon.className = 'fas fa-circle-notch fa-spin';
+                
+                setTimeout(() => {
+                    buttonIcon.className = 'fas fa-check';
+                    this.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+                    
+                    setTimeout(() => {
+                        // Form gönderme işlemi burada yapılabilir
+                        // Örnek: formVerileriniGonder();
+                        
+                        // Formu sıfırla
+                        buttonIcon.className = 'fas fa-paper-plane';
+                        this.style.background = '';
+                        this.classList.remove('clicked');
+                        
+                        // Başarı mesajı gösterme
+                        showFormMessage('Yazınız başarıyla gönderildi!', 'success');
+                    }, 1500);
+                }, 1500);
+            });
+        }
+        
+        // Input focus efektleri
+        if (futuristicInputs) {
+            futuristicInputs.forEach(input => {
+                // Focus olduğunda
+                input.addEventListener('focus', function() {
+                    const container = this.closest('.input-container');
+                    const icon = container.querySelector('i');
+                    const border = container.querySelector('.focus-border');
+                    
+                    icon.style.color = 'var(--primary-color)';
+                    border.style.transform = 'scaleX(1)';
+                });
+                
+                // Focus kaybedildiğinde
+                input.addEventListener('blur', function() {
+                    const container = this.closest('.input-container');
+                    const icon = container.querySelector('i');
+                    const border = container.querySelector('.focus-border');
+                    
+                    if (!this.value) {
+                        icon.style.color = 'rgba(255, 255, 255, 0.5)';
+                    }
+                    border.style.transform = 'scaleX(0)';
+                });
+            });
+        }
+    }
+
+    // Form mesajı gösterme fonksiyonu
+    function showFormMessage(message, type = 'info') {
+        // Eğer zaten bir mesaj varsa kaldır
+        const existingMessage = document.querySelector('.form-message');
+        if (existingMessage) {
+            existingMessage.remove();
+        }
+        
+        // Yeni mesaj oluştur
+        const messageElement = document.createElement('div');
+        messageElement.className = `form-message ${type}`;
+        messageElement.innerHTML = `
+            <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-info-circle'}"></i>
+            <span>${message}</span>
+        `;
+        
+        // Mesajı forma ekle
+        const formContainer = document.getElementById('form-container');
+        formContainer.appendChild(messageElement);
+        
+        // Mesajı göster
+        setTimeout(() => {
+            messageElement.classList.add('show');
+        }, 10);
+        
+        // Belirli bir süre sonra mesajı kaldır
+        setTimeout(() => {
+            messageElement.classList.remove('show');
+            setTimeout(() => {
+                messageElement.remove();
+            }, 300);
+        }, 5000);
+    }
+
+    // Sayfa yüklendiğinde sendeyaz sayfası için fonksiyonları çağır
+    document.addEventListener("DOMContentLoaded", function() {
+        initSendeyazPage();
+    });
 });

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Kategoriler - Senirkent MYO Blog</title>
+    <title>Sende Yaz - Senirkent MYO Blog</title>
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="senirkenblog/senirkenblog/js/main.js" defer></script>
@@ -23,7 +23,7 @@
             </button>
             <nav class="main-nav">
                 <a href="index.html" class="nav-link">Ana Sayfa</a>
-                <a href="sendeyaz.html" class="nav-link" id="write-button">Sende Yaz</a>
+                <a href="#" class="nav-link" id="write-button">Sende Yaz</a>
                 <a href="kategoriler.html" class="nav-link">Kategoriler</a>
                 <a href="hakkimizda.html" class="nav-link">Hakkımızda</a>
                 <a href="iletisim.html" class="nav-link">İletişim</a>
@@ -53,74 +53,55 @@
         </div>
     </header>
 
-    <main class="categories-layout">
-        <aside class="categories-sidebar">
-            <h2 class="section-title">Kategoriler</h2>
-            <div class="categories-list">
-                <div class="category-item" data-category="Web Geliştirme">
-                    <i class="fas fa-code category-icon"></i>
-                    <div class="category-info">
-                        <h3>Web Geliştirme</h3>
-                        <span class="post-count">0 Yazı</span>
-                    </div>
-                </div>
-                <div class="category-item" data-category="Eğitim">
-                    <i class="fas fa-graduation-cap category-icon"></i>
-                    <div class="category-info">
-                        <h3>Eğitim</h3>
-                        <span class="post-count">0 Yazı</span>
-                    </div>
-                </div>
-                <div class="category-item" data-category="Yapay Zeka">
-                    <i class="fas fa-robot category-icon"></i>
-                    <div class="category-info">
-                        <h3>Yapay Zeka</h3>
-                        <span class="post-count">0 Yazı</span>
-                    </div>
-                </div>
-                <div class="category-item" data-category="Mobil Geliştirme">
-                    <i class="fas fa-mobile-alt category-icon"></i>
-                    <div class="category-info">
-                        <h3>Mobil Geliştirme</h3>
-                        <span class="post-count">0 Yazı</span>
-                    </div>
-                </div>
-                <div class="category-item" data-category="Siber Güvenlik">
-                    <i class="fas fa-shield-alt category-icon"></i>
-                    <div class="category-info">
-                        <h3>Siber Güvenlik</h3>
-                        <span class="post-count">0 Yazı</span>
-                    </div>
-                </div>
-                <div class="category-item" data-category="Veri Bilimi">
-                    <i class="fas fa-chart-bar category-icon"></i>
-                    <div class="category-info">
-                        <h3>Veri Bilimi</h3>
-                        <span class="post-count">0 Yazı</span>
-                    </div>
+    <main class="sendeyaz-page">
+        <div class="sendeyaz-container" id="form-container">
+            <div class="form-header">
+                <h2>SENDE YAZ</h2>
+                <div class="pulse-icon"><i class="fas fa-pen-fancy"></i></div>
+            </div>
+            <div class="form-group">
+                <div class="input-container">
+                    <i class="fas fa-heading"></i>
+                    <input type="text" placeholder="Başlık" class="futuristic-input">
+                    <span class="focus-border"></span>
                 </div>
             </div>
-        </aside>
-
-        <section class="blog-posts-section" id="blog-posts">
-            <div class="section-header">
-                <h2 class="section-title">Blog Yazıları</h2>
-                <p class="category-info">Tüm Kategoriler</p>
+            <div class="form-group">
+                <div class="input-container">
+                    <i class="fas fa-layer-group"></i>
+                    <select class="futuristic-input">
+                        <option value="" disabled selected>Kategori Seç</option>
+                        <option value="teknoloji">Teknoloji</option>
+                        <option value="bilim">Bilim</option>
+                        <option value="sanat">Sanat</option>
+                        <option value="spor">Spor</option>
+                        <option value="yasam">Yaşam</option>
+                        <option value="egitim">Eğitim</option>
+                        <option value="kultur">Kültür</option>
+                    </select>
+                    <span class="focus-border"></span>
+                </div>
             </div>
-            <div class="posts-grid">
-                <!-- Blog yazıları buraya dinamik olarak eklenecek -->
+            <div class="form-group">
+                <div class="input-container">
+                    <i class="fas fa-edit"></i>
+                    <textarea placeholder="İçeriğinizi buraya yazın" rows="5" class="futuristic-input"></textarea>
+                    <span class="focus-border"></span>
+                </div>
             </div>
-        </section>
-    </main>
-
-    <div class="blog-popup-overlay">
-        <div class="blog-popup">
-            <button class="blog-popup-close">
-                <i class="fas fa-times"></i>
+            <div class="form-group">
+                <div class="input-container">
+                    <i class="fas fa-tags"></i>
+                    <input type="text" placeholder="Etiketler (virgülle ayırın)" class="futuristic-input">
+                    <span class="focus-border"></span>
+                </div>
+            </div>
+            <button id="submit-btn" class="futuristic-button">
+                <span class="button-text">Yazıyı Paylaş</span>
+                <span class="button-icon"><i class="fas fa-paper-plane"></i></span>
             </button>
-            <div class="blog-popup-content"></div>
         </div>
-    </div>
+    </main>
 
     <footer>
         <div class="footer-content">
@@ -129,10 +110,17 @@
                 <a href="#" class="contact-link"><i class="fas fa-phone"></i> +90 246 XXX XX XX</a>
                 <a href="#" class="contact-link"><i class="fas fa-map-marker-alt"></i> Senirkent, Isparta</a>
             </div>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+            </div>
         </div>
         <div class="footer-bottom">
             <p>&copy; 2025 Senirkent MYO Blog. Tüm hakları saklıdır.</p>
         </div>
     </footer>
+    <div class="overlay"></div>
 </body>
 </html>
