@@ -1,0 +1,56 @@
+/* Mobil Cihazlarda Sidebar Görünürlüğü İyileştirmesi */
+@media screen and (max-width: 768px) {
+    header {
+        transform: translateX(100%);
+        width: 90%;
+        max-width: 300px;
+        z-index: 1000;
+    }
+    
+    header.active {
+        transform: translateX(0);
+    }
+    
+    .sidebar-toggle {
+        position: fixed;
+        right: auto;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 45px;
+        height: 45px;
+        background-color: var(--primary-color);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+        z-index: 101;
+        transition: all 0.3s ease;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+    
+    .sidebar-toggle i {
+        font-size: 1.2rem;
+        transform: rotate(0deg);
+    }
+    
+    body.sidebar-collapsed .sidebar-toggle {
+        left: 10px;
+    }
+    
+    main {
+        padding: 1rem;
+        padding-right: 1rem;
+    }
+    
+    main.sidebar-collapsed {
+        padding-right: 1rem;
+    }
+    
+    header::before {
+        z-index: -1;
+    }
+}
