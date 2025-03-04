@@ -6,42 +6,7 @@
     <title>Hakkımızda - Senirkent MYO Blog</title>
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="js/main.js" defer></script>
-    <style>
-        /* Additional styles from index.html and iletisim.html */
-        .header-left {
-            display: flex;
-            align-items: center;
-        }
-        .header-right {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .search-container {
-            display: flex;
-            align-items: center;
-            margin-right: 20px;
-        }
-        .auth-buttons {
-            display: flex;
-            align-items: center;
-            margin-right: 20px;
-        }
-        .profile-container {
-            display: flex;
-            align-items: center;
-        }
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .social-links {
-            display: flex;
-            align-items: center;
-        }
-    </style>
+    <script src="senirkenblog/js/main.js" defer></script>
 </head>
 <body>
     <header>
@@ -80,36 +45,124 @@
             </div>
         </div>
     </header>
+    <main id="hakkimizda-page" class="about-page">
+        <section class="about-hero">
+            <h2 class="page-title">Hakkımızda</h2>
+            <div class="page-subheader">Senirkent MYO Blog ekibi ve misyonumuz hakkında bilgi alın</div>
+        </section>
 
-    <main>
-        <div style="display: flex; justify-content: center;">
-            <section id="about-goals" style="width: 45%; margin-right: 20px;">
-                <h2 style="text-align: center;">Hakkımızda</h2>
-                <p>Bu site, Senirkent MYO öğrencilerinin deneyimlerini ve bilgilerini paylaşmak amacıyla kurulmuştur. Amacımız, öğrencilere bilgi paylaşımı ve destek sağlamaktır.</p>
+        <div class="about-content-container">
+            <section class="about-cards-container">
+                <div class="about-card-wrapper">
+                    <div class="about-card">
+                        <div class="card-icon">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <h3 class="card-title">Misyonumuz</h3>
+                        <div class="card-content">
+                            <p>Bu site, Senirkent MYO öğrencilerinin deneyimlerini ve bilgilerini paylaşmak amacıyla kurulmuştur. Amacımız, öğrencilere bilgi paylaşımı ve destek sağlamaktır.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="about-card-wrapper">
+                    <div class="about-card">
+                        <div class="card-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <h3 class="card-title">Vizyonumuz</h3>
+                        <div class="card-content">
+                            <p>Öğrencilerin akademik ve kişisel gelişimlerine katkıda bulunacak bir platform oluşturmak ve bilginin paylaşılmasına teşvik edici bir ortam sunmak.</p>
+                        </div>
+                    </div>
+                </div>
             </section>
-            <section id="who-are-we" style="width: 45%; text-align: right;">
-                <h2 style="text-align: center;">Biz Kimiz</h2>
-                <div class="founders-container">
-                    <div class="founder">
-                        <p>Bizler, Senirkent MYO öğrencileri Eren ve Mustafa, okulumuza ait deneyimleri ve bilgileri bu platformda paylaşmak için bir araya geldik. Amacımız, öğrencilere faydalı içerikler sunarak bilgi paylaşımını ve desteği artırmaktır. Blogumuzda, okul hayatınızla ilgili önemli bilgiler ve duyurulara ulaşabilirsiniz.</p>
+
+            <section class="about-cards-container">
+                <div class="about-card-wrapper">
+                    <div class="about-card">
+                        <div class="card-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3 class="card-title">Biz Kimiz?</h3>
+                        <div class="card-content">
+                            <p>Bizler, Senirkent MYO öğrencileri Eren ve Mustafa, okulumuza ait deneyimleri ve bilgileri bu platformda paylaşmak için bir araya geldik. Amacımız, öğrencilere faydalı içerikler sunarak bilgi paylaşımını ve desteği artırmaktır.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="about-card-wrapper">
+                    <div class="about-card">
+                        <div class="card-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <h3 class="card-title">Neler Sunuyoruz?</h3>
+                        <div class="card-content">
+                            <p>Blogumuzda, okul hayatınızla ilgili önemli bilgiler ve duyurulara ulaşabilirsiniz. Ayrıca, teknik konularda makaleler, öğrenci deneyimleri ve kariyer tavsiyeleri gibi içerikler paylaşıyoruz.</p>
+                        </div>
                     </div>
                 </div>
             </section>
         </div>
+        
+        <section class="team-section">
+            <h2 class="section-title">Ekibimiz</h2>
+            <div class="team-container">
+                <div class="team-member">
+                    <div class="member-avatar">
+                        <img src="img/erenpp.jpeg" alt="Eren Kaya">
+                    </div>
+                    <div class="member-info">
+                        <h3 class="member-name">Eren Kaya</h3>
+                        <p class="member-role">Kurucu</p>
+                        <p class="member-desc">Senirkent MYO Bilgisayar Programcılığı öğrencisi.</p>
+                        <div class="member-social">
+                            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="team-member">
+                    <div class="member-avatar">
+                        <img src="img/mustafapp.jpeg" alt="Mustafa Demirsoy">
+                    </div>
+                    <div class="member-info">
+                        <h3 class="member-name">Mustafa Demirsoy</h3>
+                        <p class="member-role">Kurucu</p>
+                        <p class="member-desc">Senirkent MYO Bilgisayar Programcılığı öğrencisi.</p>
+                        <div class="member-social">
+                            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="newsletter-section">
+            <div class="newsletter-card">
+                <div class="newsletter-content">
+                    <h3 class="newsletter-title"><i class="fas fa-envelope"></i> Bültenimize Abone Olun</h3>
+                    <p>En son blog yazılarımızdan ve etkinliklerimizden haberdar olmak için e-posta listemize katılın.</p>
+                </div>
+                <form class="newsletter-form">
+                    <div class="form-group">
+                        <input type="email" placeholder="E-posta adresiniz" required>
+                        <button type="submit" class="btn btn-subscribe">Abone Ol</button>
+                    </div>
+                </form>
+            </div>
+        </section>
     </main>
-
     <footer>
         <div class="footer-content">
             <div class="contact-info">
                 <a href="#" class="contact-link"><i class="fas fa-envelope"></i> info@senirkentmyo.edu.tr</a>
                 <a href="#" class="contact-link"><i class="fas fa-phone"></i> +90 246 XXX XX XX</a>
                 <a href="#" class="contact-link"><i class="fas fa-map-marker-alt"></i> Senirkent, Isparta</a>
-            </div>
-            <div class="social-links">
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-linkedin"></i></a>
             </div>
         </div>
         <div class="footer-bottom">

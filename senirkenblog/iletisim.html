@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İletişim - Senirkent MYO Blog</title>
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="js/main.js" defer></script>
-    <style>
-        .post { display: inline-block; width: calc(50% - 10px); margin: 5px; vertical-align: top; }
-        .category-button { margin-right: 5px; }
-    </style>
-    <title>İletişim</title>
 </head>
 <body>
     <header>
@@ -23,7 +21,7 @@
                 <a href="#" class="nav-link" id="write-button">Sende Yaz</a>
                 <a href="kategoriler.html" class="nav-link">Kategoriler</a>
                 <a href="hakkimizda.html" class="nav-link">Hakkımızda</a>
-                <a href="iletisim.html" class="nav-link">İletişim</a>
+                <a href="iletisim.html" class="nav-link active">İletişim</a>
             </nav>
         </div>
         <div class="header-right">
@@ -39,6 +37,7 @@
             </div>
             <div class="profile-container">
                 <div class="profile-menu">
+                    <img src="https://via.placeholder.com/32" alt="Profil" class="profile-image">
                     <div class="profile-dropdown">
                         <a href="#"><i class="fas fa-user"></i> Profilim</a>
                         <a href="#"><i class="fas fa-cog"></i> Ayarlar</a>
@@ -49,53 +48,176 @@
         </div>
     </header>
 
-    <section class="contact-section">
-        <div class="container">
-            <h1 style="text-align: center; margin-bottom: 20px;">İletişim</h1>
-            <div class="row">
-                <div class="col-lg-6" style="background-color: #f0fdf4; padding: 20px;">
-                    <h2 class="contact-title">İletişime Geçin</h2>
-                    <form class="form-contact contact_form" action="https://api.web3forms.com/submit" method="POST">
+    <main id="iletisim-page" class="contact-page">
+        <section class="contact-hero">
+            <div class="hero-content">
+                <h2 class="page-title">İletişim</h2>
+                <div class="page-subheader">Sorularınız, önerileriniz ve işbirliği teklifleriniz için bizimle iletişime geçin</div>
+                <div class="hero-cta">
+                    <a href="#contact-form" class="hero-button"><i class="fas fa-envelope"></i> Mesaj Gönder</a>
+                    <a href="#contact-map" class="hero-button secondary"><i class="fas fa-map-marker-alt"></i> Haritada Gör</a>
+                </div>
+            </div>
+            <div class="hero-overlay"></div>
+        </section>
+
+        <div class="contact-container">
+            <div class="contact-details">
+                <div class="contact-info-card">
+                    <div class="info-header">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h3>Adresimiz</h3>
+                    </div>
+                    <div class="info-content">
+                        <p>Senirkent Meslek Yüksekokulu</p>
+                        <p>İstiklal Mahallesi, Kampüs Caddesi</p>
+                        <p>Senirkent, Isparta 32600</p>
+                    </div>
+                </div>
+
+                <div class="contact-info-card">
+                    <div class="info-header">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h3>E-posta Adresimiz</h3>
+                    </div>
+                    <div class="info-content">
+                        <p>info@senirkentmyo.edu.tr</p>
+                        <p>ogrenci@senirkentmyo.edu.tr</p>
+                    </div>
+                </div>
+
+                <div class="contact-info-card">
+                    <div class="info-header">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <h3>Telefon Numaramız</h3>
+                    </div>
+                    <div class="info-content">
+                        <p>+90 246 XXX XX XX</p>
+                        <p>+90 246 XXX XX XX</p>
+                    </div>
+                </div>
+
+                <div class="contact-info-card">
+                    <div class="info-header">
+                        <div class="contact-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3>Çalışma Saatlerimiz</h3>
+                    </div>
+                    <div class="info-content">
+                        <p>Pazartesi - Cuma: 08:30 - 17:30</p>
+                        <p>Hafta Sonu: Kapalı</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-form-wrapper">
+                <div class="contact-form-card">
+                    <div class="form-header">
+                        <h3 class="form-title">İletişime Geçin</h3>
+                        <p class="form-subtitle">Aşağıdaki formu doldurarak bize mesaj gönderebilirsiniz. <span class="highlight">En kısa sürede sizinle iletişime geçeceğiz.</span></p>
+                    </div>
+                    
+                    <form id="contact-form" class="contact-form" action="https://api.web3forms.com/submit" method="POST">
                         <input type="hidden" name="access_key" value="6480ec10-b3fe-4e5f-98a6-3248bd0fbd91">
                         <input type="hidden" name="from_name" value="contact">
-                        <div class="row">
-                            <div class="col-12">
+                        
+                        <div class="form-columns">
+                            <div class="form-column">
                                 <div class="form-group">
-                                    <textarea class="form-control w-100" name="message" cols="30" rows="9" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Mesajınızı Girin'" placeholder="Mesajınızı Girin" required=""></textarea>
+                                    <div class="input-with-icon">
+                                        <i class="fas fa-user"></i>
+                                        <input type="text" id="name" name="name" placeholder="Adınız" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <div class="input-with-icon">
+                                        <i class="fas fa-envelope"></i>
+                                        <input type="email" id="email" name="email" placeholder="E-posta adresiniz" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <div class="input-with-icon">
+                                        <i class="fas fa-tag"></i>
+                                        <input type="text" id="subject" name="subject" placeholder="Konu" required>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <input class="form-control valid" name="name" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'İsiminizi Girin'" placeholder="İsminizi Girin" required="">
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <input class="form-control valid" name="email" type="email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Mail adresinizi giriniz'" placeholder="Email" required="">
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <input class="form-control" name="subject" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Mesaj Başlığını Girin'" placeholder="Mesaj Başlığını Girin" required="">
+                            
+                            <div class="form-column">
+                                <div class="form-group message-group">
+                                    <div class="input-with-icon textarea-container">
+                                        <i class="fas fa-comment-alt"></i>
+                                        <textarea id="message" name="message" placeholder="Mesajınız" required></textarea>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        
                         <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
                         <div class="h-captcha" data-captcha="true"></div>
                         <input type="hidden" name="redirect" value="https://web3forms.com/success">
-                        <div class="form-group mt-3">
-                            <button type="submit" class="button button-contactForm">Gönder</button>
+                        
+                        <div class="form-submit">
+                            <button type="submit" class="btn-submit"><i class="fas fa-paper-plane"></i> Mesajı Gönder</button>
+                            <div class="privacy-note">Gönder butonuna tıklayarak <a href="#">Gizlilik Politikamızı</a> kabul etmiş olursunuz</div>
                         </div>
                     </form>
                 </div>
-                <div class="col-lg-6" style="background-color: #ffffff; padding: 20px;">
-                    <h3>Güncel İletişim Bilgileri</h3>
-                    <p>Telefon: +90 123 456 7890</p>
-                    <p>E-posta: info@example.com</p>
-                </div>
             </div>
         </div>
-    </section>
+        
+        <section class="map-section">
+            <h3 class="section-title">Bizi Ziyaret Edin</h3>
+            <div id="contact-map" class="contact-map"></div>
+        </section>
+
+        <section class="faq-section">
+            <h3 class="section-title">Sıkça Sorulan Sorular</h3>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <i class="fas fa-question-circle"></i>
+                        <h4>Senirkent MYO Blog'da nasıl yazı yayınlayabilirim?</h4>
+                        <i class="fas fa-chevron-down faq-toggle"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Senirkent MYO Blog'da yazı yayınlamak için üye olmanız ve "Sende Yaz" butonuna tıklamanız yeterlidir. Yazılarınız editörlerimiz tarafından onaylandıktan sonra sitede yayınlanacaktır.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <i class="fas fa-question-circle"></i>
+                        <h4>Blog yazılarımın görüntülenme sayısını nasıl takip edebilirim?</h4>
+                        <i class="fas fa-chevron-down faq-toggle"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Profil sayfanızdaki "Yazılarım" bölümünden tüm yazılarınızın görüntülenme ve beğeni istatistiklerini takip edebilirsiniz.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <i class="fas fa-question-circle"></i>
+                        <h4>Yayınladığım bir yazıyı nasıl düzenleyebilirim?</h4>
+                        <i class="fas fa-chevron-down faq-toggle"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Profilinizden "Yazılarım" bölümüne girerek, düzenlemek istediğiniz yazının yanındaki "Düzenle" butonuna tıklayabilirsiniz.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <footer>
         <div class="footer-content">
@@ -115,6 +237,28 @@
             <p>&copy; 2025 Senirkent MYO Blog. Tüm hakları saklıdır.</p>
         </div>
     </footer>
-    <div class="overlay"></div>
+
+    <script>
+        // Harita oluşturma
+        document.addEventListener('DOMContentLoaded', function() {
+            const map = L.map('contact-map').setView([38.0873, 30.5618], 13); // Isparta koordinatları
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            const marker = L.marker([38.0873, 30.5618]).addTo(map);
+            marker.bindPopup("<b>Senirkent MYO</b><br>Senirkent, Isparta").openPopup();
+            
+            // FAQ açılır-kapanır fonksiyonu
+            const faqItems = document.querySelectorAll('.faq-question');
+            faqItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const parent = item.parentElement;
+                    parent.classList.toggle('active');
+                });
+            });
+        });
+    </script>
 </body>
 </html>
