@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="styles/category-custom.css">
     <link rel="stylesheet" href="styles/mobile-adjust.css">
-    <link rel="stylesheet" href="styles/desktop-sidebar-fix.css">
     <link rel="stylesheet" href="styles/newsletter-blue.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="senirkenblog/senirkenblog/js/main.js" defer></script>
@@ -26,8 +25,8 @@
                 <a href="index.html" class="nav-link">Ana Sayfa</a>
                 <a href="sendeyaz.html" class="nav-link" id="write-button">Sende Yaz</a>
                 <a href="kategoriler.html" class="nav-link">Kategoriler</a>
-                <a href="hakkimizda.html" class="nav-link">Hakkımızda</a>
-                <a href="iletisim.html" class="nav-link active">İletişim</a>
+                <a href="hakkimizda.html" class="nav-link active">Hakkımızda</a>
+                <a href="iletisim.html" class="nav-link">İletişim</a>
             </nav>
         </div>
         <div class="header-right">
@@ -177,47 +176,5 @@
             <p>&copy; 2025 Senirkent MYO Blog. Tüm hakları saklıdır.</p>
         </div>
     </footer>
-    <script>
-        // Doğrudan sayfaya gömülü global sidebar kontrol fonksiyonu
-        function toggleSidebar(event) {
-            if (event) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
-            
-            const sidebar = document.querySelector('.sidebar');
-            if (sidebar) {
-                // Toggle active class
-                sidebar.classList.toggle('active');
-                
-                // Desktop için collapsed class toggle et
-                if (window.innerWidth > 768) {
-                    sidebar.classList.toggle('collapsed');
-                    
-                    // Main padding'i ayarla
-                    const mainElement = document.querySelector('main');
-                    if (mainElement) {
-                        if (sidebar.classList.contains('collapsed')) {
-                            mainElement.classList.add('sidebar-collapsed');
-                        } else {
-                            mainElement.classList.remove('sidebar-collapsed');
-                        }
-                    }
-                }
-                
-                // Mobil görünümde body'ye sınıf ekleyip kaldırma
-                if (window.innerWidth <= 768) {
-                    document.body.classList.toggle('sidebar-open');
-                    
-                    // Sidebar açıkken body scroll'u engelleme
-                    if (sidebar.classList.contains('active')) {
-                        document.body.style.overflow = 'hidden';
-                    } else {
-                        document.body.style.overflow = '';
-                    }
-                }
-            }
-        }
-    </script>
 </body>
 </html>

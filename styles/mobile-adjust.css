@@ -1,70 +1,36 @@
 /* Mobil cihazlar için sidebar toggle butonu ayarları */
 @media screen and (max-width: 768px) {
-    /* Toggle butonu için özel stil - Mobil cihazlarda sabit pozisyonda görünür */
     .sidebar-toggle {
-        position: fixed !important;
-        right: auto !important;
-        left: 10px !important;
-        top: 50% !important;
-        transform: translateY(-50%) !important;
-        width: 50px !important;
-        height: 50px !important;
-        background-color: rgba(0, 86, 179, 0.9) !important;
-        color: white !important;
-        border-radius: 50% !important;
-        display: flex !important; 
-        justify-content: center !important;
-        align-items: center !important;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
-        z-index: 9999 !important;
-        transition: all 0.3s ease !important;
-        opacity: 1 !important;
-        visibility: visible !important;
-        border: 2px solid white !important;
+        position: fixed;
+        right: auto;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 40px;
+        height: 40px;
+        background-color: var(--primary-color);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        z-index: 100;
+        transition: all 0.3s ease;
     }
 
     .sidebar-toggle:hover,
     .sidebar-toggle:focus {
-        background-color: #0056b3 !important;
-        transform: translateY(-50%) scale(1.1) !important;
+        background-color: #0056b3;
+        transform: translateY(-50%) scale(1.1);
     }
 
     .sidebar-toggle i {
-        font-size: 1.5rem !important;
-        color: white !important;
-        transform: rotate(0deg) !important;
+        font-size: 1.2rem;
     }
 
     /* Sidebar açıkken butonun konumu */
     body.sidebar-open .sidebar-toggle {
-        left: 10px !important;
-    }
-    
-    /* Sidebar pozisyonu ve animasyonu */
-    header.sidebar {
-        transform: translateX(100%) !important;
-        position: fixed !important;
-        top: 0 !important;
-        right: 0 !important;
-        width: 80% !important;
-        height: 100vh !important;
-        z-index: 1000 !important;
-        background-color: white !important;
-        box-shadow: -2px 0 15px rgba(0, 0, 0, 0.2) !important;
-        transition: transform 0.3s ease !important;
-    }
-    
-    /* Active class eklenen sidebar görünür olmalı */
-    header.sidebar.active {
-        transform: translateX(0%) !important;
-    }
-    
-    /* Ana içerik alanı düzenlemesi */
-    main {
-        padding: 1rem !important;
-        padding-right: 1rem !important;
-        width: 100% !important;
-        margin-right: 0 !important;
-        transition: padding 0.3s ease !important;
+        left: 10px;
     }
 }
