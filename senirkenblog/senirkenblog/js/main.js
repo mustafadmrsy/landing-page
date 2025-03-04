@@ -190,13 +190,109 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Hakkımızda sayfası için interaktivite
-    const hakkimizdaPage = document.getElementById('hakkimizda-page');
-    if (hakkimizdaPage) {
-        const interactiveElements = hakkimizdaPage.querySelectorAll('.interactive-element');
-        interactiveElements.forEach(element => {
-            element.addEventListener('click', function() {
-                console.log('Interactive element clicked!');
+    document.addEventListener('DOMContentLoaded', function() {
+        // Hakkımızda sayfası için animasyonlar ve etkileşim
+        const hakkimizdaPage = document.getElementById('hakkimizda-page');
+        if (hakkimizdaPage) {
+            // Kart hover efektleri
+            const aboutCards = document.querySelectorAll('.about-card');
+            aboutCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-8px)';
+                    this.style.boxShadow = '0 15px 20px rgba(0, 0, 0, 0.15)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(-5px)';
+                    this.style.boxShadow = '0 10px 15px rgba(0, 0, 0, 0.1)';
+                });
             });
-        });
-    }
+            
+            // Ekip üyeleri sosyal medya butonları için efekt
+            const socialLinks = document.querySelectorAll('.social-link');
+            socialLinks.forEach(link => {
+                link.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.15)';
+                });
+                
+                link.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1.1)';
+                });
+            });
+            
+            // Bülten aboneliği formu işleme
+            const newsletterForm = document.querySelector('.newsletter-form');
+            if (newsletterForm) {
+                newsletterForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const emailInput = this.querySelector('input[type="email"]');
+                    const email = emailInput.value;
+                    
+                    if (email && email.includes('@')) {
+                        // Başarılı kayıt mesajı göster
+                        const successMessage = document.createElement('div');
+                        successMessage.className = 'alert alert-success';
+                        successMessage.innerHTML = '<i class="fas fa-check-circle"></i> E-posta adresiniz bültenimize başarıyla kaydedildi!';
+                        successMessage.style.cssText = 'background-color: #15803d; color: white; padding: 1rem; border-radius: 5px; margin-top: 1rem; display: flex; align-items: center; gap: 0.5rem;';
+                        
+                        // Form yerine başarı mesajını göster
+                        this.style.display = 'none';
+                        this.parentNode.appendChild(successMessage);
+                        
+                        // 5 saniye sonra formu tekrar göster
+                        setTimeout(() => {
+                            this.style.display = 'flex';
+                            successMessage.remove();
+                            emailInput.value = '';
+                        }, 5000);
+                    } else {
+                        // Hata mesajı göster
+                        const errorMessage = document.createElement('div');
+                        errorMessage.className = 'alert alert-danger';
+                        errorMessage.innerHTML = '<i class="fas fa-exclamation-circle"></i> Lütfen geçerli bir e-posta adresi girin.';
+                        errorMessage.style.cssText = 'background-color: #dc2626; color: white; padding: 1rem; border-radius: 5px; margin-top: 1rem; display: flex; align-items: center; gap: 0.5rem;';
+                        
+                        // Varsa eski hata mesajını kaldır
+                        const oldError = this.parentNode.querySelector('.alert-danger');
+                        if (oldError) oldError.remove();
+                        
+                        // Yeni hata mesajını ekle
+                        this.parentNode.appendChild(errorMessage);
+                        
+                        // 3 saniye sonra hata mesajını kaldır
+                        setTimeout(() => {
+                            errorMessage.remove();
+                        }, 3000);
+                    }
+                });
+            }
+            
+            // Ekip üyeleri kartları için efekt
+            const teamMembers = document.querySelectorAll('.team-member');
+            teamMembers.forEach(member => {
+                member.addEventListener('click', function() {
+                    // Tıklanan üye dışındakileri hafifçe soluklaştır
+                    teamMembers.forEach(m => {
+                        if (m !== this) {
+                            m.style.opacity = '0.7';
+                            m.style.transform = 'scale(0.95)';
+                        } else {
+                            m.style.opacity = '1';
+                            m.style.transform = 'translateY(-10px) scale(1.03)';
+                            m.style.boxShadow = '0 20px 25px rgba(0, 0, 0, 0.15)';
+                        }
+                    });
+                    
+                    // 3 saniye sonra normal haline döndür
+                    setTimeout(() => {
+                        teamMembers.forEach(m => {
+                            m.style.opacity = '1';
+                            m.style.transform = '';
+                            m.style.boxShadow = '';
+                        });
+                    }, 3000);
+                });
+            });
+        }
+    });
 });
