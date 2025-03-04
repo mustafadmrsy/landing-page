@@ -108,9 +108,13 @@ header {
 }
 
 main {
-    margin-left: 250px;
     padding: 2rem;
-    transition: margin-left 0.3s ease;
+    padding-left: calc(250px + 2rem);
+    transition: padding-left 0.3s ease;
+}
+
+main.sidebar-collapsed {
+    padding-left: calc(60px + 2rem);
 }
 
 main.contact-page {
@@ -1524,8 +1528,6 @@ footer {
     margin-bottom: 30px;
     text-align: center;
     position: relative;
-    padding-bottom: 15px;
-    font-weight: 700;
 }
 
 .section-title::after {
@@ -2244,12 +2246,31 @@ footer {
     }
 
     .categories-sidebar {
-        position: static;
-        margin-bottom: 2rem;
+        position: relative;
+        top: 0;
+        max-height: none;
+        overflow-y: visible;
     }
 
-    .category-item:hover {
-        transform: translateX(4px);
+    .categories-list {
+        grid-template-columns: repeat(3, 1fr); /* Mobilde 3 sütun */
+    }
+
+    .category-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 0.5rem;
+    }
+
+    .category-icon {
+        font-size: 1.5rem;
+        margin-bottom: 0.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .categories-grid {
+        grid-template-columns: 1fr;
     }
 }
 
@@ -2258,9 +2279,9 @@ footer {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
     display: none;
     justify-content: center;
     align-items: center;
@@ -2276,7 +2297,7 @@ footer {
     width: 90%;
     max-width: 800px;
     max-height: 90vh;
-    border-radius: 16px;
+    border-radius: 12px;
     position: relative;
     overflow: hidden;
     animation: popupOpen 0.3s ease;
@@ -2479,15 +2500,18 @@ footer {
     z-index: 1000;
 }
 
+.blog-popup-overlay.active {
+    display: flex;
+}
+
 .blog-popup {
     background: var(--surface-color);
     width: 90%;
     max-width: 800px;
     max-height: 90vh;
     border-radius: 12px;
-    padding: 2rem;
     position: relative;
-    overflow-y: auto;
+    overflow: hidden;
     animation: popupFadeIn 0.3s ease;
 }
 
@@ -2511,7 +2535,7 @@ footer {
     font-size: 1.5rem;
     color: var(--text-secondary);
     cursor: pointer;
-    transition: color 0.3s ease;
+    z-index: 10;
 }
 
 .blog-popup-close:hover {
@@ -2643,6 +2667,23 @@ footer {
 @media (max-width: 768px) {
     header {
         transform: translateX(-100%);
+        width: 100%;
+        transition: transform 0.3s ease;
+    }
+    .sidebar.active {
+        transform: translateX(0);
+    }
+    main {
+        margin-left: 0;
+    }
+    .sidebar-toggle {
+        display: block;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    header {
+        transform: translateX(-100%);
         position: fixed;
         top: 0;
         left: 0;
@@ -2703,16 +2744,6 @@ footer {
     header.active::before {
         opacity: 1;
         visibility: visible;
-    }
-}
-
-@media screen and (min-width: 769px) {
-    .mobile-menu-btn {
-        display: none;
-    }
-
-    header {
-        transform: none;
     }
 }
 
@@ -2780,7 +2811,7 @@ main {
 }
 
 main.sidebar-collapsed {
-    margin-left: 30px;
+    padding-left: calc(60px + 2rem);
 }
 
 /* Diğer sidebar stilleri */
@@ -2799,15 +2830,7 @@ main.sidebar-collapsed {
     }
 
     .sidebar-toggle {
-        display: none;
-    }
-
-    main {
-        margin-left: 0;
-    }
-
-    main.sidebar-collapsed {
-        margin-left: 0;
+        display: block;
     }
 }
 
@@ -2875,16 +2898,6 @@ main.sidebar-collapsed {
     header.active::before {
         opacity: 1;
         visibility: visible;
-    }
-}
-
-@media screen and (min-width: 769px) {
-    .mobile-menu-btn {
-        display: none;
-    }
-
-    header {
-        transform: none;
     }
 }
 
@@ -2980,12 +2993,6 @@ main.sidebar-collapsed {
 @media (max-width: 1024px) {
     .split-layout {
         grid-template-columns: 250px 1fr;
-        padding: 1rem;
-        gap: 1rem;
-    }
-
-    .categories-list {
-        grid-template-columns: 1fr; /* Tablet'te tek sütun */
     }
 }
 
@@ -3018,7 +3025,24 @@ main.sidebar-collapsed {
 }
 
 @media (max-width: 480px) {
-    .categories-list {
-        grid-template-columns: repeat(2, 1fr); /* Küçük mobilde 2 sütun */
+    .categories-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    header {
+        transform: translateX(-100%);
+        width: 100%;
+        transition: transform 0.3s ease;
+    }
+    .sidebar.active {
+        transform: translateX(0);
+    }
+    main {
+        margin-left: 0;
+    }
+    .sidebar-toggle {
+        display: block;
     }
 }
