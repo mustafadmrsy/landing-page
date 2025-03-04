@@ -659,6 +659,7 @@ footer {
     background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(5px);
     z-index: 999;
+    transition: all 0.3s ease;
 }
 
 .content-overlay.active {
@@ -2131,7 +2132,6 @@ footer {
 
 .category-card.active .category-icon,
 .category-card.active h3,
-.category-card.active p,
 .category-card.active .post-count {
     color: white;
 }
@@ -2160,10 +2160,6 @@ footer {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-}
-
-.category-card p {
-    display: none; /* Açıklamaları gizle */
 }
 
 .post-count {
@@ -2994,4 +2990,221 @@ select.futuristic-input::-ms-expand {
 
 .sidebar.collapsed .nav-link:hover {
     background-color: rgba(0, 123, 255, 0.1);
+}
+
+/* Kategori Sayfası - İki Sütunlu Düzen */
+.categories-layout {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    min-height: calc(100vh - 200px);
+}
+
+/* Sol Sidebar Kategoriler */
+.categories-sidebar {
+    background: var(--surface-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    height: fit-content;
+    position: sticky;
+    top: 100px;
+    max-height: calc(100vh - 150px);
+    overflow-y: auto;
+}
+
+.categories-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.category-item {
+    background: var(--background-color);
+    border-radius: 8px;
+    padding: 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.category-item:hover {
+    transform: translateY(-3px);
+    background: var(--surface-color);
+    border-color: var(--primary-color);
+}
+
+.category-item.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+.category-item.active .category-icon,
+.category-item.active h3,
+.category-item.active .post-count {
+    color: white;
+}
+
+.category-icon {
+    font-size: 1.25rem;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface-color);
+    border-radius: 8px;
+    color: var(--primary-color);
+}
+
+.category-info {
+    flex-grow: 1;
+    min-width: 0;
+}
+
+.category-item h3 {
+    font-size: 0.9rem;
+    margin: 0;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.post-count {
+    font-size: 0.75rem;
+    opacity: 0.8;
+}
+
+/* Blog Popup Styles */
+.blog-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.blog-popup-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.blog-popup {
+    background: var(--background-color);
+    width: 90%;
+    max-width: 800px;
+    max-height: 80vh;
+    border-radius: 12px;
+    padding: 2rem;
+    position: relative;
+    overflow-y: auto;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.blog-popup-overlay.active .blog-popup {
+    transform: translateY(0);
+}
+
+.blog-popup-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: var(--surface-color);
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+}
+
+.blog-popup-close:hover {
+    background: var(--primary-color);
+}
+
+.blog-popup-close i {
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.blog-popup-close:hover i {
+    color: white;
+}
+
+.blog-popup-content {
+    padding: 1rem 0;
+}
+
+.blog-popup-content h2 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--background-color);
+    padding-bottom: 1rem;
+}
+
+/* Responsive styles for the category page */
+@media (max-width: 1024px) {
+    .categories-layout {
+        grid-template-columns: 250px 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .categories-layout {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .categories-sidebar {
+        position: relative;
+        top: 0;
+        max-height: none;
+        overflow-y: visible;
+    }
+
+    .categories-list {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .category-item {
+        width: calc(50% - 0.5rem);
+    }
+}
+
+@media (max-width: 480px) {
+    .categories-list {
+        flex-direction: column;
+    }
+    
+    .category-item {
+        width: 100%;
+    }
+    
+    .blog-popup {
+        padding: 1.5rem;
+    }
 }

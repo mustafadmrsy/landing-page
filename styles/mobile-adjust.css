@@ -1,0 +1,36 @@
+/* Mobil cihazlar için sidebar toggle butonu ayarları */
+@media screen and (max-width: 768px) {
+    .sidebar-toggle {
+        position: fixed;
+        right: auto;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 40px;
+        height: 40px;
+        background-color: var(--primary-color);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        z-index: 100;
+        transition: all 0.3s ease;
+    }
+
+    .sidebar-toggle:hover,
+    .sidebar-toggle:focus {
+        background-color: #0056b3;
+        transform: translateY(-50%) scale(1.1);
+    }
+
+    .sidebar-toggle i {
+        font-size: 1.2rem;
+    }
+
+    /* Sidebar açıkken butonun konumu */
+    body.sidebar-open .sidebar-toggle {
+        left: 10px;
+    }
+}
