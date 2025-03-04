@@ -187,8 +187,23 @@
             
             const sidebar = document.querySelector('.sidebar');
             if (sidebar) {
-                sidebar.classList.toggle('collapsed');
+                // Toggle active class
                 sidebar.classList.toggle('active');
+                
+                // Desktop için collapsed class toggle et
+                if (window.innerWidth > 768) {
+                    sidebar.classList.toggle('collapsed');
+                    
+                    // Main padding'i ayarla
+                    const mainElement = document.querySelector('main');
+                    if (mainElement) {
+                        if (sidebar.classList.contains('collapsed')) {
+                            mainElement.classList.add('sidebar-collapsed');
+                        } else {
+                            mainElement.classList.remove('sidebar-collapsed');
+                        }
+                    }
+                }
                 
                 // Mobil görünümde body'ye sınıf ekleyip kaldırma
                 if (window.innerWidth <= 768) {
@@ -200,10 +215,6 @@
                     } else {
                         document.body.style.overflow = '';
                     }
-                }
-                
-                if (window.innerWidth > 768) {
-                    localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
                 }
             }
         }

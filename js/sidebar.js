@@ -19,12 +19,24 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Sidebar toggle tetiklendi');
         
         if (sidebar) {
-            sidebar.classList.toggle('collapsed');
+            console.log('Sidebar durumu değişiyor:', sidebar.classList.contains('active') ? 'açık -> kapalı' : 'kapalı -> açık');
+            
+            // Toggle active class
             sidebar.classList.toggle('active');
             
-            // Local storage'a durumu kaydet
+            // Desktop için collapsed class toggle et
             if (window.innerWidth > 768) {
-                localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+                sidebar.classList.toggle('collapsed');
+                
+                // Main padding'i ayarla
+                const mainElement = document.querySelector('main');
+                if (mainElement) {
+                    if (sidebar.classList.contains('collapsed')) {
+                        mainElement.classList.add('sidebar-collapsed');
+                    } else {
+                        mainElement.classList.remove('sidebar-collapsed');
+                    }
+                }
             }
             
             // Mobil görünümde body'ye sınıf ekleyip kaldırma
@@ -39,23 +51,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
             
-            console.log('Sidebar durumu değiştirildi');
+            console.log('Sidebar durumu değiştirildi, yeni durum:', 
+                         sidebar.classList.contains('active') ? 'açık' : 'kapalı');
         }
     }
     
     // Event listeners ekle
     if (sidebarToggle) {
-        // Tüm eski event listener'ları temizle
-        sidebarToggle.replaceWith(sidebarToggle.cloneNode(true));
-        
-        // Yeni buton referansını al
-        const newSidebarToggle = document.querySelector('.sidebar-toggle');
+        console.log('Toggle butonuna event listener ekleniyor');
         
         // Click event listener'ı ekle
-        newSidebarToggle.addEventListener('click', handleSidebarToggle);
+        sidebarToggle.addEventListener('click', handleSidebarToggle);
         
         // Dokunmatik ekranlar için touch event listener
-        newSidebarToggle.addEventListener('touchend', function(e) {
+        sidebarToggle.addEventListener('touchend', function(e) {
             e.preventDefault();
             handleSidebarToggle(e);
         });
@@ -72,13 +81,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 sidebar.classList.remove('active');
                 document.body.classList.remove('sidebar-open');
                 document.body.style.overflow = '';
+                console.log('Sidebar dışına tıklandı, kapatıldı');
             }
         }
     });
     
-    // Sidebar durumunu localStorage'dan al
-    const isSidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-    if (isSidebarCollapsed && window.innerWidth > 768 && sidebar) {
-        sidebar.classList.add('collapsed');
+    // Sayfa yüklendiğinde collapsed sınıfı varsa sidebar-collapsed sınıfını ekle
+    if (window.innerWidth > 768 && sidebar && sidebar.classList.contains('collapsed')) {
+        const mainElement = document.querySelector('main');
+        if (mainElement) {
+            mainElement.classList.add('sidebar-collapsed');
+        }
     }
 });

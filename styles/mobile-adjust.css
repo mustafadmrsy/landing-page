@@ -54,6 +54,7 @@
         transition: transform 0.3s ease !important;
     }
     
+    /* Active class eklenen sidebar görünür olmalı */
     header.sidebar.active {
         transform: translateX(0%) !important;
     }
