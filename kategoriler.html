@@ -21,10 +21,10 @@
             <a href="iletisim.html" class="nav-link">İletişim</a>
         </div>
     </header>
-    <main>
-        <section class="categories-section">
+    <main class="split-layout">
+        <section class="categories-sidebar">
             <h2 class="section-title">Kategoriler</h2>
-            <div class="categories-grid">
+            <div class="categories-list">
                 <div class="category-card" data-category="Web Geliştirme">
                     <div class="category-icon">
                         <i class="fas fa-code"></i>
@@ -77,12 +77,22 @@
         </section>
 
         <section class="blog-posts-section" id="blog-posts">
-            <h2 class="section-title">Blog Yazıları</h2>
+            <div class="section-header">
+                <h2 class="section-title">Blog Yazıları</h2>
+                <p class="category-info">Tüm Kategoriler</p>
+            </div>
             <div class="posts-grid">
                 <!-- Blog yazıları buraya dinamik olarak eklenecek -->
             </div>
         </section>
     </main>
+
+    <div class="blog-popup-overlay">
+        <div class="blog-popup">
+            <button class="blog-popup-close"><i class="fas fa-times"></i></button>
+            <div class="blog-popup-content"></div>
+        </div>
+    </div>
 
     <footer>
         <div class="footer-content">
@@ -101,6 +111,9 @@
         document.addEventListener('DOMContentLoaded', function() {
             const categoryCards = document.querySelectorAll('.category-card');
             const blogPostsGrid = document.querySelector('.posts-grid');
+            const popupOverlay = document.querySelector('.blog-popup-overlay');
+            const popupContent = document.querySelector('.blog-popup-content');
+            const popupCloseBtn = document.querySelector('.blog-popup-close');
             let selectedCategory = null;
 
             function updatePostCounts(data) {
@@ -123,7 +136,6 @@
                 card.addEventListener('click', function() {
                     const category = this.dataset.category;
                     
-                    // Seçili kategoriyi güncelle
                     categoryCards.forEach(c => c.classList.remove('active'));
                     this.classList.add('active');
                     
@@ -169,13 +181,62 @@
                         <div class="post-tags">
                             ${post.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
                         </div>
-                        <a href="${post.link}" class="read-more">Devamını Oku <i class="fas fa-arrow-right"></i></a>
+                        <a href="#" class="read-more" data-post-id="${post.id}">Devamını Oku <i class="fas fa-arrow-right"></i></a>
                     `;
                     blogPostsGrid.appendChild(postElement);
                 });
+
+                const readMoreButtons = document.querySelectorAll('.read-more');
+                readMoreButtons.forEach(button => {
+                    button.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const postId = this.dataset.postId;
+                        showBlogPopup(postId);
+                    });
+                });
             }
 
-            // Sayfa yüklendiğinde tüm blog yazılarını göster
+            function showBlogPopup(postId) {
+                fetch('senirkenblog/blogPosts.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        const post = data.blogPosts.find(p => p.id === postId);
+                        if (post) {
+                            popupContent.innerHTML = `
+                                <h2 class="blog-popup-title">${post.title}</h2>
+                                <div class="blog-popup-meta">
+                                    <span><i class="far fa-calendar-alt"></i> ${post.date}</span>
+                                    <span><i class="far fa-user"></i> ${post.author}</span>
+                                </div>
+                                <div class="blog-popup-body">
+                                    ${post.content}
+                                </div>
+                            `;
+                            popupOverlay.style.display = 'flex';
+                            document.body.style.overflow = 'hidden';
+                        }
+                    })
+                    .catch(error => console.error('Blog yazısı yüklenirken hata:', error));
+            }
+
+            popupCloseBtn.addEventListener('click', closePopup);
+            popupOverlay.addEventListener('click', function(e) {
+                if (e.target === popupOverlay) {
+                    closePopup();
+                }
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && popupOverlay.style.display === 'flex') {
+                    closePopup();
+                }
+            });
+
+            function closePopup() {
+                popupOverlay.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+
             loadBlogPosts();
         });
     </script>

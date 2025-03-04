@@ -1803,7 +1803,7 @@ footer {
 /* Kategoriler için yeni stil tanımlamaları */
 .category-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
     padding: 20px;
 }
@@ -1933,11 +1933,6 @@ footer {
 .category-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-}
-
-.category-card.active {
-    border: 2px solid #007bff;
-    background: #f8f9fa;
 }
 
 .category-icon {
@@ -2070,7 +2065,7 @@ footer {
 /* Responsive Tasarım */
 @media (max-width: 768px) {
     .categories-grid {
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .posts-grid {
@@ -2317,5 +2312,320 @@ textarea {
     input[type="password"] {
         -webkit-appearance: none;
         border-radius: 4px;
+    }
+}
+
+/* Blog Post Popup Styles */
+.blog-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.blog-popup {
+    background: var(--surface-color);
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    border-radius: 12px;
+    padding: 2rem;
+    position: relative;
+    overflow-y: auto;
+    animation: popupFadeIn 0.3s ease;
+}
+
+@keyframes popupFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.blog-popup-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.blog-popup-close:hover {
+    color: var(--primary-color);
+}
+
+.blog-popup-content {
+    margin-top: 1rem;
+}
+
+.blog-popup-title {
+    color: var(--text-primary);
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+.blog-popup-meta {
+    display: flex;
+    gap: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+.blog-popup-body {
+    color: var(--text-primary);
+    line-height: 1.8;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+    .blog-popup {
+        width: 95%;
+        padding: 1.5rem;
+    }
+
+    .blog-popup-title {
+        font-size: 1.5rem;
+    }
+
+    .blog-popup-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+
+/* Kategoriler Grid Düzeni */
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.category-card {
+    background: var(--surface-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.category-icon {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.category-card h3 {
+    color: var(--text-primary);
+    font-size: 1.25rem;
+    margin: 0;
+}
+
+.category-card p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin: 0.5rem 0;
+}
+
+.post-count {
+    background: var(--background-color);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+/* Mobil Responsive Düzen */
+@media (max-width: 768px) {
+    .categories-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        padding: 0.5rem;
+    }
+
+    .category-card {
+        padding: 1rem;
+    }
+
+    .category-icon {
+        font-size: 2rem;
+    }
+
+    .category-card h3 {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .categories-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* İki Sütunlu Sayfa Düzeni */
+.split-layout {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    min-height: calc(100vh - 200px);
+}
+
+/* Sol Sidebar Kategoriler */
+.categories-sidebar {
+    background: var(--surface-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    height: fit-content;
+    position: sticky;
+    top: 100px;
+    max-height: calc(100vh - 150px);
+    overflow-y: auto;
+}
+
+.categories-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+}
+
+.category-card {
+    background: var(--background-color);
+    border-radius: 8px;
+    padding: 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.category-card:hover {
+    transform: translateY(-3px);
+    background: var(--surface-color);
+    border-color: var(--primary-color);
+}
+
+.category-card.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+.category-card.active .category-icon,
+.category-card.active h3,
+.category-card.active p,
+.category-card.active .post-count {
+    color: white;
+}
+
+.category-icon {
+    font-size: 1.25rem;
+    color: var(--primary-color);
+    flex-shrink: 0;
+}
+
+.category-content {
+    flex-grow: 1;
+    min-width: 0;
+}
+
+.category-card h3 {
+    font-size: 0.9rem;
+    margin: 0;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.category-card p {
+    display: none; /* Açıklamaları gizle */
+}
+
+.post-count {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    background: var(--surface-color);
+    padding: 0.1rem 0.4rem;
+    border-radius: 10px;
+    display: inline-block;
+    margin-top: 0.25rem;
+}
+
+/* Mobil Responsive Düzen */
+@media (max-width: 1024px) {
+    .split-layout {
+        grid-template-columns: 250px 1fr;
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .categories-list {
+        grid-template-columns: 1fr; /* Tablet'te tek sütun */
+    }
+}
+
+@media (max-width: 768px) {
+    .split-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .categories-sidebar {
+        position: relative;
+        top: 0;
+        max-height: none;
+        overflow-y: visible;
+    }
+
+    .categories-list {
+        grid-template-columns: repeat(3, 1fr); /* Mobilde 3 sütun */
+    }
+
+    .category-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 0.5rem;
+    }
+
+    .category-icon {
+        font-size: 1.5rem;
+        margin-bottom: 0.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .categories-list {
+        grid-template-columns: repeat(2, 1fr); /* Küçük mobilde 2 sütun */
     }
 }

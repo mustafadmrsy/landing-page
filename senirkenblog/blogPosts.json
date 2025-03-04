@@ -1,67 +1,83 @@
 {
     "blogPosts": [
         {
+            "id": "1",
             "title": "Web Geliştirme Nedir?",
             "link": "web-gelistirme.html",
             "date": "2 Mart 2025",
             "author": "Mustafa Demirsoy",
             "preview": "Web geliştirme, modern dijital dünyada önemli bir rol oynayan temel bir beceridir. Bu yazıda web geliştirmenin temellerini ve önemini ele alacağız.",
+            "content": "Web geliştirme, internet sitelerinin ve web uygulamalarının tasarlanması, oluşturulması ve bakımını içeren bir süreçtir. Frontend ve backend geliştirme olmak üzere iki ana alana ayrılır. Frontend geliştirme, kullanıcıların gördüğü ve etkileşimde bulunduğu arayüzü oluştururken, backend geliştirme sunucu tarafındaki işlemleri ve veri yönetimini kapsar.",
             "tags": ["Web Geliştirme"]
         },
         {
+            "id": "2",
             "title": "JavaScript ile Dinamik Web Sayfaları",
             "link": "javascript-web.html",
             "date": "3 Mart 2025",
             "author": "Mustafa Demirsoy",
             "preview": "JavaScript, modern web geliştirmenin vazgeçilmez bir parçasıdır. Bu yazıda JavaScript'in temel özelliklerini ve web sayfalarını nasıl dinamik hale getirdiğini öğreneceksiniz.",
+            "content": "JavaScript, web sayfalarını interaktif ve dinamik hale getiren güçlü bir programlama dilidir. DOM manipülasyonu, olay yönetimi, AJAX istekleri ve modern framework'ler sayesinde karmaşık web uygulamaları geliştirebilirsiniz. Bu yazıda, JavaScript'in temel kavramlarını ve modern web geliştirmedeki önemini detaylı olarak inceleyeceğiz.",
             "tags": ["Web Geliştirme", "JavaScript"]
         },
         {
+            "id": "3",
             "title": "Eğitimde Teknoloji Kullanımı",
             "link": "egitim-teknoloji.html",
             "date": "4 Mart 2025",
             "author": "Mustafa Demirsoy",
             "preview": "Teknolojinin eğitim alanındaki rolü her geçen gün artıyor. Bu yazıda, modern eğitim teknolojilerinin öğrenme sürecine nasıl katkı sağladığını inceleyeceğiz.",
+            "content": "Modern eğitim teknolojileri, öğrenme sürecini daha etkili ve verimli hale getiriyor. Uzaktan eğitim platformları, interaktif öğrenme araçları ve yapay zeka destekli eğitim sistemleri, öğrencilerin bireysel ihtiyaçlarına göre özelleştirilmiş öğrenme deneyimleri sunuyor.",
             "tags": ["Eğitim", "Teknoloji"]
         },
         {
+            "id": "4",
             "title": "Yapay Zeka ve Geleceğimiz",
             "link": "yapay-zeka.html",
             "date": "5 Mart 2025",
             "author": "Mustafa Demirsoy",
             "preview": "Yapay zeka teknolojileri hayatımızı nasıl değiştiriyor? Bu yazıda yapay zekanın günümüzdeki kullanım alanlarını ve gelecekteki potansiyelini ele alacağız.",
+            "content": "Yapay zeka, günlük hayatımızın her alanında giderek daha fazla yer alıyor. Sağlıktan eğitime, üretimden finansa kadar birçok sektörde yapay zeka uygulamaları kullanılıyor. Bu teknolojinin gelecekte nasıl gelişeceği ve toplumu nasıl etkileyeceği konusunda önemli tartışmalar devam ediyor.",
             "tags": ["Yapay Zeka", "Teknoloji"]
         },
         {
+            "id": "5",
             "title": "Mobil Uygulama Geliştirme Temelleri",
             "link": "mobil-gelistirme.html",
             "date": "6 Mart 2025",
             "author": "Mustafa Demirsoy",
             "preview": "Mobil uygulama geliştirme sürecini ve temel kavramları öğrenmek isteyenler için kapsamlı bir rehber.",
+            "content": "Mobil uygulama geliştirme, iOS ve Android platformları için native veya cross-platform çözümler üretmeyi içerir. React Native, Flutter gibi modern framework'ler sayesinde tek bir kod tabanıyla birden fazla platform için uygulama geliştirebilirsiniz.",
             "tags": ["Mobil Geliştirme"]
         },
         {
+            "id": "6",
             "title": "Siber Güvenlik: Temel Kavramlar",
             "link": "siber-guvenlik.html",
             "date": "7 Mart 2025",
             "author": "Mustafa Demirsoy",
             "preview": "Siber güvenliğin temel kavramlarını ve günümüzde neden bu kadar önemli olduğunu açıklayan detaylı bir rehber.",
+            "content": "Siber güvenlik, dijital varlıklarımızı korumak için kritik öneme sahiptir. Kriptografi, güvenlik duvarları, saldırı tespit sistemleri ve güvenli yazılım geliştirme pratikleri gibi konular, modern siber güvenlik stratejilerinin temelini oluşturur.",
             "tags": ["Siber Güvenlik"]
         },
         {
+            "id": "7",
             "title": "Veri Bilimi ve Python",
             "link": "veri-bilimi-python.html",
             "date": "8 Mart 2025",
             "author": "Mustafa Demirsoy",
             "preview": "Python programlama dili ile veri bilimi uygulamaları geliştirmeye başlangıç yapacağınız kapsamlı bir rehber.",
+            "content": "Python, veri bilimi alanında en çok tercih edilen programlama dillerinden biridir. NumPy, Pandas, Scikit-learn gibi kütüphaneler sayesinde veri analizi, makine öğrenmesi ve yapay zeka uygulamaları geliştirmek oldukça kolaylaşmıştır.",
             "tags": ["Veri Bilimi", "Teknoloji"]
         },
         {
+            "id": "8",
             "title": "React.js ile Modern Web Uygulamaları",
             "link": "react-web.html",
             "date": "9 Mart 2025",
             "author": "Mustafa Demirsoy",
             "preview": "React.js kullanarak modern ve etkileşimli web uygulamaları geliştirmenin temellerini öğrenin.",
+            "content": "React.js, Facebook tarafından geliştirilen popüler bir JavaScript kütüphanesidir. Bileşen tabanlı yapısı, sanal DOM kullanımı ve geniş ekosistemi sayesinde modern web uygulamaları geliştirmek için mükemmel bir seçenektir.",
             "tags": ["Web Geliştirme", "JavaScript"]
         }
     ]
