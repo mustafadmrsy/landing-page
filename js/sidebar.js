@@ -10,16 +10,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const isSidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
     if (isSidebarCollapsed && window.innerWidth > 768) {
         sidebar.classList.add('collapsed');
-        mainContent.classList.add('sidebar-collapsed');
     }
 
     // Sidebar toggle butonu için event listener
     if (sidebarToggle) {
         sidebarToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('active');
             if (window.innerWidth > 768) {
                 sidebar.classList.toggle('collapsed');
-                mainContent.classList.toggle('sidebar-collapsed');
                 localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+            } else {
+                document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
             }
         });
     }
@@ -72,12 +73,51 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.style.overflow = '';
             if (isSidebarCollapsed) {
                 sidebar.classList.add('collapsed');
-                mainContent.classList.add('sidebar-collapsed');
             }
         } else {
             sidebar.classList.remove('active');
             sidebar.classList.remove('collapsed');
-            mainContent.classList.remove('sidebar-collapsed');
         }
     });
+
+    const blogPopupOverlay = document.querySelector('.blog-popup-overlay');
+    const blogPopupContent = document.querySelector('.blog-popup-content');
+    const blogPopupClose = document.querySelector('.blog-popup-close');
+    const readMoreBtns = document.querySelectorAll('.read-more-btn');
+    
+    if (readMoreBtns.length > 0 && blogPopupOverlay && blogPopupContent && blogPopupClose) {
+        readMoreBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const blogPost = this.closest('.blog-post');
+                const postFullContent = blogPost.querySelector('.post-full-content');
+                const postTitle = blogPost.querySelector('.post-title').textContent;
+                
+                if (postFullContent) {
+                    // Popup içeriğini ayarla
+                    blogPopupContent.innerHTML = `
+                        <h2>${postTitle}</h2>
+                        ${postFullContent.innerHTML}
+                    `;
+                    
+                    // Popup'ı göster
+                    blogPopupOverlay.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+            });
+        });
+        
+        // Popup'ı kapatma işlevi
+        blogPopupClose.addEventListener('click', function() {
+            blogPopupOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+        
+        // Overlay'e tıklandığında popup'ı kapat
+        blogPopupOverlay.addEventListener('click', function(e) {
+            if (e.target === this) {
+                blogPopupOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    }
 });
