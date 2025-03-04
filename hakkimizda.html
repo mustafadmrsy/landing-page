@@ -15,7 +15,7 @@
 </head>
 <body>
     <header class="sidebar">
-        <button class="sidebar-toggle" aria-label="Menüyü Gizle/Göster" onclick="toggleSidebar(event)">
+        <button class="sidebar-toggle" aria-label="Menüyü Gizle/Göster">
             <i class="fas fa-chevron-left"></i>
         </button>
         <div class="header-left">
@@ -26,8 +26,8 @@
                 <a href="index.html" class="nav-link">Ana Sayfa</a>
                 <a href="sendeyaz.html" class="nav-link" id="write-button">Sende Yaz</a>
                 <a href="kategoriler.html" class="nav-link">Kategoriler</a>
-                <a href="hakkimizda.html" class="nav-link active">Hakkımızda</a>
-                <a href="iletisim.html" class="nav-link">İletişim</a>
+                <a href="hakkimizda.html" class="nav-link">Hakkımızda</a>
+                <a href="iletisim.html" class="nav-link active">İletişim</a>
             </nav>
         </div>
         <div class="header-right">
@@ -189,6 +189,18 @@
             if (sidebar) {
                 sidebar.classList.toggle('collapsed');
                 sidebar.classList.toggle('active');
+                
+                // Mobil görünümde body'ye sınıf ekleyip kaldırma
+                if (window.innerWidth <= 768) {
+                    document.body.classList.toggle('sidebar-open');
+                    
+                    // Sidebar açıkken body scroll'u engelleme
+                    if (sidebar.classList.contains('active')) {
+                        document.body.style.overflow = 'hidden';
+                    } else {
+                        document.body.style.overflow = '';
+                    }
+                }
                 
                 if (window.innerWidth > 768) {
                     localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));

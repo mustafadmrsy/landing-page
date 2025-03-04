@@ -27,6 +27,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
             }
             
+            // Mobil görünümde body'ye sınıf ekleyip kaldırma
+            if (window.innerWidth <= 768) {
+                document.body.classList.toggle('sidebar-open');
+                
+                // Sidebar açıkken body scroll'u engelleme
+                if (sidebar.classList.contains('active')) {
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    document.body.style.overflow = '';
+                }
+            }
+            
             console.log('Sidebar durumu değiştirildi');
         }
     }
@@ -42,8 +54,27 @@ document.addEventListener('DOMContentLoaded', function() {
         // Click event listener'ı ekle
         newSidebarToggle.addEventListener('click', handleSidebarToggle);
         
+        // Dokunmatik ekranlar için touch event listener
+        newSidebarToggle.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            handleSidebarToggle(e);
+        });
+        
         console.log('Sidebar toggle event listener eklendi');
     }
+    
+    // Sidebar dışına tıklandığında sidebar'ı kapat (mobil)
+    document.addEventListener('click', function(e) {
+        if (window.innerWidth <= 768 && sidebar && sidebar.classList.contains('active')) {
+            // Sidebar'ın içine veya toggle butonuna tıklanmadıysa
+            if (!sidebar.contains(e.target) && 
+                !document.querySelector('.sidebar-toggle').contains(e.target)) {
+                sidebar.classList.remove('active');
+                document.body.classList.remove('sidebar-open');
+                document.body.style.overflow = '';
+            }
+        }
+    });
     
     // Sidebar durumunu localStorage'dan al
     const isSidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
