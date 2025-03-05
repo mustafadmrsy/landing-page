@@ -59,6 +59,7 @@
     color: #0095ff;
     margin-bottom: 1rem;
     font-weight: 600;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .blog-popup-meta {
@@ -81,26 +82,57 @@
 .blog-popup-content p {
     margin-bottom: 1.2rem;
     line-height: 1.7;
+    color: rgba(255, 255, 255, 0.9); /* Paragraf metinleri daha belirgin */
+    font-size: 1.05rem; /* Biraz daha büyük yazı */
+    letter-spacing: 0.01rem; /* Harfler arası mesafe artırıldı */
 }
 
 .blog-popup-content h3 {
     color: #0095ff;
     margin: 1.5rem 0 1rem;
-    font-size: 1.3rem;
+    font-size: 1.4rem; /* Biraz daha büyük başlıklar */
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .blog-popup-content ul, 
 .blog-popup-content ol {
     margin: 1rem 0 1.5rem 1.5rem;
+    color: rgba(255, 255, 255, 0.9); /* Liste elemanları daha belirgin */
 }
 
 .blog-popup-content li {
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.8rem; /* Liste öğeleri arası mesafe artırıldı */
 }
 
-.blog-popup-content strong {
-    color: #fff;
-    font-weight: 600;
+.blog-popup-content strong, .blog-popup-content b {
+    color: #ffffff;
+    font-weight: 700; /* Daha kalın vurgu */
+}
+
+.blog-popup-content em, .blog-popup-content i {
+    color: #e2f5ff; /* İtalik metinler için farklı renk */
+}
+
+.blog-popup-content a {
+    color: #3a9dff; /* Linkler için parlak mavi */
+    text-decoration: none;
+    border-bottom: 1px dotted rgba(58, 157, 255, 0.5);
+    transition: all 0.2s ease;
+}
+
+.blog-popup-content a:hover {
+    color: #6db6ff;
+    border-bottom-color: rgba(109, 182, 255, 0.8);
+}
+
+.blog-popup-content blockquote {
+    border-left: 4px solid #0095ff;
+    padding: 0.5rem 0 0.5rem 1rem;
+    margin: 1.5rem 0;
+    color: rgba(255, 255, 255, 0.85);
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 0 4px 4px 0;
 }
 
 .blog-popup-tags {

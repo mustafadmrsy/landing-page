@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <title>İletişim - Senirkent MYO Blog</title>
     <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/sidebar.css?v=1.4">
+    <link rel="stylesheet" href="css/sidebar.css?v=2.0">
     <link rel="stylesheet" href="css/sidebar-mobile-fix.css">
     <link rel="stylesheet" href="css/iletisim.css">
     <link rel="stylesheet" href="css/footer.css">
@@ -17,7 +17,7 @@
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="js/sidebar.js" defer></script>
     <style>
-        /* Önbellek sıfırlama - v1.4 - Hover düzeltmesi */
+        /* Önbellek sıfırlama - v2.0 - Sidebar bağımsız hale getirildi */
         .leaflet-control-attribution {
             font-size: 10px !important;
         }
@@ -49,101 +49,56 @@
         .info-item {
             display: flex;
             align-items: center;
-            gap: 15px;
-            padding: 15px;
-            background-color: #333;
-            border-radius: 8px;
-            transition: all 0.3s ease;
         }
         
-        .info-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
-            background-color: #444;
+        /* Sidebar fix - sayfa içeriği etkilenmesin */
+        body {
+            overflow-x: hidden;
+            position: relative;
         }
         
-        .info-item i {
-            font-size: 1.5rem;
-            color: #0099ff;
-            width: 40px;
-            height: 40px;
-            display: flex;
+        main.contact-page {
+            width: 100% !important;
+            margin-right: 0 !important;
+            transition: none !important;
+        }
+        
+        /* Sabit toggle butonu */
+        .sidebar-fixed-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 999;
+            display: none;
             align-items: center;
             justify-content: center;
-            background-color: rgba(0, 153, 255, 0.1);
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-        }
-        
-        .info-item a {
+            background-color: #007bff;
             color: white;
-            text-decoration: none;
-            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 123, 255, 0.5);
         }
         
-        .info-item a:hover {
-            color: #0099ff;
+        /* Sidebar kapalıyken açma butonu görünsün */
+        body.sidebar-collapsed .sidebar-fixed-toggle {
+            display: flex;
         }
     </style>
 </head>
-<body>
-    <!-- Mobil Header -->
-    <div class="mobile-header">
-        <h1 class="mobile-header-title">Senirkent MYO Blog</h1>
-        <button class="mobile-menu-toggle" aria-label="Menüyü Aç">
-            <i class="fas fa-bars"></i>
-        </button>
-    </div>
-    
-    <!-- Mobil Menu -->
-    <div class="mobile-menu">
-        <ul class="mobile-menu-list">
-            <li class="mobile-menu-item">
-                <a href="index.html" class="mobile-menu-link">
-                    <i class="fas fa-home"></i>
-                    Ana Sayfa
-                </a>
-            </li>
-            <li class="mobile-menu-item">
-                <a href="sendeyaz.html" class="mobile-menu-link">
-                    <i class="fas fa-pen"></i>
-                    Sen de Yaz
-                </a>
-            </li>
-            <li class="mobile-menu-item">
-                <a href="kategoriler.html" class="mobile-menu-link">
-                    <i class="fas fa-tags"></i>
-                    Kategoriler
-                </a>
-            </li>
-            <li class="mobile-menu-item">
-                <a href="hakkimizda.html" class="mobile-menu-link">
-                    <i class="fas fa-info-circle"></i>
-                    Hakkımızda
-                </a>
-            </li>
-            <li class="mobile-menu-item">
-                <a href="iletisim.html" class="mobile-menu-link active">
-                    <i class="fas fa-envelope"></i>
-                    İletişim
-                </a>
-            </li>
-        </ul>
-        <div class="mobile-auth-buttons">
-            <button class="mobile-btn-login">Oturum Aç</button>
-            <button class="mobile-btn-register">Kayıt Ol</button>
-        </div>
-    </div>
-    
-    <!-- Mobil Overlay -->
-    <div class="mobile-overlay"></div>
+<body class="has-sidebar">
+    <!-- Sabit sidebar toggle butonu -->
+    <button class="sidebar-fixed-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
 
-    <!-- Desktop Sidebar -->
     <header class="sidebar">
         <button class="sidebar-toggle" aria-label="Menüyü Gizle/Göster">
             <i class="fas fa-chevron-left"></i>
         </button>
         
-        <!-- Header Üst Bölüm: Logo, Arama, Ana Navigasyon -->
         <a href="index.html" class="logo-link">
             <h1>Senirkent MYO Blog</h1>
         </a>

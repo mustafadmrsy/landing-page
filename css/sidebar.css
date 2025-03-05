@@ -1,4 +1,4 @@
-/* Sidebar Düzeni - Version 1.4 - Fix Hover Text Duplication */
+/* Sidebar Düzeni - Version 2.0 - Complete Separation */
 header.sidebar {
     background: linear-gradient(135deg, #1a1e2e 0%, #2a3042 100%);
     box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
@@ -7,17 +7,23 @@ header.sidebar {
     right: 0;
     height: 100vh;
     width: 260px;
-    z-index: 5;
+    z-index: 1000;
     padding: 1rem 0;
     display: flex;
     flex-direction: column;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease;
     border-left: 1px solid rgba(255, 255, 255, 0.1);
     color: #f5f5f7;
     overflow-y: auto;
+    transform: translateX(0);
 }
 
-/* Sidebar Toggle Butonu - Sidebar İçinde */
+/* Sidebar kapalı durumu */
+header.sidebar.collapsed {
+    transform: translateX(100%);
+}
+
+/* Sidebar Toggle Butonu (içerideki) */
 .sidebar-toggle {
     position: absolute;
     top: 20px;
@@ -223,38 +229,49 @@ header.sidebar {
     box-shadow: 0 4px 8px rgba(0, 102, 204, 0.3);
 }
 
-/* Sidebar Durumları */
-body.has-sidebar main {
-    margin-right: 260px;
-    transition: margin 0.3s ease;
+/* Ana içerik - Kesinlikle sabit */
+body.has-sidebar main,
+main.eksi-layout,
+.eksi-layout,
+.content-panel {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+    transition: none !important;
+    position: relative !important;
 }
 
-body.sidebar-collapsed main {
-    margin-right: 80px;
-}
-
-header.sidebar.collapsed {
-    width: 80px;
-}
-
-header.sidebar.collapsed .logo-link h1,
-header.sidebar.collapsed .search-container,
-header.sidebar.collapsed .nav-text,
-header.sidebar.collapsed .auth-buttons {
+/* Sidebar dışındaki toggle butonu */
+.sidebar-fixed-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 999;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
     display: none;
-}
-
-header.sidebar.collapsed .main-nav {
     align-items: center;
-}
-
-header.sidebar.collapsed .nav-link {
     justify-content: center;
-    padding: 0.8rem;
+    box-shadow: 0 2px 10px rgba(0, 123, 255, 0.5);
+    transition: all 0.3s ease;
 }
 
-header.sidebar.collapsed .nav-link i {
-    font-size: 1.2rem;
+.sidebar-fixed-toggle:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+/* Sidebar kapalıyken dış butonu göster */
+body.sidebar-collapsed .sidebar-fixed-toggle {
+    display: flex;
 }
 
 /* Mobil Görünüm için Sidebar */
@@ -277,15 +294,12 @@ header.sidebar.collapsed .nav-link i {
         width: 100%;
         height: 100%;
         background-color: rgba(0, 0, 0, 0.5);
-        z-index: 90;
-        visibility: hidden;
-        opacity: 0;
-        transition: all 0.3s ease;
+        z-index: 999; /* Sidebar'ın altında, diğer içeriklerin üstünde */
+        display: none;
     }
 
     .sidebar-overlay.active {
-        visibility: visible;
-        opacity: 1;
+        display: block;
     }
 
     body.has-sidebar main {
@@ -296,4 +310,20 @@ header.sidebar.collapsed .nav-link i {
 /* Sidebar Tooltip */
 .nav-link[data-title]:hover::after {
     content: none;
+}
+
+/* Sidebar için overlay - gerektiğinde gösterilir */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999; /* Sidebar'ın altında, diğer içeriklerin üstünde */
+    display: none;
+}
+
+.sidebar-overlay.active {
+    display: block;
 }

@@ -2,8 +2,8 @@
  * Senirkent MYO Blog - Sidebar İşlevselliği
  * Açıklama: Sidebar'ın açılıp-kapanması, daraltılması ve mobil uyumluluğu için script
  * Yazar: Mustafa Demirsoy
- * Sürüm: 1.4.0
- * Güncelleme Tarihi: 5 Mart 2025
+ * Sürüm: 2.0.0
+ * Güncelleme Tarihi: 6 Mart 2025
  */
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const body = document.body;
     const sidebar = document.querySelector('.sidebar');
     const sidebarToggleBtn = document.querySelector('.sidebar-toggle');
+    const sidebarFixedToggleBtn = document.querySelector('.sidebar-fixed-toggle');
     const mainContent = document.querySelector('main');
     const navLinks = document.querySelectorAll('.nav-link');
     
@@ -59,14 +60,22 @@ document.addEventListener('DOMContentLoaded', function() {
         // Masaüstü görünümünde (769px ve üzeri) sidebar'ı daralt/genişlet
         if (window.innerWidth >= 769) {
             sidebar.classList.toggle('collapsed');
+            body.classList.toggle('sidebar-collapsed');
+            
+            // Sidebar durumunu kaydet
+            localStorage.setItem('sidebarState', sidebar.classList.contains('collapsed') ? 'collapsed' : 'expanded');
             
             // Sidebar daraltıldığında ikon yönünü değiştir
             if (sidebar.classList.contains('collapsed')) {
-                sidebarToggleBtn.querySelector('i').classList.remove('fa-chevron-left');
-                sidebarToggleBtn.querySelector('i').classList.add('fa-chevron-right');
+                if (sidebarToggleBtn.querySelector('i')) {
+                    sidebarToggleBtn.querySelector('i').classList.remove('fa-chevron-left');
+                    sidebarToggleBtn.querySelector('i').classList.add('fa-chevron-right');
+                }
             } else {
-                sidebarToggleBtn.querySelector('i').classList.remove('fa-chevron-right');
-                sidebarToggleBtn.querySelector('i').classList.add('fa-chevron-left');
+                if (sidebarToggleBtn.querySelector('i')) {
+                    sidebarToggleBtn.querySelector('i').classList.remove('fa-chevron-right');
+                    sidebarToggleBtn.querySelector('i').classList.add('fa-chevron-left');
+                }
             }
         } 
         // Mobil görünümünde (768px ve altı) sidebar'ı aç/kapat
@@ -89,42 +98,47 @@ document.addEventListener('DOMContentLoaded', function() {
         sidebarToggleBtn.addEventListener('click', toggleSidebar);
     }
     
-    // Overlay'e tıklama olayını ekle - Mobil görünümde sidebar'ı kapat
+    // Sabit toggle butonuna tıklama olayını ekle
+    if (sidebarFixedToggleBtn) {
+        sidebarFixedToggleBtn.addEventListener('click', toggleSidebar);
+    }
+    
+    // Overlay'e tıklanınca sidebar'ı kapat (mobil görünümde)
     overlay.addEventListener('click', function() {
         if (sidebar.classList.contains('active')) {
             toggleSidebar();
         }
     });
     
-    // Ekran boyutu değiştiğinde kontrol et
-    window.addEventListener('resize', function() {
-        checkMobileView();
-        
-        // Mobil görünümünden masaüstü görünümüne geçince
-        if (window.innerWidth >= 769 && sidebar.classList.contains('active')) {
-            sidebar.classList.remove('active');
-            overlay.classList.remove('active');
-            body.classList.remove('sidebar-active');
-            body.style.overflow = '';
-        }
-        
-        // Masaüstü görünümünden mobil görünüme geçince
-        if (window.innerWidth < 769 && sidebar.classList.contains('collapsed')) {
-            sidebar.classList.remove('collapsed');
-            sidebarToggleBtn.querySelector('i').classList.remove('fa-chevron-right');
-            sidebarToggleBtn.querySelector('i').classList.add('fa-chevron-left');
-        }
-    });
-    
-    // Escape tuşuna basılınca sidebar'ı kapat (mobil görünümde)
+    // ESC tuşuna basılınca sidebar'ı kapat (mobil görünümde)
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape' && sidebar.classList.contains('active')) {
             toggleSidebar();
         }
     });
     
-    // Mobil görünümünde sayfa yüklendiğinde sidebar toggle butonunu görünür yap
-    if (window.innerWidth <= 768) {
-        sidebarToggleBtn.style.display = 'flex';
+    // Ekran boyutu değiştiğinde mobil görünümü kontrol et
+    window.addEventListener('resize', function() {
+        checkMobileView();
+    });
+    
+    // Sidebar durumunu kontrol et - sayfa yüklendiğinde
+    function checkSidebarState() {
+        // Local storage'dan sidebar durumunu kontrol et
+        const sidebarState = localStorage.getItem('sidebarState');
+        
+        // Eğer daha önce kapalı olarak kaydedilmişse
+        if (sidebarState === 'collapsed') {
+            sidebar.classList.add('collapsed');
+            body.classList.add('sidebar-collapsed');
+            
+            if (sidebarToggleBtn.querySelector('i')) {
+                sidebarToggleBtn.querySelector('i').classList.remove('fa-chevron-left');
+                sidebarToggleBtn.querySelector('i').classList.add('fa-chevron-right');
+            }
+        }
     }
+    
+    // Sayfa yüklendiğinde sidebar durumunu kontrol et
+    checkSidebarState();
 });

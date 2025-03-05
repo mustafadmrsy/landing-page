@@ -11,7 +11,6 @@ const blogData = {
             "image": "img/blog1.jpg",
             "summary": "Senirkent MYO Blog sistemi, modern web teknolojileri kullanılarak geliştirilmiş, kullanıcı dostu bir blog platformudur. Öğrenciler ve öğretim görevlileri için tasarlanmış bu platform, bilgi paylaşımını kolaylaştırmayı hedeflemektedir.",
             "content": `
-                <h2>Senirken Blog - Makale Görünüm Sistemi</h2>
                 <p>Senirkent MYO Blog sistemi, modern web teknolojileri kullanılarak geliştirilmiş, kullanıcı dostu bir blog platformudur. Öğrenciler ve öğretim görevlileri için tasarlanmış bu platform, bilgi paylaşımını kolaylaştırmayı hedeflemektedir.</p>
                 <p>Platform, kullanıcıların düşüncelerini ve akademik çalışmalarını paylaşabilecekleri, etkileşimde bulunabilecekleri bir ortam sunmaktadır.</p>
                 <h3>Sistemin Özellikleri</h3>
@@ -36,7 +35,6 @@ const blogData = {
             "image": "img/blog2.jpg",
             "summary": "Yapay zeka teknolojileri, eğitim sektöründe devrim niteliğinde değişikliklere yol açıyor. Kişiselleştirilmiş öğrenme deneyimleri ve adaptif öğrenme sistemleri, öğrencilerin bireysel ihtiyaçlarına göre şekillenen bir eğitim modeli sunuyor.",
             "content": `
-                <h2>Yapay Zeka ve Eğitimin Geleceği</h2>
                 <p>Yapay zeka teknolojileri, eğitim sektöründe devrim niteliğinde değişikliklere yol açıyor. Kişiselleştirilmiş öğrenme deneyimleri ve adaptif öğrenme sistemleri, öğrencilerin bireysel ihtiyaçlarına göre şekillenen bir eğitim modeli sunuyor.</p>
                 <p>Bu teknolojiler, öğretmenlerin rolünü değiştirirken, öğrencilerin öğrenme sürecini daha etkili ve verimli hale getiriyor.</p>
                 <h3>Yapay Zekanın Eğitime Etkileri</h3>
@@ -62,7 +60,6 @@ const blogData = {
             "image": "img/blog3.jpg",
             "summary": "Yapay zeka ve robotik teknolojileri, gelecekte birçok sektörde devrim yaratacak. Bu yazıda, bu teknolojilerin potansiyeli ve etkileri üzerinde duracağız.",
             "content": `
-                <h2>Teknolojinin Geleceği: Yapay Zeka ve Robotik</h2>
                 <p>Yapay zeka ve robotik teknolojileri, gelecekte birçok sektörde devrim yaratacak. Bu yazıda, bu teknolojilerin potansiyeli ve etkileri üzerinde duracağız.</p>
                 <p>Yapay zeka ve robotik teknolojileri, birçok sektörde devrim niteliğinde değişikliklere yol açıyor.</p>
                 <h3>Yapay Zeka ve Robotik Trendleri</h3>
@@ -88,7 +85,6 @@ const blogData = {
             "image": "img/blog4.jpg",
             "summary": "Sürdürülebilir enerji çözümleri, çevresel etkileri azaltmak ve enerji verimliliğini artırmak için önemlidir. Bu yazıda, yenilenebilir enerji kaynaklarını keşfedeceğiz.",
             "content": `
-                <h2>Sürdürülebilir Enerji Çözümleri</h2>
                 <p>Sürdürülebilir enerji çözümleri, çevresel etkileri azaltmak ve enerji verimliliğini artırmak için önemlidir. Bu yazıda, yenilenebilir enerji kaynaklarını keşfedeceğiz.</p>
                 <p>Sürdürülebilir enerji çözümleri, geleceğimiz için önemlidir.</p>
                 <h3>Yenilenebilir Enerji Kaynakları</h3>
