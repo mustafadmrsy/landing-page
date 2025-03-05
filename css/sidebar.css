@@ -1,0 +1,284 @@
+/* Sidebar Düzeni */
+header.sidebar {
+    background: linear-gradient(135deg, #1a1e2e 0%, #2a3042 100%);
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 260px;
+    z-index: 100;
+    padding: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    color: #f5f5f7;
+    overflow-y: auto;
+}
+
+/* Sidebar Toggle Butonu - Sidebar İçinde */
+.sidebar-toggle {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 99;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 123, 255, 0.5);
+}
+
+.sidebar-toggle:hover {
+    background-color: #0056b3;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.7);
+    transform: translateY(-2px);
+}
+
+.sidebar-toggle i {
+    font-size: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.logo-link {
+    text-decoration: none;
+    color: white;
+    text-align: center;
+    width: 100%;
+    padding: 0.5rem 1rem 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 40px;
+}
+
+.logo-link h1 {
+    font-size: 1.5rem;
+    margin: 0;
+    color: white;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* Ana navigasyon */
+.main-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 1.2rem 1rem;
+    width: 100%;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.8rem 1rem;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.nav-link i {
+    font-size: 1.1rem;
+    min-width: 24px;
+    text-align: center;
+}
+
+.nav-link .nav-text {
+    font-size: 0.95rem;
+    white-space: nowrap;
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.nav-link.active {
+    background-color: rgba(0, 123, 255, 0.25);
+    color: white;
+    font-weight: 600;
+}
+
+/* Arama Kutusu */
+.search-container {
+    position: relative;
+    margin: 0.5rem 1rem 1.5rem;
+    width: calc(100% - 2rem);
+}
+
+.search-input {
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: white;
+    border-radius: 50px;
+    padding: 0.6rem 1rem;
+    padding-right: 2.5rem;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.search-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.search-input:focus {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.25);
+    outline: none;
+}
+
+.search-button {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 0.2rem;
+}
+
+.search-button:hover {
+    color: white;
+}
+
+/* Giriş/Kayıt Butonları */
+.auth-buttons {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0 1rem;
+    margin-top: auto;
+    margin-bottom: 1rem;
+}
+
+.btn-login, .btn-register {
+    flex: 1;
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn-login {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.btn-register {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-login:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-register:hover {
+    background-color: #0056b3;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 102, 204, 0.3);
+}
+
+/* Sidebar Durumları */
+body.has-sidebar main {
+    margin-right: 260px;
+    transition: margin 0.3s ease;
+}
+
+body.sidebar-collapsed main {
+    margin-right: 80px;
+}
+
+header.sidebar.collapsed {
+    width: 80px;
+}
+
+header.sidebar.collapsed .logo-link h1,
+header.sidebar.collapsed .search-container,
+header.sidebar.collapsed .nav-text,
+header.sidebar.collapsed .auth-buttons {
+    display: none;
+}
+
+header.sidebar.collapsed .main-nav {
+    align-items: center;
+}
+
+header.sidebar.collapsed .nav-link {
+    justify-content: center;
+    padding: 0.8rem;
+}
+
+header.sidebar.collapsed .nav-link i {
+    font-size: 1.2rem;
+}
+
+/* Mobil Görünüm için Sidebar */
+@media (max-width: 768px) {
+    header.sidebar {
+        transform: translateX(100%);
+        right: 0;
+        width: 80%;
+        max-width: 300px;
+    }
+
+    header.sidebar.active {
+        transform: translateX(0);
+    }
+
+    .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 90;
+        visibility: hidden;
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+
+    .sidebar-overlay.active {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    body.has-sidebar main {
+        margin-right: 0;
+    }
+}
+
+/* Sidebar Tooltip */
+.nav-link[data-title]:hover::after {
+    content: attr(data-title);
+    position: absolute;
+    left: 60px;
+    background-color: #1a1e2e;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    z-index: 1000;
+    white-space: nowrap;
+}

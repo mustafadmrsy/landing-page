@@ -1,0 +1,81 @@
+/* Blog Popup Bileşeni Stilleri */
+.blog-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.75);
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.blog-popup-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.blog-popup {
+    background-color: var(--surface-color);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg);
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    padding: 2rem;
+    margin: 2rem;
+}
+
+.blog-popup-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(0, 0, 0, 0.1);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.blog-popup-close:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.blog-popup-content {
+    padding: 1rem 0;
+}
+
+.blog-popup-content h2 {
+    font-size: 1.8rem;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 0.5rem;
+}
+
+.blog-popup-content p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+}
+
+.blog-popup-content ul, 
+.blog-popup-content ol {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+}
+
+.blog-popup-content li {
+    margin-bottom: 0.5rem;
+}

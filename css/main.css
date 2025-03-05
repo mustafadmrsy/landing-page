@@ -1,0 +1,180 @@
+/**
+ * Senirkent MYO Blog - Ana CSS Dosyası
+ * Açıklama: Tüm CSS dosyalarının düzenli bir şekilde içe aktarıldığı ana dosya
+ * Yazar: Mustafa Demirsoy
+ * Sürüm: 1.0.0
+ * Güncelleme Tarihi: 5 Mart 2025
+ */
+
+/* Stil dosyalarını içe aktar */
+@import 'reset.css';
+@import 'variables.css';
+@import 'utils.css';
+@import 'sidebar.css';
+@import 'main-layout.css';
+@import 'footer.css';
+@import 'responsive.css';
+@import 'buttons.css';
+@import 'search.css';
+@import 'profile.css';
+@import 'entry.css';
+@import 'popup.css';
+@import 'categories.css';
+@import 'category-custom.css';
+@import 'entrylinks.css';
+@import 'mobile-adjust.css';
+@import 'newsletter-blue.css';
+@import 'sidebar-mobile-fix.css';
+@import 'styles.css';
+@import 'hakkimizda.css';
+@import 'iletisim.css';
+@import 'sendeyaz.css';
+@import 'blog-posts.css';
+
+/* Arka plan resmi için stil */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../img/background/mountain_landscape.png');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -1;
+    filter: none;
+}
+
+body {
+    position: relative;
+}
+
+/* Sidebar Düzeni - Sağda */
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 280px;
+    height: 100vh;
+    background-color: #1a1e2e;
+    color: #f5f5f7;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    overflow-y: auto;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Header ve navigasyon düzeni */
+.header-left {
+    padding: 15px;
+}
+
+.header-right {
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #151928;
+    border-bottom: 1px solid #2a2f45;
+}
+
+.main-nav {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    border-top: 1px solid #2a2f45;
+    padding-top: 15px;
+}
+
+.nav-link {
+    display: block;
+    padding: 12px 15px;
+    color: #f5f5f7;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.nav-link:hover, .nav-link.active {
+    background-color: #262a3d;
+    color: #0095ff;
+}
+
+/* Sidebar toggle butonu */
+.sidebar-toggle {
+    position: absolute;
+    top: 50%;
+    left: -30px;
+    background-color: #1a1e2e;
+    color: #f5f5f7;
+    border: none;
+    width: 30px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 4px 0 0 4px;
+    transition: all 0.3s;
+}
+
+/* Daraltılmış sidebar durumu */
+.sidebar.collapsed {
+    width: 70px;
+}
+
+.sidebar.collapsed .logo-text, 
+.sidebar.collapsed .nav-link span,
+.sidebar.collapsed .header-right {
+    display: none;
+}
+
+.sidebar.collapsed .nav-link {
+    display: flex;
+    justify-content: center;
+    padding: 15px 0;
+}
+
+.sidebar.collapsed + main {
+    padding-right: 70px;
+}
+
+/* Ana içerik alanı */
+main {
+    margin-right: 0;
+    transition: margin 0.3s ease;
+    padding-right: 280px;
+}
+
+main.sidebar-collapsed {
+    margin-right: 0;
+    padding-right: 70px;
+}
+
+/* Mobil görünüm için düzenlemeler */
+@media (max-width: 768px) {
+    .sidebar {
+        right: -280px;
+        box-shadow: none;
+    }
+    
+    .sidebar.active {
+        right: 0;
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .mobile-menu-btn {
+        display: block;
+    }
+    
+    main {
+        margin-right: 0;
+        padding-right: 0;
+    }
+    
+    .sidebar-toggle {
+        display: none;
+    }
+}

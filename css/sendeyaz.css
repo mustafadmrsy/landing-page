@@ -1,0 +1,163 @@
+/* Sendeyaz Sayfası Stilleri */
+
+.sendeyaz-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 60px);
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.sendeyaz-container {
+    width: 100%;
+    max-width: 600px;
+    background-color: #1a1e2e;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    color: #f5f5f7;
+    transition: all 0.3s ease;
+}
+
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #151928;
+    padding: 15px 20px;
+    border-bottom: 1px solid #2a2f45;
+}
+
+.form-header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+    color: #0095ff;
+}
+
+.pulse-icon {
+    width: 30px;
+    height: 30px;
+    background-color: #0095ff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 149, 255, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(0, 149, 255, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(0, 149, 255, 0);
+    }
+}
+
+.form-content {
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 15px;
+    background-color: #262a3d;
+    border: 1px solid #373d56;
+    border-radius: 4px;
+    color: #f5f5f7;
+    transition: all 0.3s;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #0095ff;
+    box-shadow: 0 0 0 2px rgba(0, 149, 255, 0.25);
+}
+
+.dropdown-select {
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+.dropdown-select select {
+    appearance: none;
+    width: 100%;
+    padding: 12px 15px;
+    background-color: #262a3d;
+    border: 1px solid #373d56;
+    border-radius: 4px;
+    color: #f5f5f7;
+    cursor: pointer;
+}
+
+.dropdown-select::after {
+    content: '\f107';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #ccc;
+    pointer-events: none;
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.btn-submit {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background-color: #0095ff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 10px;
+}
+
+.btn-submit:hover {
+    background-color: #0077cc;
+}
+
+.btn-submit i {
+    margin-right: 8px;
+}
+
+/* Mobil için ayarlamalar */
+@media (max-width: 768px) {
+    .sendeyaz-page {
+        padding: 10px;
+    }
+    
+    .sendeyaz-container {
+        max-width: 100%;
+    }
+    
+    .form-header h2 {
+        font-size: 1.3rem;
+    }
+}

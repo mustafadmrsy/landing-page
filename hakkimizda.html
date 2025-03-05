@@ -4,53 +4,148 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Hakkımızda - Senirkent MYO Blog</title>
-    <link rel="stylesheet" href="styles/styles.css">
-    <link rel="stylesheet" href="styles/category-custom.css">
-    <link rel="stylesheet" href="styles/mobile-adjust.css">
-    <link rel="stylesheet" href="styles/newsletter-blue.css">
-    <link rel="stylesheet" href="styles/sidebar-mobile-fix.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/sidebar-mobile-fix.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="senirkenblog/senirkenblog/js/main.js" defer></script>
     <script src="js/sidebar.js" defer></script>
+    <script src="js/main.js" defer></script>
+    <style>
+        .team-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 2rem;
+        }
+        
+        .team-member {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 350px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .team-member:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .member-avatar {
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+        }
+        
+        .member-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+        
+        .team-member:hover .member-avatar img {
+            transform: scale(1.05);
+        }
+        
+        .member-info {
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .member-name {
+            font-size: 1.4rem;
+            margin: 0 0 5px;
+            color: #333;
+        }
+        
+        .member-role {
+            display: inline-block;
+            font-size: 0.9rem;
+            background-color: rgba(0, 123, 255, 0.1);
+            color: #007bff;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            margin-bottom: 1rem;
+        }
+        
+        .member-desc {
+            color: #666;
+            margin-bottom: 1.2rem;
+        }
+        
+        .member-social {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #f5f5f7;
+            color: #333;
+            transition: all 0.3s;
+        }
+        
+        .social-link:hover {
+            background-color: #007bff;
+            color: white;
+            transform: translateY(-3px);
+        }
+    </style>
 </head>
 <body>
     <header class="sidebar">
         <button class="sidebar-toggle" aria-label="Menüyü Gizle/Göster">
             <i class="fas fa-chevron-left"></i>
         </button>
-        <div class="header-left">
-            <a href="index.html" class="logo-link">
-                <h1>Senirkent MYO Blog</h1>
-            </a>
-            <nav class="main-nav">
-                <a href="index.html" class="nav-link">Ana Sayfa</a>
-                <a href="sendeyaz.html" class="nav-link" id="write-button">Sende Yaz</a>
-                <a href="kategoriler.html" class="nav-link">Kategoriler</a>
-                <a href="hakkimizda.html" class="nav-link active">Hakkımızda</a>
-                <a href="iletisim.html" class="nav-link">İletişim</a>
-            </nav>
+        
+        <!-- Header Üst Bölüm: Logo, Arama, Ana Navigasyon -->
+        <a href="index.html" class="logo-link">
+            <h1>Senirkent MYO Blog</h1>
+        </a>
+        
+        <div class="search-container">
+            <input type="text" placeholder="Blog'larda ara..." class="search-input">
+            <button class="search-button">
+                <i class="fas fa-search"></i>
+            </button>
         </div>
-        <div class="header-right">
-            <div class="search-container">
-                <input type="text" placeholder="Blog'larda ara..." class="search-input">
-                <button class="search-button">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
-            <div class="auth-buttons">
-                <button class="btn-login">Oturum Aç</button>
-                <button class="btn-register">Kayıt Ol</button>
-            </div>
-            <div class="profile-container">
-                <div class="profile-menu">
-                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAB2AAAAdgB+lymcgAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAISSURBVEiJ7ZY/TBNhGMafu7vanrF3FBpCjA6oiQNjB2MiSmLi5mBMnFyMxoTRVTd1cWNw0AQTRydNdDImJrJoHJQmhATrH2IwURJKK9De3ZXrUCilpXeXGBP6jN/3vr/n+d7vvvsOKlSocFKQ5RaZZrcZ1d8eABoHVH8MYhstX9/tFcbz8wv+o8h7QLCqR5Y87+4DEQCSuZrfQQBAklF9S5I5OE5uTdbZ1Ui0Z8A5YiLAkKNJVxRXSmkXBRar7eqDpahHB1Y4nZCiDmq29X4xUOzCDkPr06UmeBKd1RgmEsxtR5GfL2ZmTwdLGfYoIFKw4HdWtCTLsV0h70XGlHctO2iVSNxkjM0C2ABwAcBZ3s/3bnHWdJTt2VJHqYxrqBtVzW6OtR2aWbqt69HBAaupPdpoXxRVb7Ac1RKN2i8q61rqF4AaHnCzpkfHAZyP6tHIQcM6X+0+FZL9TjFLXFyoOXfQtW9Uo7ZPddVYJEsb0hOuJeK/UvGgXe1SvfCiLWCMjAE4JwJWJH4tZeYDVp8A1IkAIQCMkdSaHn0RG5zHmn9rSkTuAbi5nJaKBBZ5JQFAs/XpoBq1nzJGQmnZNzKy/jGz+h1kDjSk5/LAmYzY37a1l6I7dujIgEXolSf6LcU5B3x7/jJ9V8SnoGusKp7/cL5p5WE+r87tpKkCuzXVs9y/9U/UKlT4T/kDLLVs7rwEEIwAAAAASUVORK5CYII=" alt="Profil" class="profile-image">
-                    <div class="profile-dropdown">
-                        <a href="#"><i class="fas fa-user"></i> Profilim</a>
-                        <a href="#"><i class="fas fa-cog"></i> Ayarlar</a>
-                        <a href="#"><i class="fas fa-sign-out-alt"></i> Çıkış</a>
-                    </div>
-                </div>
-            </div>
+        
+        <nav class="main-nav">
+            <a href="index.html" class="nav-link active">
+                <i class="fas fa-home"></i> 
+                <span class="nav-text">Ana Sayfa</span>
+            </a>
+            <a href="sendeyaz.html" class="nav-link" id="write-button">
+                <i class="fas fa-pen"></i> 
+                <span class="nav-text">Sende Yaz</span>
+            </a>
+            <a href="kategoriler.html" class="nav-link">
+                <i class="fas fa-tags"></i> 
+                <span class="nav-text">Kategoriler</span>
+            </a>
+            <a href="hakkimizda.html" class="nav-link">
+                <i class="fas fa-info-circle"></i> 
+                <span class="nav-text">Hakkımızda</span>
+            </a>
+            <a href="iletisim.html" class="nav-link">
+                <i class="fas fa-envelope"></i> 
+                <span class="nav-text">İletişim</span>
+            </a>
+        </nav>
+        
+        <div class="auth-buttons">
+            <button class="btn-login">Oturum Aç</button>
+            <button class="btn-register">Kayıt Ol</button>
         </div>
     </header>
     <main id="hakkimizda-page" class="about-page">
@@ -117,7 +212,7 @@
             <div class="team-container"> 
                 <div class="team-member"> 
                     <div class="member-avatar"> 
-                        <img src="senirkenblog/img/erenpp.jpeg" alt="Eren Kaya"> 
+                        <img src="img/eren.png" alt="Eren Kaya"> 
                     </div> 
                     <div class="member-info"> 
                         <h3 class="member-name">Eren Kaya</h3> 
@@ -133,7 +228,7 @@
                 </div> 
                 <div class="team-member"> 
                     <div class="member-avatar"> 
-                        <img src="senirkenblog/img/mustafapp.jpeg" alt="Mustafa Demirsoy"> 
+                        <img src="img/mustafaa.png" alt="Mustafa Demirsoy"> 
                     </div> 
                     <div class="member-info"> 
                         <h3 class="member-name">Mustafa Demirsoy</h3> 

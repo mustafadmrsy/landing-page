@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Blog yazılarını yükle ve göster
     async function loadBlogPosts(category = null) {
         try {
-            const response = await fetch('senirkenblog/blogPosts.json');
+            const response = await fetch('blogPosts.json');
             const data = await response.json();
             
             // Kategori sayılarını güncelle
@@ -78,12 +78,15 @@ document.addEventListener('DOMContentLoaded', function() {
             const postElement = document.createElement('article');
             postElement.className = 'blog-post-card';
             postElement.innerHTML = `
+                <div class="post-image">
+                    <img src="${post.image || 'img/blog/default.jpg'}" alt="${post.title}">
+                </div>
                 <div class="post-meta">
                     <span class="post-date"><i class="far fa-calendar-alt"></i> ${post.date}</span>
                     <span class="post-author"><i class="far fa-user"></i> ${post.author}</span>
                 </div>
                 <h3 class="post-title">${post.title}</h3>
-                <p class="post-preview">${post.preview}</p>
+                <p class="post-preview">${post.excerpt}</p>
                 <div class="post-tags">
                     ${post.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
                 </div>
@@ -107,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!popupOverlay || !popupContent) return;
 
         try {
-            const response = await fetch('senirkenblog/blogPosts.json');
+            const response = await fetch('blogPosts.json');
             const data = await response.json();
             
             // ID'ye göre yazıyı bul
@@ -155,36 +158,47 @@ document.addEventListener('DOMContentLoaded', function() {
     categoryItems.forEach(item => {
         item.addEventListener('click', function() {
             const category = this.dataset.category;
-            categoryItems.forEach(c => c.classList.remove('active'));
+            
+            // Aktif kategoriyi vurgula
+            categoryItems.forEach(item => item.classList.remove('active'));
             this.classList.add('active');
-            loadBlogPosts(category);
-
-            // Mobil görünümde yazılara kaydır
-            if (window.innerWidth <= 768) {
-                const blogPostsSection = document.querySelector('.blog-posts-section');
-                if (blogPostsSection) {
-                    blogPostsSection.scrollIntoView({ behavior: 'smooth' });
-                }
+            
+            // Kategori başlığını güncelle
+            if (categoryInfo) {
+                categoryInfo.textContent = category === 'Tümü' ? 'Tüm Yazılar' : category;
             }
+            
+            // Seçili kategoriye göre yazıları yükle
+            loadBlogPosts(category === 'Tümü' ? null : category);
         });
     });
 
-    // Popup kapatma olaylarını ekle
+    // Popup kapatma butonuna tıklama olayı ekle
     if (popupCloseBtn) {
         popupCloseBtn.addEventListener('click', closePopup);
     }
-    
+
+    // Popup overlay'ine tıklama olayı ekle
     if (popupOverlay) {
-        popupOverlay.addEventListener('click', e => {
-            if (e.target === popupOverlay) closePopup();
+        popupOverlay.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePopup();
+            }
         });
     }
 
-    document.addEventListener('keydown', e => {
-        if (e.key === 'Escape' && popupOverlay && popupOverlay.classList.contains('active')) {
+    // ESC tuşuna basıldığında popup'ı kapat
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && popupOverlay && 
+            !popupOverlay.classList.contains('hidden')) {
             closePopup();
         }
     });
+
+    // Kategoriler sayfasındaysa tüm yazıları yükle
+    if (window.location.pathname.includes('kategoriler.html')) {
+        loadBlogPosts();
+    }
 
     // Sayfa yüklendiğinde tüm yazıları göster
     loadBlogPosts();

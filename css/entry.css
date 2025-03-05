@@ -1,0 +1,130 @@
+/* Blog Yazı Bileşenleri */
+.entry-item {
+    background-color: var(--surface-color);
+    border-radius: var(--border-radius-md);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.entry-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.entry-header {
+    margin-bottom: 1rem;
+}
+
+.entry-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.entry-title-link {
+    color: var(--text-primary);
+    transition: color 0.3s ease;
+}
+
+.entry-title-link:hover {
+    color: var(--primary-color);
+}
+
+.entry-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.meta-separator {
+    color: #cbd5e1;
+}
+
+.category-tag a {
+    color: var(--primary-color);
+    transition: color 0.3s ease;
+}
+
+.category-tag a:hover {
+    color: var(--primary-hover);
+}
+
+.entry-content {
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+
+.entry-content p {
+    margin-bottom: 1rem;
+}
+
+.entry-content p:last-child {
+    margin-bottom: 0;
+}
+
+.entry-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #eee;
+    margin-top: 1rem;
+    padding-top: 1rem;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    background-color: #f1f5f9;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    transition: background-color 0.3s ease;
+}
+
+.tag:hover {
+    background-color: #e2e8f0;
+}
+
+.post-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.action-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    transition: color 0.3s ease;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.action-btn:hover {
+    color: var(--primary-color);
+}
+
+.post-full-content {
+    display: none;
+}

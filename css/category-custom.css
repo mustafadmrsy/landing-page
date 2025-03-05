@@ -3,7 +3,8 @@
 /* Improve readability of the Read More button */
 .read-more-button {
     margin-top: 1rem;
-    text-align: center;
+    text-align: right;
+    padding: 0 15px 15px;
 }
 
 .read-more, .btn-daha {
@@ -13,26 +14,54 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.5rem 1.2rem;
-    border-radius: 4px;
-    background-color: var(--primary-color);
-    transition: all 0.2s ease;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    background: linear-gradient(135deg, #0066cc 0%, #0056b3 100%);
+    transition: all 0.3s ease;
     border: none;
     cursor: pointer;
-    font-size: 1rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-top: 1rem;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 15px rgba(0, 102, 204, 0.3);
+    margin-top: 0.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.read-more::before, .btn-daha::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: rotate(45deg);
+    z-index: 1;
+    transition: all 0.6s ease;
+    opacity: 0;
+}
+
+.read-more:hover::before, .btn-daha:hover::before {
+    opacity: 1;
+    transform: rotate(45deg) translate(10%, 10%);
 }
 
 .read-more:hover, .btn-daha:hover {
-    background-color: #0056b3;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(135deg, #0077e6 0%, #0066cc 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 102, 204, 0.4);
+}
+
+.read-more:active, .btn-daha:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 10px rgba(0, 102, 204, 0.3);
 }
 
 .read-more span, .btn-daha {
     font-weight: 700;
     letter-spacing: 0.03em;
+    position: relative;
+    z-index: 2;
 }
 
 /* Add an arrow to btn-daha */
@@ -41,34 +70,40 @@
     font-family: 'Font Awesome 5 Free';
     font-weight: 900;
     margin-left: 0.5rem;
-    transition: transform 0.2s ease;
+    transition: transform 0.3s ease;
+    position: relative;
+    z-index: 2;
 }
 
 .btn-daha:hover::after {
-    transform: translateX(3px);
+    transform: translateX(5px);
 }
 
 .read-more i {
-    transition: transform 0.2s ease;
+    transition: transform 0.3s ease;
+    position: relative;
+    z-index: 2;
 }
 
 .read-more:hover i {
-    transform: translateX(3px);
+    transform: translateX(5px);
 }
 
 /* Other style improvements */
 .blog-post-card {
     position: relative;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding-bottom: 10px;
 }
 
 .blog-post-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
 .post-title {
     color: var(--primary-color);
+    font-weight: 700;
 }
 
 /* Blog Popup Styles */
@@ -86,6 +121,7 @@
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s ease;
+    backdrop-filter: blur(3px);
 }
 
 .blog-popup-overlay.active {
@@ -97,12 +133,12 @@
     background: var(--background-color, white);
     width: 90%;
     max-width: 800px;
-    max-height: 80vh;
+    max-height: 85vh;
     border-radius: 12px;
-    padding: 2rem;
+    padding: 2.5rem;
     position: relative;
     overflow-y: auto;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
     transform: translateY(20px);
     transition: transform 0.3s ease;
 }
@@ -113,28 +149,29 @@
 
 .blog-popup-close {
     position: absolute;
-    top: 1rem;
-    right: 1rem;
-    background: var(--surface-color, #f5f5f5);
+    top: 1.2rem;
+    right: 1.2rem;
+    background: #f0f2f5;
     border: none;
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     transition: all 0.2s ease;
 }
 
 .blog-popup-close:hover {
     background: var(--primary-color, #007bff);
+    transform: rotate(90deg);
 }
 
 .blog-popup-close i {
-    color: var(--text-primary, #333);
-    font-size: 1rem;
+    color: #555;
+    font-size: 1.1rem;
 }
 
 .blog-popup-close:hover i {
@@ -149,33 +186,32 @@
     margin-top: 0;
     margin-bottom: 1.5rem;
     color: var(--primary-color, #007bff);
-    border-bottom: 2px solid var(--background-color, #f0f0f0);
+    font-size: 1.8rem;
+    border-bottom: 2px solid #f0f2f5;
     padding-bottom: 1rem;
 }
 
-.blog-popup-content h3 {
-    color: var(--primary-color, #007bff);
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
-}
-
 .blog-popup-content p {
-    margin-bottom: 1rem;
-    line-height: 1.6;
+    line-height: 1.7;
+    margin-bottom: 1.2rem;
+    color: #444;
 }
 
-.blog-popup-content ul, 
-.blog-popup-content ol {
-    margin-bottom: 1rem;
-    padding-left: 1.5rem;
+/* Custom scrollbar for the popup */
+.blog-popup::-webkit-scrollbar {
+    width: 8px;
 }
 
-.blog-popup-content li {
-    margin-bottom: 0.5rem;
+.blog-popup::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
 }
 
-.blog-popup-content img {
-    max-width: 100%;
-    margin: 1rem 0;
-    border-radius: 6px;
+.blog-popup::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+}
+
+.blog-popup::-webkit-scrollbar-thumb:hover {
+    background: #0066cc;
 }
