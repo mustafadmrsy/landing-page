@@ -213,10 +213,10 @@
         width: 80px;
     }
 
-    .sidebar.collapsed .logo-link h1,
     .sidebar.collapsed .search-container,
-    .sidebar.collapsed .nav-text,
-    .sidebar.collapsed .auth-buttons {
+    .sidebar.collapsed .main-nav .nav-text,
+    .sidebar.collapsed .sidebar-logo,
+    .sidebar.collapsed .user-buttons {
         display: none;
     }
 
