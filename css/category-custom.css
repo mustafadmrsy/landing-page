@@ -1,4 +1,4 @@
-/* Custom styles for the category page */
+/* Custom styles for the category page - Version 1.1 */
 
 /* Improve readability of the Read More button */
 .read-more-button {
@@ -8,23 +8,24 @@
 }
 
 .read-more, .btn-daha {
-    color: white;
+    color: white !important;
     text-decoration: none;
     font-weight: 600;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.8rem 1.5rem;
+    padding: 0.9rem 1.8rem;
     border-radius: 50px;
-    background: linear-gradient(135deg, #0066cc 0%, #0056b3 100%);
+    background: linear-gradient(135deg, #0077e6 0%, #0056b3 100%) !important;
     transition: all 0.3s ease;
     border: none;
     cursor: pointer;
-    font-size: 0.95rem;
-    box-shadow: 0 4px 15px rgba(0, 102, 204, 0.3);
+    font-size: 1rem;
+    box-shadow: 0 5px 15px rgba(0, 102, 204, 0.4) !important;
     margin-top: 0.5rem;
     position: relative;
     overflow: hidden;
+    letter-spacing: 0.03em;
 }
 
 .read-more::before, .btn-daha::before {
@@ -34,7 +35,7 @@
     left: -50%;
     width: 200%;
     height: 200%;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.15);
     transform: rotate(45deg);
     z-index: 1;
     transition: all 0.6s ease;
@@ -47,21 +48,22 @@
 }
 
 .read-more:hover, .btn-daha:hover {
-    background: linear-gradient(135deg, #0077e6 0%, #0066cc 100%);
+    background: linear-gradient(135deg, #0088ff 0%, #0066cc 100%) !important;
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 102, 204, 0.4);
+    box-shadow: 0 10px 25px rgba(0, 102, 204, 0.5) !important;
 }
 
 .read-more:active, .btn-daha:active {
     transform: translateY(1px);
-    box-shadow: 0 2px 10px rgba(0, 102, 204, 0.3);
+    box-shadow: 0 2px 10px rgba(0, 102, 204, 0.3) !important;
 }
 
-.read-more span, .btn-daha {
+.read-more span, .btn-daha span {
     font-weight: 700;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.05em;
     position: relative;
     z-index: 2;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 /* Add an arrow to btn-daha */
@@ -69,7 +71,7 @@
     content: '\f061';
     font-family: 'Font Awesome 5 Free';
     font-weight: 900;
-    margin-left: 0.5rem;
+    margin-left: 0.7rem;
     transition: transform 0.3s ease;
     position: relative;
     z-index: 2;
@@ -83,6 +85,7 @@
     transition: transform 0.3s ease;
     position: relative;
     z-index: 2;
+    font-size: 1.1rem;
 }
 
 .read-more:hover i {

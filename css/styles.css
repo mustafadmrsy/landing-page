@@ -1,3 +1,8 @@
+/**
+ * Senirkent MYO Blog - Ana Stil Dosyası
+ * Version: 1.1 - 5 Mart 2025 - Tarayıcı önbelleğini zorlamak için versiyon artırıldı
+ */
+
 /* Main Styles */
 @import url('entrylinks.css');
 
@@ -400,21 +405,24 @@ button:hover {
 
 .read-more-btn {
     align-self: center;
-    background: none;
+    background: linear-gradient(135deg, #0077e6 0%, #0056b3 100%);
+    color: white;
     border: none;
-    color: #007bff;
-    font-weight: 500;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
     transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 102, 204, 0.3);
+    font-size: 0.95rem;
+    letter-spacing: 0.03em;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .read-more-btn:hover {
-    background: rgba(0, 123, 255, 0.1);
+    background: linear-gradient(135deg, #0088ff 0%, #0066cc 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 102, 204, 0.4);
 }
 
 .read-more-btn i {
@@ -1038,7 +1046,7 @@ footer {
 }
 
 .newsletter-card {
-    background: linear-gradient(135deg, #16a34a, #0f9d58);
+    background: linear-gradient(135deg, #007bff, #0056b3);
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
@@ -1474,10 +1482,9 @@ footer {
     border: 1px solid #e5e7eb;
     border-radius: 8px;
     font-size: 1rem;
-    background-color: #f9fafb;
     transition: all 0.3s ease;
     color: #374151;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
 .contact-form input:focus,
@@ -1936,34 +1943,36 @@ footer {
 .read-more {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
     color: #007bff;
-    text-decoration: none;
     font-weight: 500;
-    font-size: 0.9rem;
+    text-decoration: none;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    padding: 0.6rem 1.2rem;
+    border-radius: 50px;
+    background-color: rgba(0, 123, 255, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 102, 204, 0.15);
+    position: relative;
+    overflow: hidden;
 }
 
 .read-more:hover {
-    text-decoration: underline;
+    color: #0056b3;
+    background-color: rgba(0, 123, 255, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.25);
 }
 
-.no-posts {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 3rem;
-    background: #f8f9fa;
-    border-radius: 10px;
+.read-more::after {
+    content: '\f061';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    margin-left: 0.3rem;
+    transition: transform 0.3s ease;
 }
 
-.no-posts i {
-    font-size: 3rem;
-    color: #dee2e6;
-    margin-bottom: 1rem;
-}
-
-.no-posts p {
-    color: #666;
-    font-size: 1.1rem;
+.read-more:hover::after {
+    transform: translateX(4px);
 }
 
 /* Responsive Tasarım */
@@ -1994,7 +2003,7 @@ footer {
         width: 250px;
         height: 100vh;
         background: var(--surface-color);
-        z-index: 1000;
+        z-index: 100;
         box-shadow: -2px 0 4px rgba(0, 0, 0, 0.1);
     }
 
@@ -2102,12 +2111,12 @@ footer {
 }
 
 .categories-list {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    flex-direction: column;
     gap: 0.75rem;
 }
 
-.category-card {
+.category-item {
     background: var(--background-color);
     border-radius: 8px;
     padding: 0.75rem;
@@ -2119,20 +2128,20 @@ footer {
     gap: 0.5rem;
 }
 
-.category-card:hover {
+.category-item:hover {
     transform: translateY(-3px);
     background: var(--surface-color);
     border-color: #007bff;
 }
 
-.category-card.active {
+.category-item.active {
     background: var(--primary-color);
     color: white;
 }
 
-.category-card.active .category-icon,
-.category-card.active h3,
-.category-card.active .post-count {
+.category-item.active .category-icon,
+.category-item.active h3,
+.category-item.active .post-count {
     color: white;
 }
 
@@ -2145,15 +2154,15 @@ footer {
     justify-content: center;
     background: var(--surface-color);
     border-radius: 8px;
-    color: #007bff;
+    color: var(--primary-color);
 }
 
-.category-content {
+.category-info {
     flex-grow: 1;
     min-width: 0;
 }
 
-.category-card h3 {
+.category-item h3 {
     font-size: 0.9rem;
     margin: 0;
     color: var(--text-primary);
@@ -2265,6 +2274,7 @@ footer {
 @media (max-width: 768px) {
     .categories-layout {
         grid-template-columns: 1fr;
+        gap: 1.5rem;
     }
 
     .categories-sidebar {
@@ -2275,24 +2285,27 @@ footer {
     }
 
     .categories-list {
-        grid-template-columns: repeat(3, 1fr); /* Mobilde 3 sütun */
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
     }
 
-    .category-card {
-        flex-direction: column;
-        text-align: center;
-        padding: 0.5rem;
-    }
-
-    .category-icon {
-        font-size: 1.5rem;
-        margin-bottom: 0.25rem;
+    .category-item {
+        width: calc(50% - 0.5rem);
     }
 }
 
 @media (max-width: 480px) {
-    .categories-grid {
-        grid-template-columns: 1fr;
+    .categories-list {
+        flex-direction: column;
+    }
+    
+    .category-item {
+        width: 100%;
+    }
+    
+    .blog-popup {
+        padding: 1.5rem;
     }
 }
 
@@ -2313,233 +2326,39 @@ footer {
     }
 }
 
-/* Sendeyaz sayfası için stil tanımlamaları */
-.sendeyaz-page {
-    background: linear-gradient(135deg, #0f172a, #1e293b);
-    min-height: 100vh;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    display: flex;
-    justify-content: center;
+.read-more {
+    display: inline-flex;
     align-items: center;
-}
-
-.sendeyaz-container {
-    width: 90%;
-    max-width: 550px;
-    background: rgba(15, 23, 42, 0.8);
-    backdrop-filter: blur(10px);
-    padding: 2.5rem;
-    border-radius: 16px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 
-                inset 0 0 0 1px rgba(255, 255, 255, 0.1);
-    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-    opacity: 1;
-    margin: 0 auto;
+    color: #007bff;
+    font-weight: 500;
+    text-decoration: none;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    padding: 0.6rem 1.2rem;
+    border-radius: 50px;
+    background-color: rgba(0, 123, 255, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 102, 204, 0.15);
     position: relative;
     overflow: hidden;
 }
 
-.form-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+.read-more:hover {
+    color: #0056b3;
+    background-color: rgba(0, 123, 255, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.25);
 }
 
-.form-header h2 {
-    font-size: 1.8rem;
-    color: #fff;
-    margin: 0;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    background: linear-gradient(90deg, #fff, var(--primary-color));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.pulse-icon {
-    width: 45px;
-    height: 45px;
-    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 0 15px rgba(var(--primary-color-rgb), 0.5);
-    position: relative;
-}
-
-.pulse-icon::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background: rgba(var(--primary-color-rgb), 0.5);
-    animation: pulse 2s infinite;
-}
-
-.pulse-icon i {
-    color: white;
-    font-size: 1.2rem;
-    z-index: 1;
-}
-
-@keyframes pulse {
-    0% { transform: scale(1); opacity: 1; }
-    100% { transform: scale(1.5); opacity: 0; }
-}
-
-.form-group {
-    margin-bottom: 1.5rem;
-    width: 100%;
-}
-
-.input-container {
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: 100%;
-}
-
-.input-container i {
-    position: absolute;
-    left: 15px;
-    color: rgba(255, 255, 255, 0.5);
-    transition: all 0.3s ease;
-    font-size: 1.2rem;
-    z-index: 2;
-}
-
-.futuristic-input {
-    width: 100%;
-    padding: 15px 15px 15px 50px;
-    background: rgba(255, 255, 255, 0.05);
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    color: #fff;
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
-}
-
-.futuristic-input:focus {
-    background: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
-}
-
-.futuristic-input::placeholder {
-    color: rgba(255, 255, 255, 0.4);
-}
-
-textarea.futuristic-input {
-    min-height: 120px;
-    resize: vertical;
-}
-
-select.futuristic-input {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: calc(100% - 15px) center;
-    padding-right: 40px;
-    color: #fff;
-}
-
-select.futuristic-input option {
-    background-color: #1e293b;
-    color: #fff;
-    padding: 10px;
-    font-size: 1rem;
-}
-
-select.futuristic-input option:hover,
-select.futuristic-input option:focus,
-select.futuristic-input option:active {
-    background-color: var(--primary-color);
-}
-
-select.futuristic-input::-ms-expand {
-    display: none;
-}
-
-.focus-border {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
-    transform: scaleX(0);
-    transform-origin: left;
+.read-more::after {
+    content: '\f061';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    margin-left: 0.3rem;
     transition: transform 0.3s ease;
 }
 
-.input-container:hover i {
-    color: var(--primary-color);
-}
-
-.futuristic-button {
-    width: 100%;
-    padding: 15px;
-    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-    border: none;
-    border-radius: 8px;
-    color: white;
-    font-weight: 600;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 2rem;
-    box-shadow: 0 4px 15px rgba(var(--primary-color-rgb), 0.3);
-}
-
-.futuristic-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: all 0.5s ease;
-}
-
-.futuristic-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(var(--primary-color-rgb), 0.4);
-}
-
-.futuristic-button:hover::before {
-    left: 100%;
-}
-
-.button-text {
-    margin-right: 10px;
-}
-
-.button-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-}
-
-.futuristic-button:hover .button-icon {
-    transform: translateX(5px);
+.read-more:hover::after {
+    transform: translateX(4px);
 }
 
 /* Mobil cihazlar için uyarlamalar */
@@ -3207,4 +3026,56 @@ select.futuristic-input::-ms-expand {
     .blog-popup {
         padding: 1.5rem;
     }
+}
+
+@media screen and (max-width: 768px) {
+    header {
+        transform: translateX(100%);
+        width: 100%;
+        transition: transform 0.3s ease;
+    }
+    .sidebar.active {
+        transform: translateX(0);
+    }
+    main {
+        margin-left: 0;
+    }
+    .sidebar-toggle {
+        display: block;
+    }
+}
+
+.read-more {
+    display: inline-flex;
+    align-items: center;
+    color: #007bff;
+    font-weight: 500;
+    text-decoration: none;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    padding: 0.6rem 1.2rem;
+    border-radius: 50px;
+    background-color: rgba(0, 123, 255, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 102, 204, 0.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.read-more:hover {
+    color: #0056b3;
+    background-color: rgba(0, 123, 255, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.25);
+}
+
+.read-more::after {
+    content: '\f061';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    margin-left: 0.3rem;
+    transition: transform 0.3s ease;
+}
+
+.read-more:hover::after {
+    transform: translateX(4px);
 }

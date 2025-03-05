@@ -3,15 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Sende Yaz - Senirkent MYO Blog</title>
     <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/sidebar.css?v=1.4">
     <link rel="stylesheet" href="css/sidebar-mobile-fix.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="js/sidebar.js" defer></script>
     <script src="js/main.js" defer></script>
 </head>
 <body>
+    <!-- Mobil Header -->
+    <div class="mobile-header">
+        <h1 class="mobile-header-title">Senirkent MYO Blog</h1>
+        <button class="mobile-menu-toggle" aria-label="Menüyü Aç">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+    
     <header class="sidebar">
         <button class="sidebar-toggle" aria-label="Menüyü Gizle/Göster">
             <i class="fas fa-chevron-left"></i>
@@ -110,22 +121,80 @@
 
     <footer>
         <div class="footer-content">
-            <div class="contact-info">
-                <a href="#" class="contact-link"><i class="fas fa-envelope"></i> info@senirkentmyo.edu.tr</a>
-                <a href="#" class="contact-link"><i class="fas fa-phone"></i> +90 246 XXX XX XX</a>
-                <a href="#" class="contact-link"><i class="fas fa-map-marker-alt"></i> Senirkent, Isparta</a>
+            <div class="footer-top">
+                <div class="footer-column">
+                    <h3>Senirkent MYO Blog</h3>
+                    <p>Bilgi ve deneyimlerinizi paylaşın, topluluğumuzun bir parçası olun!</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Hızlı Bağlantılar</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Ana Sayfa</a></li>
+                        <li><a href="kategoriler.html">Kategoriler</a></li>
+                        <li><a href="sendeyaz.html">Sende Yaz</a></li>
+                        <li><a href="hakkimizda.html">Hakkımızda</a></li>
+                        <li><a href="iletisim.html">İletişim</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>İletişim</h3>
+                    <ul class="footer-contact">
+                        <li><i class="fas fa-envelope"></i> senirkentyoblog@gmail.com</li>
+                        <li><i class="fas fa-phone"></i> +90 246 511 2301</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Senirkent MYO, Isparta</li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Sosyal Medya</h3>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
             </div>
-            <div class="social-links">
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-linkedin"></i></a>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Senirkent MYO Blog. Tüm hakları saklıdır.</p>
             </div>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 Senirkent MYO Blog. Tüm hakları saklıdır.</p>
-        </div>
+        <div class="footer-wave"></div>
     </footer>
-    <div class="overlay"></div>
+    
+    <script>
+        // Mobil menü işlemleri
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobil menü toggle
+            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.sidebar-overlay') || document.createElement('div');
+            
+            if (!overlay.classList.contains('sidebar-overlay')) {
+                overlay.classList.add('sidebar-overlay');
+                document.body.appendChild(overlay);
+            }
+            
+            if (mobileMenuToggle) {
+                mobileMenuToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('active');
+                    document.body.classList.toggle('sidebar-active');
+                    overlay.classList.toggle('active');
+                    
+                    if (sidebar.classList.contains('active')) {
+                        document.body.style.overflow = 'hidden';
+                    } else {
+                        document.body.style.overflow = '';
+                    }
+                });
+            }
+            
+            overlay.addEventListener('click', function() {
+                sidebar.classList.remove('active');
+                document.body.classList.remove('sidebar-active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+    </script>
 </body>
 </html>

@@ -207,17 +207,70 @@
     color: white;
 }
 
-/* Mobil için düzenlemeler */
-@media (max-width: 768px) {
+/* Mobil Cihazlar İçin Hakkımızda Sayfası Düzenlemeleri */
+@media screen and (max-width: 768px) {
+    .about-page {
+        padding: 10px;
+    }
+    
+    .about-hero {
+        padding: 30px 15px;
+        margin-bottom: 20px;
+    }
+    
     .page-title {
         font-size: 2rem;
+    }
+    
+    .page-subheader {
+        font-size: 0.95rem;
+    }
+    
+    .about-content {
+        padding: 0 10px;
     }
     
     .about-section h2 {
         font-size: 1.5rem;
     }
     
+    .about-text {
+        font-size: 1rem;
+    }
+    
     .mission-vision {
         flex-direction: column;
+        gap: 20px;
+    }
+    
+    .mission-card, .vision-card {
+        min-width: 100%;
+        padding: 20px;
+    }
+    
+    .team-container {
+        justify-content: center;
+        gap: 20px;
+    }
+    
+    .team-member {
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .member-info h3 {
+        font-size: 1.2rem;
+    }
+    
+    .member-position {
+        font-size: 0.9rem;
+    }
+    
+    .values-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .value-card {
+        padding: 15px;
     }
 }

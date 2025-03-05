@@ -2,7 +2,7 @@
  * Senirkent MYO Blog - Sidebar İşlevselliği
  * Açıklama: Sidebar'ın açılıp-kapanması, daraltılması ve mobil uyumluluğu için script
  * Yazar: Mustafa Demirsoy
- * Sürüm: 1.3.0
+ * Sürüm: 1.4.0
  * Güncelleme Tarihi: 5 Mart 2025
  */
 
@@ -36,6 +36,24 @@ document.addEventListener('DOMContentLoaded', function() {
         body.appendChild(overlay);
     }
     
+    // Mobil cihazlarda görünüme uygun sınıfları ekle
+    function checkMobileView() {
+        if (window.innerWidth <= 768) {
+            body.classList.add('mobile-view');
+            if (!sidebar.classList.contains('active')) {
+                body.classList.remove('sidebar-active');
+            }
+        } else {
+            body.classList.remove('mobile-view');
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+            body.style.overflow = '';
+        }
+    }
+    
+    // Sayfa yüklendiğinde mobil görünümü kontrol et
+    checkMobileView();
+    
     // Sidebar Toggle Fonksiyonu - Masaüstü/Mobil durumuna göre davran
     function toggleSidebar() {
         // Masaüstü görünümünde (769px ve üzeri) sidebar'ı daralt/genişlet
@@ -55,6 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
         else {
             sidebar.classList.toggle('active');
             overlay.classList.toggle('active');
+            body.classList.toggle('sidebar-active');
             
             // Sidebar açılınca scroll'u engelle
             if (sidebar.classList.contains('active')) {
@@ -79,10 +98,13 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Ekran boyutu değiştiğinde kontrol et
     window.addEventListener('resize', function() {
+        checkMobileView();
+        
         // Mobil görünümünden masaüstü görünümüne geçince
         if (window.innerWidth >= 769 && sidebar.classList.contains('active')) {
             sidebar.classList.remove('active');
             overlay.classList.remove('active');
+            body.classList.remove('sidebar-active');
             body.style.overflow = '';
         }
         
@@ -100,4 +122,9 @@ document.addEventListener('DOMContentLoaded', function() {
             toggleSidebar();
         }
     });
+    
+    // Mobil görünümünde sayfa yüklendiğinde sidebar toggle butonunu görünür yap
+    if (window.innerWidth <= 768) {
+        sidebarToggleBtn.style.display = 'flex';
+    }
 });

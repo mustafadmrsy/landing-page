@@ -3,16 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Senirkent MYO Blog</title>
     <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/sidebar.css?v=1.4">
     <link rel="stylesheet" href="css/sidebar-mobile-fix.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="js/sidebar.js" defer></script>
     <script src="js/main.js" defer></script>
     <style>
-        .post { display: inline-block; width: calc(50% - 10px); margin: 5px; vertical-align: top; }
+        /* Önbellek sıfırlama - v1.4 - Hover düzeltmesi */
+        /* Hover stil iptal - artık tamamen CSS dosyasından geliyor */
+        
         .category-button { margin-right: 5px; }
+        
+        footer {
+            background-color: #0066cc !important;
+            padding: 5rem 0 !important;
+            margin-top: 3rem !important;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1) !important;
+        }
+        
+        .contact-link {
+            font-size: 1.1rem !important;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+        }
     </style>
 </head>
 <body>
@@ -21,7 +38,6 @@
             <i class="fas fa-chevron-left"></i>
         </button>
         
-        <!-- Header Üst Bölüm: Logo, Arama, Ana Navigasyon -->
         <a href="index.html" class="logo-link">
             <h1>Senirkent MYO Blog</h1>
         </a>
@@ -403,21 +419,73 @@
 
     <footer>
         <div class="footer-content">
-            <div class="contact-info">
-                <a href="#" class="contact-link"><i class="fas fa-envelope"></i> info@senirkentmyo.edu.tr</a>
-                <a href="#" class="contact-link"><i class="fas fa-phone"></i> +90 246 XXX XX XX</a>
-                <a href="#" class="contact-link"><i class="fas fa-map-marker-alt"></i> Senirkent, Isparta</a>
+            <div class="footer-top">
+                <div class="footer-column">
+                    <div class="contact-card">
+                        <div class="contact-heading">
+                            <i class="fas fa-envelope"></i>
+                            <h3 class="section-title">İletişim</h3>
+                        </div>
+                        <div class="contact-links">
+                            <a href="mailto:info@senirkentmyo.edu.tr" class="contact-link">
+                                <i class="fas fa-envelope"></i>
+                                info@senirkentmyo.edu.tr
+                            </a>
+                            <a href="tel:+902462111111" class="contact-link">
+                                <i class="fas fa-phone-alt"></i>
+                                +90 246 211 11 11
+                            </a>
+                            <a href="https://goo.gl/maps/abcdefg" class="contact-link">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Senirkent, Isparta
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <div class="newsletter-card">
+                        <h3 class="section-title">E-Bülten</h3>
+                        <p class="social-text">Güncel blog yazıları ve etkinliklerden haberdar olmak için abone olun.</p>
+                        <form class="newsletter-form">
+                            <input type="email" class="newsletter-input" placeholder="E-posta adresiniz" required>
+                            <button type="submit" class="newsletter-button">Abone Ol</button>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="social-links">
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-linkedin"></i></a>
+            
+            <div class="footer-bottom-row">
+                <div class="footer-column">
+                    <h3 class="section-title">Hızlı Erişim</h3>
+                    <div class="links-grid">
+                        <a href="index.html" class="quick-link">Ana Sayfa</a>
+                        <a href="kategoriler.html" class="quick-link">Kategoriler</a>
+                        <a href="sendeyaz.html" class="quick-link">Sende Yaz</a>
+                        <a href="hakkimizda.html" class="quick-link">Hakkımızda</a>
+                        <a href="iletisim.html" class="quick-link">İletişim</a>
+                        <a href="#" class="quick-link">Gizlilik Politikası</a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3 class="section-title">Takip Et</h3>
+                    <p class="social-text">Sosyal medya hesaplarımızdan bizi takip ederek güncel kalın.</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-link facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link linkedin"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link youtube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Senirkent MYO Blog. Tüm hakları saklıdır.</p>
             </div>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 Senirkent MYO Blog. Tüm hakları saklıdır.</p>
-        </div>
+        <div class="footer-wave"></div>
     </footer>
     <div class="overlay"></div>
     <script>

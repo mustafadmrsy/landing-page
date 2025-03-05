@@ -3,17 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>İletişim - Senirkent MYO Blog</title>
     <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/sidebar.css?v=1.4">
     <link rel="stylesheet" href="css/sidebar-mobile-fix.css">
+    <link rel="stylesheet" href="css/iletisim.css">
+    <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="js/sidebar.js" defer></script>
     <script src="js/main.js" defer></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        /* Önbellek sıfırlama - v1.4 - Hover düzeltmesi */
+        /* Hover stil iptal - artık tamamen CSS dosyasından geliyor */
+        
+        footer {
+            background-color: #0066cc !important;
+            padding: 5rem 0 !important;
+            margin-top: 3rem !important;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1) !important;
+        }
+        
+        .contact-link {
+            font-size: 1.1rem !important;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+        }
+        
+        .read-more, .btn-daha {
+            color: white !important;
+            background: linear-gradient(135deg, #0077e6 0%, #0056b3 100%) !important;
+            box-shadow: 0 5px 15px rgba(0, 102, 204, 0.4) !important;
+            padding: 0.9rem 1.8rem !important;
+            border-radius: 50px !important;
+        }
+    </style>
 </head>
 <body>
+    <!-- Mobil Header -->
+    <div class="mobile-header">
+        <h1 class="mobile-header-title">Senirkent MYO Blog</h1>
+        <button class="mobile-menu-toggle" aria-label="Menüyü Aç">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+
     <header class="sidebar">
         <button class="sidebar-toggle" aria-label="Menüyü Gizle/Göster">
             <i class="fas fa-chevron-left"></i>
@@ -65,14 +102,9 @@
             <div class="hero-content">
                 <h2 class="page-title">İletişim</h2>
                 <div class="page-subheader">Sorularınız, önerileriniz ve işbirliği teklifleriniz için bizimle iletişime geçin</div>
-                <div class="hero-cta">
-                    <a href="#contact-form" class="hero-button"><i class="fas fa-envelope"></i> Mesaj Gönder</a>
-                    <a href="#contact-map" class="hero-button secondary"><i class="fas fa-map-marker-alt"></i> Haritada Gör</a>
-                </div>
             </div>
-            <div class="hero-overlay"></div>
         </section>
-
+        
         <div class="contact-container">
             <div class="contact-details">
                 <div class="contact-info-card">
@@ -80,55 +112,71 @@
                         <div class="contact-icon">
                             <i class="fas fa-map-marker-alt"></i>
                         </div>
-                        <h3>Adresimiz</h3>
+                        <h3 class="info-title">Adres Bilgileri</h3>
                     </div>
                     <div class="info-content">
-                        <p>Senirkent Meslek Yüksekokulu</p>
-                        <p>İstiklal Mahallesi, Kampüs Caddesi</p>
-                        <p>Senirkent, Isparta 32600</p>
+                        <a href="https://maps.google.com/" target="_blank" class="contact-link">
+                            <i class="fas fa-building"></i>
+                            Senirkent Meslek Yüksekokulu
+                        </a>
+                        <a href="https://maps.google.com/" target="_blank" class="contact-link">
+                            <i class="fas fa-map-pin"></i>
+                            Isparta, Türkiye
+                        </a>
+                        <a href="https://maps.google.com/" target="_blank" class="contact-link">
+                            <i class="fas fa-directions"></i>
+                            Yol Tarifi Al
+                        </a>
                     </div>
                 </div>
-
-                <div class="contact-info-card">
-                    <div class="info-header">
-                        <div class="contact-icon">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <h3>E-posta Adresimiz</h3>
-                    </div>
-                    <div class="info-content">
-                        <p>info@senirkentmyo.edu.tr</p>
-                        <p>ogrenci@senirkentmyo.edu.tr</p>
-                    </div>
-                </div>
-
+                
                 <div class="contact-info-card">
                     <div class="info-header">
                         <div class="contact-icon">
                             <i class="fas fa-phone-alt"></i>
                         </div>
-                        <h3>Telefon Numaramız</h3>
+                        <h3 class="info-title">İletişim Bilgileri</h3>
                     </div>
                     <div class="info-content">
-                        <p>+90 246 XXX XX XX</p>
-                        <p>+90 246 XXX XX XX</p>
+                        <a href="tel:+902462118178" class="contact-link">
+                            <i class="fas fa-phone"></i>
+                            +90 246 211 81 78
+                        </a>
+                        <a href="mailto:senirkentmyo@sdu.edu.tr" class="contact-link">
+                            <i class="fas fa-envelope"></i>
+                            senirkentmyo@sdu.edu.tr
+                        </a>
+                        <a href="https://sdu.edu.tr" target="_blank" class="contact-link">
+                            <i class="fas fa-globe"></i>
+                            www.sdu.edu.tr
+                        </a>
                     </div>
                 </div>
-
+                
                 <div class="contact-info-card">
                     <div class="info-header">
                         <div class="contact-icon">
                             <i class="fas fa-clock"></i>
                         </div>
-                        <h3>Çalışma Saatlerimiz</h3>
+                        <h3 class="info-title">Çalışma Saatleri</h3>
                     </div>
                     <div class="info-content">
-                        <p>Pazartesi - Cuma: 08:30 - 17:30</p>
-                        <p>Hafta Sonu: Kapalı</p>
+                        <p class="work-hours">
+                            <span class="day">Pazartesi - Cuma:</span> 
+                            <span class="hours">08:30 - 17:30</span>
+                        </p>
+                        <p class="work-hours">
+                            <span class="day">Cumartesi:</span> 
+                            <span class="hours">Kapalı</span>
+                        </p>
+                        <p class="work-hours">
+                            <span class="day">Pazar:</span> 
+                            <span class="hours">Kapalı</span>
+                        </p>
                     </div>
                 </div>
             </div>
-
+            
             <div class="contact-form-wrapper">
                 <div class="contact-form-card">
                     <div class="form-header">
@@ -136,52 +184,38 @@
                         <p class="form-subtitle">Aşağıdaki formu doldurarak bize mesaj gönderebilirsiniz. <span class="highlight">En kısa sürede sizinle iletişime geçeceğiz.</span></p>
                     </div>
                     
-                    <form id="contact-form" class="contact-form" action="https://api.web3forms.com/submit" method="POST">
-                        <input type="hidden" name="access_key" value="6480ec10-b3fe-4e5f-98a6-3248bd0fbd91">
-                        <input type="hidden" name="from_name" value="contact">
-                        
-                        <div class="form-columns">
-                            <div class="form-column">
-                                <div class="form-group">
-                                    <div class="input-with-icon">
-                                        <i class="fas fa-user"></i>
-                                        <input type="text" id="name" name="name" placeholder="Adınız" required>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <div class="input-with-icon">
-                                        <i class="fas fa-envelope"></i>
-                                        <input type="email" id="email" name="email" placeholder="E-posta adresiniz" required>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <div class="input-with-icon">
-                                        <i class="fas fa-tag"></i>
-                                        <input type="text" id="subject" name="subject" placeholder="Konu" required>
-                                    </div>
-                                </div>
+                    <form class="contact-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name">Adınız Soyadınız</label>
+                                <input type="text" id="name" class="form-control" placeholder="Adınızı ve soyadınızı giriniz" required>
                             </div>
                             
-                            <div class="form-column">
-                                <div class="form-group message-group">
-                                    <div class="input-with-icon textarea-container">
-                                        <i class="fas fa-comment-alt"></i>
-                                        <textarea id="message" name="message" placeholder="Mesajınız" required></textarea>
-                                    </div>
-                                </div>
+                            <div class="form-group">
+                                <label for="email">E-posta Adresiniz</label>
+                                <input type="email" id="email" class="form-control" placeholder="E-posta adresinizi giriniz" required>
                             </div>
                         </div>
                         
-                        <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
-                        <div class="h-captcha" data-captcha="true"></div>
-                        <input type="hidden" name="redirect" value="https://web3forms.com/success">
-                        
-                        <div class="form-submit">
-                            <button type="submit" class="btn-submit"><i class="fas fa-paper-plane"></i> Mesajı Gönder</button>
-                            <div class="privacy-note">Gönder butonuna tıklayarak <a href="#">Gizlilik Politikamızı</a> kabul etmiş olursunuz</div>
+                        <div class="form-group">
+                            <label for="subject">Konu</label>
+                            <input type="text" id="subject" class="form-control" placeholder="Mesajınızın konusunu giriniz" required>
                         </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Mesajınız</label>
+                            <textarea id="message" class="form-control" rows="5" placeholder="Mesajınızı buraya yazınız" required></textarea>
+                        </div>
+                        
+                        <div class="form-group form-checkbox">
+                            <input type="checkbox" id="consent" required>
+                            <label for="consent">Kişisel verilerimin işlenmesine izin veriyorum</label>
+                        </div>
+                        
+                        <button type="submit" class="btn-submit">
+                            <i class="fas fa-paper-plane"></i>
+                            Mesajı Gönder
+                        </button>
                     </form>
                 </div>
             </div>
@@ -191,84 +225,126 @@
             <h3 class="section-title">Bizi Ziyaret Edin</h3>
             <div id="contact-map" class="contact-map"></div>
         </section>
-
-        <section class="faq-section">
-            <h3 class="section-title">Sıkça Sorulan Sorular</h3>
-            <div class="faq-container">
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <i class="fas fa-question-circle"></i>
-                        <h4>Senirkent MYO Blog'da nasıl yazı yayınlayabilirim?</h4>
-                        <i class="fas fa-chevron-down faq-toggle"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Senirkent MYO Blog'da yazı yayınlamak için üye olmanız ve "Sende Yaz" butonuna tıklamanız yeterlidir. Yazılarınız editörlerimiz tarafından onaylandıktan sonra sitede yayınlanacaktır.</p>
-                    </div>
-                </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <i class="fas fa-question-circle"></i>
-                        <h4>Blog yazılarımın görüntülenme sayısını nasıl takip edebilirim?</h4>
-                        <i class="fas fa-chevron-down faq-toggle"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Profil sayfanızdaki "Yazılarım" bölümünden tüm yazılarınızın görüntülenme ve beğeni istatistiklerini takip edebilirsiniz.</p>
-                    </div>
-                </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <i class="fas fa-question-circle"></i>
-                        <h4>Yayınladığım bir yazıyı nasıl düzenleyebilirim?</h4>
-                        <i class="fas fa-chevron-down faq-toggle"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Profilinizden "Yazılarım" bölümüne girerek, düzenlemek istediğiniz yazının yanındaki "Düzenle" butonuna tıklayabilirsiniz.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
     </main>
 
     <footer>
         <div class="footer-content">
-            <div class="contact-info">
-                <a href="#" class="contact-link"><i class="fas fa-envelope"></i> info@senirkentmyo.edu.tr</a>
-                <a href="#" class="contact-link"><i class="fas fa-phone"></i> +90 246 XXX XX XX</a>
-                <a href="#" class="contact-link"><i class="fas fa-map-marker-alt"></i> Senirkent, Isparta</a>
+            <div class="footer-top">
+                <div class="footer-column">
+                    <div class="contact-card">
+                        <div class="contact-heading">
+                            <i class="fas fa-envelope"></i>
+                            <h3 class="section-title">İletişim</h3>
+                        </div>
+                        <div class="contact-links">
+                            <a href="mailto:info@senirkentmyo.edu.tr" class="contact-link">
+                                <i class="fas fa-envelope"></i>
+                                info@senirkentmyo.edu.tr
+                            </a>
+                            <a href="tel:+902462111111" class="contact-link">
+                                <i class="fas fa-phone-alt"></i>
+                                +90 246 211 11 11
+                            </a>
+                            <a href="https://goo.gl/maps/abcdefg" class="contact-link">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Senirkent, Isparta
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <div class="newsletter-card">
+                        <h3 class="section-title">E-Bülten</h3>
+                        <p class="social-text">Güncel blog yazıları ve etkinliklerden haberdar olmak için abone olun.</p>
+                        <form class="newsletter-form">
+                            <input type="email" class="newsletter-input" placeholder="E-posta adresiniz" required>
+                            <button type="submit" class="newsletter-button">Abone Ol</button>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="social-links">
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-linkedin"></i></a>
+            
+            <div class="footer-bottom-row">
+                <div class="footer-column">
+                    <h3 class="section-title">Hızlı Erişim</h3>
+                    <div class="links-grid">
+                        <a href="index.html" class="quick-link">Ana Sayfa</a>
+                        <a href="kategoriler.html" class="quick-link">Kategoriler</a>
+                        <a href="sendeyaz.html" class="quick-link">Sende Yaz</a>
+                        <a href="hakkimizda.html" class="quick-link">Hakkımızda</a>
+                        <a href="iletisim.html" class="quick-link">İletişim</a>
+                        <a href="#" class="quick-link">Gizlilik Politikası</a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3 class="section-title">Takip Et</h3>
+                    <p class="social-text">Sosyal medya hesaplarımızdan bizi takip ederek güncel kalın.</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-link facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link linkedin"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link youtube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Senirkent MYO Blog. Tüm hakları saklıdır.</p>
             </div>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 Senirkent MYO Blog. Tüm hakları saklıdır.</p>
-        </div>
+        <div class="footer-wave"></div>
     </footer>
-
+    <div class="overlay"></div>
+    
     <script>
-        // Harita oluşturma
+        // Harita yüklenme ve oluşturma
         document.addEventListener('DOMContentLoaded', function() {
-            const map = L.map('contact-map').setView([38.0873, 30.5618], 13); // Isparta koordinatları
-
+            // Leaflet haritasını oluştur
+            var map = L.map('contact-map').setView([38.0788, 30.9653], 13);
+            
+            // OpenStreetMap katmanını ekle
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
-
-            const marker = L.marker([38.0873, 30.5618]).addTo(map);
-            marker.bindPopup("<b>Senirkent MYO</b><br>Senirkent, Isparta").openPopup();
             
-            // FAQ açılır-kapanır fonksiyonu
-            const faqItems = document.querySelectorAll('.faq-question');
-            faqItems.forEach(item => {
-                item.addEventListener('click', () => {
-                    const parent = item.parentElement;
-                    parent.classList.toggle('active');
+            // Konum işaretçisini ekle
+            var marker = L.marker([38.0788, 30.9653]).addTo(map);
+            
+            // İşaretçiye popup ekle
+            marker.bindPopup("<b>Senirkent Meslek Yüksekokulu</b><br>Süleyman Demirel Üniversitesi").openPopup();
+            
+            // Mobil menü toggle
+            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.sidebar-overlay') || document.createElement('div');
+            
+            if (!overlay.classList.contains('sidebar-overlay')) {
+                overlay.classList.add('sidebar-overlay');
+                document.body.appendChild(overlay);
+            }
+            
+            if (mobileMenuToggle) {
+                mobileMenuToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('active');
+                    document.body.classList.toggle('sidebar-active');
+                    overlay.classList.toggle('active');
+                    
+                    if (sidebar.classList.contains('active')) {
+                        document.body.style.overflow = 'hidden';
+                    } else {
+                        document.body.style.overflow = '';
+                    }
                 });
+            }
+            
+            overlay.addEventListener('click', function() {
+                sidebar.classList.remove('active');
+                document.body.classList.remove('sidebar-active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
             });
         });
     </script>

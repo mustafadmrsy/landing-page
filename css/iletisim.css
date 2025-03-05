@@ -282,6 +282,65 @@ textarea.form-control {
     line-height: 1.6;
 }
 
+/* Mobil Cihazlar İçin İletişim Sayfası Düzenlemeleri */
+@media screen and (max-width: 768px) {
+    .contact-page {
+        padding: 10px;
+    }
+    
+    .contact-hero {
+        padding: 30px 15px;
+        margin-bottom: 20px;
+    }
+    
+    .page-title {
+        font-size: 2rem;
+    }
+    
+    .page-subheader {
+        font-size: 0.95rem;
+    }
+    
+    .contact-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .contact-details,
+    .contact-form-wrapper {
+        width: 100%;
+    }
+    
+    .contact-form-card {
+        padding: 15px;
+    }
+    
+    .form-title {
+        font-size: 1.5rem;
+    }
+    
+    .form-group {
+        margin-bottom: 15px;
+    }
+    
+    .form-control {
+        padding: 10px;
+    }
+    
+    .contact-map {
+        height: 250px;
+    }
+    
+    .map-section {
+        margin-top: 20px;
+    }
+    
+    /* Form düğmelerini mobil için optimize et */
+    .btn-submit {
+        width: 100%;
+    }
+}
+
 /* Mobil için düzenlemeler */
 @media (max-width: 768px) {
     .contact-container {
