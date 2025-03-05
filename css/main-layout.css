@@ -6,15 +6,18 @@
     padding: 2rem;
     padding-right: calc(250px + 2rem);
     transition: padding-right 0.3s ease;
+    /* background-color: #151928; */ /* Arkaplan rengini kaldırdım */
 }
 
 .left-panel, 
 .content-panel, 
 .right-panel {
-    background: var(--surface-color);
-    border-radius: var(--border-radius-md);
+    background: rgba(0, 0, 0, 0.7); /* Tamamen siyah ve daha fazla şeffaf */
+    border-radius: 12px;
     padding: 1.5rem;
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #f5f5f7;
 }
 
 .gundem-section, 
@@ -40,6 +43,47 @@
     width: 50px;
     height: 3px;
     background-color: var(--primary-color);
+}
+
+.gundem-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.gundem-item {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.gundem-item:last-child {
+    border-bottom: none;
+}
+
+.gundem-link {
+    display: block;
+    color: #f5f5f7;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.gundem-link:hover {
+    color: #0095ff;
+}
+
+.gundem-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+}
+
+.gundem-badge {
+    background-color: rgba(0, 149, 255, 0.2);
+    color: #f5f5f7;
+    font-size: 0.75rem;
+    padding: 0.15rem 0.35rem;
+    border-radius: 4px;
 }
 
 /* Kategoriler Sayfası Düzeni */
@@ -84,7 +128,7 @@ main.contact-page {
     box-shadow: var(--shadow-md);
 }
 
-/* Sende Yaz Sayfası Düzeni */
+/* Sen de Yaz Sayfası Düzeni */
 .sendeyaz-container {
     width: 90%;
     max-width: 800px;

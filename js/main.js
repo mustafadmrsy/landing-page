@@ -7,11 +7,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const popupContent = document.querySelector('.blog-popup-content');
     const popupCloseBtn = document.querySelector('.blog-popup-close');
 
-    // Blog yazılarını yükle ve göster
+    // Blog yazılarını yükle ve göster - staticData kullanarak CORS sorununu çöz
     async function loadBlogPosts(category = null) {
         try {
-            const response = await fetch('blogPosts.json');
-            const data = await response.json();
+            // JSON dosyası yerine statik veri kullan (static-blog-data.js'den)
+            const data = blogData;
             
             // Kategori sayılarını güncelle
             updatePostCounts(data);
@@ -110,8 +110,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!popupOverlay || !popupContent) return;
 
         try {
-            const response = await fetch('blogPosts.json');
-            const data = await response.json();
+            // JSON dosyası yerine statik veri kullan (static-blog-data.js'den)
+            const data = blogData;
             
             // ID'ye göre yazıyı bul
             const post = data.blogPosts.find(p => p.id === postId);
