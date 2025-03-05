@@ -1,5 +1,5 @@
 // Blog yazıları için statik veri
-const blogData = {
+window.blogData = {
     "blogPosts": [
         {
             "id": "1",

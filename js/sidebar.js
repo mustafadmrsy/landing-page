@@ -15,6 +15,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const mainContent = document.querySelector('main');
     const navLinks = document.querySelectorAll('.nav-link');
     
+    // Mobil menü elementleri
+    const hamburgerBtn = document.querySelector('.hamburger-btn');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    const mobileOverlay = document.querySelector('.mobile-overlay');
+    const mobileCloseBtn = document.querySelector('.mobile-close-btn');
+    const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+    
     // Geçerli sayfayı belirle ve aktif linkini işaretle
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
     navLinks.forEach(link => {
@@ -26,6 +33,13 @@ document.addEventListener('DOMContentLoaded', function() {
         if (link.querySelector('.nav-text')) {
             const text = link.querySelector('.nav-text').textContent.trim();
             link.setAttribute('data-title', text);
+        }
+    });
+    
+    // Mobil nav linklerinde aktif olanı işaretle
+    mobileNavLinks.forEach(link => {
+        if (link.getAttribute('href') === currentPage) {
+            link.classList.add('active');
         }
     });
     
@@ -93,6 +107,19 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
+    // Hamburger menü işlevselliği
+    function toggleMobileMenu() {
+        mobileMenu.classList.toggle('active');
+        mobileOverlay.classList.toggle('active');
+        
+        // Mobil menü açılınca scroll'u engelle
+        if (mobileMenu.classList.contains('active')) {
+            body.style.overflow = 'hidden';
+        } else {
+            body.style.overflow = '';
+        }
+    }
+    
     // Sidebar toggle butonuna tıklama olayını ekle
     if (sidebarToggleBtn) {
         sidebarToggleBtn.addEventListener('click', toggleSidebar);
@@ -103,32 +130,44 @@ document.addEventListener('DOMContentLoaded', function() {
         sidebarFixedToggleBtn.addEventListener('click', toggleSidebar);
     }
     
-    // Overlay'e tıklanınca sidebar'ı kapat (mobil görünümde)
-    overlay.addEventListener('click', function() {
-        if (sidebar.classList.contains('active')) {
-            toggleSidebar();
-        }
-    });
+    // Hamburger butonuna tıklama olayını ekle
+    if (hamburgerBtn) {
+        hamburgerBtn.addEventListener('click', toggleMobileMenu);
+    }
     
-    // ESC tuşuna basılınca sidebar'ı kapat (mobil görünümde)
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && sidebar.classList.contains('active')) {
-            toggleSidebar();
-        }
-    });
+    // Mobil menü kapatma butonuna tıklama olayını ekle
+    if (mobileCloseBtn) {
+        mobileCloseBtn.addEventListener('click', toggleMobileMenu);
+    }
     
-    // Ekran boyutu değiştiğinde mobil görünümü kontrol et
+    // Mobil overlay'e tıklama olayını ekle
+    if (mobileOverlay) {
+        mobileOverlay.addEventListener('click', toggleMobileMenu);
+    }
+    
+    // Overlay'e tıklama olayını ekle
+    if (overlay) {
+        overlay.addEventListener('click', toggleSidebar);
+    }
+    
+    // Pencere boyutu değiştiğinde mobil görünümü kontrol et
     window.addEventListener('resize', function() {
         checkMobileView();
+        
+        // Masaüstü görünümüne geçildiğinde mobil menüyü kapat
+        if (window.innerWidth > 768) {
+            mobileMenu.classList.remove('active');
+            mobileOverlay.classList.remove('active');
+            body.style.overflow = '';
+        }
     });
     
     // Sidebar durumunu kontrol et - sayfa yüklendiğinde
     function checkSidebarState() {
-        // Local storage'dan sidebar durumunu kontrol et
-        const sidebarState = localStorage.getItem('sidebarState');
+        const savedState = localStorage.getItem('sidebarState');
         
-        // Eğer daha önce kapalı olarak kaydedilmişse
-        if (sidebarState === 'collapsed') {
+        // Eğer önceden kaydedilmiş durum varsa
+        if (savedState === 'collapsed') {
             sidebar.classList.add('collapsed');
             body.classList.add('sidebar-collapsed');
             
