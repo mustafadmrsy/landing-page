@@ -80,7 +80,11 @@ document.addEventListener('DOMContentLoaded', function() {
         readMoreButtons.forEach(button => {
             button.addEventListener('click', function(event) {
                 event.preventDefault(); // Sayfa yenilenmesini önle
-                event.stopPropagation(); // Olayın üst elementlere yayılmasını önle
+                
+                // Mobil menü etkileşimini tamamen engelle
+                if (window.innerWidth <= 768) {
+                    event.stopImmediatePropagation();
+                }
                 
                 console.log('Devamını oku butonuna tıklandı');
                 

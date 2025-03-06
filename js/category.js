@@ -109,22 +109,23 @@ document.addEventListener('DOMContentLoaded', function() {
         };
     }
     
-    // Kategori tıklama işlevselliği
+    // Kategori tıklama olaylarını ekle
     categoryItems.forEach(item => {
         item.addEventListener('click', function(event) {
-            // Olayın üst elementlere yayılmasını önle (mobil hamburger menüyle çakışmayı önler)
-            event.stopPropagation();
+            // Mobil görünümde olay yayılımını tamamen engelle
+            if (window.innerWidth <= 768) {
+                event.stopImmediatePropagation();
+            }
             
-            // Tüm kategorilerdeki active sınıfını kaldır
+            // Aktif sınıfları güncelle
             categoryItems.forEach(cat => cat.classList.remove('active'));
-            
-            // Tıklanan kategoriye active sınıfını ekle
             this.classList.add('active');
             
-            // Kategori adını al
+            // Seçilen kategori adını al
             const categoryName = this.getAttribute('data-category');
+            console.log('Seçilen kategori:', categoryName);
             
-            // Blog yazılarını göster
+            // Seçilen kategoriye göre blog yazılarını göster
             displayBlogPosts(categoryName);
         });
     });
@@ -191,6 +192,33 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Popup'ı göster
                     blogPopupOverlay.classList.add('active');
                     document.body.style.overflow = 'hidden';
+                });
+            });
+            
+            // Yeni eklenen "Devamını Oku" butonlarına olay dinleyicileri ekle
+            const newReadMoreButtons = postsGrid.querySelectorAll('.btn-daha');
+            newReadMoreButtons.forEach(button => {
+                button.addEventListener('click', function(event) {
+                    // Mobil görünümde olay yayılımını tamamen engelle
+                    event.preventDefault();
+                    if (window.innerWidth <= 768) {
+                        event.stopImmediatePropagation();
+                    }
+                    
+                    const postId = this.getAttribute('data-post-id');
+                    let post = null;
+                    
+                    // Tüm kategorilerde ilgili gönderiyi ara
+                    Object.values(blogPostsData).forEach(categoryPosts => {
+                        const foundPost = categoryPosts.find(p => p.id == postId);
+                        if (foundPost) post = foundPost;
+                    });
+                    
+                    if (post) {
+                        showBlogPopup(post);
+                    } else {
+                        console.error('Post bulunamadı! ID:', postId);
+                    }
                 });
             });
         }

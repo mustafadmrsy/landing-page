@@ -22,6 +22,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const mobileCloseBtn = document.querySelector('.mobile-close-btn');
     const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
     
+    // Popup ile ilgili elementler
+    const readMoreButtons = document.querySelectorAll('.btn-daha, .read-more');
+    const categoryItems = document.querySelectorAll('.category-item');
+    
     // Geçerli sayfayı belirle ve aktif linkini işaretle
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
     navLinks.forEach(link => {
@@ -108,7 +112,19 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Hamburger menü işlevselliği
-    function toggleMobileMenu() {
+    function toggleMobileMenu(e) {
+        // Bu fonksiyon sadece: 
+        // 1) hamburgerBtn (menü açma butonu) veya 
+        // 2) mobileCloseBtn (menü kapatma butonu) veya
+        // 3) mobileOverlay (arka plandaki karartma)
+        // tıklanırsa çalışsın, başka durumda çalışmasın
+        
+        if (e && e.currentTarget !== hamburgerBtn && 
+            e.currentTarget !== mobileCloseBtn && 
+            e.currentTarget !== mobileOverlay) {
+            return;
+        }
+        
         mobileMenu.classList.toggle('active');
         mobileOverlay.classList.toggle('active');
         
