@@ -2,7 +2,7 @@
  * Senirkent MYO Blog - Popup İşleyici
  * Açıklama: Blog yazılarının popup olarak gösterilmesi ve kapatılması işlemleri
  * Yazar: Mustafa Demirsoy
- * Sürüm: 1.5.0
+ * Sürüm: 2.0.0
  * Güncelleme Tarihi: 6 Mart 2025
  */
 
@@ -23,15 +23,24 @@ document.addEventListener('DOMContentLoaded', function() {
         const popupHTML = `
             <div class="blog-popup-overlay">
                 <div class="blog-popup-content">
-                    <span class="blog-popup-close">&times;</span>
-                    <div class="blog-popup-body">
+                    <div class="blog-popup-header">
                         <h2 class="blog-popup-title"></h2>
+                        <button class="blog-popup-close">&times;</button>
+                    </div>
+                    <div class="blog-popup-body">
                         <div class="blog-popup-meta">
-                            <span class="blog-popup-author"></span>
-                            <span class="blog-popup-date"></span>
+                            <div class="blog-popup-meta-item blog-popup-author">
+                                <i class="fas fa-user"></i> <span></span>
+                            </div>
+                            <div class="blog-popup-meta-item blog-popup-date">
+                                <i class="fas fa-calendar-alt"></i> <span></span>
+                            </div>
+                            <div class="blog-popup-meta-item blog-popup-views">
+                                <i class="fas fa-eye"></i> <span></span>
+                            </div>
                         </div>
-                        <div class="blog-popup-tags"></div>
                         <div class="blog-popup-content-text"></div>
+                        <div class="blog-popup-tags"></div>
                     </div>
                 </div>
             </div>
@@ -40,19 +49,28 @@ document.addEventListener('DOMContentLoaded', function() {
         blogPopupOverlay = document.querySelector('.blog-popup-overlay');
     } 
     // Eğer popup overlay varsa ama eski yapıdaysa, yeni yapıya güncelle
-    else if (!blogPopupOverlay.querySelector('.blog-popup-title')) {
+    else if (!blogPopupOverlay.querySelector('.blog-popup-header')) {
         // Eski popup içeriğini temizle
         blogPopupOverlay.innerHTML = `
             <div class="blog-popup-content">
-                <span class="blog-popup-close">&times;</span>
-                <div class="blog-popup-body">
+                <div class="blog-popup-header">
                     <h2 class="blog-popup-title"></h2>
+                    <button class="blog-popup-close">&times;</button>
+                </div>
+                <div class="blog-popup-body">
                     <div class="blog-popup-meta">
-                        <span class="blog-popup-author"></span>
-                        <span class="blog-popup-date"></span>
+                        <div class="blog-popup-meta-item blog-popup-author">
+                            <i class="fas fa-user"></i> <span></span>
+                        </div>
+                        <div class="blog-popup-meta-item blog-popup-date">
+                            <i class="fas fa-calendar-alt"></i> <span></span>
+                        </div>
+                        <div class="blog-popup-meta-item blog-popup-views">
+                            <i class="fas fa-eye"></i> <span></span>
+                        </div>
                     </div>
-                    <div class="blog-popup-tags"></div>
                     <div class="blog-popup-content-text"></div>
+                    <div class="blog-popup-tags"></div>
                 </div>
             </div>
         `;
@@ -60,8 +78,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Popup elementlerini seç
     const blogPopupTitle = document.querySelector('.blog-popup-title');
-    const blogPopupAuthor = document.querySelector('.blog-popup-author');
-    const blogPopupDate = document.querySelector('.blog-popup-date');
+    const blogPopupAuthor = document.querySelector('.blog-popup-author span');
+    const blogPopupDate = document.querySelector('.blog-popup-date span');
+    const blogPopupViews = document.querySelector('.blog-popup-views span');
     const blogPopupTags = document.querySelector('.blog-popup-tags');
     const blogPopupContentText = document.querySelector('.blog-popup-content-text');
     const blogPopupClose = document.querySelector('.blog-popup-close');
@@ -115,6 +134,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         const title = postElement.querySelector('.post-title, .entry-title')?.textContent;
                         const author = postElement.querySelector('.post-author, .meta-item:has(.fa-user)')?.textContent;
                         const date = postElement.querySelector('.post-date, .meta-item:has(.fa-calendar-alt)')?.textContent;
+                        const views = postElement.querySelector('.meta-item:has(.fa-eye)')?.textContent || '0 görüntülenme';
                         const content = postElement.getAttribute('data-content') || 
                                        postElement.querySelector('.entry-content, .entry-summary')?.innerHTML;
                         const tagsStr = postElement.getAttribute('data-tags');
@@ -124,6 +144,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             title: title,
                             author: author,
                             date: date,
+                            views: views,
                             content: content,
                             tags: tags
                         };
@@ -137,8 +158,30 @@ document.addEventListener('DOMContentLoaded', function() {
                     try {
                         // Popup içeriğini doldur
                         blogPopupTitle.textContent = post.title || 'Blog Yazısı';
-                        blogPopupAuthor.textContent = post.author ? `Yazar: ${post.author}` : '';
-                        blogPopupDate.textContent = post.date ? `Tarih: ${post.date}` : '';
+                        
+                        // Yazar bilgisi
+                        if (post.author) {
+                            blogPopupAuthor.textContent = post.author.replace('Yazar:', '').trim();
+                            blogPopupAuthor.parentElement.style.display = 'flex';
+                        } else {
+                            blogPopupAuthor.parentElement.style.display = 'none';
+                        }
+                        
+                        // Tarih bilgisi
+                        if (post.date) {
+                            blogPopupDate.textContent = post.date.replace('Tarih:', '').trim();
+                            blogPopupDate.parentElement.style.display = 'flex';
+                        } else {
+                            blogPopupDate.parentElement.style.display = 'none';
+                        }
+                        
+                        // Görüntülenme sayısı
+                        if (post.views && blogPopupViews) {
+                            blogPopupViews.textContent = post.views.replace('Görüntülenme:', '').trim();
+                            blogPopupViews.parentElement.style.display = 'flex';
+                        } else if (blogPopupViews) {
+                            blogPopupViews.parentElement.style.display = 'none';
+                        }
                         
                         // Etiketleri ekle
                         if (post.tags && post.tags.length > 0) {
@@ -149,7 +192,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 tagElement.textContent = tag;
                                 blogPopupTags.appendChild(tagElement);
                             });
-                            blogPopupTags.style.display = 'block';
+                            blogPopupTags.style.display = 'flex';
                         } else {
                             blogPopupTags.style.display = 'none';
                         }
@@ -199,35 +242,24 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Popup overlay'ine tıklama olayı
+    // Popup overlay'e tıklandığında popupı kapat
     if (blogPopupOverlay) {
         blogPopupOverlay.addEventListener('click', function(event) {
-            // Direkt overlay'e tıklandıysa kapat
-            if (event.target === blogPopupOverlay) {
+            // Popup content dışında bir yere tıklandıysa kapat
+            if (event.target === this) {
                 closePopup();
             }
-            event.stopPropagation(); // Hamburger menüyü etkilememesi için olayı durdur
         });
     }
 
-    // Popup kapatma butonu tıklama olayı
+    // Popup kapatma butonuna tıklandığında popupı kapat
     if (blogPopupClose) {
-        blogPopupClose.addEventListener('click', function(event) {
-            event.preventDefault();
-            event.stopPropagation(); // Olayın üst elementlere yayılmasını önle
-            
-            // Mobil görünümde ek koruma
-            if (window.innerWidth <= 768) {
-                event.stopImmediatePropagation();
-            }
-            
-            closePopup();
-        });
+        blogPopupClose.addEventListener('click', closePopup);
     }
 
-    // ESC tuşuna basıldığında popup'ı kapat
+    // ESC tuşuna basıldığında popupı kapat
     document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape') {
+        if (event.key === 'Escape' && blogPopupOverlay && blogPopupOverlay.classList.contains('active')) {
             closePopup();
         }
     });
