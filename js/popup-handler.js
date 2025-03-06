@@ -2,12 +2,12 @@
  * Senirkent MYO Blog - Popup İşleyici
  * Açıklama: Blog yazılarının popup olarak gösterilmesi ve kapatılması işlemleri
  * Yazar: Mustafa Demirsoy
- * Sürüm: 1.6.0
+ * Sürüm: 1.5.0
  * Güncelleme Tarihi: 6 Mart 2025
  */
 
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Popup handler loaded v1.6.0 - Mobil uyumlu düzeltme');
+    console.log('Popup handler loaded');
     
     // Debug: blogData nesnesini kontrol et
     console.log('blogData mevcut mu?', window.blogData ? 'Evet' : 'Hayır');
@@ -79,117 +79,100 @@ document.addEventListener('DOMContentLoaded', function() {
         return; // Elementler bulunamazsa işlemi sonlandır
     }
 
-    // Global işlev olarak tanımla
-    window.showBlogPopup = function(postIdOrObject) {
-        console.log('showBlogPopup fonksiyonu çağrıldı');
-        
-        let post = null;
-        
-        // postIdOrObject bir ID mi yoksa direkt post objesi mi kontrol et
-        if (typeof postIdOrObject === 'object') {
-            post = postIdOrObject;
-            console.log('Direkt post objesi alındı');
-        } else {
-            // ID olarak geldiyse postu bul
-            const postId = postIdOrObject;
-            
-            // Önce global blogData'dan post'u bulmaya çalış
-            if (window.blogData && window.blogData.blogPosts) {
-                post = window.blogData.blogPosts.find(p => p.id === postId || p.id === parseInt(postId));
-                console.log('Global blogData\'dan post bulundu mu?', post ? 'Evet' : 'Hayır');
-            }
-        }
-        
-        // Post bulundu mu kontrol et
-        if (post) {
-            try {
-                // Popup içeriğini doldur
-                blogPopupTitle.textContent = post.title || 'Blog Yazısı';
-                blogPopupAuthor.textContent = post.author ? `Yazar: ${post.author}` : '';
-                blogPopupDate.textContent = post.date ? `Tarih: ${post.date}` : '';
-                
-                // Etiketleri ekle
-                if (post.tags && post.tags.length > 0) {
-                    blogPopupTags.innerHTML = '';
-                    post.tags.forEach(tag => {
-                        const tagElement = document.createElement('span');
-                        tagElement.classList.add('blog-tag');
-                        tagElement.textContent = tag;
-                        blogPopupTags.appendChild(tagElement);
-                    });
-                    blogPopupTags.style.display = 'block';
-                } else {
-                    blogPopupTags.style.display = 'none';
-                }
-                
-                // İçeriği ekle
-                if (post.content) {
-                    blogPopupContentText.innerHTML = post.content;
-                } else {
-                    blogPopupContentText.innerHTML = '<p>İçerik bulunamadı.</p>';
-                }
-                
-                // Popup'ı göster
-                blogPopupOverlay.classList.add('active');
-                document.body.style.overflow = 'hidden'; // Scroll'u devre dışı bırak
-                
-                console.log('Popup gösterildi');
-            } catch (error) {
-                console.error('Popup içeriği doldurulurken hata oluştu:', error);
-            }
-        } else {
-            console.error('Post bulunamadı, ID:', postIdOrObject);
-        }
-    };
-
     // Devamını oku butonlarına tıklama olayı ekle
-    const readMoreButtons = document.querySelectorAll('.btn-daha, .read-more');
+    const readMoreButtons = document.querySelectorAll('.btn-daha');
     
     if (readMoreButtons.length > 0) {
         console.log('Devamını oku butonları bulundu:', readMoreButtons.length);
         
         readMoreButtons.forEach(button => {
-            // TOUCH EVENT - MOBİL CİHAZLAR İÇİN ÇOK ÖNEMLİ
-            button.addEventListener('touchend', function(event) {
-                // Tıklama olayının tüm diğer işlemleri durdur - ÇOK ÖNEMLİ
-                event.preventDefault();
-                event.stopPropagation();
-                event.stopImmediatePropagation();
-                
-                console.log('Devamını oku butonuna mobil dokunma olayı yakalandı');
-                
-                // Post ID'sini al
-                const postId = this.getAttribute('data-post-id');
-                console.log('Post ID:', postId);
-                
-                // Popup göster
-                if (postId) {
-                    window.showBlogPopup(postId);
-                }
-                
-                return false; // Olayın daha fazla işlenmesini engelle
-            }, { capture: true, passive: false });
-            
-            // NORMAL CLICK EVENT - MASAÜSTÜ CİHAZLAR İÇİN
             button.addEventListener('click', function(event) {
-                // Tıklama olayının tüm diğer işlemleri durdur - ÇOK ÖNEMLİ
-                event.preventDefault();
-                event.stopPropagation();
-                event.stopImmediatePropagation();
+                event.preventDefault(); // Sayfa yenilenmesini önle
                 
-                console.log('Devamını oku butonuna tıklama olayı yakalandı');
+                // Mobil menü etkileşimini tamamen engelle
+                if (window.innerWidth <= 768) {
+                    event.stopImmediatePropagation();
+                }
+                
+                console.log('Devamını oku butonuna tıklandı');
                 
                 // Post ID'sini al
                 const postId = this.getAttribute('data-post-id');
                 console.log('Post ID:', postId);
                 
-                // Popup göster
-                if (postId) {
-                    window.showBlogPopup(postId);
+                let post = null;
+                
+                // Önce global blogData'dan post'u bulmaya çalış
+                if (window.blogData && window.blogData.blogPosts) {
+                    post = window.blogData.blogPosts.find(p => p.id === postId || p.id === parseInt(postId));
+                    console.log('Global blogData\'dan post bulundu mu?', post ? 'Evet' : 'Hayır');
                 }
                 
-                return false; // Olayın daha fazla işlenmesini engelle
-            }, { capture: true });
+                // Eğer global blogData'da bulunamadıysa, sayfadaki veri özniteliklerinden al
+                if (!post) {
+                    const postElement = this.closest('.post-card') || this.closest('.entry-item');
+                    if (postElement) {
+                        const title = postElement.querySelector('.post-title, .entry-title')?.textContent;
+                        const author = postElement.querySelector('.post-author, .meta-item:has(.fa-user)')?.textContent;
+                        const date = postElement.querySelector('.post-date, .meta-item:has(.fa-calendar-alt)')?.textContent;
+                        const content = postElement.getAttribute('data-content') || 
+                                       postElement.querySelector('.entry-content, .entry-summary')?.innerHTML;
+                        const tagsStr = postElement.getAttribute('data-tags');
+                        const tags = tagsStr ? tagsStr.split(',').map(tag => tag.trim()) : [];
+                        
+                        post = {
+                            title: title,
+                            author: author,
+                            date: date,
+                            content: content,
+                            tags: tags
+                        };
+                        
+                        console.log('DOM özniteliklerinden post oluşturuldu');
+                    }
+                }
+                
+                // Post bulundu mu kontrol et
+                if (post) {
+                    try {
+                        // Popup içeriğini doldur
+                        blogPopupTitle.textContent = post.title || 'Blog Yazısı';
+                        blogPopupAuthor.textContent = post.author ? `Yazar: ${post.author}` : '';
+                        blogPopupDate.textContent = post.date ? `Tarih: ${post.date}` : '';
+                        
+                        // Etiketleri ekle
+                        if (post.tags && post.tags.length > 0) {
+                            blogPopupTags.innerHTML = '';
+                            post.tags.forEach(tag => {
+                                const tagElement = document.createElement('span');
+                                tagElement.classList.add('blog-tag');
+                                tagElement.textContent = tag;
+                                blogPopupTags.appendChild(tagElement);
+                            });
+                            blogPopupTags.style.display = 'block';
+                        } else {
+                            blogPopupTags.style.display = 'none';
+                        }
+                        
+                        // İçeriği ekle
+                        if (post.content) {
+                            blogPopupContentText.innerHTML = post.content;
+                        } else {
+                            blogPopupContentText.innerHTML = '<p>İçerik bulunamadı.</p>';
+                        }
+                        
+                        // Popup'ı göster
+                        blogPopupOverlay.classList.add('active');
+                        document.body.style.overflow = 'hidden'; // Scroll'u devre dışı bırak
+                        
+                        console.log('Popup gösterildi');
+                    } catch (error) {
+                        console.error('Popup içeriği doldurulurken hata oluştu:', error);
+                    }
+                } else {
+                    console.error('Post bulunamadı, ID:', postId);
+                }
+            }, { capture: true }); // Yakalama aşamasında olayı dinle (çok önemli!)
         });
     } else {
         console.warn('Devamını oku butonları bulunamadı');
@@ -213,51 +196,38 @@ document.addEventListener('DOMContentLoaded', function() {
             if (window.innerWidth <= 768) {
                 event.stopImmediatePropagation();
             }
-        }, { capture: true });
+        });
     }
-    
-    // Popup kapatma butonuna tıklama olayı
+
+    // Popup overlay'ine tıklama olayı
+    if (blogPopupOverlay) {
+        blogPopupOverlay.addEventListener('click', function(event) {
+            // Direkt overlay'e tıklandıysa kapat
+            if (event.target === blogPopupOverlay) {
+                closePopup();
+            }
+            event.stopPropagation(); // Hamburger menüyü etkilememesi için olayı durdur
+        });
+    }
+
+    // Popup kapatma butonu tıklama olayı
     if (blogPopupClose) {
-        // TOUCH EVENT - MOBİL CİHAZLAR İÇİN
-        blogPopupClose.addEventListener('touchend', function(event) {
-            event.preventDefault();
-            event.stopPropagation();
-            closePopup();
-            return false;
-        }, { capture: true, passive: false });
-        
-        // CLICK EVENT - MASAÜSTÜ CİHAZLAR İÇİN
         blogPopupClose.addEventListener('click', function(event) {
             event.preventDefault();
-            event.stopPropagation();
+            event.stopPropagation(); // Olayın üst elementlere yayılmasını önle
+            
+            // Mobil görünümde ek koruma
+            if (window.innerWidth <= 768) {
+                event.stopImmediatePropagation();
+            }
+            
             closePopup();
-            return false;
-        }, { capture: true });
+        });
     }
-    
-    // Overlay tıklaması ile popupı kapat
-    if (blogPopupOverlay) {
-        // TOUCH EVENT - MOBİL CİHAZLAR İÇİN
-        blogPopupOverlay.addEventListener('touchend', function(event) {
-            // Sadece doğrudan overlay'e tıklandığında kapat (içeriğe tıklanınca değil)
-            if (event.target === this) {
-                event.preventDefault();
-                closePopup();
-            }
-        }, { capture: true, passive: false });
-        
-        // CLICK EVENT - MASAÜSTÜ CİHAZLAR İÇİN
-        blogPopupOverlay.addEventListener('click', function(event) {
-            // Sadece doğrudan overlay'e tıklandığında kapat (içeriğe tıklanınca değil)
-            if (event.target === this) {
-                closePopup();
-            }
-        }, { capture: true });
-    }
-    
-    // ESC tuşu ile popupı kapat
+
+    // ESC tuşuna basıldığında popup'ı kapat
     document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape' && blogPopupOverlay && blogPopupOverlay.classList.contains('active')) {
+        if (event.key === 'Escape') {
             closePopup();
         }
     });
