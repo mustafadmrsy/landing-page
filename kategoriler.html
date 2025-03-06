@@ -269,8 +269,6 @@
         </div>
     </div>
 
-    <div class="overlay"></div>
-
     <footer>
         <div class="footer-content">
             <div class="footer-top">
@@ -343,93 +341,37 @@
     </footer>
     
     <script>
-        // Mobil menü sorununu çözmek için özel script
+        // Mobil menü işlemleri
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('Kategoriler sayfası - Mobil menü sorun giderme scripti yüklendi');
+            // Mobil menü toggle
+            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.sidebar-overlay') || document.createElement('div');
             
-            // Belgeye tıklama olaylarını engellemek için boş bir event listener ekle
-            document.addEventListener('click', function(e) {
-                // Herhangi bir eylem yapma, sadece olayı tüket
-                // Bu, diğer yerlerden gelen belge seviyesindeki click olaylarını durdurur
-            }, true);
-            
-            // Hamburger butonu için özel işlev
-            const hamburgerBtn = document.querySelector('.hamburger-btn');
-            if (hamburgerBtn) {
-                hamburgerBtn.onclick = function(e) {
-                    e.stopPropagation();
-                    
-                    // Menü elementlerini seç
-                    const mobileMenu = document.querySelector('.mobile-menu');
-                    const mobileOverlay = document.querySelector('.mobile-overlay');
-                    
-                    // Durumu değiştir
-                    if (mobileMenu) {
-                        mobileMenu.classList.toggle('active');
-                        if (mobileOverlay) mobileOverlay.classList.toggle('active');
-                        
-                        if (mobileMenu.classList.contains('active')) {
-                            document.body.style.overflow = 'hidden';
-                        } else {
-                            document.body.style.overflow = '';
-                        }
-                    }
-                };
+            if (!overlay.classList.contains('sidebar-overlay')) {
+                overlay.classList.add('sidebar-overlay');
+                document.body.appendChild(overlay);
             }
             
-            // Kapatma butonu
-            const mobileCloseBtn = document.querySelector('.mobile-close-btn');
-            if (mobileCloseBtn) {
-                mobileCloseBtn.onclick = function(e) {
-                    e.stopPropagation();
+            if (mobileMenuToggle) {
+                mobileMenuToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('active');
+                    document.body.classList.toggle('sidebar-active');
+                    overlay.classList.toggle('active');
                     
-                    // Menü elementlerini seç
-                    const mobileMenu = document.querySelector('.mobile-menu');
-                    const mobileOverlay = document.querySelector('.mobile-overlay');
-                    
-                    // Menüyü kapat
-                    if (mobileMenu) {
-                        mobileMenu.classList.remove('active');
-                        if (mobileOverlay) mobileOverlay.classList.remove('active');
+                    if (sidebar.classList.contains('active')) {
+                        document.body.style.overflow = 'hidden';
+                    } else {
                         document.body.style.overflow = '';
                     }
-                };
+                });
             }
             
-            // Overlay
-            const mobileOverlay = document.querySelector('.mobile-overlay');
-            if (mobileOverlay) {
-                mobileOverlay.onclick = function(e) {
-                    e.stopPropagation();
-                    
-                    // Menü elementlerini seç
-                    const mobileMenu = document.querySelector('.mobile-menu');
-                    
-                    // Menüyü kapat
-                    if (mobileMenu) {
-                        mobileMenu.classList.remove('active');
-                        mobileOverlay.classList.remove('active');
-                        document.body.style.overflow = '';
-                    }
-                };
-            }
-            
-            // Kategori öğeleri için olay dinleyicileri
-            const categoryItems = document.querySelectorAll('.category-item');
-            categoryItems.forEach(item => {
-                item.onclick = function(e) {
-                    e.stopPropagation();
-                    
-                    // Mevcut category.js işlevselliği çalışsın
-                    const categoryName = this.getAttribute('data-category');
-                    if (categoryName && typeof window.displayBlogPosts === 'function') {
-                        document.querySelectorAll('.category-item').forEach(cat => {
-                            cat.classList.remove('active');
-                        });
-                        this.classList.add('active');
-                        window.displayBlogPosts(categoryName);
-                    }
-                };
+            overlay.addEventListener('click', function() {
+                sidebar.classList.remove('active');
+                document.body.classList.remove('sidebar-active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
             });
         });
     </script>
