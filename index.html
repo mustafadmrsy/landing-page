@@ -18,7 +18,7 @@
     <script src="js/main.js" defer></script>
     <script src="js/popup-handler.js" defer></script>
     <script src="js/like-handler.js" defer></script>
-    <script src="js/mobile-touch.js"></script>
+    <script src="js/mobile.js" defer></script>
     <style>
         /* Önbellek sıfırlama - v2.0 - Sidebar bağımsız hale getirildi */
         
@@ -521,77 +521,5 @@
         <div class="footer-wave"></div>
     </footer>
     <div class="overlay"></div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Acil düzeltme scripti yüklendi');
-            
-            // Mobil elementleri
-            const hamburgerBtn = document.querySelector('.hamburger-btn');
-            const mobileMenu = document.querySelector('.mobile-menu');
-            const mobileOverlay = document.querySelector('.mobile-overlay');
-            const mobileCloseBtn = document.querySelector('.mobile-close-btn');
-            
-            // Hamburger butonu için olay dinleyici
-            if (hamburgerBtn) {
-                hamburgerBtn.onclick = function(e) {
-                    console.log('Hamburger butonuna tıklandı');
-                    if (mobileMenu) {
-                        mobileMenu.classList.toggle('active');
-                        if (mobileOverlay) mobileOverlay.classList.toggle('active');
-                        
-                        if (mobileMenu.classList.contains('active')) {
-                            document.body.style.overflow = 'hidden';
-                        } else {
-                            document.body.style.overflow = '';
-                        }
-                    }
-                    e.stopPropagation();
-                };
-            }
-            
-            // Mobil menüyü kapatma butonu
-            if (mobileCloseBtn) {
-                mobileCloseBtn.onclick = function(e) {
-                    console.log('Kapat butonuna tıklandı');
-                    if (mobileMenu) {
-                        mobileMenu.classList.remove('active');
-                        if (mobileOverlay) mobileOverlay.classList.remove('active');
-                        document.body.style.overflow = '';
-                    }
-                    e.stopPropagation();
-                };
-            }
-            
-            // Overlay tıklamaları
-            if (mobileOverlay) {
-                mobileOverlay.onclick = function(e) {
-                    console.log('Overlay tıklandı');
-                    if (mobileMenu) {
-                        mobileMenu.classList.remove('active');
-                        mobileOverlay.classList.remove('active');
-                        document.body.style.overflow = '';
-                    }
-                    e.stopPropagation();
-                };
-            }
-            
-            // Devamını oku butonları 
-            const readMoreButtons = document.querySelectorAll('.btn-daha, .read-more');
-            readMoreButtons.forEach(button => {
-                button.onclick = function(e) {
-                    e.preventDefault();
-                    console.log('Devamını oku butonuna tıklandı');
-                    
-                    const postId = this.getAttribute('data-post-id');
-                    if (postId && typeof window.showBlogPopup === 'function') {
-                        const post = window.blogData.blogPosts.find(p => p.id == postId);
-                        if (post) {
-                            window.showBlogPopup(post);
-                        }
-                    }
-                };
-            });
-        });
-    </script>
 </body>
 </html>
