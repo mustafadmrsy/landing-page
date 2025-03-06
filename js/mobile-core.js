@@ -1,218 +1,243 @@
 /**
- * Senirkent MYO Blog - Mobil Çekirdek Script
- * Açıklama: Sadece mobil cihazlarda çalışacak ve masaüstü uyumluluğuna dokunmayacak kod
- * Sürüm: 1.0.0 (Kesin Çözüm)
+ * Senirkent MYO Blog - Mobil Etkileşim Temel Scripti
+ * Açıklama: En basit, direkt yaklaşım - Anında çalışır, hiçbir event beklenmez
+ * Sürüm: 3.0.0
  * Güncelleme Tarihi: 6 Mart 2025
  */
 
+console.log('Mobile-core.js - Anında çalışan sürüm başlatıldı');
+
+// ANINDA ÇALIŞIR (sayfa tamamen yüklenmeyi beklemez)
 (function() {
-    // Sadece mobil cihazlarda çalışsın
-    const isMobile = window.innerWidth <= 768;
-    if (!isMobile) {
-        console.log("Mobile-core.js: Mobil cihaz olmadığı için pasif");
-        return; // Mobil cihaz değilse çık ve hiçbir şey yapma
+    // Anında uygula - Tıklama sorunları için
+    setTimeout(handleMobileInteractions, 100);  // 100ms sonra başlat
+    
+    // 1 saniye sonra bir kez daha kontrol et
+    setTimeout(handleMobileInteractions, 1000);
+    
+    // Sayfa yüklenince de çalıştır
+    window.addEventListener('load', handleMobileInteractions);
+    document.addEventListener('DOMContentLoaded', handleMobileInteractions);
+})();
+
+// Tüm mobil etkileşimleri ayarla
+function handleMobileInteractions() {
+    console.log('Mobil etkileşimler ayarlanıyor - ' + new Date().toLocaleTimeString());
+    
+    // 1. Hamburger Menü
+    setupMobileMenu();
+    
+    // 2. Devamını Oku butonları
+    setupReadMoreButtons();
+    
+    // 3. Kategori butonları
+    setupCategoryButtons();
+}
+
+// 1. MOBİL MENÜ FONKSİYONLARI
+function setupMobileMenu() {
+    console.log('Mobil menü ayarlanıyor');
+    
+    // Hamburger butonu
+    var hamburgerBtn = document.querySelector('.hamburger-btn');
+    if (hamburgerBtn) {
+        // Sadece onclick değil, birden fazla event ekleyelim
+        hamburgerBtn.onclick = mobileMenuToggle;
+        hamburgerBtn.addEventListener('touchstart', mobileMenuToggle);
+        hamburgerBtn.addEventListener('mousedown', mobileMenuToggle);
+        console.log('Hamburger butonu hazır');
     }
     
-    console.log("Mobile-core.js: Mobil cihaz algılandı, başlatılıyor");
+    // Kapatma butonu
+    var closeBtn = document.querySelector('.mobile-close-btn');
+    if (closeBtn) {
+        closeBtn.onclick = function(e) {
+            console.log('Kapatma butonuna tıklandı');
+            if (e) e.preventDefault();
+            toggleMobileMenu(false);
+            return false;
+        };
+        closeBtn.addEventListener('touchstart', function(e) {
+            if (e) e.preventDefault();
+            toggleMobileMenu(false);
+        });
+    }
     
-    // DOMContentLoaded olayını bekle
-    document.addEventListener('DOMContentLoaded', function() {
-        // Mobil menü elementleri
-        const hamburgerBtn = document.querySelector('.hamburger-btn');
-        const mobileMenu = document.querySelector('.mobile-menu');
-        const mobileOverlay = document.querySelector('.mobile-overlay');
-        const mobileCloseBtn = document.querySelector('.mobile-close-btn');
-        
-        // Tüm etkileşimli elementler
-        const popupElements = document.querySelectorAll('.blog-popup-overlay, .popup');
-        const readMoreButtons = document.querySelectorAll('.btn-daha, .read-more');
-        const categoryButtons = document.querySelectorAll('.category-item');
-        
-        // Menü durumunu izle
-        let menuOpen = false;
-        
-        // ----- Menü Fonksiyonları -----
-        
-        // Menüyü açma fonksiyonu
-        function openMenu() {
-            if (!menuOpen && mobileMenu) {
-                mobileMenu.classList.add('active');
-                if (mobileOverlay) mobileOverlay.classList.add('active');
-                document.body.style.overflow = 'hidden';
-                menuOpen = true;
-                console.log("Mobil menü açıldı");
-            }
-        }
-        
-        // Menüyü kapatma fonksiyonu
-        function closeMenu() {
-            if (menuOpen && mobileMenu) {
-                mobileMenu.classList.remove('active');
-                if (mobileOverlay) mobileOverlay.classList.remove('active');
-                document.body.style.overflow = '';
-                menuOpen = false;
-                console.log("Mobil menü kapatıldı");
-            }
-        }
-        
-        // ----- Mobil Element Olay Dinleyicileri -----
-        
-        // Hamburger butonuna tıklama
-        if (hamburgerBtn) {
-            // Mevcut dinleyicileri kaldır ve temiz bir şekilde yeniden ekle
-            const oldBtn = hamburgerBtn;
-            const newBtn = oldBtn.cloneNode(true);
-            if (oldBtn.parentNode) {
-                oldBtn.parentNode.replaceChild(newBtn, oldBtn);
-            }
-            
-            // Yeni event listener ekle
-            newBtn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                menuOpen ? closeMenu() : openMenu();
-            });
-        }
-        
-        // Kapatma butonuna tıklama
-        if (mobileCloseBtn) {
-            // Mevcut dinleyicileri kaldır ve temiz bir şekilde yeniden ekle
-            const oldBtn = mobileCloseBtn;
-            const newBtn = oldBtn.cloneNode(true);
-            if (oldBtn.parentNode) {
-                oldBtn.parentNode.replaceChild(newBtn, oldBtn);
-            }
-            
-            // Yeni event listener ekle
-            newBtn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                closeMenu();
-            });
-        }
-        
-        // Overlay'e tıklandığında
-        if (mobileOverlay) {
-            // Mevcut dinleyicileri kaldır ve temiz bir şekilde yeniden ekle
-            const oldOverlay = mobileOverlay;
-            const newOverlay = oldOverlay.cloneNode(true);
-            if (oldOverlay.parentNode) {
-                oldOverlay.parentNode.replaceChild(newOverlay, oldOverlay);
-            }
-            
-            // Yeni event listener ekle
-            newOverlay.addEventListener('click', function(e) {
-                e.stopPropagation();
-                closeMenu();
-            });
-        }
-        
-        // ----- "Devamını Oku" Butonları -----
-        
-        // Tüm read-more butonlarını işle
-        if (readMoreButtons.length > 0) {
-            readMoreButtons.forEach(button => {
-                // Mevcut dinleyicileri kaldır ve temiz bir şekilde yeniden ekle
-                const oldBtn = button;
-                const newBtn = oldBtn.cloneNode(true);
-                if (oldBtn.parentNode) {
-                    oldBtn.parentNode.replaceChild(newBtn, oldBtn);
-                }
-                
-                // Yeni event listener ekle
-                newBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    console.log("Devamını oku butonuna tıklandı (mobile-core.js)");
-                    
-                    // Eğer menü açıksa kapat
-                    if (menuOpen) {
-                        closeMenu();
-                    }
-                    
-                    // Blog popup'ını göster
-                    const postId = this.getAttribute('data-post-id');
-                    if (postId && typeof window.showBlogPopup === 'function' && typeof window.blogData !== 'undefined') {
-                        const post = window.blogData.blogPosts.find(p => p.id == postId);
-                        if (post) {
-                            window.showBlogPopup(post);
-                            console.log("Blog popup açıldı:", post.title);
-                        }
-                    } else if (postId && typeof window.showBlogPopup === 'function') {
-                        window.showBlogPopup(postId);
-                        console.log("Blog popup açıldı (ID ile):", postId);
-                    } else {
-                        console.warn("showBlogPopup fonksiyonu veya blogData bulunamadı");
-                    }
-                });
-            });
-        }
-        
-        // ----- Kategori Butonları -----
-        
-        // Kategori butonlarını işle
-        if (categoryButtons.length > 0) {
-            categoryButtons.forEach(button => {
-                // Mevcut dinleyicileri kaldır ve temiz bir şekilde yeniden ekle
-                const oldBtn = button;
-                const newBtn = oldBtn.cloneNode(true);
-                if (oldBtn.parentNode) {
-                    oldBtn.parentNode.replaceChild(newBtn, oldBtn);
-                }
-                
-                // Yeni event listener ekle
-                newBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    console.log("Kategori butonuna tıklandı");
-                    
-                    // Eğer menü açıksa kapat
-                    if (menuOpen) {
-                        closeMenu();
-                    }
-                    
-                    // Kategori değiştir
-                    const category = this.getAttribute('data-category');
-                    if (category && typeof window.displayBlogPosts === 'function') {
-                        // Aktif kategoriyi güncelle
-                        categoryButtons.forEach(btn => btn.classList.remove('active'));
-                        this.classList.add('active');
-                        
-                        // Blog yazılarını göster
-                        window.displayBlogPosts(category);
-                        console.log("Kategori değiştirildi:", category);
-                    }
-                });
-            });
-        }
-        
-        // ----- Blog Popup Overlay İşlemleri -----
-        
-        // Popup kapatma işlevleri - Mobil düzgün çalışması için
-        const blogPopupOverlay = document.querySelector('.blog-popup-overlay');
-        const blogPopupClose = document.querySelector('.blog-popup-close');
-        
-        if (blogPopupOverlay) {
-            blogPopupOverlay.addEventListener('click', function(e) {
-                // Sadece doğrudan overlay'e tıklandığında kapat
-                if (e.target === this) {
-                    this.classList.remove('active');
-                    document.body.style.overflow = '';
-                }
-                // Hamburger menüsünün açılmasını engelle
-                e.stopPropagation();
-            });
-        }
-        
-        if (blogPopupClose) {
-            blogPopupClose.addEventListener('click', function(e) {
-                const overlay = document.querySelector('.blog-popup-overlay');
-                if (overlay) {
-                    overlay.classList.remove('active');
-                    document.body.style.overflow = '';
-                }
-                // Hamburger menüsünün açılmasını engelle
-                e.stopPropagation();
-            });
-        }
-        
-        console.log("Mobile-core.js: Tüm mobil işlevler yüklendi");
+    // Overlay
+    var overlay = document.querySelector('.mobile-overlay');
+    if (overlay) {
+        overlay.onclick = function(e) {
+            console.log('Overlay tıklandı');
+            if (e) e.preventDefault();
+            toggleMobileMenu(false);
+            return false;
+        };
+        overlay.addEventListener('touchstart', function(e) {
+            if (e) e.preventDefault();
+            toggleMobileMenu(false);
+        });
+    }
+}
+
+// Hamburger menü toggle olayı
+function mobileMenuToggle(e) {
+    console.log('Hamburger butonuna tıklandı - Olay: ' + (e ? e.type : 'doğrudan çağrı'));
+    if (e) e.preventDefault();
+    toggleMobileMenu();
+    return false;
+}
+
+// Menüyü aç/kapat
+function toggleMobileMenu(forceState) {
+    var mobileMenu = document.querySelector('.mobile-menu');
+    var mobileOverlay = document.querySelector('.mobile-overlay');
+    
+    if (!mobileMenu) {
+        console.log('Mobile menu bulunamadı!');
+        return;
+    }
+    
+    var isActive = mobileMenu.classList.contains('active');
+    var newState = (forceState !== undefined) ? forceState : !isActive;
+    
+    console.log('Menü durumu: ' + (isActive ? 'açık' : 'kapalı') + ' -> ' + (newState ? 'açılıyor' : 'kapanıyor'));
+    
+    if (newState) {
+        // Menüyü aç
+        mobileMenu.classList.add('active');
+        if (mobileOverlay) mobileOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    } else {
+        // Menüyü kapat
+        mobileMenu.classList.remove('active');
+        if (mobileOverlay) mobileOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+}
+
+// 2. DEVAMINI OKU BUTONLARI
+function setupReadMoreButtons() {
+    // Tüm devamını oku butonlarını seç
+    var readMoreButtons = document.querySelectorAll('.btn-daha, .read-more');
+    
+    if (readMoreButtons.length === 0) {
+        console.log('Devamını oku butonları bulunamadı');
+        return;
+    }
+    
+    console.log('Devamını oku butonları ayarlanıyor: ' + readMoreButtons.length + ' adet');
+    
+    readMoreButtons.forEach(function(button, index) {
+        button.onclick = readMoreHandler;
+        button.addEventListener('touchstart', readMoreHandler);
+        button.addEventListener('mousedown', readMoreHandler);
+        console.log('Buton #' + index + ' hazır: ' + button.textContent.trim());
     });
-})();
+}
+
+// Devamını oku butonu işleyici
+function readMoreHandler(e) {
+    if (e) e.preventDefault();
+    console.log('Devamını oku butonuna tıklandı: ' + this.getAttribute('data-post-id') + ' - Olay: ' + (e ? e.type : 'doğrudan'));
+    
+    // Post ID ile blog içeriğini göster
+    var postId = this.getAttribute('data-post-id');
+    if (!postId) {
+        console.log('Post ID bulunamadı!');
+        return false;
+    }
+    
+    // Menü açıksa kapat
+    toggleMobileMenu(false);
+    
+    // Blog popup'ını göster
+    if (typeof window.showBlogPopup === 'function') {
+        try {
+            if (typeof window.blogData !== 'undefined' && window.blogData.blogPosts) {
+                var post = window.blogData.blogPosts.find(function(p) { 
+                    return p.id == postId; 
+                });
+                
+                if (post) {
+                    window.showBlogPopup(post);
+                    console.log('Post bulundu ve gösterildi: ' + post.title);
+                } else {
+                    window.showBlogPopup(postId);
+                    console.log('Post ID ile gösterildi: ' + postId);
+                }
+            } else {
+                window.showBlogPopup(postId);
+                console.log('blogData bulunamadı, doğrudan ID ile gösterildi: ' + postId);
+            }
+        } catch (error) {
+            console.error('Blog popup gösterilirken hata: ', error);
+        }
+    } else {
+        console.error('showBlogPopup fonksiyonu bulunamadı!');
+    }
+    
+    return false;
+}
+
+// 3. KATEGORİ BUTONLARI
+function setupCategoryButtons() {
+    // Tüm kategori butonlarını seç
+    var categoryButtons = document.querySelectorAll('.category-item');
+    
+    if (categoryButtons.length === 0) {
+        console.log('Kategori butonları bulunamadı');
+        return;
+    }
+    
+    console.log('Kategori butonları ayarlanıyor: ' + categoryButtons.length + ' adet');
+    
+    categoryButtons.forEach(function(button, index) {
+        button.onclick = categoryHandler;
+        button.addEventListener('touchstart', categoryHandler);
+        button.addEventListener('mousedown', categoryHandler);
+        console.log('Kategori #' + index + ' hazır: ' + button.getAttribute('data-category'));
+    });
+}
+
+// Kategori butonu işleyici
+function categoryHandler(e) {
+    if (e) e.preventDefault();
+    console.log('Kategori butonuna tıklandı: ' + this.getAttribute('data-category') + ' - Olay: ' + (e ? e.type : 'doğrudan'));
+    
+    // Menü açıksa kapat
+    toggleMobileMenu(false);
+    
+    // Kategori değiştir
+    var category = this.getAttribute('data-category');
+    if (!category) {
+        console.log('Kategori bulunamadı!');
+        return false;
+    }
+    
+    // Aktif sınıfını düzenle
+    document.querySelectorAll('.category-item').forEach(function(btn) {
+        btn.classList.remove('active');
+    });
+    this.classList.add('active');
+    
+    // Blog yazılarını göster
+    if (typeof window.displayBlogPosts === 'function') {
+        try {
+            window.displayBlogPosts(category);
+            console.log('Kategori değiştirildi: ' + category);
+        } catch (error) {
+            console.error('Kategoriler gösterilirken hata: ', error);
+        }
+    } else if (typeof window.loadBlogPosts === 'function') {
+        try {
+            window.loadBlogPosts(category);
+            console.log('Kategoriler loadBlogPosts ile yüklendi: ' + category);
+        } catch (error) {
+            console.error('Kategoriler yüklenirken hata: ', error);
+        }
+    } else {
+        console.error('displayBlogPosts veya loadBlogPosts fonksiyonu bulunamadı!');
+    }
+    
+    return false;
+}
