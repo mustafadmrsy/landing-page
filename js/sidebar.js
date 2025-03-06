@@ -114,22 +114,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Hamburger menü işlevselliği
     function toggleMobileMenu(e) {
-        // Bu fonksiyon sadece hamburger butonu ile tetiklenmeli
-        if (e && e.type === 'click' && e.currentTarget !== hamburgerBtn && 
-            e.currentTarget !== mobileCloseBtn && 
-            e.currentTarget !== mobileOverlay) {
-            return;
-        }
-        
-        mobileMenu.classList.toggle('active');
-        mobileOverlay.classList.toggle('active');
-        
-        // Mobil menü açılınca scroll'u engelle
-        if (mobileMenu.classList.contains('active')) {
-            body.style.overflow = 'hidden';
-        } else {
-            body.style.overflow = '';
-        }
+        // Bu fonksiyon hamburger-menu.js tarafından ele alındığı için devre dışı bırakıldı
+        console.log("Sidebar.js: toggleMobileMenu fonksiyonu hamburger-menu.js tarafından yönetiliyor");
+        return; // Hiçbir işlem yapma
     }
     
     // Mobil logoya tıklandığında ana sayfaya yönlendir

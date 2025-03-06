@@ -199,13 +199,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Popup overlay tıklama olayı
+    // Popup overlay'ine tıklama olayı
     if (blogPopupOverlay) {
         blogPopupOverlay.addEventListener('click', function(event) {
-            // Sadece overlay'in kendisine tıklandığında kapat (content hariç)
+            // Direkt overlay'e tıklandıysa kapat
             if (event.target === blogPopupOverlay) {
                 closePopup();
             }
+            event.stopPropagation(); // Hamburger menüyü etkilememesi için olayı durdur
         });
     }
 
