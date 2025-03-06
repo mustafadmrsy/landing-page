@@ -2,15 +2,18 @@
  * Senirkent MYO Blog - Ana CSS Dosyası
  * Açıklama: Tüm CSS dosyalarının düzenli bir şekilde içe aktarıldığı ana dosya
  * Yazar: Mustafa Demirsoy
- * Sürüm: 1.1.0
- * Güncelleme Tarihi: 5 Mart 2025
+ * Sürüm: 1.2.0
+ * Güncelleme Tarihi: 6 Mart 2025
  */
 
-/* Stil dosyalarını içe aktar */
+/* Temel stil dosyaları */
 @import 'reset.css';
 @import 'variables.css';
 @import 'utils.css';
+
+/* Ana layout ve bileşenler */
 @import 'main-layout.css';
+@import 'sidebar.css';
 @import 'buttons.css';
 @import 'search.css';
 @import 'profile.css';
@@ -18,16 +21,19 @@
 @import 'popup.css';
 @import 'categories.css';
 @import 'entrylinks.css';
-@import 'mobile-adjust.css';
-@import 'styles.css'; /* Temel stiller önce yüklenmeli */
-@import 'sidebar.css'; /* Sidebar özelleştirmeleri sonra */
-@import 'sidebar-mobile-fix.css';
+
+/* Özelleştirilmiş bileşenler */
+@import 'category-custom.css';
 @import 'newsletter-blue.css';
-@import 'category-custom.css'; /* Buton özelleştirmeleri */
-@import 'footer.css'; /* Footer en son yüklenmeli */
+@import 'footer.css';
+
+/* Sayfa özel stilleri */
 @import 'hakkimizda.css';
 @import 'iletisim.css';
 @import 'sendeyaz.css';
+
+/* Mobil ve responsive tasarım */
+@import 'mobile.css';
 @import 'responsive.css';
 
 /* Arka plan resmi için stil */

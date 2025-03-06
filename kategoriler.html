@@ -9,21 +9,16 @@
     <title>Kategoriler - Senirkent MYO Blog</title>
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/sidebar.css?v=2.0">
-    <link rel="stylesheet" href="css/sidebar-mobile-fix.css">
     <link rel="stylesheet" href="css/popup.css">
     <link rel="stylesheet" href="css/category-custom.css">
+    <link rel="stylesheet" href="css/mobile.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- <script src="js/hamburger-menu.js" defer></script> -->
     <script src="static-blog-data.js" defer></script>
     <script src="js/dom-utils.js" defer></script>
     <script src="js/sidebar.js" defer></script>
     <script src="js/popup-handler.js" defer></script>
     <script src="js/category.js" defer></script>
-    <script src="js/mobile.js" defer></script>
-    <!-- <script src="js/mobile-core.js" defer></script> -->
-    <!-- <script src="js/mobile-fix.js" defer></script> -->
-    <!-- <script src="js/mobile-super-fix.js"></script> -->
-    <!-- <script src="js/mobile-touch.js"></script> -->
+    <script src="js/mobile-menu.js" defer></script>
     <style>
         /* Önbellek sıfırlama - v2.0 - Sidebar bağımsız hale getirildi */
         footer {
@@ -85,52 +80,24 @@
 </head>
 <body class="has-sidebar">
     <!-- Mobil Header -->
-    <div class="mobile-header">
-        <button class="hamburger-btn">
-            <i class="fas fa-bars"></i>
+    <header class="mobile-header">
+        <button id="menuToggle" class="menu-toggle" aria-label="Menüyü Aç/Kapat">
+            <span class="hamburger"></span>
         </button>
-        <a href="index.html" class="mobile-logo">
-            <span>SEMİRKENT</span>
-            <span class="logo-small">MYO</span>
-        </a>
-        <div class="mobile-search">
-            <input type="text" placeholder="Blog'larda ara..." class="mobile-search-input">
-        </div>
+    </header>
+
+    <!-- Mobil Menü -->
+    <div id="mobileMenu" class="mobile-menu">
+        <nav class="mobile-nav">
+            <ul>
+                <li><a href="index.html"><i class="fas fa-home"></i>Ana Sayfa</a></li>
+                <li><a href="kategoriler.html" class="active"><i class="fas fa-th-large"></i>Kategoriler</a></li>
+                <li><a href="hakkimizda.html"><i class="fas fa-info-circle"></i>Hakkımızda</a></li>
+                <li><a href="iletisim.html"><i class="fas fa-envelope"></i>İletişim</a></li>
+            </ul>
+        </nav>
     </div>
 
-    <!-- Mobil Menu -->
-    <div class="mobile-menu">
-        <button class="mobile-close-btn">
-            <i class="fas fa-times"></i>
-        </button>
-        <div class="mobile-menu-content">
-            <div class="mobile-menu-header">
-                <a href="index.html" class="mobile-menu-logo">
-                    <span>SEMİRKENT</span>
-                    <span class="mobile-logo-small">MYO</span>
-                </a>
-            </div>
-            <nav class="mobile-nav">
-                <a href="index.html" class="mobile-menu-link">Ana Sayfa</a>
-                <a href="kategoriler.html" class="mobile-menu-link active">Kategoriler</a>
-                <a href="hakkimizda.html" class="mobile-menu-link">Hakkımızda</a>
-                <a href="iletisim.html" class="mobile-menu-link">İletişim</a>
-                <a href="sendeyaz.html" class="mobile-menu-link">Sen de Yaz</a>
-            </nav>
-            <div class="mobile-search-box">
-                <input type="text" placeholder="Blog'larda ara..." class="mobile-menu-search">
-                <button class="mobile-search-btn"><i class="fas fa-search"></i></button>
-            </div>
-            <div class="mobile-menu-cta">
-                <button class="mobile-btn-login">Oturum Aç</button>
-                <button class="mobile-btn-register">Kayıt Ol</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Mobil Overlay -->
-    <div class="mobile-overlay"></div>
-    
     <!-- Logo Corner -->
     <a href="index.html" class="corner-logo-link">
         <img src="img/bloglogo.jpg" alt="Senirkent MYO Blog" class="corner-logo">
@@ -140,11 +107,6 @@
     <button class="sidebar-fixed-toggle">
         <i class="fas fa-bars"></i>
     </button>
-    
-    <!-- Sol üst köşe logo -->
-    <a href="index.html" class="corner-logo-link">
-        <img src="img/bloglogo.jpg" alt="Senirkent MYO Blog" class="corner-logo">
-    </a>
     
     <header class="sidebar">
         <button class="sidebar-toggle" aria-label="Menüyü Gizle/Göster">
@@ -343,34 +305,11 @@
         // Mobil menü işlemleri
         document.addEventListener('DOMContentLoaded', function() {
             // Mobil menü toggle
-            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-            const sidebar = document.querySelector('.sidebar');
-            const overlay = document.querySelector('.sidebar-overlay') || document.createElement('div');
+            const mobileMenuToggle = document.getElementById('menuToggle');
+            const mobileMenu = document.getElementById('mobileMenu');
             
-            if (!overlay.classList.contains('sidebar-overlay')) {
-                overlay.classList.add('sidebar-overlay');
-                document.body.appendChild(overlay);
-            }
-            
-            if (mobileMenuToggle) {
-                mobileMenuToggle.addEventListener('click', function() {
-                    sidebar.classList.toggle('active');
-                    document.body.classList.toggle('sidebar-active');
-                    overlay.classList.toggle('active');
-                    
-                    if (sidebar.classList.contains('active')) {
-                        document.body.style.overflow = 'hidden';
-                    } else {
-                        document.body.style.overflow = '';
-                    }
-                });
-            }
-            
-            overlay.addEventListener('click', function() {
-                sidebar.classList.remove('active');
-                document.body.classList.remove('sidebar-active');
-                overlay.classList.remove('active');
-                document.body.style.overflow = '';
+            mobileMenuToggle.addEventListener('click', function() {
+                mobileMenu.classList.toggle('active');
             });
         });
     </script>
