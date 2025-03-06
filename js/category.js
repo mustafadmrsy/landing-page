@@ -114,6 +114,7 @@ document.addEventListener('DOMContentLoaded', function() {
         item.addEventListener('click', function(event) {
             // Mobil görünümde olay yayılımını tamamen engelle
             if (window.innerWidth <= 768) {
+                event.preventDefault();
                 event.stopImmediatePropagation();
             }
             
@@ -127,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Seçilen kategoriye göre blog yazılarını göster
             displayBlogPosts(categoryName);
-        });
+        }, { capture: true });
     });
     
     // Blog yazılarını gösterme fonksiyonu
@@ -179,6 +180,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 readMoreBtn.addEventListener('click', function(event) {
                     // Olayın üst elementlere yayılmasını önle (mobil hamburger menüyle çakışmayı önler)
                     event.stopPropagation();
+                    event.stopImmediatePropagation();
                     
                     const postTitle = this.getAttribute('data-title');
                     const postContent = this.parentElement.parentElement.querySelector('.post-full-content').innerHTML;
@@ -201,9 +203,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 button.addEventListener('click', function(event) {
                     // Mobil görünümde olay yayılımını tamamen engelle
                     event.preventDefault();
-                    if (window.innerWidth <= 768) {
-                        event.stopImmediatePropagation();
-                    }
+                    event.stopImmediatePropagation();
                     
                     const postId = this.getAttribute('data-post-id');
                     let post = null;
@@ -256,6 +256,7 @@ document.addEventListener('DOMContentLoaded', function() {
             btn.addEventListener('click', function(event) {
                 // Olayın üst elementlere yayılmasını önle (mobil hamburger menüyle çakışmayı önler)
                 event.stopPropagation();
+                event.stopImmediatePropagation();
                 
                 // En yakın blog içeriğini bul
                 const parentArticle = this.closest('article') || this.closest('.blog-post-card') || this.closest('.blog-post');

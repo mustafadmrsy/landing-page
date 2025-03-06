@@ -1,3 +1,11 @@
+/**
+ * Senirkent MYO Blog - Popup İşleyici
+ * Açıklama: Blog yazılarının popup olarak gösterilmesi ve kapatılması işlemleri
+ * Yazar: Mustafa Demirsoy
+ * Sürüm: 1.5.0
+ * Güncelleme Tarihi: 6 Mart 2025
+ */
+
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Popup handler loaded');
     
@@ -164,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else {
                     console.error('Post bulunamadı, ID:', postId);
                 }
-            });
+            }, { capture: true }); // Yakalama aşamasında olayı dinle (çok önemli!)
         });
     } else {
         console.warn('Devamını oku butonları bulunamadı');
@@ -183,6 +191,11 @@ document.addEventListener('DOMContentLoaded', function() {
     if (blogPopupContent) {
         blogPopupContent.addEventListener('click', function(event) {
             event.stopPropagation(); // Olayın üst elementlere yayılmasını önle
+            
+            // Mobil görünümde ek koruma
+            if (window.innerWidth <= 768) {
+                event.stopImmediatePropagation();
+            }
         });
     }
 
@@ -201,6 +214,12 @@ document.addEventListener('DOMContentLoaded', function() {
         blogPopupClose.addEventListener('click', function(event) {
             event.preventDefault();
             event.stopPropagation(); // Olayın üst elementlere yayılmasını önle
+            
+            // Mobil görünümde ek koruma
+            if (window.innerWidth <= 768) {
+                event.stopImmediatePropagation();
+            }
+            
             closePopup();
         });
     }

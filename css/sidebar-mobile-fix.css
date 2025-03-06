@@ -212,6 +212,54 @@
     .entry-content {
         padding: 0 1rem;
     }
+    
+    /* Hamburger butonuna özel z-index değeri */
+    .hamburger-btn {
+        z-index: 1002;
+        position: relative;
+    }
+    
+    /* Logo link için özel z-index değeri */
+    .mobile-logo-link {
+        position: relative;
+        z-index: 1001;
+        pointer-events: auto;
+    }
+    
+    /* Olay yakalama davranışını mobil menü için özelleştir */
+    .mobile-header * {
+        pointer-events: auto;
+    }
+    
+    /* Sadece hamburger butonu için olay yakalama */
+    .mobile-header .hamburger-btn {
+        pointer-events: auto;
+    }
+    
+    /* Devamını oku butonları için mobil görünümde özel stil */
+    .btn-daha,
+    .read-more,
+    .category-item {
+        pointer-events: auto;
+        position: relative;
+        z-index: 1000;
+    }
+    
+    /* Popup içeriği için özel z-index */
+    .blog-popup-content {
+        z-index: 1050;
+        position: relative;
+    }
+    
+    /* Sidebar'ı mobilde gizle */
+    .sidebar {
+        display: none;
+    }
+    
+    /* Mobile header'ı görünür yap */
+    .mobile-header {
+        display: flex;
+    }
 }
 
 /* Diğer responsive düzenlemeler */
