@@ -1,13 +1,12 @@
 /**
  * Senirkent MYO Blog - Mobil Hamburger Menü
  * Açıklama: Hamburger menüsü kontrolü için özel script (mobil sorunu çözmek için)
- * Sürüm: 1.3.0
+ * Sürüm: 1.3.1
  * Güncelleme Tarihi: 6 Mart 2025
  */
 
-// DOMContentLoaded olayını bekle
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Hamburger Menu: Initialized - v1.3.0 - Basit versiyon');
+    console.log('Hamburger Menu: Initialized - v1.3.1 - Düzeltilmiş versiyon');
     
     // Mobil elementleri seç
     const hamburgerBtn = document.querySelector('.hamburger-btn');
@@ -15,27 +14,31 @@ document.addEventListener('DOMContentLoaded', function() {
     const mobileOverlay = document.querySelector('.mobile-overlay');
     const mobileCloseBtn = document.querySelector('.mobile-close-btn');
     
-    // Hamburger butonu için işlevsellik ekle (klonlama olmadan)
+    // Hamburger butonu için işlevsellik ekle
     if (hamburgerBtn) {
         hamburgerBtn.addEventListener('click', function(e) {
+            e.stopPropagation(); // Tıklama olayının yayılmasını engelle
             console.log('Hamburger butonuna tıklandı');
             toggleMobileMenu();
         });
     }
     
-    // Menü kapatma butonu için işlevsellik ekle (klonlama olmadan)
+    // Menü kapatma butonu için işlevsellik ekle
     if (mobileCloseBtn) {
         mobileCloseBtn.addEventListener('click', function(e) {
+            e.stopPropagation(); // Tıklama olayının yayılmasını engelle
             console.log('Menü kapatma butonuna tıklandı');
             toggleMobileMenu();
         });
     }
     
-    // Overlay için işlevsellik ekle (klonlama olmadan)
+    // Overlay için işlevsellik ekle
     if (mobileOverlay) {
         mobileOverlay.addEventListener('click', function(e) {
-            console.log('Overlay tıklandı');
-            toggleMobileMenu();
+            if (e.target === mobileOverlay) { // Sadece overlay'e tıklandığında çalış
+                console.log('Overlay tıklandı');
+                toggleMobileMenu();
+            }
         });
     }
     
@@ -61,16 +64,18 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Devamını oku butonları için işlevsellik
-    document.addEventListener('click', function(e) {
-        // Devamını oku butonuna tıklandı mı?
-        const isReadMoreButton = e.target.classList.contains('btn-daha') || 
-                                e.target.closest('.btn-daha') ||
-                                e.target.classList.contains('read-more') || 
-                                e.target.closest('.read-more');
+    const readMoreHandler = function(e) {
+        const target = e.target;
+        // Sadece devamını oku butonlarına tıklandığında işlem yap
+        const isReadMoreButton = target.classList.contains('btn-daha') || 
+                               target.closest('.btn-daha') ||
+                               target.classList.contains('read-more') || 
+                               target.closest('.read-more');
         
         if (isReadMoreButton) {
+            e.stopPropagation(); // Tıklama olayının yayılmasını engelle
             console.log('Devamını oku butonuna tıklandı');
-            const button = e.target.closest('.btn-daha') || e.target.closest('.read-more') || e.target;
+            const button = target.closest('.btn-daha') || target.closest('.read-more') || target;
             const postId = button.getAttribute('data-post-id');
             
             if (postId && typeof window.showBlogPopup === 'function' && typeof blogData !== 'undefined') {
@@ -81,5 +86,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         }
-    });
+    };
+
+    // Devamını oku butonları için olay dinleyicisini ekle
+    document.querySelector('.posts-grid')?.addEventListener('click', readMoreHandler);
 });
