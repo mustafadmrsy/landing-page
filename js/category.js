@@ -111,7 +111,10 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Kategori tıklama işlevselliği
     categoryItems.forEach(item => {
-        item.addEventListener('click', function() {
+        item.addEventListener('click', function(event) {
+            // Olayın üst elementlere yayılmasını önle (mobil hamburger menüyle çakışmayı önler)
+            event.stopPropagation();
+            
             // Tüm kategorilerdeki active sınıfını kaldır
             categoryItems.forEach(cat => cat.classList.remove('active'));
             
@@ -172,7 +175,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Devamını Oku butonuna tıklama olayı ekle
                 const readMoreBtn = postElement.querySelector('.read-more');
-                readMoreBtn.addEventListener('click', function() {
+                readMoreBtn.addEventListener('click', function(event) {
+                    // Olayın üst elementlere yayılmasını önle (mobil hamburger menüyle çakışmayı önler)
+                    event.stopPropagation();
+                    
                     const postTitle = this.getAttribute('data-title');
                     const postContent = this.parentElement.parentElement.querySelector('.post-full-content').innerHTML;
                     
@@ -208,11 +214,21 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    // Popup içindeki tıklamaların üst elementlere yayılmasını önle
+    if (blogPopupContent) {
+        blogPopupContent.addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
+    }
+    
     // "btn-daha" butonlarına da popup işlevselliği ekle
     const btnDahaButtons = document.querySelectorAll('.btn-daha');
     if (btnDahaButtons.length > 0) {
         btnDahaButtons.forEach(btn => {
-            btn.addEventListener('click', function() {
+            btn.addEventListener('click', function(event) {
+                // Olayın üst elementlere yayılmasını önle (mobil hamburger menüyle çakışmayı önler)
+                event.stopPropagation();
+                
                 // En yakın blog içeriğini bul
                 const parentArticle = this.closest('article') || this.closest('.blog-post-card') || this.closest('.blog-post');
                 if (!parentArticle) return;

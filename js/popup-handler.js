@@ -57,6 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const blogPopupTags = document.querySelector('.blog-popup-tags');
     const blogPopupContentText = document.querySelector('.blog-popup-content-text');
     const blogPopupClose = document.querySelector('.blog-popup-close');
+    const blogPopupContent = document.querySelector('.blog-popup-content');
     
     // DOM elementlerinin varlığını kontrol et
     if (!blogPopupTitle || !blogPopupAuthor || !blogPopupDate || !blogPopupTags || !blogPopupContentText) {
@@ -79,6 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
         readMoreButtons.forEach(button => {
             button.addEventListener('click', function(event) {
                 event.preventDefault(); // Sayfa yenilenmesini önle
+                event.stopPropagation(); // Olayın üst elementlere yayılmasını önle
                 
                 console.log('Devamını oku butonuna tıklandı');
                 
@@ -164,31 +166,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.warn('Devamını oku butonları bulunamadı');
     }
 
-    // Popup'ı kapatma işlevi
-    if (blogPopupClose) {
-        blogPopupClose.addEventListener('click', function() {
-            closePopup();
-        });
-    }
-    
-    // Overlay'e tıklama ile kapatma
-    if (blogPopupOverlay) {
-        blogPopupOverlay.addEventListener('click', function(event) {
-            // Sadece overlay'e tıklandığında kapat (içeriğe tıklandığında değil)
-            if (event.target === blogPopupOverlay) {
-                closePopup();
-            }
-        });
-    }
-    
-    // ESC tuşu ile kapatma
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape' && blogPopupOverlay && blogPopupOverlay.classList.contains('active')) {
-            closePopup();
-        }
-    });
-    
-    // Popup'ı kapatma fonksiyonu
+    // Popup kapatma işlevi
     function closePopup() {
         if (blogPopupOverlay) {
             blogPopupOverlay.classList.remove('active');
@@ -196,4 +174,37 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('Popup kapatıldı');
         }
     }
+
+    // Popup content tıklamalarının overlay'e yayılmasını engelle
+    if (blogPopupContent) {
+        blogPopupContent.addEventListener('click', function(event) {
+            event.stopPropagation(); // Olayın üst elementlere yayılmasını önle
+        });
+    }
+
+    // Popup overlay tıklama olayı
+    if (blogPopupOverlay) {
+        blogPopupOverlay.addEventListener('click', function(event) {
+            // Sadece overlay'in kendisine tıklandığında kapat (content hariç)
+            if (event.target === blogPopupOverlay) {
+                closePopup();
+            }
+        });
+    }
+
+    // Popup kapatma butonu tıklama olayı
+    if (blogPopupClose) {
+        blogPopupClose.addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation(); // Olayın üst elementlere yayılmasını önle
+            closePopup();
+        });
+    }
+
+    // ESC tuşuna basıldığında popup'ı kapat
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closePopup();
+        }
+    });
 });
