@@ -528,76 +528,77 @@
     </footer>
     <div class="overlay"></div>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Acil düzeltme scripti yüklendi');
-            
-            // Mobil elementleri
-            const hamburgerBtn = document.querySelector('.hamburger-btn');
-            const mobileMenu = document.querySelector('.mobile-menu');
-            const mobileOverlay = document.querySelector('.mobile-overlay');
-            const mobileCloseBtn = document.querySelector('.mobile-close-btn');
-            
-            // Hamburger butonu için olay dinleyici
-            if (hamburgerBtn) {
-                hamburgerBtn.onclick = function(e) {
-                    console.log('Hamburger butonuna tıklandı');
-                    if (mobileMenu) {
-                        mobileMenu.classList.toggle('active');
-                        if (mobileOverlay) mobileOverlay.classList.toggle('active');
-                        
-                        if (mobileMenu.classList.contains('active')) {
-                            document.body.style.overflow = 'hidden';
-                        } else {
-                            document.body.style.overflow = '';
-                        }
-                    }
-                    e.stopPropagation();
-                };
-            }
-            
-            // Mobil menüyü kapatma butonu
-            if (mobileCloseBtn) {
-                mobileCloseBtn.onclick = function(e) {
-                    console.log('Kapat butonuna tıklandı');
-                    if (mobileMenu) {
-                        mobileMenu.classList.remove('active');
-                        if (mobileOverlay) mobileOverlay.classList.remove('active');
-                        document.body.style.overflow = '';
-                    }
-                    e.stopPropagation();
-                };
-            }
-            
-            // Overlay tıklamaları
-            if (mobileOverlay) {
-                mobileOverlay.onclick = function(e) {
-                    console.log('Overlay tıklandı');
-                    if (mobileMenu) {
-                        mobileMenu.classList.remove('active');
-                        mobileOverlay.classList.remove('active');
-                        document.body.style.overflow = '';
-                    }
-                    e.stopPropagation();
-                };
-            }
-            
-            // Devamını oku butonları 
-            const readMoreButtons = document.querySelectorAll('.btn-daha, .read-more');
-            readMoreButtons.forEach(button => {
-                button.onclick = function(e) {
-                    e.preventDefault();
-                    console.log('Devamını oku butonuna tıklandı');
+    // Mobil menü sorununu çözmek için özel script
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('Mobil menü sorun giderme scripti yüklendi');
+        
+        // Belgeye tıklama olaylarını engellemek için boş bir event listener ekle
+        document.addEventListener('click', function(e) {
+            // Herhangi bir eylem yapma, sadece olayı tüket
+            // Bu, diğer yerlerden gelen belge seviyesindeki click olaylarını durdurur
+        }, true);
+        
+        // Hamburger butonu için özel işlev
+        const hamburgerBtn = document.querySelector('.hamburger-btn');
+        if (hamburgerBtn) {
+            hamburgerBtn.onclick = function(e) {
+                e.stopPropagation();
+                
+                // Menü elementlerini seç
+                const mobileMenu = document.querySelector('.mobile-menu');
+                const mobileOverlay = document.querySelector('.mobile-overlay');
+                
+                // Durumu değiştir
+                if (mobileMenu) {
+                    mobileMenu.classList.toggle('active');
+                    if (mobileOverlay) mobileOverlay.classList.toggle('active');
                     
-                    const postId = this.getAttribute('data-post-id');
-                    if (postId && typeof window.showBlogPopup === 'function') {
-                        const post = window.blogData.blogPosts.find(p => p.id == postId);
-                        if (post) {
-                            window.showBlogPopup(post);
-                        }
+                    if (mobileMenu.classList.contains('active')) {
+                        document.body.style.overflow = 'hidden';
+                    } else {
+                        document.body.style.overflow = '';
                     }
-                };
-            });
-        });
+                }
+            };
+        }
+        
+        // Kapatma butonu
+        const mobileCloseBtn = document.querySelector('.mobile-close-btn');
+        if (mobileCloseBtn) {
+            mobileCloseBtn.onclick = function(e) {
+                e.stopPropagation();
+                
+                // Menü elementlerini seç
+                const mobileMenu = document.querySelector('.mobile-menu');
+                const mobileOverlay = document.querySelector('.mobile-overlay');
+                
+                // Menüyü kapat
+                if (mobileMenu) {
+                    mobileMenu.classList.remove('active');
+                    if (mobileOverlay) mobileOverlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            };
+        }
+        
+        // Overlay
+        const mobileOverlay = document.querySelector('.mobile-overlay');
+        if (mobileOverlay) {
+            mobileOverlay.onclick = function(e) {
+                e.stopPropagation();
+                
+                // Menü elementlerini seç
+                const mobileMenu = document.querySelector('.mobile-menu');
+                
+                // Menüyü kapat
+                if (mobileMenu) {
+                    mobileMenu.classList.remove('active');
+                    mobileOverlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            };
+        }
+    });
     </script>
 </body>
 </html>

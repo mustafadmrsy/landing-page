@@ -112,55 +112,56 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Hamburger menü işlevselliği
-    function toggleMobileMenu(e) {
-        // Bu fonksiyon hamburger-menu.js tarafından ele alındığı için devre dışı bırakıldı
-        console.log("Sidebar.js: toggleMobileMenu fonksiyonu hamburger-menu.js tarafından yönetiliyor");
-        return; // Hiçbir işlem yapma
-    }
-    
-    // Mobil logoya tıklandığında ana sayfaya yönlendir
-    if (mobileLogoLink) {
-        mobileLogoLink.addEventListener('click', function(e) {
-            e.preventDefault(); // Default davranışı engelle
-            e.stopImmediatePropagation(); // Diğer event dinleyicilerini engelle
-            window.location.href = this.getAttribute('href'); // Ana sayfaya yönlendir
+    // Hamburger butonuna tıklama olayını ekle
+    if (hamburgerBtn) {
+        hamburgerBtn.addEventListener('click', function(e) {
+            // Hamburger menü toggle işlemini doğrudan burada yapalım, toggleMobileMenu yerine
+            if (mobileMenu) {
+                mobileMenu.classList.toggle('active');
+                if (mobileOverlay) mobileOverlay.classList.toggle('active');
+                
+                if (mobileMenu.classList.contains('active')) {
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    document.body.style.overflow = '';
+                }
+                
+                console.log('Hamburger menü durumu değiştirildi');
+            }
+            e.stopImmediatePropagation();
+            e.stopPropagation();
         });
     }
     
-    // Devamını oku butonlarına ve kategori öğelerine özel işleyici ekle
-    document.addEventListener('click', function(e) {
-        // Mobil görünümde değilsek işlem yapma
-        if (window.innerWidth > 768) return;
-        
-        // Tıklanan eleman "Devamını Oku" butonuysa
-        if (e.target.classList.contains('btn-daha') || 
-            e.target.closest('.btn-daha') ||
-            e.target.classList.contains('read-more') || 
-            e.target.closest('.read-more')) {
-            
-            e.stopPropagation(); // Üst elemanlara olay yayılımını engelle
-            
-            // Hamburger butonunun tetiklenmesini engelle
-            const ev = e || window.event;
-            if (ev.stopImmediatePropagation) {
-                ev.stopImmediatePropagation();
+    // Mobil menü kapatma butonuna tıklama olayını ekle
+    if (mobileCloseBtn) {
+        mobileCloseBtn.addEventListener('click', function(e) {
+            // Menüyü kapat
+            if (mobileMenu) {
+                mobileMenu.classList.remove('active');
+                if (mobileOverlay) mobileOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+                console.log('Mobil menü kapatıldı');
             }
-        }
-        
-        // Tıklanan eleman kategori öğesiyse
-        if (e.target.classList.contains('category-item') || 
-            e.target.closest('.category-item')) {
-            
-            e.stopPropagation(); // Üst elemanlara olay yayılımını engelle
-            
-            // Hamburger butonunun tetiklenmesini engelle
-            const ev = e || window.event;
-            if (ev.stopImmediatePropagation) {
-                ev.stopImmediatePropagation();
+            e.stopImmediatePropagation();
+            e.stopPropagation();
+        });
+    }
+    
+    // Mobil overlay'e tıklama olayını ekle
+    if (mobileOverlay) {
+        mobileOverlay.addEventListener('click', function(e) {
+            // Menüyü kapat
+            if (mobileMenu) {
+                mobileMenu.classList.remove('active');
+                mobileOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+                console.log('Overlay tıklamasıyla menü kapatıldı');
             }
-        }
-    }, true); // Yakalama aşamasında olayları ele al
+            e.stopImmediatePropagation();
+            e.stopPropagation();
+        });
+    }
     
     // Sidebar toggle butonuna tıklama olayını ekle
     if (sidebarToggleBtn) {
@@ -180,39 +181,21 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Hamburger butonuna tıklama olayını ekle
-    if (hamburgerBtn) {
-        hamburgerBtn.addEventListener('click', function(e) {
-            toggleMobileMenu(e);
-            e.stopImmediatePropagation();
-            e.stopPropagation();
-        });
-    }
-    
-    // Mobil menü kapatma butonuna tıklama olayını ekle
-    if (mobileCloseBtn) {
-        mobileCloseBtn.addEventListener('click', function(e) {
-            toggleMobileMenu(e);
-            e.stopImmediatePropagation();
-            e.stopPropagation();
-        });
-    }
-    
-    // Mobil overlay'e tıklama olayını ekle
-    if (mobileOverlay) {
-        mobileOverlay.addEventListener('click', function(e) {
-            toggleMobileMenu(e);
-            e.stopImmediatePropagation();
-            e.stopPropagation();
-        });
-    }
-    
     // Overlay'e tıklama olayını ekle
     if (overlay) {
         overlay.addEventListener('click', function(e) {
             toggleSidebar();
             e.stopImmediatePropagation();
             e.stopPropagation();
+        });
+    }
+    
+    // Mobil logoya tıklandığında ana sayfaya yönlendir
+    if (mobileLogoLink) {
+        mobileLogoLink.addEventListener('click', function(e) {
+            e.preventDefault(); // Default davranışı engelle
+            e.stopImmediatePropagation(); // Diğer event dinleyicilerini engelle
+            window.location.href = this.getAttribute('href'); // Ana sayfaya yönlendir
         });
     }
     
