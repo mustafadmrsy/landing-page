@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Senirkent MYO Blog</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/sidebar.css?v=2.0">
+    <link rel="stylesheet" href="css/sidebar-mobile-fix.css">
+    <link rel="stylesheet" href="css/popup.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="static-blog-data.js" defer></script>
+    <script src="js/dom-utils.js" defer></script>
+    <!-- Mobil JS dosyasını en önce yükle ki diğer scriptler onun kontrolünde çalışsın -->
+    <script src="js/mobile.js" defer></script>
+    <script src="js/sidebar.js" defer></script>
+    <script src="js/main.js" defer></script>
+    <script src="js/popup-handler.js" defer></script>
+    <script src="js/like-handler.js" defer></script>
+    <!-- Hamburger menü script dosyasını sona ekledik çünkü mobille çakışıyordu -->
+    <script src="js/hamburger-menu.js" defer></script>
+    <style>
+        /* Önbellek sıfırlama - v2.0 - Sidebar bağımsız hale getirildi */
+        
+        .category-button { margin-right: 5px; }
+        
+        footer {
+            background-color: #0066cc !important;
+            padding: 5rem 0 !important;
+            margin-top: 3rem !important;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1) !important;
+        }
+        
+        .contact-link {
+            font-size: 1.1rem !important;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+        }
+        
+        /* Beğeni butonu animasyonu */
+        .pulse {
+            animation: pulse-animation 0.5s;
+        }
+        
+        @keyframes pulse-animation {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+        
+        .like-btn.active {
+            color: #e74c3c;
+        }
+        
+        .like-btn.active i {
+            color: #e74c3c;
+        }
+        
+        /* Sidebar fix - sayfa içeriği etkilenmesin */
+        body {
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        main.eksi-layout {
+            width: 100% !important;
+            margin-right: 0 !important;
+            transition: none !important;
+        }
+        
+        /* Sabit toggle butonu */
+        .sidebar-fixed-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 123, 255, 0.5);
+        }
+        
+        /* Sidebar kapalıyken açma butonu görünsün */
+        body.sidebar-collapsed .sidebar-fixed-toggle {
+            display: flex;
+        }
+    </style>
+</head>
+<body class="has-sidebar">
+    <!-- Mobil Header -->
+    <div class="mobile-header">
+        <button class="hamburger-btn">
+            <i class="fas fa-bars"></i>
+        </button>
+        <a href="index.html" class="mobile-logo">
+            <span>SEMİRKENT</span>
+            <span class="logo-small">MYO</span>
+        </a>
+        <div class="mobile-search">
+            <input type="text" placeholder="Blog'larda ara..." class="mobile-search-input">
+        </div>
+    </div>
+
+    <!-- Mobil Menu -->
+    <div class="mobile-menu">
+        <button class="mobile-close-btn">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="mobile-menu-content">
+            <div class="mobile-menu-header">
+                <a href="index.html" class="mobile-menu-logo">
+                    <span>SEMİRKENT</span>
+                    <span class="mobile-logo-small">MYO</span>
+                </a>
+            </div>
+            <nav class="mobile-nav">
+                <a href="index.html" class="mobile-menu-link active">Ana Sayfa</a>
+                <a href="kategoriler.html" class="mobile-menu-link">Kategoriler</a>
+                <a href="hakkimizda.html" class="mobile-menu-link">Hakkımızda</a>
+                <a href="iletisim.html" class="mobile-menu-link">İletişim</a>
+                <a href="sendeyaz.html" class="mobile-menu-link">Sen de Yaz</a>
+            </nav>
+            <div class="mobile-search-box">
+                <input type="text" placeholder="Blog'larda ara..." class="mobile-menu-search">
+                <button class="mobile-search-btn"><i class="fas fa-search"></i></button>
+            </div>
+            <div class="mobile-menu-cta">
+                <button class="mobile-btn-login">Oturum Aç</button>
+                <button class="mobile-btn-register">Kayıt Ol</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobil Overlay -->
+    <div class="mobile-overlay"></div>
+
+    <!-- Logo Corner -->
+    <a href="index.html" class="corner-logo-link">
+        <img src="img/bloglogo.jpg" alt="Senirkent MYO Blog" class="corner-logo">
+    </a>
+    
+    <!-- Sabit sidebar toggle butonu -->
+    <button class="sidebar-fixed-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <header class="sidebar">
+        <button class="sidebar-toggle" aria-label="Menüyü Gizle/Göster">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        
+        <a href="index.html" class="logo-link">
+            <img src="img/bloglogo.jpg" alt="Senirkent MYO Blog" class="sidebar-logo" style="background: transparent;">
+        </a>
+        
+        <div class="search-container">
+            <input type="text" placeholder="Blog'larda ara..." class="search-input">
+            <button class="search-button">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+        
+        <nav class="main-nav">
+            <a href="index.html" class="nav-link active">
+                <i class="fas fa-home"></i> 
+                <span class="nav-text">Ana Sayfa</span>
+            </a>
+            <a href="sendeyaz.html" class="nav-link" id="write-button">
+                <i class="fas fa-pen"></i> 
+                <span class="nav-text">Sen de Yaz</span>
+            </a>
+            <a href="kategoriler.html" class="nav-link">
+                <i class="fas fa-tags"></i> 
+                <span class="nav-text">Kategoriler</span>
+            </a>
+            <a href="hakkimizda.html" class="nav-link">
+                <i class="fas fa-info-circle"></i> 
+                <span class="nav-text">Hakkımızda</span>
+            </a>
+            <a href="iletisim.html" class="nav-link">
+                <i class="fas fa-envelope"></i> 
+                <span class="nav-text">İletişim</span>
+            </a>
+        </nav>
+        
+        <div class="auth-buttons">
+            <button class="btn-login">Oturum Aç</button>
+            <button class="btn-register">Kayıt Ol</button>
+        </div>
+    </header>
+    <main class="eksi-layout">
+        <div class="left-panel">
+            <div class="gundem-section">
+                <h2 class="section-title">Gündem</h2>
+                <ul class="gundem-list">
+                    <li class="gundem-item">
+                        <span class="gundem-number">1</span>
+                        <a href="#" class="gundem-link">yapay zeka teknolojileri ve etkisi</a>
+                    </li>
+                    <li class="gundem-item">
+                        <span class="gundem-number">2</span>
+                        <a href="#" class="gundem-link">senirkent myo akademik takvimi</a>
+                    </li>
+                    <li class="gundem-item">
+                        <span class="gundem-number">3</span>
+                        <a href="#" class="gundem-link">web geliştirme trendleri 2025</a>
+                    </li>
+                    <li class="gundem-item">
+                        <span class="gundem-number">4</span>
+                        <a href="#" class="gundem-link">sürdürülebilir enerji kaynakları</a>
+                    </li>
+                    <li class="gundem-item">
+                        <span class="gundem-number">5</span>
+                        <a href="#" class="gundem-link">blog yazarlığında yeni yaklaşımlar</a>
+                    </li>
+                    <li class="gundem-item">
+                        <span class="gundem-number">6</span>
+                        <a href="#" class="gundem-link">online eğitimin geleceği</a>
+                    </li>
+                    <li class="gundem-item">
+                        <span class="gundem-number">7</span>
+                        <a href="#" class="gundem-link">sosyal medya ve akademik hayat</a>
+                    </li>
+                    <li class="gundem-item">
+                        <span class="gundem-number">8</span>
+                        <a href="#" class="gundem-link">teknoloji bağımlılığı ve sonuçları</a>
+                    </li>
+                    <li class="gundem-item">
+                        <span class="gundem-number">9</span>
+                        <a href="#" class="gundem-link">siber güvenlik önlemleri</a>
+                    </li>
+                    <li class="gundem-item">
+                        <span class="gundem-number">10</span>
+                        <a href="#" class="gundem-link">eğitimde inovasyon</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="content-panel">
+            <div class="entry-section">
+                <h2 class="section-title">En Son Gönderiler</h2>
+                <div class="entry-list">
+                    <div class="entry-item">
+                        <div class="entry-header">
+                            <h2 class="entry-title"><a href="kategoriler.html#teknoloji" class="entry-title-link">Senirken Blog - Makale Görünüm Sistemi</a></h2>
+                            <div class="entry-meta">
+                                <span class="meta-item"><i class="far fa-calendar-alt"></i> 2 Mart 2025</span>
+                                <span class="meta-separator">•</span>
+                                <span class="meta-item category-tag"><a href="kategoriler.html#teknoloji"> <i class="far fa-folder"></i> Teknoloji</a></span>
+                                <span class="meta-separator">•</span>
+                                <span class="meta-item"><i class="far fa-user"></i> Mustafa Demirsoy</span>
+                                <span class="meta-separator">•</span>
+                                <span class="meta-item"><i class="far fa-clock"></i> 5 dk okuma</span>
+                            </div>
+                        </div>
+                        <div class="entry-content">
+                            <p>Senirkent MYO Blog sistemi, modern web teknolojileri kullanılarak geliştirilmiş, kullanıcı dostu bir blog platformudur. Öğrenciler ve öğretim görevlileri için tasarlanmış bu platform, bilgi paylaşımını kolaylaştırmayı hedeflemektedir.</p>
+                            <p>Platform, kullanıcıların düşüncelerini ve akademik çalışmalarını paylaşabilecekleri, etkileşimde bulunabilecekleri bir ortam sunmaktadır.</p>
+                            <button class="btn-daha" data-post-id="1">devamını okumak için...</button>
+                        </div>
+                        <div class="entry-footer">
+                            <div class="tags">
+                                <span class="tag"><i class="fas fa-tag"></i> Web Geliştirme</span>
+                                <span class="tag"><i class="fas fa-tag"></i> Blog</span>
+                                <span class="tag"><i class="fas fa-tag"></i> Eğitim</span>
+                            </div>
+                            <div class="social-interaction">
+                                <button class="social-btn like-btn" data-post-id="1">
+                                    <i class="far fa-heart"></i>
+                                    <span class="social-count">0</span>
+                                </button>
+                                <span class="social-btn view-count" data-post-id="1">
+                                    <i class="far fa-eye"></i>
+                                    <span class="social-count">0</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="entry-item">
+                        <div class="entry-header">
+                            <h2 class="entry-title"><a href="kategoriler.html#egitim" class="entry-title-link">Yapay Zeka ve Eğitimin Geleceği</a></h2>
+                            <div class="entry-meta">
+                                <span class="meta-item"><i class="far fa-calendar-alt"></i> 3 Mart 2025</span>
+                                <span class="meta-separator">•</span>
+                                <span class="meta-item category-tag"><a href="kategoriler.html#egitim"> <i class="far fa-folder"></i> Eğitim</a></span>
+                                <span class="meta-separator">•</span>
+                                <span class="meta-item"><i class="far fa-user"></i> Eren Kaya</span>
+                                <span class="meta-separator">•</span>
+                                <span class="meta-item"><i class="far fa-clock"></i> 4 dk okuma</span>
+                            </div>
+                        </div>
+                        <div class="entry-content">
+                            <p>Yapay zeka teknolojileri, eğitim sektöründe devrim niteliğinde değişikliklere yol açıyor. Kişiselleştirilmiş öğrenme deneyimleri ve adaptif öğrenme sistemleri, öğrencilerin bireysel ihtiyaçlarına göre şekillenen bir eğitim modeli sunuyor.</p>
+                            <p>Bu teknolojiler, öğretmenlerin rolünü değiştirirken, öğrencilerin öğrenme sürecini daha etkili ve verimli hale getiriyor.</p>
+                            <button class="btn-daha" data-post-id="2">devamını okumak için...</button>
+                        </div>
+                        <div class="entry-footer">
+                            <div class="tags">
+                                <span class="tag"><i class="fas fa-tag"></i> Yapay Zeka</span>
+                                <span class="tag"><i class="fas fa-tag"></i> Eğitim Teknolojileri</span>
+                                <span class="tag"><i class="fas fa-tag"></i> Öğrenme</span>
+                            </div>
+                            <div class="social-interaction">
+                                <button class="social-btn like-btn" title="Beğen">
+                                    <i class="fas fa-heart"></i>
+                                    <span class="social-count">0</span>
+                                </button>
+                                <button class="social-btn view-btn" title="Görüntülenme">
+                                    <i class="fas fa-eye"></i>
+                                    <span class="social-count">0</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="entry-item">
+                        <div class="entry-header">
+                            <h2 class="entry-title"><a href="kategoriler.html#teknoloji" class="entry-title-link">Teknolojinin Geleceği: Yapay Zeka ve Robotik</a></h2>
+                            <div class="entry-meta">
+                                <span class="meta-item"><i class="far fa-calendar-alt"></i> 4 Mart 2025</span>
+                                <span class="meta-separator">•</span>
+                                <span class="meta-item category-tag"><a href="kategoriler.html#teknoloji"> <i class="far fa-folder"></i> Teknoloji</a></span>
+                                <span class="meta-separator">•</span>
+                                <span class="meta-item"><i class="far fa-user"></i> Eren Kaya</span>
+                                <span class="meta-separator">•</span>
+                                <span class="meta-item"><i class="far fa-clock"></i> 3 dk okuma</span>
+                            </div>
+                        </div>
+                        <div class="entry-content">
+                            <p>Yapay zeka ve robotik teknolojileri, gelecekte birçok sektörde devrim yaratacak. Bu yazıda, bu teknolojilerin potansiyeli ve etkileri üzerinde duracağız.</p>
+                            <p>Yapay zeka ve robotik teknolojileri, birçok sektörde devrim niteliğinde değişikliklere yol açıyor.</p>
+                            <button class="btn-daha" data-post-id="3">devamını okumak için...</button>
+                        </div>
+                        <div class="entry-footer">
+                            <div class="tags">
+                                <span class="tag"><i class="fas fa-tag"></i> Web Geliştirme</span>
+                                <span class="tag"><i class="fas fa-tag"></i> Blog</span>
+                                <span class="tag"><i class="fas fa-tag"></i> Eğitim</span>
+                            </div>
+                            <div class="social-interaction">
+                                <button class="social-btn like-btn" title="Beğen">
+                                    <i class="fas fa-heart"></i>
+                                    <span class="social-count">0</span>
+                                </button>
+                                <button class="social-btn view-btn" title="Görüntülenme">
+                                    <i class="fas fa-eye"></i>
+                                    <span class="social-count">0</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="entry-item">
+                        <div class="entry-header">
+                            <h2 class="entry-title"><a href="kategoriler.html#cevre" class="entry-title-link">Sürdürülebilir Enerji Çözümleri</a></h2>
+                            <div class="entry-meta">
+                                <span class="meta-item"><i class="far fa-calendar-alt"></i> 4 Mart 2025</span>
+                                <span class="meta-separator">•</span>
+                                <span class="meta-item category-tag"><a href="kategoriler.html#cevre"> <i class="far fa-folder"></i> Çevre</a></span>
+                                <span class="meta-separator">•</span>
+                                <span class="meta-item"><i class="far fa-user"></i> Eren Kaya</span>
+                                <span class="meta-separator">•</span>
+                                <span class="meta-item"><i class="far fa-clock"></i> 3 dk okuma</span>
+                            </div>
+                        </div>
+                        <div class="entry-content">
+                            <p>Sürdürülebilir enerji çözümleri, çevresel etkileri azaltmak ve enerji verimliliğini artırmak için önemlidir. Bu yazıda, yenilenebilir enerji kaynaklarını keşfedeceğiz.</p>
+                            <p>Sürdürülebilir enerji çözümleri, geleceğimiz için önemlidir.</p>
+                            <button class="btn-daha" data-post-id="4">devamını okumak için...</button>
+                        </div>
+                        <div class="entry-footer">
+                            <div class="tags">
+                                <span class="tag"><i class="fas fa-tag"></i> Web Geliştirme</span>
+                                <span class="tag"><i class="fas fa-tag"></i> Blog</span>
+                                <span class="tag"><i class="fas fa-tag"></i> Eğitim</span>
+                            </div>
+                            <div class="social-interaction">
+                                <button class="social-btn like-btn" title="Beğen">
+                                    <i class="fas fa-heart"></i>
+                                    <span class="social-count">0</span>
+                                </button>
+                                <button class="social-btn view-btn" title="Görüntülenme">
+                                    <i class="fas fa-eye"></i>
+                                    <span class="social-count">0</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="right-panel">
+            <div class="popular-section">
+                <h2 class="section-title">Popüler Yazılar</h2>
+                <ul class="popular-list">
+                    <li class="popular-item">
+                        <a href="#" class="popular-link">yapay zeka ile geleceğe bakış</a>
+                        <span class="popular-author">mustafa demirsoy</span>
+                    </li>
+                    <li class="popular-item">
+                        <a href="#" class="popular-link">web geliştirme teknikleri</a>
+                        <span class="popular-author">eren kaya</span>
+                    </li>
+                    <li class="popular-item">
+                        <a href="#" class="popular-link">senirkent myo etkinlikleri</a>
+                        <span class="popular-author">ayşe yılmaz</span>
+                    </li>
+                    <li class="popular-item">
+                        <a href="#" class="popular-link">online eğitim platformları</a>
+                        <span class="popular-author">mehmet öztürk</span>
+                    </li>
+                    <li class="popular-item">
+                        <a href="#" class="popular-link">sürdürülebilir teknolojiler</a>
+                        <span class="popular-author">zeynep demir</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="categories-section">
+                <h2 class="section-title">Kategoriler</h2>
+                <br><br><br>
+                <ul class="categories-list">
+                    <li class="category-item"><a href="kategoriler.html#teknoloji" class="category-link">teknoloji (15)</a></li>
+                    <li class="category-item"><a href="kategoriler.html#egitim" class="category-link">eğitim (12)</a></li>
+                    <li class="category-item"><a href="kategoriler.html#cevre" class="category-link">çevre (8)</a></li>
+                    <li class="category-item"><a href="kategoriler.html#yapay-zeka" class="category-link">yapay zeka (7)</a></li>
+                    <li class="category-item"><a href="kategoriler.html#web-gelistirme" class="category-link">web geliştirme (6)</a></li>
+                    <li class="category-item"><a href="kategoriler.html#surdurulebilirlik" class="category-link">sürdürülebilirlik (5)</a></li>
+                    <li class="category-item"><a href="kategoriler.html#akademik" class="category-link">akademik (4)</a></li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <div class="blog-popup-overlay">
+        <div class="blog-popup">
+            <button class="blog-popup-close">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="blog-popup-content"></div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-top">
+                <div class="footer-column">
+                    <div class="contact-card">
+                        <div class="contact-heading">
+                            <i class="fas fa-envelope"></i>
+                            <h3 class="section-title">İletişim</h3>
+                        </div>
+                        <div class="contact-links">
+                            <a href="mailto:info@senirkentmyo.edu.tr" class="contact-link" style="color: white !important;">
+                                <i class="fas fa-envelope"></i>
+                                info@senirkentmyo.edu.tr
+                            </a>
+                            <a href="tel:+902462111111" class="contact-link" style="color: white !important;">
+                                <i class="fas fa-phone-alt"></i>
+                                +90 246 211 11 11
+                            </a>
+                            <a href="https://goo.gl/maps/abcdefg" class="contact-link" style="color: white !important;">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Senirkent, Isparta
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <div class="newsletter-card" style="background-color: #222 !important; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important; border: 1px solid rgba(255, 255, 255, 0.08) !important;">
+                        <h3 class="section-title">E-Bülten</h3>
+                        <p class="social-text">Güncel blog yazıları ve etkinliklerden haberdar olmak için abone olun.</p>
+                        <form class="newsletter-form">
+                            <input type="email" class="newsletter-input" placeholder="E-posta adresiniz" required>
+                            <button type="submit" class="newsletter-button">Abone Ol</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom-row">
+                <div class="footer-column">
+                    <h3 class="section-title">Hızlı Erişim</h3>
+                    <div class="links-grid">
+                        <a href="index.html" class="quick-link">Ana Sayfa</a>
+                        <a href="kategoriler.html" class="quick-link">Kategoriler</a>
+                        <a href="sendeyaz.html" class="quick-link">Sen de Yaz</a>
+                        <a href="hakkimizda.html" class="quick-link">Hakkımızda</a>
+                        <a href="iletisim.html" class="quick-link">İletişim</a>
+                        <a href="#" class="quick-link">Gizlilik Politikası</a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3 class="section-title">Takip Et</h3>
+                    <p class="social-text">Sosyal medya hesaplarımızdan bizi takip ederek güncel kalın.</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-link facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link linkedin"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link youtube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Senirkent MYO Blog. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+        <div class="footer-wave"></div>
+    </footer>
+    <div class="overlay"></div>
+</body>
+</html>
