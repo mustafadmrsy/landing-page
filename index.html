@@ -14,11 +14,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="static-blog-data.js" defer></script>
     <script src="js/dom-utils.js" defer></script>
+    <!-- Mobil JS dosyasını en önce yükle ki diğer scriptler onun kontrolünde çalışsın -->
+    <script src="js/mobile.js" defer></script>
     <script src="js/sidebar.js" defer></script>
     <script src="js/main.js" defer></script>
     <script src="js/popup-handler.js" defer></script>
     <script src="js/like-handler.js" defer></script>
-    <script src="js/mobile.js" defer></script>
+    <!-- Hamburger menü script dosyasını sona ekledik çünkü mobille çakışıyordu -->
+    <script src="js/hamburger-menu.js" defer></script>
     <style>
         /* Önbellek sıfırlama - v2.0 - Sidebar bağımsız hale getirildi */
         
