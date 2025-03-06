@@ -12,13 +12,14 @@
     <link rel="stylesheet" href="css/sidebar-mobile-fix.css">
     <link rel="stylesheet" href="css/popup.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="js/hamburger-menu.js" defer></script>
     <script src="static-blog-data.js" defer></script>
+    <script src="js/dom-utils.js" defer></script>
     <script src="js/sidebar.js" defer></script>
-    <script src="js/popup-handler.js" defer></script>
     <script src="js/main.js" defer></script>
+    <script src="js/popup-handler.js" defer></script>
     <script src="js/like-handler.js" defer></script>
     <!-- <script src="js/mobile-fix.js" defer></script> -->
+    <!-- <script src="js/hamburger-menu.js" defer></script> -->
     <style>
         /* Önbellek sıfırlama - v2.0 - Sidebar bağımsız hale getirildi */
         
@@ -527,53 +528,75 @@
     </footer>
     <div class="overlay"></div>
     <script>
-        // Mobil menü işlemleri
         document.addEventListener('DOMContentLoaded', function() {
-            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-            if (mobileMenuBtn) {
-                mobileMenuBtn.addEventListener('click', function() {
-                    const mainNav = document.querySelector('.main-nav');
-                    const headerRight = document.querySelector('.header-right');
-                    
-                    if (mainNav) mainNav.classList.toggle('show');
-                    if (headerRight) headerRight.classList.toggle('show');
-                    this.classList.toggle('active');
-                });
-            }
-
-            // Ekran genişliği değiştiğinde menüyü sıfırla
-            window.addEventListener('resize', function() {
-                const mainNav = document.querySelector('.main-nav');
-                const headerRight = document.querySelector('.header-right');
-                const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-                
-                if (window.innerWidth > 768) {
-                    if (mainNav) mainNav.classList.remove('show');
-                    if (headerRight) headerRight.classList.remove('show');
-                    if (mobileMenuBtn) mobileMenuBtn.classList.remove('active');
-                }
-            });
-
-            // Blog yazısı "Devamını Oku" butonları
-            const readMoreBtns = document.querySelectorAll('.btn-daha');
-            if (readMoreBtns) {
-                readMoreBtns.forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const postContent = this.closest('.entry-content');
-                        const fullContent = postContent.querySelector('.post-full-content');
+            console.log('Acil düzeltme scripti yüklendi');
+            
+            // Mobil elementleri
+            const hamburgerBtn = document.querySelector('.hamburger-btn');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const mobileOverlay = document.querySelector('.mobile-overlay');
+            const mobileCloseBtn = document.querySelector('.mobile-close-btn');
+            
+            // Hamburger butonu için olay dinleyici
+            if (hamburgerBtn) {
+                hamburgerBtn.onclick = function(e) {
+                    console.log('Hamburger butonuna tıklandı');
+                    if (mobileMenu) {
+                        mobileMenu.classList.toggle('active');
+                        if (mobileOverlay) mobileOverlay.classList.toggle('active');
                         
-                        if (fullContent) {
-                            if (fullContent.style.display === 'none' || !fullContent.style.display) {
-                                fullContent.style.display = 'block';
-                                this.textContent = 'daha az göster';
-                            } else {
-                                fullContent.style.display = 'none';
-                                this.textContent = 'devamını okumak için...';
-                            }
+                        if (mobileMenu.classList.contains('active')) {
+                            document.body.style.overflow = 'hidden';
+                        } else {
+                            document.body.style.overflow = '';
                         }
-                    });
-                });
+                    }
+                    e.stopPropagation();
+                };
             }
+            
+            // Mobil menüyü kapatma butonu
+            if (mobileCloseBtn) {
+                mobileCloseBtn.onclick = function(e) {
+                    console.log('Kapat butonuna tıklandı');
+                    if (mobileMenu) {
+                        mobileMenu.classList.remove('active');
+                        if (mobileOverlay) mobileOverlay.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                    e.stopPropagation();
+                };
+            }
+            
+            // Overlay tıklamaları
+            if (mobileOverlay) {
+                mobileOverlay.onclick = function(e) {
+                    console.log('Overlay tıklandı');
+                    if (mobileMenu) {
+                        mobileMenu.classList.remove('active');
+                        mobileOverlay.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                    e.stopPropagation();
+                };
+            }
+            
+            // Devamını oku butonları 
+            const readMoreButtons = document.querySelectorAll('.btn-daha, .read-more');
+            readMoreButtons.forEach(button => {
+                button.onclick = function(e) {
+                    e.preventDefault();
+                    console.log('Devamını oku butonuna tıklandı');
+                    
+                    const postId = this.getAttribute('data-post-id');
+                    if (postId && typeof window.showBlogPopup === 'function') {
+                        const post = window.blogData.blogPosts.find(p => p.id == postId);
+                        if (post) {
+                            window.showBlogPopup(post);
+                        }
+                    }
+                };
+            });
         });
     </script>
 </body>
