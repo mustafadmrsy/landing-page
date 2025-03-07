@@ -1873,6 +1873,12 @@ body {
 
 /* Mobil Uyumluluk */
 @media (max-width: 768px) {
+    .snk-post-comments {
+        margin-left: -12px;
+        margin-right: -12px;
+        border-radius: 0;
+    }
+    
     .snk-share-panel {
         position: fixed;
         left: 50%;
@@ -1921,16 +1927,16 @@ body {
 /* Yorum Yanıtlama Stilleri */
 .snk-reply-form-container {
     margin-top: 10px;
-    background: #f0f0f0;
-    border-radius: 10px;
-    padding: 15px;
-    opacity: 0;
     max-height: 0;
+    opacity: 0;
     overflow: hidden;
     transition: all 0.3s ease;
 }
 
 .snk-reply-form {
+    background: #f0f0f0;
+    border-radius: 8px;
+    padding: 12px;
     display: flex;
     flex-direction: column;
 }
@@ -1944,7 +1950,7 @@ body {
     resize: vertical;
     font-family: inherit;
     font-size: 0.95rem;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     transition: border-color 0.3s;
 }
 
@@ -1961,16 +1967,13 @@ body {
 }
 
 .snk-reply-btn {
-    padding: 8px 16px;
+    padding: 8px 15px;
     border: none;
     border-radius: 50px;
     cursor: pointer;
     font-weight: 500;
     font-size: 0.9rem;
     transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
 }
 
 .snk-reply-submit {
@@ -1981,12 +1984,7 @@ body {
 .snk-reply-submit:hover {
     background: linear-gradient(135deg, #2980b9, #16a085);
     transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.snk-reply-submit:active {
-    transform: translateY(-1px);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
 }
 
 .snk-reply-cancel {
@@ -2000,30 +1998,26 @@ body {
 }
 
 .snk-reply {
-    margin-left: 20px;
-    border-left: 4px solid #1abc9c;
-    background: #f0f7fa;
+    background: #f9f9f9;
+    border-left: 4px solid #1abc9c; /* Yanıtlar için farklı renk */
+    margin-left: 15px; /* Girintileme */
+    border-radius: 5px;
     padding: 12px;
+    margin-bottom: 15px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
 }
 
 .snk-reply::before {
     content: '';
     position: absolute;
-    left: -20px;
-    top: 15px;
+    top: -15px;
+    left: -15px;
     width: 15px;
-    height: 2px;
-    background: #1abc9c;
-}
-
-.snk-comment-like.active {
-    background: #e3f2fd;
-    color: #2196F3;
-    font-weight: bold;
-}
-
-.snk-comment-like.active i {
-    transform: scale(1.1);
+    height: 15px;
+    border-left: 2px solid #e0e0e0;
+    border-bottom: 2px solid #e0e0e0;
+    border-bottom-left-radius: 8px;
 }
 
 /* Mobil Uyumluluk İçin Ek Düzenlemeler */
@@ -2429,4 +2423,235 @@ textarea.snk-form-control {
     .snk-form-group label {
         font-size: 0.9rem;
     }
+}
+
+/* Mobil uyumluluk için ek düzenlemeler */
+@media (max-width: 480px) {
+    .snk-popup-container {
+        width: 95%;
+    }
+}
+
+/* Oturum Açma ve Kaydolma Formları */
+.snk-auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 10px 0;
+}
+
+.snk-form-row {
+    display: flex;
+    gap: 15px;
+}
+
+@media (max-width: 576px) {
+    .snk-form-row {
+        flex-direction: column;
+        gap: 18px;
+    }
+}
+
+.snk-form-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    position: relative;
+}
+
+.snk-form-group label {
+    margin-bottom: 6px;
+    font-size: 14px;
+    color: var(--snk-dark-gray);
+    font-weight: 500;
+}
+
+.snk-form-input {
+    padding: 12px 15px;
+    border: 1px solid #343536;
+    border-radius: 4px;
+    background-color: #1A1A1B;
+    color: var(--snk-white);
+    font-size: 15px;
+    width: 100%;
+    transition: all 0.2s ease;
+}
+
+.snk-form-input:focus {
+    border-color: var(--snk-blue);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 121, 211, 0.2);
+}
+
+.snk-form-input::placeholder {
+    color: #818384;
+}
+
+.snk-password-container {
+    position: relative;
+    width: 100%;
+}
+
+.snk-password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #818384;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 5px;
+    transition: all 0.2s ease;
+}
+
+.snk-password-toggle:hover {
+    color: var(--snk-white);
+}
+
+.snk-form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+}
+
+.snk-remember-me {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--snk-dark-gray);
+}
+
+.snk-forgot-password {
+    color: var(--snk-blue);
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.snk-forgot-password:hover {
+    text-decoration: underline;
+    color: var(--snk-light-blue);
+}
+
+.snk-auth-submit {
+    background: var(--snk-blue);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.snk-auth-submit:hover {
+    background: var(--snk-dark-blue);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.snk-auth-submit:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+.snk-auth-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 5px 0;
+    color: #818384;
+    font-size: 13px;
+}
+
+.snk-auth-divider::before,
+.snk-auth-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #343536;
+}
+
+.snk-auth-divider span {
+    padding: 0 10px;
+}
+
+.snk-social-login {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.snk-social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #343536;
+    background: #1A1A1B;
+    color: var(--snk-white);
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    gap: 10px;
+}
+
+.snk-google-btn {
+    color: #EA4335;
+}
+
+.snk-facebook-btn {
+    color: #4267B2;
+}
+
+.snk-social-btn:hover {
+    background: #272729;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.snk-auth-toggle {
+    text-align: center;
+    font-size: 13px;
+    color: var(--snk-dark-gray);
+}
+
+.snk-auth-toggle a {
+    color: var(--snk-blue);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.snk-auth-toggle a:hover {
+    text-decoration: underline;
+    color: var(--snk-light-blue);
+}
+
+.snk-terms-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--snk-dark-gray);
+}
+
+.snk-terms-container input[type="checkbox"] {
+    margin-top: 3px;
+}
+
+.snk-terms-link {
+    color: var(--snk-blue);
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.snk-terms-link:hover {
+    text-decoration: underline;
+    color: var(--snk-light-blue);
 }

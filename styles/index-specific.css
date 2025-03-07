@@ -99,6 +99,48 @@
     background-color: transparent;
 }
 
+/* Oturum Açma ve Kaydolma Butonları */
+.snk-login-btn,
+.snk-register-btn {
+    background-color: transparent;
+    border: 1px solid #343536;
+    transition: all 0.2s ease;
+    margin-left: 10px;
+}
+
+.snk-login-btn:hover,
+.snk-register-btn:hover {
+    background-color: #343536;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.snk-login-btn {
+    color: #D7DADC;
+}
+
+.snk-register-btn {
+    background-color: #0079D3;
+    color: white;
+    border-color: #0079D3;
+}
+
+.snk-register-btn:hover {
+    background-color: #0061A9;
+    border-color: #0061A9;
+}
+
+/* Butona animasyon ekleme */
+.snk-login-btn i,
+.snk-register-btn i {
+    transition: transform 0.3s ease;
+}
+
+.snk-login-btn:hover i,
+.snk-register-btn:hover i {
+    transform: translateY(-2px);
+}
+
 /* Profil */
 .snk-profile-container {
     position: relative;
@@ -265,6 +307,11 @@ input:checked + .snk-toggle-slider:before {
     
     .snk-header-btn {
         padding: 8px;
+    }
+    
+    .snk-login-btn,
+    .snk-register-btn {
+        margin-left: 0;
     }
 }
 

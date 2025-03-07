@@ -99,30 +99,248 @@ function snk_popupHandler_setupReadMoreButtons() {
 function snk_popupHandler_setupEvents() {
     console.log('Popup olayları ayarlanıyor');
     
-    // Kapatma butonuna tıklama
+    // Kapat butonuna tıklama olayı
     if (snk_popupHandler_closeBtn) {
         snk_popupHandler_closeBtn.addEventListener('click', snk_popupHandler_closePopup);
-    } else {
-        console.error('Popup kapatma butonu bulunamadı');
     }
     
-    // Overlay'e tıklama
+    // Overlay'e tıklama olayı (popup dışına tıklanınca kapanması için)
     if (snk_popupHandler_overlay) {
         snk_popupHandler_overlay.addEventListener('click', function(e) {
-            // Sadece overlay'e tıklandığında kapat (popup içeriğine tıklamada değil)
+            // Sadece doğrudan overlay'e tıklanırsa kapat (içeriğe tıklamayı engelle)
             if (e.target === snk_popupHandler_overlay) {
                 snk_popupHandler_closePopup();
             }
         });
     }
     
-    // ESC tuşuna basma
+    // Esc tuşuna basma olayı
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && snk_popupHandler_overlay && 
-            snk_popupHandler_overlay.classList.contains('active')) {
+        if (e.key === 'Escape') {
             snk_popupHandler_closePopup();
         }
     });
+    
+    // Oturum Açma butonuna tıklama olayı
+    const loginBtn = document.getElementById('snk_login_btn');
+    if (loginBtn) {
+        loginBtn.addEventListener('click', snk_popupHandler_showLoginForm);
+    }
+    
+    // Kaydol butonuna tıklama olayı
+    const registerBtn = document.getElementById('snk_register_btn');
+    if (registerBtn) {
+        registerBtn.addEventListener('click', snk_popupHandler_showRegisterForm);
+    }
+}
+
+/**
+ * Oturum açma formunu gösterir
+ */
+function snk_popupHandler_showLoginForm() {
+    console.log('Oturum açma formu gösteriliyor');
+    
+    const loginFormContent = `
+        <div class="snk-login-form-container">
+            <form id="snk_login_form" class="snk-auth-form">
+                <div class="snk-form-group">
+                    <label for="snk_login_email">E-posta</label>
+                    <input type="email" id="snk_login_email" class="snk-form-input" placeholder="E-posta adresiniz" required>
+                </div>
+                
+                <div class="snk-form-group">
+                    <label for="snk_login_password">Şifre</label>
+                    <div class="snk-password-container">
+                        <input type="password" id="snk_login_password" class="snk-form-input" placeholder="Şifreniz" required>
+                        <button type="button" class="snk-password-toggle" id="snk_login_toggle_password">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="snk-form-options">
+                    <div class="snk-remember-me">
+                        <input type="checkbox" id="snk_remember_me">
+                        <label for="snk_remember_me">Beni hatırla</label>
+                    </div>
+                    <a href="#" class="snk-forgot-password">Şifremi unuttum</a>
+                </div>
+                
+                <button type="submit" class="snk-auth-submit">Oturum Aç</button>
+                
+                <div class="snk-auth-divider">
+                    <span>veya</span>
+                </div>
+                
+                <div class="snk-social-login">
+                    <button type="button" class="snk-social-btn snk-google-btn">
+                        <i class="fab fa-google"></i>
+                        Google ile Giriş Yap
+                    </button>
+                    <button type="button" class="snk-social-btn snk-facebook-btn">
+                        <i class="fab fa-facebook-f"></i>
+                        Facebook ile Giriş Yap
+                    </button>
+                </div>
+                
+                <div class="snk-auth-toggle">
+                    Hesabınız yok mu? <a href="#" id="snk_switch_to_register">Kaydolun</a>
+                </div>
+            </form>
+        </div>
+    `;
+    
+    // Popup'ı aç
+    snk_popupHandler_openPopup('Oturum Aç', loginFormContent);
+    
+    // Form olaylarını ekle
+    setTimeout(() => {
+        const loginForm = document.getElementById('snk_login_form');
+        const passwordToggle = document.getElementById('snk_login_toggle_password');
+        const switchToRegister = document.getElementById('snk_switch_to_register');
+        
+        if (loginForm) {
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                // Bu aşamada gerçek bir login işlemi yapılmayacak, sadece demo olarak mesaj gösteriyoruz
+                alert('Oturum açma işlevi henüz uygulanmadı. Bu bir prototiptir.');
+            });
+        }
+        
+        if (passwordToggle) {
+            passwordToggle.addEventListener('click', function() {
+                const passwordInput = document.getElementById('snk_login_password');
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                
+                // Göz ikonunu değiştir
+                const icon = this.querySelector('i');
+                icon.classList.toggle('fa-eye');
+                icon.classList.toggle('fa-eye-slash');
+            });
+        }
+        
+        if (switchToRegister) {
+            switchToRegister.addEventListener('click', function(e) {
+                e.preventDefault();
+                snk_popupHandler_showRegisterForm();
+            });
+        }
+    }, 100);
+}
+
+/**
+ * Kaydolma formunu gösterir
+ */
+function snk_popupHandler_showRegisterForm() {
+    console.log('Kaydolma formu gösteriliyor');
+    
+    const registerFormContent = `
+        <div class="snk-register-form-container">
+            <form id="snk_register_form" class="snk-auth-form">
+                <div class="snk-form-row">
+                    <div class="snk-form-group">
+                        <label for="snk_register_name">Ad</label>
+                        <input type="text" id="snk_register_name" class="snk-form-input" placeholder="Adınız" required>
+                    </div>
+                    
+                    <div class="snk-form-group">
+                        <label for="snk_register_surname">Soyad</label>
+                        <input type="text" id="snk_register_surname" class="snk-form-input" placeholder="Soyadınız" required>
+                    </div>
+                </div>
+                
+                <div class="snk-form-group">
+                    <label for="snk_register_email">E-posta</label>
+                    <input type="email" id="snk_register_email" class="snk-form-input" placeholder="E-posta adresiniz" required>
+                </div>
+                
+                <div class="snk-form-group">
+                    <label for="snk_register_password">Şifre</label>
+                    <div class="snk-password-container">
+                        <input type="password" id="snk_register_password" class="snk-form-input" placeholder="Şifreniz" required>
+                        <button type="button" class="snk-password-toggle" id="snk_register_toggle_password">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="snk-form-group">
+                    <label for="snk_register_password_confirm">Şifre (Tekrar)</label>
+                    <div class="snk-password-container">
+                        <input type="password" id="snk_register_password_confirm" class="snk-form-input" placeholder="Şifrenizi tekrar girin" required>
+                    </div>
+                </div>
+                
+                <div class="snk-terms-container">
+                    <input type="checkbox" id="snk_terms_agreement" required>
+                    <label for="snk_terms_agreement">
+                        <a href="#" class="snk-terms-link">Kullanım Koşulları</a> ve 
+                        <a href="#" class="snk-terms-link">Gizlilik Politikası</a>'nı okudum ve kabul ediyorum.
+                    </label>
+                </div>
+                
+                <button type="submit" class="snk-auth-submit">Kaydol</button>
+                
+                <div class="snk-auth-divider">
+                    <span>veya</span>
+                </div>
+                
+                <div class="snk-social-login">
+                    <button type="button" class="snk-social-btn snk-google-btn">
+                        <i class="fab fa-google"></i>
+                        Google ile Kaydol
+                    </button>
+                    <button type="button" class="snk-social-btn snk-facebook-btn">
+                        <i class="fab fa-facebook-f"></i>
+                        Facebook ile Kaydol
+                    </button>
+                </div>
+                
+                <div class="snk-auth-toggle">
+                    Zaten hesabınız var mı? <a href="#" id="snk_switch_to_login">Oturum Açın</a>
+                </div>
+            </form>
+        </div>
+    `;
+    
+    // Popup'ı aç
+    snk_popupHandler_openPopup('Kaydol', registerFormContent);
+    
+    // Form olaylarını ekle
+    setTimeout(() => {
+        const registerForm = document.getElementById('snk_register_form');
+        const passwordToggle = document.getElementById('snk_register_toggle_password');
+        const switchToLogin = document.getElementById('snk_switch_to_login');
+        
+        if (registerForm) {
+            registerForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                // Bu aşamada gerçek bir kayıt işlemi yapılmayacak, sadece demo olarak mesaj gösteriyoruz
+                alert('Kaydolma işlevi henüz uygulanmadı. Bu bir prototiptir.');
+            });
+        }
+        
+        if (passwordToggle) {
+            passwordToggle.addEventListener('click', function() {
+                const passwordInput = document.getElementById('snk_register_password');
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                
+                // Göz ikonunu değiştir
+                const icon = this.querySelector('i');
+                icon.classList.toggle('fa-eye');
+                icon.classList.toggle('fa-eye-slash');
+            });
+        }
+        
+        if (switchToLogin) {
+            switchToLogin.addEventListener('click', function(e) {
+                e.preventDefault();
+                snk_popupHandler_showLoginForm();
+            });
+        }
+    }, 100);
 }
 
 // Sayfa yüklendiğinde hazırlık

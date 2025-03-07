@@ -694,26 +694,27 @@ function snk_main_toggleComments(postId) {
     // Yorum bölümü oluştur
     commentsSection = document.createElement('div');
     commentsSection.className = 'snk-post-comments active';
+    commentsSection.id = `snk_comment_section_${postId}`;
     
     // Yorumlar başlığı
     const headerHTML = `
-        <div class="snk-comments-header">
+        <div class="snk-comments-header" id="snk_comment_header_${postId}">
             <h3 class="snk-comments-title">
                 <i class="fas fa-comment-alt"></i> Yorumlar
                 <span class="snk-comments-count">${comments.length}</span>
             </h3>
-            <button class="snk-comments-close">
+            <button class="snk-comments-close" id="snk_comment_close_${postId}">
                 <i class="fas fa-times"></i>
             </button>
         </div>
     `;
     
     // Yorum listesi
-    let commentsHTML = '<div class="snk-comments-list">';
+    let commentsHTML = `<div class="snk-comments-list" id="snk_comment_list_${postId}">`;
     
     comments.forEach(comment => {
         commentsHTML += `
-            <div class="snk-comment" data-comment-id="${comment.id}">
+            <div class="snk-comment" data-comment-id="${comment.id}" id="snk_comment_item_${postId}_${comment.id}">
                 <div class="snk-comment-header">
                     <span class="snk-comment-author">
                         <i class="fas fa-user-circle"></i> ${comment.author}
@@ -724,10 +725,10 @@ function snk_main_toggleComments(postId) {
                     ${comment.content}
                 </div>
                 <div class="snk-comment-actions">
-                    <button class="snk-comment-action snk-comment-like">
+                    <button class="snk-comment-action snk-comment-like" id="snk_comment_like_${postId}_${comment.id}">
                         <i class="fas fa-thumbs-up"></i> Beğen (${comment.likes})
                     </button>
-                    <button class="snk-comment-action snk-comment-reply">
+                    <button class="snk-comment-action snk-comment-reply" id="snk_comment_reply_${postId}_${comment.id}">
                         <i class="fas fa-reply"></i> Yanıtla
                     </button>
                 </div>
@@ -739,12 +740,12 @@ function snk_main_toggleComments(postId) {
     
     // Yeni yorum formu
     const formHTML = `
-        <div class="snk-new-comment">
-            <form class="snk-comment-form">
-                <textarea class="snk-comment-textarea" placeholder="Yorumunuzu buraya yazın..."></textarea>
+        <div class="snk-new-comment" id="snk_comment_form_container_${postId}">
+            <form class="snk-comment-form" id="snk_comment_form_${postId}">
+                <textarea class="snk-comment-textarea" id="snk_comment_textarea_${postId}" placeholder="Yorumunuzu buraya yazın..."></textarea>
                 <div class="snk-comment-form-actions">
-                    <button type="button" class="snk-comment-btn snk-comment-cancel">İptal</button>
-                    <button type="submit" class="snk-comment-btn snk-comment-submit">Yorum Yap</button>
+                    <button type="button" class="snk-comment-btn snk-comment-cancel" id="snk_comment_cancel_${postId}">İptal</button>
+                    <button type="submit" class="snk-comment-btn snk-comment-submit" id="snk_comment_submit_${postId}">Yorum Yap</button>
                 </div>
             </form>
         </div>
@@ -757,17 +758,17 @@ function snk_main_toggleComments(postId) {
     postElement.appendChild(commentsSection);
     
     // Kapatma butonuna tıklama
-    const closeBtn = commentsSection.querySelector('.snk-comments-close');
+    const closeBtn = document.getElementById(`snk_comment_close_${postId}`);
     closeBtn.addEventListener('click', () => {
         commentsSection.classList.remove('active');
         setTimeout(() => commentsSection.remove(), 300);
     });
     
     // İptal butonuna tıklama
-    const cancelBtn = commentsSection.querySelector('.snk-comment-cancel');
+    const cancelBtn = document.getElementById(`snk_comment_cancel_${postId}`);
     if (cancelBtn) {
         cancelBtn.addEventListener('click', () => {
-            const textarea = commentsSection.querySelector('.snk-comment-textarea');
+            const textarea = document.getElementById(`snk_comment_textarea_${postId}`);
             if (textarea) {
                 textarea.value = '';
             }
@@ -775,12 +776,12 @@ function snk_main_toggleComments(postId) {
     }
     
     // Form gönderme olayı
-    const commentForm = commentsSection.querySelector('.snk-comment-form');
+    const commentForm = document.getElementById(`snk_comment_form_${postId}`);
     if (commentForm) {
         commentForm.addEventListener('submit', (e) => {
             e.preventDefault();
             
-            const textarea = commentsSection.querySelector('.snk-comment-textarea');
+            const textarea = document.getElementById(`snk_comment_textarea_${postId}`);
             if (textarea && textarea.value.trim()) {
                 // Yeni yorum oluştur (gerçek uygulamada API'ye gönderilecek)
                 alert('Yorumunuz başarıyla gönderildi!');
@@ -850,6 +851,9 @@ function snk_main_replyToComment(commentId, button) {
     const commentElement = document.querySelector(`.snk-comment[data-comment-id="${commentId}"]`);
     if (!commentElement) return;
     
+    // Post ID'sini al (yorum elementinden)
+    const postId = commentElement.closest('.snk-post-comments').id.replace('snk_comment_section_', '');
+    
     // Varsa mevcut yanıt formunu kontrol et
     let replyForm = commentElement.querySelector('.snk-reply-form-container');
     
@@ -862,14 +866,15 @@ function snk_main_replyToComment(commentId, button) {
     // Yanıt formunu oluştur
     replyForm = document.createElement('div');
     replyForm.className = 'snk-reply-form-container';
+    replyForm.id = `snk_reply_form_container_${postId}_${commentId}`;
     
     // Formun HTML içeriğini oluştur
     replyForm.innerHTML = `
-        <form class="snk-reply-form">
-            <textarea class="snk-reply-textarea" placeholder="Yanıtınızı buraya yazın..."></textarea>
+        <form class="snk-reply-form" id="snk_reply_form_${postId}_${commentId}">
+            <textarea class="snk-reply-textarea" id="snk_reply_textarea_${postId}_${commentId}" placeholder="Yanıtınızı buraya yazın..."></textarea>
             <div class="snk-reply-form-actions">
-                <button type="button" class="snk-reply-btn snk-reply-cancel">İptal</button>
-                <button type="submit" class="snk-reply-btn snk-reply-submit">Yanıtla</button>
+                <button type="button" class="snk-reply-btn snk-reply-cancel" id="snk_reply_cancel_${postId}_${commentId}">İptal</button>
+                <button type="submit" class="snk-reply-btn snk-reply-submit" id="snk_reply_submit_${postId}_${commentId}">Yanıtla</button>
             </div>
         </form>
     `;
@@ -884,11 +889,11 @@ function snk_main_replyToComment(commentId, button) {
     }, 10);
     
     // Textarea'ya otomatik odaklanma
-    const textarea = replyForm.querySelector('.snk-reply-textarea');
+    const textarea = document.getElementById(`snk_reply_textarea_${postId}_${commentId}`);
     textarea.focus();
     
     // İptal butonuna tıklama
-    const cancelBtn = replyForm.querySelector('.snk-reply-cancel');
+    const cancelBtn = document.getElementById(`snk_reply_cancel_${postId}_${commentId}`);
     cancelBtn.addEventListener('click', () => {
         replyForm.style.maxHeight = '0';
         replyForm.style.opacity = '0';
@@ -896,7 +901,7 @@ function snk_main_replyToComment(commentId, button) {
     });
     
     // Yanıt formunun gönderilmesi
-    const form = replyForm.querySelector('.snk-reply-form');
+    const form = document.getElementById(`snk_reply_form_${postId}_${commentId}`);
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         
@@ -905,6 +910,11 @@ function snk_main_replyToComment(commentId, button) {
             // Yeni yanıt yorumunu oluştur
             const newReply = document.createElement('div');
             newReply.className = 'snk-comment snk-reply';
+            
+            // Rastgele bir ID oluştur (gerçek uygulamada API'den gelir)
+            const replyId = Math.floor(Math.random() * 1000) + commentId + 100;
+            newReply.id = `snk_comment_reply_item_${postId}_${replyId}`;
+            newReply.dataset.commentId = replyId;
             
             // Yanıt içeriğini oluştur
             newReply.innerHTML = `
@@ -918,7 +928,7 @@ function snk_main_replyToComment(commentId, button) {
                     ${replyText}
                 </div>
                 <div class="snk-comment-actions">
-                    <button class="snk-comment-action snk-comment-like">
+                    <button class="snk-comment-action snk-comment-like" id="snk_comment_like_${postId}_${replyId}">
                         <i class="fas fa-thumbs-up"></i> Beğen (0)
                     </button>
                 </div>
@@ -931,10 +941,9 @@ function snk_main_replyToComment(commentId, button) {
             commentElement.after(newReply);
             
             // Yeni yanıta beğenme fonksiyonu ekle
-            const newLikeButton = newReply.querySelector('.snk-comment-like');
+            const newLikeButton = document.getElementById(`snk_comment_like_${postId}_${replyId}`);
             newLikeButton.addEventListener('click', function() {
-                const randomId = Math.floor(Math.random() * 1000) + 100; // Geçici ID
-                snk_main_likeComment(randomId, this);
+                snk_main_likeComment(replyId, this);
             });
             
             // Formu kapat
@@ -984,47 +993,48 @@ function snk_main_toggleSharePanel(postId, button) {
     // Paylaşım paneli oluştur
     sharePanel = document.createElement('div');
     sharePanel.className = 'snk-share-panel active';
+    sharePanel.id = `snk_share_panel_${postId}`;
     sharePanel.dataset.postId = postId;
     
     // Paylaşım paneli içeriğini oluştur
     sharePanel.innerHTML = `
-        <div class="snk-share-header">
+        <div class="snk-share-header" id="snk_share_header_${postId}">
             <h3 class="snk-share-title">
                 <i class="fas fa-share-alt"></i> Paylaş
             </h3>
-            <button class="snk-share-close">
+            <button class="snk-share-close" id="snk_share_close_${postId}">
                 <i class="fas fa-times"></i>
             </button>
         </div>
-        <div class="snk-share-buttons">
-            <button class="snk-share-button snk-share-twitter">
+        <div class="snk-share-buttons" id="snk_share_buttons_${postId}">
+            <button class="snk-share-button snk-share-twitter" id="snk_share_twitter_${postId}">
                 <i class="fab fa-twitter"></i>
                 Twitter
             </button>
-            <button class="snk-share-button snk-share-facebook">
+            <button class="snk-share-button snk-share-facebook" id="snk_share_facebook_${postId}">
                 <i class="fab fa-facebook"></i>
                 Facebook
             </button>
-            <button class="snk-share-button snk-share-linkedin">
+            <button class="snk-share-button snk-share-linkedin" id="snk_share_linkedin_${postId}">
                 <i class="fab fa-linkedin"></i>
                 LinkedIn
             </button>
-            <button class="snk-share-button snk-share-whatsapp">
+            <button class="snk-share-button snk-share-whatsapp" id="snk_share_whatsapp_${postId}">
                 <i class="fab fa-whatsapp"></i>
                 WhatsApp
             </button>
-            <button class="snk-share-button snk-share-telegram">
+            <button class="snk-share-button snk-share-telegram" id="snk_share_telegram_${postId}">
                 <i class="fab fa-telegram"></i>
                 Telegram
             </button>
-            <button class="snk-share-button snk-share-email">
+            <button class="snk-share-button snk-share-email" id="snk_share_email_${postId}">
                 <i class="fas fa-envelope"></i>
                 Email
             </button>
-            <div class="snk-share-link">
+            <div class="snk-share-link" id="snk_share_link_container_${postId}">
                 <div class="snk-share-link-input">
-                    <input type="text" class="snk-share-url" value="${shareUrl}" readonly>
-                    <button class="snk-share-copy">Kopyala</button>
+                    <input type="text" class="snk-share-url" id="snk_share_url_${postId}" value="${shareUrl}" readonly>
+                    <button class="snk-share-copy" id="snk_share_copy_${postId}">Kopyala</button>
                 </div>
             </div>
         </div>
@@ -1056,15 +1066,15 @@ function snk_main_toggleSharePanel(postId, button) {
     }
     
     // Kapatma butonuna tıklama
-    const closeBtn = sharePanel.querySelector('.snk-share-close');
+    const closeBtn = document.getElementById(`snk_share_close_${postId}`);
     closeBtn.addEventListener('click', () => {
         sharePanel.classList.remove('active');
         setTimeout(() => sharePanel.remove(), 300);
     });
     
     // Link kopyalama butonuna tıklama
-    const copyBtn = sharePanel.querySelector('.snk-share-copy');
-    const urlInput = sharePanel.querySelector('.snk-share-url');
+    const copyBtn = document.getElementById(`snk_share_copy_${postId}`);
+    const urlInput = document.getElementById(`snk_share_url_${postId}`);
     
     copyBtn.addEventListener('click', () => {
         urlInput.select();
@@ -1081,32 +1091,32 @@ function snk_main_toggleSharePanel(postId, button) {
     });
     
     // Sosyal medya butonlarına tıklama
-    const twitterBtn = sharePanel.querySelector('.snk-share-twitter');
+    const twitterBtn = document.getElementById(`snk_share_twitter_${postId}`);
     twitterBtn.addEventListener('click', () => {
         window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(shareUrl)}`, '_blank');
     });
     
-    const facebookBtn = sharePanel.querySelector('.snk-share-facebook');
+    const facebookBtn = document.getElementById(`snk_share_facebook_${postId}`);
     facebookBtn.addEventListener('click', () => {
         window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, '_blank');
     });
     
-    const linkedinBtn = sharePanel.querySelector('.snk-share-linkedin');
+    const linkedinBtn = document.getElementById(`snk_share_linkedin_${postId}`);
     linkedinBtn.addEventListener('click', () => {
         window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`, '_blank');
     });
     
-    const whatsappBtn = sharePanel.querySelector('.snk-share-whatsapp');
+    const whatsappBtn = document.getElementById(`snk_share_whatsapp_${postId}`);
     whatsappBtn.addEventListener('click', () => {
         window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(post.title + ' ' + shareUrl)}`, '_blank');
     });
     
-    const telegramBtn = sharePanel.querySelector('.snk-share-telegram');
+    const telegramBtn = document.getElementById(`snk_share_telegram_${postId}`);
     telegramBtn.addEventListener('click', () => {
         window.open(`https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(post.title)}`, '_blank');
     });
     
-    const emailBtn = sharePanel.querySelector('.snk-share-email');
+    const emailBtn = document.getElementById(`snk_share_email_${postId}`);
     emailBtn.addEventListener('click', () => {
         window.open(`mailto:?subject=${encodeURIComponent(post.title)}&body=${encodeURIComponent('Bu yazıyı okumak isteyebilirsin: ' + shareUrl)}`, '_blank');
     });
