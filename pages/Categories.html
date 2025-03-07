@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Senirkent Blog</title>
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/index-specific.css">
+    <link rel="stylesheet" href="../styles/categories.css">
+    <link rel="stylesheet" href="../styles/darkmode.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="snk-container">
+        <!-- Header -->
+        <header class="snk-header">
+            <!-- Logo Alanı -->
+            <div class="snk-header-logo">
+                <img src="../public/images/logo.png" alt="Senirkent Blog" class="snk-logo-img">
+                <h1 class="snk-site-title">Senirkent Blog</h1>
+            </div>
+            
+            <!-- Arama -->
+            <div class="snk-header-search">
+                <i class="fas fa-search snk-search-icon"></i>
+                <input type="text" class="snk-search-input" placeholder="Senirkent Blog'da Ara">
+            </div>
+            
+            <!-- Sağ Köşe Butonları -->
+            <div class="snk-header-actions">
+                <button class="snk-header-btn snk-create-btn">
+                    <i class="fas fa-plus"></i>
+                    <span class="snk-btn-text">Oluştur</span>
+                </button>
+                
+                <!-- Profil Menü -->
+                <div class="snk-profile-container">
+                    <img src="../public/images/profile.png" alt="Profil" class="snk-profile-img" id="profileTrigger">
+                    
+                    <div class="snk-profile-menu" id="profileMenu">
+                        <div class="snk-profile-header">
+                            <img src="../public/images/profile.png" alt="Profil" class="snk-menu-profile-img">
+                            <div class="snk-profile-info">
+                                <span class="snk-profile-name">Kullanıcı Adı</span>
+                                <span class="snk-profile-username">@kullanici</span>
+                            </div>
+                        </div>
+                        
+                        <a href="#" class="snk-menu-item">
+                            <i class="fas fa-user"></i>
+                            Profili Görüntüle
+                        </a>
+                        <a href="#" class="snk-menu-item">
+                            <i class="fas fa-image"></i>
+                            Avatar Düzenle
+                        </a>
+                        <a href="#" class="snk-menu-item">
+                            <i class="fas fa-trophy"></i>
+                            Başarılar
+                        </a>
+                        <a href="#" class="snk-menu-item">
+                            <i class="fas fa-coin"></i>
+                            Katkı Programı
+                        </a>
+                        
+                        <div class="snk-menu-divider"></div>
+                        
+                        <a href="#" class="snk-menu-item">
+                            <i class="fas fa-moon"></i>
+                            Karanlık Mod
+                            <label class="snk-toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="snk-toggle-slider"></span>
+                            </label>
+                        </a>
+                        
+                        <div class="snk-menu-divider"></div>
+                        
+                        <a href="#" class="snk-menu-item">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Çıkış Yap
+                        </a>
+                        
+                        <div class="snk-menu-divider"></div>
+                        
+                        <a href="#" class="snk-menu-item">
+                            <i class="fas fa-ad"></i>
+                            Reklamlar
+                        </a>
+                        <a href="#" class="snk-menu-item">
+                            <i class="fas fa-chart-line"></i>
+                            Premium
+                        </a>
+                        <a href="#" class="snk-menu-item">
+                            <i class="fas fa-cog"></i>
+                            Ayarlar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="snk-content-wrapper">
+            <!-- Sidebar -->
+            <div class="snk-sidebar">
+                <!-- Sidebar Header ve Toggle Butonu -->
+                <div class="snk-sidebar-header">
+                    <h3 class="snk-sidebar-title">Menü</h3>
+                    <!-- Sidebar Toggle Button -->
+                    <button class="snk-sidebar-toggle" id="sidebarToggle">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                </div>
+                
+                <!-- Ana Navigasyon -->
+                <div class="snk-sidebar-section">
+                    <a href="index.html" class="snk-sidebar-item active">
+                        <i class="fas fa-home"></i>
+                        <span class="snk-sidebar-text">Ana Sayfa</span>
+                    </a>
+                    <a href="#" class="snk-sidebar-item" id="snk_sidebarPopular">
+                        <i class="fas fa-fire"></i>
+                        <span class="snk-sidebar-text">Popüler</span>
+                    </a>
+                    <a href="#" class="snk-sidebar-item">
+                        <i class="fas fa-compass"></i>
+                        <span class="snk-sidebar-text">Keşfet</span>
+                    </a>
+                    <a href="kategoriler.html" class="snk-sidebar-item">
+                        <i class="fas fa-th-large"></i>
+                        <span class="snk-sidebar-text">Tüm Yazılar</span>
+                    </a>
+                </div>
+                
+                <!-- Özel Beslemeler -->
+                <div class="snk-sidebar-section">
+                    <h3 class="snk-sidebar-heading">ÖZEL BESLEMELER</h3>
+                    <a href="#" class="snk-sidebar-item">
+                        <i class="fas fa-star"></i>
+                        <span class="snk-sidebar-text">Favoriler</span>
+                    </a>
+                    <a href="#" class="snk-sidebar-item">
+                        <i class="fas fa-history"></i>
+                        <span class="snk-sidebar-text">Geçmiş</span>
+                    </a>
+                </div>
+                
+                <!-- Kategoriler -->
+                <div class="snk-sidebar-section">
+                    <h3 class="snk-sidebar-heading">KATEGORİLER</h3>
+                    <a href="kategoriler.html?category=egitim" class="snk-sidebar-item">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span class="snk-sidebar-text">Eğitim</span>
+                    </a>
+                    <a href="kategoriler.html?category=teknoloji" class="snk-sidebar-item">
+                        <i class="fas fa-laptop-code"></i>
+                        <span class="snk-sidebar-text">Teknoloji</span>
+                    </a>
+                    <a href="kategoriler.html?category=kultur" class="snk-sidebar-item">
+                        <i class="fas fa-landmark"></i>
+                        <span class="snk-sidebar-text">Kültür</span>
+                    </a>
+                    <a href="kategoriler.html?category=spor" class="snk-sidebar-item">
+                        <i class="fas fa-futbol"></i>
+                        <span class="snk-sidebar-text">Spor</span>
+                    </a>
+                </div>
+                
+                <!-- Kaynaklar -->
+                <div class="snk-sidebar-section">
+                    <h3 class="snk-sidebar-heading">KAYNAKLAR</h3>
+                    <a href="hakkimizda.html" class="snk-sidebar-item">
+                        <i class="fas fa-info-circle"></i>
+                        <span class="snk-sidebar-text">Hakkımızda</span>
+                    </a>
+                    <a href="iletisim.html" class="snk-sidebar-item">
+                        <i class="fas fa-envelope"></i>
+                        <span class="snk-sidebar-text">İletişim</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Ana İçerik -->
+            <main class="snk-main-content snk-categories-main">
+                <!-- Kategori Başlık ve Filtreler -->
+                <div class="snk-categories-header">
+                    <h1 class="snk-categories-title">Kategoriler</h1>
+                    <div class="snk-categories-filters">
+                        <button class="snk-category-filter active" data-filter="all">Tümü</button>
+                        <button class="snk-category-filter" data-filter="egitim">Eğitim</button>
+                        <button class="snk-category-filter" data-filter="teknoloji">Teknoloji</button>
+                        <button class="snk-category-filter" data-filter="kultur">Kültür</button>
+                        <button class="snk-category-filter" data-filter="spor">Spor</button>
+                    </div>
+                </div>
+                
+                <!-- Kategori Kartları Container -->
+                <div class="snk-categories-container">
+                    <!-- Eğitim Kategori Kartı -->
+                    <div class="snk-category-card" data-category="egitim">
+                        <div class="snk-category-card-header">
+                            <i class="fas fa-graduation-cap snk-category-icon"></i>
+                            <h2 class="snk-category-name">Eğitim</h2>
+                        </div>
+                        <div class="snk-category-content">
+                            <p>Eğitim dünyasındaki gelişmeler, öğrenci hikayeleri ve akademik başarılar.</p>
+                        </div>
+                        <div class="snk-category-stats">
+                            <span><i class="fas fa-file-alt"></i> 24 Yazı</span>
+                            <span><i class="fas fa-eye"></i> 1.2K Görüntülenme</span>
+                        </div>
+                        <a href="kategoriler.html?category=egitim" class="snk-category-btn">Yazıları Gör</a>
+                    </div>
+                    
+                    <!-- Teknoloji Kategori Kartı -->
+                    <div class="snk-category-card" data-category="teknoloji">
+                        <div class="snk-category-card-header">
+                            <i class="fas fa-laptop-code snk-category-icon"></i>
+                            <h2 class="snk-category-name">Teknoloji</h2>
+                        </div>
+                        <div class="snk-category-content">
+                            <p>Teknoloji haberleri, yeni ürünler ve dijital dünya gelişmeleri.</p>
+                        </div>
+                        <div class="snk-category-stats">
+                            <span><i class="fas fa-file-alt"></i> 18 Yazı</span>
+                            <span><i class="fas fa-eye"></i> 2.3K Görüntülenme</span>
+                        </div>
+                        <a href="kategoriler.html?category=teknoloji" class="snk-category-btn">Yazıları Gör</a>
+                    </div>
+                    
+                    <!-- Kültür Kategori Kartı -->
+                    <div class="snk-category-card" data-category="kultur">
+                        <div class="snk-category-card-header">
+                            <i class="fas fa-landmark snk-category-icon"></i>
+                            <h2 class="snk-category-name">Kültür</h2>
+                        </div>
+                        <div class="snk-category-content">
+                            <p>Sanat etkinlikleri, kültürel değerler ve geleneksel yaşam.</p>
+                        </div>
+                        <div class="snk-category-stats">
+                            <span><i class="fas fa-file-alt"></i> 12 Yazı</span>
+                            <span><i class="fas fa-eye"></i> 950 Görüntülenme</span>
+                        </div>
+                        <a href="kategoriler.html?category=kultur" class="snk-category-btn">Yazıları Gör</a>
+                    </div>
+                    
+                    <!-- Spor Kategori Kartı -->
+                    <div class="snk-category-card" data-category="spor">
+                        <div class="snk-category-card-header">
+                            <i class="fas fa-futbol snk-category-icon"></i>
+                            <h2 class="snk-category-name">Spor</h2>
+                        </div>
+                        <div class="snk-category-content">
+                            <p>Spor müsabakaları, takım haberleri ve sporcu hikayeleri.</p>
+                        </div>
+                        <div class="snk-category-stats">
+                            <span><i class="fas fa-file-alt"></i> 16 Yazı</span>
+                            <span><i class="fas fa-eye"></i> 1.8K Görüntülenme</span>
+                        </div>
+                        <a href="kategoriler.html?category=spor" class="snk-category-btn">Yazıları Gör</a>
+                    </div>
+                </div>
+                
+                <!-- Son Yazılar Bölümü -->
+                <div class="snk-categories-recent">
+                    <h2 class="snk-recent-title">Son Eklenen Yazılar</h2>
+                    <div class="snk-recent-posts">
+                        <!-- Yazı 1 -->
+                        <div class="snk-recent-post-card">
+                            <div class="snk-recent-post-image">
+                                <img src="../public/images/placeholder.jpg" alt="Yazı Görseli">
+                                <span class="snk-post-category" data-category="egitim">Eğitim</span>
+                            </div>
+                            <div class="snk-recent-post-content">
+                                <h3 class="snk-recent-post-title">Üniversitelerde Dijital Dönüşüm Süreci</h3>
+                                <p class="snk-recent-post-excerpt">Üniversiteler dijital dönüşüm sürecinde yeni teknolojileri nasıl kullanıyor?</p>
+                                <div class="snk-recent-post-meta">
+                                    <span><i class="fas fa-calendar"></i> 12 Şubat 2025</span>
+                                    <span><i class="fas fa-user"></i> Ahmet Yılmaz</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Yazı 2 -->
+                        <div class="snk-recent-post-card">
+                            <div class="snk-recent-post-image">
+                                <img src="../public/images/placeholder.jpg" alt="Yazı Görseli">
+                                <span class="snk-post-category" data-category="teknoloji">Teknoloji</span>
+                            </div>
+                            <div class="snk-recent-post-content">
+                                <h3 class="snk-recent-post-title">Yapay Zeka ve Günlük Yaşamımız</h3>
+                                <p class="snk-recent-post-excerpt">Yapay zeka teknolojileri günlük yaşamımızı nasıl etkiliyor ve dönüştürüyor?</p>
+                                <div class="snk-recent-post-meta">
+                                    <span><i class="fas fa-calendar"></i> 8 Şubat 2025</span>
+                                    <span><i class="fas fa-user"></i> Zeynep Kaya</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Yazı 3 -->
+                        <div class="snk-recent-post-card">
+                            <div class="snk-recent-post-image">
+                                <img src="../public/images/placeholder.jpg" alt="Yazı Görseli">
+                                <span class="snk-post-category" data-category="kultur">Kültür</span>
+                            </div>
+                            <div class="snk-recent-post-content">
+                                <h3 class="snk-recent-post-title">Geleneksel Sanatlarımızın Modern Yorumları</h3>
+                                <p class="snk-recent-post-excerpt">Genç sanatçılar geleneksel sanatlarımızı modern yorumlarla nasıl yaşatıyor?</p>
+                                <div class="snk-recent-post-meta">
+                                    <span><i class="fas fa-calendar"></i> 5 Şubat 2025</span>
+                                    <span><i class="fas fa-user"></i> Mehmet Demir</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Popup Container -->
+    <div class="snk-popup-overlay" id="snk_popupOverlay">
+        <div class="snk-popup-container">
+            <div class="snk-popup-header">
+                <h2 class="snk-popup-title" id="snk_popupTitle"></h2>
+                <button class="snk-popup-close-btn" id="snk_popupCloseBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="snk-popup-content" id="snk_popupContent">
+                <!-- Popup içeriği JavaScript ile yüklenir -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobil Menü Butonu -->
+    <button class="snk-mobile-menu-btn" id="mobileSidebarToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- JavaScript dosyaları -->
+    <script src="../components/dom-utils.js"></script>
+    <script src="../components/sidebar.js"></script>
+    <script src="../components/main.js"></script>
+    <script src="../components/popup.js"></script>
+    <script src="../components/popup-handler.js"></script>
+    <script src="../components/categories.js"></script>
+    <script src="../darkjs/darkmode.js"></script>
+</body>
+</html>
