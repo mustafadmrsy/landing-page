@@ -180,25 +180,48 @@
             
             <!-- Ana İçerik -->
             <main class="snk-main-content">
-                <div class="snk-content-header">
-                    <h2 class="snk-content-title">En Güncel Paylaşımlar</h2>
-                    <div class="snk-filter-container">
-                        <button class="snk-filter-btn active" id="snk_filterNewest">
-                            <i class="fas fa-clock"></i>
-                            <span>En Yeni</span>
-                        </button>
-                        <button class="snk-filter-btn" id="snk_filterPopular">
-                            <i class="fas fa-fire"></i>
-                            <span>Popüler</span>
-                        </button>
+                <div class="snk-content-layout">
+                    <!-- Sol Sütun (Blog Yazıları) -->
+                    <div class="snk-content-main">
+                        <div class="snk-content-header">
+                            <h2 class="snk-content-title">En Güncel Paylaşımlar</h2>
+                            <div class="snk-filter-container">
+                                <button class="snk-filter-btn active" id="snk_filterNewest">
+                                    <i class="fas fa-clock"></i>
+                                    <span>En Yeni</span>
+                                </button>
+                                <button class="snk-filter-btn" id="snk_filterPopular">
+                                    <i class="fas fa-fire"></i>
+                                    <span>Popüler</span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="snk-posts-container" id="snk_postsContainer">
+                            <!-- Blog Yazıları JavaScript ile yüklenir -->
+                            <div class="snk-loading">
+                                <i class="fas fa-spinner fa-spin"></i> Yükleniyor...
+                            </div>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="snk-posts-container" id="snk_postsContainer">
-                    <!-- Blog Yazıları JavaScript ile yüklenir -->
-                    <div class="snk-loading">
-                        <i class="fas fa-spinner fa-spin"></i>
-                        <p>Yazılar yükleniyor...</p>
+                    
+                    <!-- Sağ Sütun (Kutucuklar için) -->
+                    <div class="snk-content-sidebar" id="snk_contentSidebar">
+                        <!-- En Çok Okunan Yazılar Kutucuğu -->
+                        <div class="snk-sidebar-widget">
+                            <div class="snk-sidebar-widget-header">
+                                <h3 class="snk-sidebar-widget-title">En Çok Okunan Yazılar</h3>
+                            </div>
+                            <div class="snk-sidebar-widget-content">
+                                <div class="snk-popular-posts" id="snk_popularPosts">
+                                    <!-- JavaScript ile doldurulacak -->
+                                    <div class="snk-loading">
+                                        <i class="fas fa-spinner fa-spin"></i> Yükleniyor...
+                                    </div>
+                                </div>
+                                <a href="#" class="snk-more-link">Daha fazla göster <i class="fas fa-angle-right"></i></a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </main>
