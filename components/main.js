@@ -8,7 +8,6 @@ const snk_main_postsContainer = document.getElementById('snk_postsContainer');
 const snk_main_filterButtons = document.querySelectorAll('.snk-filter-btn');
 const snk_main_filterNewest = document.getElementById('snk_filterNewest');
 const snk_main_filterPopular = document.getElementById('snk_filterPopular');
-const snk_main_filterTrend = document.getElementById('snk_filterTrend');
 
 // Blog yazılarının tutulacağı dizi
 let snk_main_blogPosts = [];
@@ -25,15 +24,47 @@ document.addEventListener('DOMContentLoaded', () => {
     const postsContainer = document.getElementById('snk_postsContainer');
     const filterNewest = document.getElementById('snk_filterNewest');
     const filterPopular = document.getElementById('snk_filterPopular');
-    const filterTrend = document.getElementById('snk_filterTrend');
+    const sidebarPopular = document.getElementById('snk_sidebarPopular');
     
-    console.log("Main elemanları:", {postsContainer, filterNewest, filterPopular, filterTrend});
+    console.log("Main elemanları:", {postsContainer, filterNewest, filterPopular, sidebarPopular});
     
     // Blog yazılarını yükle
     snk_main_loadBlogPosts();
     
     // Filtreleme butonları için olay dinleyicileri ekle
     snk_main_setupFilterButtons();
+    
+    // Sidebar'daki popüler linki için olay dinleyicisi
+    if (sidebarPopular) {
+        sidebarPopular.addEventListener('click', (e) => {
+            e.preventDefault(); // Sayfanın yenilenmesini engelle
+            
+            // Popüler filtreyi aktifleştir
+            if (filterPopular) {
+                filterPopular.click(); // Popüler filtresine tıklamayı simüle et
+            } else {
+                // Popüler filtresi bulunamazsa manuel olarak uygula
+                snk_main_activeFilter = 'popular';
+                
+                // UI güncelleme
+                document.querySelectorAll('.snk-filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.id === 'snk_filterPopular') {
+                        btn.classList.add('active');
+                    }
+                });
+                
+                // Blog yazılarını filtrele ve göster
+                snk_main_filterPosts();
+            }
+            
+            // Sidebar link'lerinin aktif durumunu güncelle
+            document.querySelectorAll('.snk-sidebar-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            sidebarPopular.classList.add('active');
+        });
+    }
 });
 
 /**
@@ -173,12 +204,11 @@ function snk_main_setupReadMoreButtons() {
 function snk_main_setupFilterButtons() {
     console.log("Filtre butonları ayarlanıyor");
     
-    // Önce ID ile butonları seçelim (snk_filterNewest, snk_filterPopular, snk_filterTrend)
+    // Önce ID ile butonları seçelim (snk_filterNewest, snk_filterPopular)
     const filterNewest = document.getElementById('snk_filterNewest');
     const filterPopular = document.getElementById('snk_filterPopular');
-    const filterTrend = document.getElementById('snk_filterTrend');
     
-    const filterButtons = [filterNewest, filterPopular, filterTrend].filter(button => button !== null);
+    const filterButtons = [filterNewest, filterPopular].filter(button => button !== null);
     
     if (filterButtons.length === 0) {
         console.warn("Hiçbir filtre butonu bulunamadı.");
@@ -195,8 +225,6 @@ function snk_main_setupFilterButtons() {
                     
                     if (button.id === 'snk_filterPopular') {
                         filterType = 'popular';
-                    } else if (button.id === 'snk_filterTrend') {
-                        filterType = 'trending';
                     }
                     
                     // Aktif filtreyi güncelle
@@ -227,8 +255,6 @@ function snk_main_setupFilterButtons() {
                 
                 if (button.id === 'snk_filterPopular') {
                     filterType = 'popular';
-                } else if (button.id === 'snk_filterTrend') {
-                    filterType = 'trending';
                 }
                 
                 // Aktif filtreyi güncelle
@@ -271,18 +297,6 @@ function snk_main_filterPosts() {
         case 'popular':
             // Görüntülenme sayısına göre sırala
             filteredPosts.sort((a, b) => (b.views || 0) - (a.views || 0));
-            break;
-            
-        case 'trending':
-            // Son 7 günde en popüler olanlara göre sırala
-            const oneWeekAgo = new Date();
-            oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-            
-            // Son bir haftadaki yazıları filtrele ve popülerliğe göre sırala
-            filteredPosts = filteredPosts.filter(post => {
-                const postDate = new Date(post.date.split('.').reverse().join('-'));
-                return postDate >= oneWeekAgo;
-            }).sort((a, b) => (b.views || 0) - (a.views || 0));
             break;
     }
     
