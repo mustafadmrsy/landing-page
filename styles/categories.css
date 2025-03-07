@@ -1,0 +1,316 @@
+/* Categories Page Specific Styles - Senirkent Blog */
+
+/* Kategori Ana İçerik */
+.snk-categories-main {
+    margin-left: var(--snk-sidebar-width);
+    padding: 20px;
+    width: calc(100% - var(--snk-sidebar-width));
+    transition: all 0.3s ease;
+}
+
+.snk-sidebar.collapsed ~ .snk-content-wrapper .snk-categories-main {
+    margin-left: var(--snk-sidebar-collapsed-width);
+    width: calc(100% - var(--snk-sidebar-collapsed-width));
+}
+
+/* Kategori Başlık ve Filtreler */
+.snk-categories-header {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+    border-bottom: 1px solid var(--snk-border-color);
+    padding-bottom: 20px;
+}
+
+.snk-categories-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--snk-white);
+}
+
+.snk-categories-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.snk-category-filter {
+    background-color: var(--snk-light-gray);
+    color: var(--snk-white);
+    border: none;
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.snk-category-filter:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.snk-category-filter.active {
+    background-color: var(--snk-vivid-blue);
+    color: white;
+}
+
+/* Kategori Kartları */
+.snk-categories-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.snk-category-card {
+    background-color: var(--snk-light-gray);
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid var(--snk-border-color);
+}
+
+.snk-category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.snk-category-card-header {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border-bottom: 1px solid var(--snk-border-color);
+}
+
+.snk-category-icon {
+    font-size: 24px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--snk-vivid-blue);
+    color: white;
+    border-radius: 50%;
+}
+
+.snk-category-name {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--snk-white);
+    margin: 0;
+}
+
+.snk-category-content {
+    padding: 20px;
+    flex-grow: 1;
+}
+
+.snk-category-content p {
+    color: var(--snk-dark-gray);
+    margin: 0;
+    line-height: 1.5;
+}
+
+.snk-category-stats {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: rgba(0, 0, 0, 0.1);
+    color: var(--snk-gray);
+    font-size: 13px;
+}
+
+.snk-category-stats span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.snk-category-btn {
+    display: block;
+    background-color: var(--snk-vivid-blue);
+    color: white;
+    text-align: center;
+    padding: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+}
+
+.snk-category-btn:hover {
+    background-color: var(--snk-dark-blue);
+}
+
+/* Son Yazılar Bölümü */
+.snk-categories-recent {
+    margin-top: 40px;
+    border-top: 1px solid var(--snk-border-color);
+    padding-top: 30px;
+}
+
+.snk-recent-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: var(--snk-white);
+}
+
+.snk-recent-posts {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+.snk-recent-post-card {
+    background-color: var(--snk-light-gray);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid var(--snk-border-color);
+}
+
+.snk-recent-post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.snk-recent-post-image {
+    position: relative;
+    height: 160px;
+    overflow: hidden;
+}
+
+.snk-recent-post-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.snk-recent-post-card:hover .snk-recent-post-image img {
+    transform: scale(1.05);
+}
+
+.snk-post-category {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+}
+
+.snk-post-category[data-category="egitim"] {
+    background-color: #4CAF50;
+}
+
+.snk-post-category[data-category="teknoloji"] {
+    background-color: #2196F3;
+}
+
+.snk-post-category[data-category="kultur"] {
+    background-color: #9C27B0;
+}
+
+.snk-post-category[data-category="spor"] {
+    background-color: #FF9800;
+}
+
+.snk-recent-post-content {
+    padding: 15px;
+}
+
+.snk-recent-post-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 0 10px 0;
+    color: var(--snk-white);
+    line-height: 1.3;
+}
+
+.snk-recent-post-excerpt {
+    font-size: 14px;
+    color: var(--snk-dark-gray);
+    margin: 0 0 15px 0;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.snk-recent-post-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--snk-gray);
+}
+
+.snk-recent-post-meta span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Responsive Tasarım */
+@media (max-width: 992px) {
+    .snk-categories-container,
+    .snk-recent-posts {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .snk-sidebar ~ .snk-content-wrapper .snk-categories-main,
+    .snk-sidebar.collapsed ~ .snk-content-wrapper .snk-categories-main {
+        margin-left: 0;
+        width: 100%;
+    }
+    
+    .snk-categories-header {
+        align-items: center;
+    }
+    
+    .snk-categories-title {
+        text-align: center;
+    }
+}
+
+@media (max-width: 576px) {
+    .snk-categories-container,
+    .snk-recent-posts {
+        grid-template-columns: 1fr;
+    }
+    
+    .snk-categories-filters {
+        justify-content: center;
+    }
+}
+
+/* Dark Mode - Compatibility with existing dark mode system */
+.eren-dark-theme .snk-category-card,
+.eren-dark-theme .snk-recent-post-card {
+    background-color: var(--snk-black);
+    border-color: var(--snk-border-color);
+}
+
+.eren-dark-theme .snk-category-filter {
+    background-color: var(--snk-black);
+}
+
+.eren-dark-theme .snk-category-filter:hover {
+    background-color: #333;
+}
+
+.eren-dark-theme .snk-category-content p,
+.eren-dark-theme .snk-recent-post-excerpt {
+    color: #ccc;
+}
