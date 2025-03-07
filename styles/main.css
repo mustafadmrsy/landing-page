@@ -1,0 +1,425 @@
+/* Main CSS - Senirkent Blog */
+/* Önek: snk- (Kod çakışmalarını önlemek için her seçicide kullanılacak) */
+
+/* Genel Sıfırlama ve Temel Stilller */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root {
+    --snk-vivid-blue: #0066cc;
+    --snk-dark-blue: #004d99;
+    --snk-light-blue: #3399ff;
+    --snk-white: #ffffff;
+    --snk-light-gray: #f0f2f5;
+    --snk-gray: #d0d0d0;
+    --snk-dark-gray: #333333;
+    --snk-black: #000000;
+    --snk-sidebar-width: 300px;
+    --snk-sidebar-collapsed-width: 70px;
+}
+
+body {
+    background-color: var(--snk-light-gray);
+    color: var(--snk-dark-gray);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Ana Container */
+.snk-container {
+    display: flex;
+    flex-direction: row-reverse; /* Sidebar sağda olacak */
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Ana İçerik */
+.snk-main-content {
+    flex: 1;
+    padding: 20px;
+    margin-right: var(--snk-sidebar-width); /* Sidebar genişliği kadar sağ margin */
+    transition: margin 0.3s ease;
+}
+
+/* İçerik Başlık ve Filtreler */
+.snk-content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--snk-gray);
+}
+
+.snk-content-title {
+    font-size: 1.8rem;
+    color: var(--snk-dark-gray);
+    font-weight: 600;
+}
+
+.snk-filter-container {
+    display: flex;
+    gap: 10px;
+}
+
+.snk-filter-btn {
+    background: var(--snk-white);
+    border: 1px solid var(--snk-gray);
+    border-radius: 50px;
+    padding: 8px 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+
+.snk-filter-btn:hover {
+    background-color: var(--snk-light-gray);
+}
+
+.snk-filter-btn.active {
+    background-color: var(--snk-vivid-blue);
+    color: var(--snk-white);
+    border-color: var(--snk-vivid-blue);
+}
+
+/* Blog Post */
+.snk-posts-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.snk-post {
+    background-color: var(--snk-white);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.snk-post:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.snk-post-metadata {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.snk-post-category {
+    background-color: var(--snk-vivid-blue);
+    color: var(--snk-white);
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.snk-post-date {
+    color: var(--snk-dark-gray);
+    font-size: 0.8rem;
+}
+
+.snk-post-title {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+    color: var(--snk-dark-gray);
+}
+
+.snk-post-content {
+    color: var(--snk-dark-gray);
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.snk-post-buttons {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Devamını Oku Butonları - Modern ve Profesyonel Stilll */
+.snk-read-more-btn {
+    background: linear-gradient(45deg, var(--snk-vivid-blue), var(--snk-light-blue));
+    color: var(--snk-white);
+    border: none;
+    border-radius: 50px;
+    padding: 10px 20px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 102, 204, 0.3);
+    text-align: right;
+    z-index: 1;
+}
+
+.snk-read-more-btn::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transform: rotate(45deg);
+    transition: all 0.6s ease;
+    z-index: -1;
+}
+
+.snk-read-more-btn:hover {
+    background: linear-gradient(45deg, var(--snk-dark-blue), var(--snk-vivid-blue));
+    box-shadow: 0 6px 15px rgba(0, 102, 204, 0.4);
+    transform: translateY(-3px);
+}
+
+.snk-read-more-btn:hover i {
+    transform: translateX(5px);
+}
+
+.snk-read-more-btn:hover::before {
+    transform: rotate(45deg) translate(300%, 300%);
+}
+
+.snk-read-more-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(0, 102, 204, 0.3);
+}
+
+.snk-read-more-btn i {
+    transition: transform 0.3s ease;
+}
+
+/* Popup Styles */
+.snk-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.snk-popup-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.snk-popup-container {
+    background-color: var(--snk-white);
+    border-radius: 10px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform: scale(0.9);
+    transition: all 0.3s ease;
+}
+
+.snk-popup-overlay.active .snk-popup-container {
+    transform: scale(1);
+}
+
+.snk-popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid var(--snk-gray);
+}
+
+.snk-popup-title {
+    font-size: 1.8rem;
+    color: var(--snk-dark-gray);
+}
+
+.snk-popup-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--snk-dark-gray);
+    cursor: pointer;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.snk-popup-close:hover {
+    color: var(--snk-vivid-blue);
+    transform: rotate(90deg);
+}
+
+.snk-popup-content {
+    padding: 20px;
+    overflow-y: auto;
+    max-height: calc(90vh - 80px);
+}
+
+/* Özel Scrollbar */
+.snk-popup-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.snk-popup-content::-webkit-scrollbar-track {
+    background: var(--snk-light-gray);
+}
+
+.snk-popup-content::-webkit-scrollbar-thumb {
+    background: var(--snk-gray);
+    border-radius: 4px;
+}
+
+.snk-popup-content::-webkit-scrollbar-thumb:hover {
+    background: var(--snk-vivid-blue);
+}
+
+/* Popup İçerik Stilleri */
+.snk-article-content {
+    line-height: 1.8;
+    font-size: 1.1rem;
+}
+
+.snk-article-image {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+.snk-article-metadata {
+    display: flex;
+    justify-content: space-between;
+    color: var(--snk-dark-gray);
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+}
+
+.snk-article-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.snk-article-tag {
+    background-color: var(--snk-light-gray);
+    color: var(--snk-dark-gray);
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+}
+
+/* Yükleniyor Animasyonu */
+.snk-loading {
+    text-align: center;
+    padding: 20px;
+    color: var(--snk-dark-gray);
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.snk-loading i {
+    color: var(--snk-vivid-blue);
+}
+
+/* Sidebar Toggle Butonu */
+.snk-toggle-btn {
+    position: fixed;
+    top: 20px;
+    right: var(--snk-sidebar-width);
+    width: 40px;
+    height: 40px;
+    background-color: var(--snk-vivid-blue);
+    color: var(--snk-white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s ease, right 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.snk-toggle-btn:hover {
+    background-color: var(--snk-dark-blue);
+    transform: scale(1.1);
+}
+
+.snk-container.collapsed .snk-toggle-btn {
+    right: var(--snk-sidebar-collapsed-width);
+}
+
+.snk-container.collapsed .snk-toggle-btn i {
+    transform: rotate(180deg);
+}
+
+/* Collapsed Ana İçerik */
+.snk-container.collapsed .snk-main-content {
+    margin-right: var(--snk-sidebar-collapsed-width);
+}
+
+/* Mobil Görünüm */
+@media (max-width: 768px) {
+    .snk-sidebar {
+        position: fixed;
+        right: -100%;
+        width: 85%;
+        z-index: 100;
+    }
+    
+    .snk-main-content {
+        margin-right: 0;
+    }
+    
+    .snk-toggle-btn {
+        right: 20px;
+    }
+    
+    .snk-sidebar.active {
+        right: 0;
+    }
+    
+    .snk-content-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .snk-filter-container {
+        width: 100%;
+        overflow-x: auto;
+        padding-bottom: 5px;
+    }
+    
+    .snk-filter-btn {
+        white-space: nowrap;
+    }
+    
+    .snk-popup-container {
+        width: 95%;
+    }
+}

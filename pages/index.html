@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Senirkent Blog</title>
+    <!-- CSS Dosyaları -->
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/sidebar.css">
+    <link rel="stylesheet" href="../styles/sidebar-mobile-fix.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tarayıcı önbelleğini temizlemek için meta etiketleri -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+</head>
+<body>
+    <div class="snk-container">
+        <!-- Sidebar Toggle Butonu -->
+        <div class="snk-toggle-btn" id="sidebarToggle">
+            <i class="fas fa-chevron-left"></i>
+        </div>
+
+        <!-- Ana İçerik -->
+        <main class="snk-main-content" id="mainContent">
+            <div class="snk-content-header">
+                <h2 class="snk-content-title">En Güncel Paylaşımlar</h2>
+                <div class="snk-filter-container">
+                    <button class="snk-filter-btn active" data-filter="newest">
+                        <i class="fas fa-clock"></i> En Yeni
+                    </button>
+                    <button class="snk-filter-btn" data-filter="popular">
+                        <i class="fas fa-fire"></i> Popüler
+                    </button>
+                    <button class="snk-filter-btn" data-filter="trending">
+                        <i class="fas fa-chart-line"></i> Trend
+                    </button>
+                </div>
+            </div>
+            
+            <div class="snk-posts-container" id="postsContainer">
+                <!-- Blog gönderileri JavaScript ile eklenecek -->
+                <div class="snk-post">
+                    <div class="snk-post-metadata">
+                        <div class="snk-post-category">Eğitim</div>
+                        <div class="snk-post-date">7 Mart 2025</div>
+                    </div>
+                    <h3 class="snk-post-title">Senirkent MYO'da Robotik Eğitimi Başlıyor</h3>
+                    <div class="snk-post-content">
+                        <p>Senirkent Meslek Yüksekokulu bünyesinde robotik eğitimi programı başlıyor. Öğrencilere yönelik olarak...</p>
+                    </div>
+                    <div class="snk-post-buttons">
+                        <button class="snk-read-more-btn" data-post-id="1">
+                            Devamını Oku <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="snk-post">
+                    <div class="snk-post-metadata">
+                        <div class="snk-post-category">Bilim</div>
+                        <div class="snk-post-date">6 Mart 2025</div>
+                    </div>
+                    <h3 class="snk-post-title">Yapay Zeka ve Geleceğimiz</h3>
+                    <div class="snk-post-content">
+                        <p>Yapay zeka teknolojileri günümüzde hayatımızın her alanına etki etmeye başladı. Peki bu gelişmeler...</p>
+                    </div>
+                    <div class="snk-post-buttons">
+                        <button class="snk-read-more-btn" data-post-id="2">
+                            Devamını Oku <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="snk-post">
+                    <div class="snk-post-metadata">
+                        <div class="snk-post-category">Kültür</div>
+                        <div class="snk-post-date">5 Mart 2025</div>
+                    </div>
+                    <h3 class="snk-post-title">Isparta'nın Kültürel Mirasları</h3>
+                    <div class="snk-post-content">
+                        <p>Isparta ili, tarihi ve kültürel mirası ile Türkiye'nin en önemli şehirlerinden biridir. Gül bahçeleri...</p>
+                    </div>
+                    <div class="snk-post-buttons">
+                        <button class="snk-read-more-btn" data-post-id="3">
+                            Devamını Oku <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Sağ Sidebar -->
+        <div class="snk-sidebar" id="sidebar">
+            <div class="snk-header-right">
+                <!-- Logo ve Başlık -->
+                <div class="snk-logo-container">
+                    <img src="../public/img/senirkent-logo.png" alt="Senirkent Logo" class="snk-logo-img">
+                    <div class="snk-title-container">
+                        <h1 class="snk-site-title">SENİRKENT BLOG</h1>
+                        <p class="snk-subtitle">EĞİTİM BİLİM KÜLTÜR</p>
+                    </div>
+                </div>
+                
+                <!-- Arama Çubuğu -->
+                <div class="snk-search-container">
+                    <input type="text" placeholder="Ara..." class="snk-search-input">
+                    <button class="snk-search-btn"><i class="fas fa-search"></i></button>
+                </div>
+                
+                <!-- Profil Menüsü -->
+                <div class="snk-profile-container">
+                    <div class="snk-profile-trigger" id="profileTrigger">
+                        <img src="../public/img/default-avatar.png" alt="Profil" class="snk-profile-img">
+                        <span class="snk-profile-name">Misafir</span>
+                        <i class="fas fa-chevron-down snk-dropdown-icon"></i>
+                    </div>
+                    
+                    <div class="snk-profile-menu" id="profileMenu">
+                        <a href="#" class="snk-profile-link"><i class="fas fa-user"></i> Profil</a>
+                        <a href="#" class="snk-profile-link"><i class="fas fa-cog"></i> Ayarlar</a>
+                        <a href="#" class="snk-profile-link"><i class="fas fa-sign-in-alt"></i> Giriş Yap</a>
+                        <a href="#" class="snk-profile-link"><i class="fas fa-user-plus"></i> Kayıt Ol</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Navigasyon Menüsü -->
+            <div class="snk-header-left">
+                <nav class="snk-nav">
+                    <a href="index.html" class="snk-nav-link active">
+                        <i class="fas fa-home snk-nav-icon"></i>
+                        <span class="snk-nav-text">Ana Sayfa</span>
+                    </a>
+                    <a href="kategoriler.html" class="snk-nav-link">
+                        <i class="fas fa-th-large snk-nav-icon"></i>
+                        <span class="snk-nav-text">Kategoriler</span>
+                    </a>
+                    <a href="yazarlar.html" class="snk-nav-link">
+                        <i class="fas fa-users snk-nav-icon"></i>
+                        <span class="snk-nav-text">Yazarlar</span>
+                    </a>
+                    <a href="sende-yaz.html" class="snk-nav-link">
+                        <i class="fas fa-pen-fancy snk-nav-icon"></i>
+                        <span class="snk-nav-text">Sende Yaz</span>
+                    </a>
+                    <a href="iletisim.html" class="snk-nav-link">
+                        <i class="fas fa-envelope snk-nav-icon"></i>
+                        <span class="snk-nav-text">İletişim</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Popup -->
+    <div class="snk-popup-overlay" id="popupOverlay">
+        <div class="snk-popup-container">
+            <div class="snk-popup-header">
+                <h2 class="snk-popup-title" id="popupTitle">Blog Başlığı</h2>
+                <button class="snk-popup-close" id="popupClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="snk-popup-content" id="popupContent">
+                <!-- Popup içeriği JavaScript ile eklenecek -->
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Dosyaları -->
+    <script src="../components/sidebar.js"></script>
+    <script src="../components/popup.js"></script>
+    <script src="../components/main.js"></script>
+</body>
+</html>

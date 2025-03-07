@@ -1,0 +1,330 @@
+/* Sidebar CSS - Senirkent Blog */
+/* Önek: snk- (Kod çakışmalarını önlemek için her seçicide kullanılacak) */
+
+/* Sidebar Ana Container */
+.snk-sidebar {
+    position: fixed;
+    top: 0;
+    right: 0; /* Sidebar sağda */
+    width: var(--snk-sidebar-width);
+    height: 100vh;
+    background: linear-gradient(135deg, #001a33, #003366);
+    color: var(--snk-white);
+    z-index: 100;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+    border-radius: 0 0 0 15px;
+}
+
+/* Özel Scrollbar */
+.snk-sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.snk-sidebar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.snk-sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+.snk-sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Header Right - Üst Kısım */
+.snk-header-right {
+    padding: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Logo Container */
+.snk-logo-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.snk-logo-img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+}
+
+.snk-title-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.snk-site-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin: 0;
+    color: var(--snk-white);
+}
+
+.snk-subtitle {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.7);
+    letter-spacing: 0.5px;
+}
+
+/* Arama Çubuğu */
+.snk-search-container {
+    display: flex;
+    margin: 20px 0;
+    position: relative;
+}
+
+.snk-search-input {
+    flex: 1;
+    padding: 12px 15px;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--snk-white);
+    border-radius: 50px;
+    font-size: 0.9rem;
+    padding-right: 40px;
+    transition: all 0.3s ease;
+}
+
+.snk-search-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.snk-search-input:focus {
+    background-color: rgba(255, 255, 255, 0.15);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+}
+
+.snk-search-btn {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.snk-search-btn:hover {
+    color: var(--snk-white);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Profil Container */
+.snk-profile-container {
+    position: relative;
+}
+
+.snk-profile-trigger {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.snk-profile-trigger:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.snk-profile-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.snk-profile-name {
+    font-weight: 500;
+    flex: 1;
+}
+
+.snk-dropdown-icon {
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+}
+
+.snk-profile-trigger.active .snk-dropdown-icon {
+    transform: rotate(180deg);
+}
+
+.snk-profile-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #002b4d;
+    border-radius: 10px;
+    margin-top: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 20;
+}
+
+.snk-profile-menu.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.snk-profile-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    color: var(--snk-white);
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.snk-profile-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.snk-profile-link i {
+    font-size: 1rem;
+    width: 20px;
+    text-align: center;
+}
+
+/* Header Left - Alt Kısım (Navigasyon) */
+.snk-header-left {
+    padding: 20px;
+    flex: 1;
+}
+
+.snk-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.snk-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px 15px;
+    border-radius: 10px;
+    color: var(--snk-white);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+    font-weight: 600; /* Daha görünür metin için */
+}
+
+.snk-nav-text {
+    position: relative;
+    z-index: 2;
+}
+
+.snk-nav-icon {
+    font-size: 1.2rem;
+    width: 25px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.8);
+    transition: all 0.3s ease;
+}
+
+.snk-nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateX(5px);
+}
+
+.snk-nav-link:hover .snk-nav-icon {
+    color: var(--snk-white);
+}
+
+.snk-nav-link.active {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-left: 3px solid var(--snk-vivid-blue);
+}
+
+/* Tooltip (Daraltılmış durumda menü başlıklarını göstermek için) */
+.snk-container.collapsed .snk-nav-link {
+    position: relative;
+}
+
+.snk-container.collapsed .snk-nav-link::after {
+    content: attr(data-title);
+    position: absolute;
+    left: 70px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: var(--snk-white);
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.snk-container.collapsed .snk-nav-link:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Daraltılmış Sidebar */
+.snk-container.collapsed .snk-sidebar {
+    width: var(--snk-sidebar-collapsed-width);
+}
+
+.snk-container.collapsed .snk-site-title,
+.snk-container.collapsed .snk-subtitle,
+.snk-container.collapsed .snk-profile-name,
+.snk-container.collapsed .snk-nav-text,
+.snk-container.collapsed .snk-search-input,
+.snk-container.collapsed .snk-dropdown-icon {
+    display: none;
+}
+
+.snk-container.collapsed .snk-logo-container,
+.snk-container.collapsed .snk-profile-trigger {
+    justify-content: center;
+}
+
+.snk-container.collapsed .snk-search-container {
+    justify-content: center;
+}
+
+.snk-container.collapsed .snk-search-btn {
+    position: static;
+    transform: none;
+    padding: 10px;
+}
+
+.snk-container.collapsed .snk-nav-link {
+    justify-content: center;
+    padding: 15px 0;
+}
+
+.snk-container.collapsed .snk-profile-menu {
+    position: fixed;
+    left: 70px;
+    top: auto;
+    width: 200px;
+}
