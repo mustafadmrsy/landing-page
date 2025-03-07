@@ -4,8 +4,11 @@
  */
 
 // DOM elemanlarını tanımla
-const snk_main_postsContainer = document.getElementById('postsContainer');
+const snk_main_postsContainer = document.getElementById('snk_postsContainer');
 const snk_main_filterButtons = document.querySelectorAll('.snk-filter-btn');
+const snk_main_filterNewest = document.getElementById('snk_filterNewest');
+const snk_main_filterPopular = document.getElementById('snk_filterPopular');
+const snk_main_filterTrend = document.getElementById('snk_filterTrend');
 
 // Blog yazılarının tutulacağı dizi
 let snk_main_blogPosts = [];
@@ -16,6 +19,16 @@ let snk_main_activeFilter = 'newest';
  * Sayfa yüklendiğinde çalışacak fonksiyonlar
  */
 document.addEventListener('DOMContentLoaded', () => {
+    console.log("Main.js yüklendi");
+    
+    // DOM elemanlarını tekrar tanımla (lazy loading için güvenlik)
+    const postsContainer = document.getElementById('snk_postsContainer');
+    const filterNewest = document.getElementById('snk_filterNewest');
+    const filterPopular = document.getElementById('snk_filterPopular');
+    const filterTrend = document.getElementById('snk_filterTrend');
+    
+    console.log("Main elemanları:", {postsContainer, filterNewest, filterPopular, filterTrend});
+    
     // Blog yazılarını yükle
     snk_main_loadBlogPosts();
     
@@ -27,6 +40,13 @@ document.addEventListener('DOMContentLoaded', () => {
  * Blog yazılarını JSON dosyasından yükler
  */
 function snk_main_loadBlogPosts() {
+    console.log("Blog yazıları yükleniyor");
+    
+    if (!snk_main_postsContainer) {
+        console.error("Posts container bulunamadı!");
+        return;
+    }
+    
     // Yükleniyor mesajını göster
     snk_main_postsContainer.innerHTML = `
         <div class="snk-loading">
@@ -35,7 +55,7 @@ function snk_main_loadBlogPosts() {
     `;
     
     // JSON dosyasından verileri çek
-    fetch('../../utils/blogPosts.json')
+    fetch('../utils/blogPosts.json')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Blog yazıları yüklenemedi');
@@ -43,6 +63,8 @@ function snk_main_loadBlogPosts() {
             return response.json();
         })
         .then(data => {
+            console.log("Blog verileri yüklendi:", data.posts.length);
+            
             // Blog yazılarını sakla
             snk_main_blogPosts = data.posts;
             
@@ -51,12 +73,14 @@ function snk_main_loadBlogPosts() {
         })
         .catch(error => {
             console.error('Blog yazıları yükleme hatası:', error);
-            snk_main_postsContainer.innerHTML = `
-                <div class="snk-error">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <p>Blog yazıları yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.</p>
-                </div>
-            `;
+            if (snk_main_postsContainer) {
+                snk_main_postsContainer.innerHTML = `
+                    <div class="snk-error">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Blog yazıları yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.</p>
+                    </div>
+                `;
+            }
         });
 }
 
@@ -65,6 +89,11 @@ function snk_main_loadBlogPosts() {
  * @param {Array} posts - Gösterilecek blog yazıları dizisi
  */
 function snk_main_displayPosts(posts) {
+    if (!snk_main_postsContainer) {
+        console.error("Posts container bulunamadı!");
+        return;
+    }
+    
     // Container'ı temizle
     snk_main_postsContainer.innerHTML = '';
     
@@ -78,6 +107,8 @@ function snk_main_displayPosts(posts) {
         `;
         return;
     }
+    
+    console.log("Blog yazıları gösteriliyor:", posts.length);
     
     // Her yazı için HTML oluştur ve ekrana ekle
     posts.forEach(post => {
@@ -111,39 +142,110 @@ function snk_main_displayPosts(posts) {
  * 'Devamını Oku' butonları için olay dinleyicileri ekler
  */
 function snk_main_setupReadMoreButtons() {
-    document.querySelectorAll('.snk-read-more-btn').forEach(button => {
-        button.addEventListener('click', (event) => {
-            event.preventDefault(); // Sayfa yenilenmesini önle
-            const postId = button.getAttribute('data-post-id');
-            
-            // İlgili yazıyı getir ve popup'ta göster (popup.js içindeki fonksiyonu çağır)
-            if (typeof snk_popup_fetchPostData === 'function') {
-                snk_popup_fetchPostData(postId);
-            } else {
-                console.error('snk_popup_fetchPostData fonksiyonu tanımlı değil');
-            }
+    console.log("Devamını Oku butonları ayarlanıyor");
+    
+    const readMoreButtons = document.querySelectorAll('.snk-read-more-btn');
+    if (readMoreButtons.length > 0) {
+        console.log("Devamını Oku butonları bulundu:", readMoreButtons.length);
+        
+        readMoreButtons.forEach(button => {
+            button.addEventListener('click', (event) => {
+                event.preventDefault(); // Sayfa yenilenmesini önle
+                const postId = button.getAttribute('data-post-id');
+                console.log("Devamını Oku butonuna tıklandı, Post ID:", postId);
+                
+                // İlgili yazıyı getir ve popup'ta göster (popup.js içindeki fonksiyonu çağır)
+                if (typeof window.snk_popup_fetchPostData === 'function') {
+                    window.snk_popup_fetchPostData(postId);
+                } else {
+                    console.error('snk_popup_fetchPostData fonksiyonu tanımlı değil');
+                }
+            });
         });
-    });
+    } else {
+        console.warn("Hiç 'Devamını Oku' butonu bulunamadı");
+    }
 }
 
 /**
  * Filtreleme butonları için olay dinleyicileri ekler
  */
 function snk_main_setupFilterButtons() {
-    snk_main_filterButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            // Aktif filtreyi güncelle
-            snk_main_activeFilter = button.getAttribute('data-filter');
+    console.log("Filtre butonları ayarlanıyor");
+    
+    // Önce ID ile butonları seçelim (snk_filterNewest, snk_filterPopular, snk_filterTrend)
+    const filterNewest = document.getElementById('snk_filterNewest');
+    const filterPopular = document.getElementById('snk_filterPopular');
+    const filterTrend = document.getElementById('snk_filterTrend');
+    
+    const filterButtons = [filterNewest, filterPopular, filterTrend].filter(button => button !== null);
+    
+    if (filterButtons.length === 0) {
+        console.warn("Hiçbir filtre butonu bulunamadı.");
+        
+        // Alternatif olarak class ile seçmeyi deneyelim
+        const classButtons = document.querySelectorAll('.snk-filter-btn');
+        if (classButtons.length > 0) {
+            console.log("Class ile filtre butonları bulundu:", classButtons.length);
             
-            // UI güncelleme - aktif buton vurgusu
-            snk_main_filterButtons.forEach(btn => {
-                btn.classList.remove('active');
+            classButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Tıklanan butonun ID'sinden filtre tipini belirle
+                    let filterType = 'newest'; // Varsayılan
+                    
+                    if (button.id === 'snk_filterPopular') {
+                        filterType = 'popular';
+                    } else if (button.id === 'snk_filterTrend') {
+                        filterType = 'trending';
+                    }
+                    
+                    // Aktif filtreyi güncelle
+                    snk_main_activeFilter = filterType;
+                    
+                    console.log("Filtre değiştirildi:", snk_main_activeFilter);
+                    
+                    // UI güncelleme - aktif buton vurgusu
+                    classButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    button.classList.add('active');
+                    
+                    // Blog yazılarını filtrele ve göster
+                    snk_main_filterPosts();
+                });
             });
-            button.classList.add('active');
-            
-            // Blog yazılarını filtrele ve göster
-            snk_main_filterPosts();
-        });
+        }
+        return;
+    }
+    
+    // ID ile bulunan butonlar için olay dinleyicileri
+    filterButtons.forEach(button => {
+        if (button) {
+            button.addEventListener('click', () => {
+                // Tıklanan butonun ID'sinden filtre tipini belirle
+                let filterType = 'newest'; // Varsayılan
+                
+                if (button.id === 'snk_filterPopular') {
+                    filterType = 'popular';
+                } else if (button.id === 'snk_filterTrend') {
+                    filterType = 'trending';
+                }
+                
+                // Aktif filtreyi güncelle
+                snk_main_activeFilter = filterType;
+                
+                console.log("Filtre değiştirildi:", snk_main_activeFilter);
+                
+                // UI güncelleme - aktif buton vurgusu
+                filterButtons.forEach(btn => {
+                    if (btn) btn.classList.remove('active');
+                });
+                button.classList.add('active');
+                
+                // Blog yazılarını filtrele ve göster
+                snk_main_filterPosts();
+            });
+        }
     });
 }
 
@@ -152,6 +254,8 @@ function snk_main_setupFilterButtons() {
  */
 function snk_main_filterPosts() {
     let filteredPosts = [...snk_main_blogPosts]; // Tüm yazıların bir kopyasını oluştur
+    
+    console.log("Yazılar filtreleniyor:", snk_main_activeFilter);
     
     // Filtreleme türüne göre sırala
     switch (snk_main_activeFilter) {
@@ -191,22 +295,39 @@ function snk_main_filterPosts() {
  * @param {string} category - Filtrelenecek kategori adı
  */
 function snk_main_filterByCategory(category) {
+    console.log("Kategori filtreleniyor:", category);
+    
     // Tüm yazılar yüklü değilse önce yükle
     if (snk_main_blogPosts.length === 0) {
-        fetch('../../utils/blogPosts.json')
+        fetch('../utils/blogPosts.json')
             .then(response => response.json())
             .then(data => {
                 snk_main_blogPosts = data.posts;
                 // Kategori filtrelemesini yap
-                const filteredPosts = snk_main_blogPosts.filter(post => post.category.toLowerCase() === category.toLowerCase());
+                const filteredPosts = snk_main_blogPosts.filter(post => 
+                    post.category.toLowerCase() === category.toLowerCase()
+                );
                 snk_main_displayPosts(filteredPosts);
             })
             .catch(error => {
-                console.error('Blog yazıları yükleme hatası:', error);
+                console.error('Kategori filtreleme hatası:', error);
+                if (snk_main_postsContainer) {
+                    snk_main_postsContainer.innerHTML = `
+                        <div class="snk-error">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <p>Blog yazıları yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.</p>
+                        </div>
+                    `;
+                }
             });
     } else {
-        // Yazılar zaten yüklüyse direkt filtrele
-        const filteredPosts = snk_main_blogPosts.filter(post => post.category.toLowerCase() === category.toLowerCase());
+        // Veri zaten yüklü ise doğrudan filtrele
+        const filteredPosts = snk_main_blogPosts.filter(post => 
+            post.category.toLowerCase() === category.toLowerCase()
+        );
         snk_main_displayPosts(filteredPosts);
     }
 }
+
+// Global erişim için
+window.snk_main_filterByCategory = snk_main_filterByCategory;

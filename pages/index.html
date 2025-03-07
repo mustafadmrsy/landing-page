@@ -4,174 +4,236 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Senirkent Blog</title>
-    <!-- CSS Dosyaları -->
     <link rel="stylesheet" href="../styles/main.css">
-    <link rel="stylesheet" href="../styles/sidebar.css">
-    <link rel="stylesheet" href="../styles/sidebar-mobile-fix.css">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Tarayıcı önbelleğini temizlemek için meta etiketleri -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
+    <link rel="stylesheet" href="../styles/index-specific.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <div class="snk-container">
-        <!-- Sidebar Toggle Butonu -->
-        <div class="snk-toggle-btn" id="sidebarToggle">
-            <i class="fas fa-chevron-left"></i>
-        </div>
-
-        <!-- Ana İçerik -->
-        <main class="snk-main-content" id="mainContent">
-            <div class="snk-content-header">
-                <h2 class="snk-content-title">En Güncel Paylaşımlar</h2>
-                <div class="snk-filter-container">
-                    <button class="snk-filter-btn active" data-filter="newest">
-                        <i class="fas fa-clock"></i> En Yeni
-                    </button>
-                    <button class="snk-filter-btn" data-filter="popular">
-                        <i class="fas fa-fire"></i> Popüler
-                    </button>
-                    <button class="snk-filter-btn" data-filter="trending">
-                        <i class="fas fa-chart-line"></i> Trend
-                    </button>
-                </div>
+        <!-- Header -->
+        <header class="snk-header">
+            <!-- Logo Alanı -->
+            <div class="snk-header-logo">
+                <img src="../public/images/logo.png" alt="Senirkent Blog" class="snk-logo-img">
+                <h1 class="snk-site-title">Senirkent Blog</h1>
             </div>
             
-            <div class="snk-posts-container" id="postsContainer">
-                <!-- Blog gönderileri JavaScript ile eklenecek -->
-                <div class="snk-post">
-                    <div class="snk-post-metadata">
-                        <div class="snk-post-category">Eğitim</div>
-                        <div class="snk-post-date">7 Mart 2025</div>
-                    </div>
-                    <h3 class="snk-post-title">Senirkent MYO'da Robotik Eğitimi Başlıyor</h3>
-                    <div class="snk-post-content">
-                        <p>Senirkent Meslek Yüksekokulu bünyesinde robotik eğitimi programı başlıyor. Öğrencilere yönelik olarak...</p>
-                    </div>
-                    <div class="snk-post-buttons">
-                        <button class="snk-read-more-btn" data-post-id="1">
-                            Devamını Oku <i class="fas fa-arrow-right"></i>
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="snk-post">
-                    <div class="snk-post-metadata">
-                        <div class="snk-post-category">Bilim</div>
-                        <div class="snk-post-date">6 Mart 2025</div>
-                    </div>
-                    <h3 class="snk-post-title">Yapay Zeka ve Geleceğimiz</h3>
-                    <div class="snk-post-content">
-                        <p>Yapay zeka teknolojileri günümüzde hayatımızın her alanına etki etmeye başladı. Peki bu gelişmeler...</p>
-                    </div>
-                    <div class="snk-post-buttons">
-                        <button class="snk-read-more-btn" data-post-id="2">
-                            Devamını Oku <i class="fas fa-arrow-right"></i>
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="snk-post">
-                    <div class="snk-post-metadata">
-                        <div class="snk-post-category">Kültür</div>
-                        <div class="snk-post-date">5 Mart 2025</div>
-                    </div>
-                    <h3 class="snk-post-title">Isparta'nın Kültürel Mirasları</h3>
-                    <div class="snk-post-content">
-                        <p>Isparta ili, tarihi ve kültürel mirası ile Türkiye'nin en önemli şehirlerinden biridir. Gül bahçeleri...</p>
-                    </div>
-                    <div class="snk-post-buttons">
-                        <button class="snk-read-more-btn" data-post-id="3">
-                            Devamını Oku <i class="fas fa-arrow-right"></i>
-                        </button>
-                    </div>
-                </div>
+            <!-- Arama -->
+            <div class="snk-header-search">
+                <i class="fas fa-search snk-search-icon"></i>
+                <input type="text" class="snk-search-input" placeholder="Senirkent Blog'da Ara">
             </div>
-        </main>
-        
-        <!-- Sağ Sidebar -->
-        <div class="snk-sidebar" id="sidebar">
-            <div class="snk-header-right">
-                <!-- Logo ve Başlık -->
-                <div class="snk-logo-container">
-                    <img src="../public/img/senirkent-logo.png" alt="Senirkent Logo" class="snk-logo-img">
-                    <div class="snk-title-container">
-                        <h1 class="snk-site-title">SENİRKENT BLOG</h1>
-                        <p class="snk-subtitle">EĞİTİM BİLİM KÜLTÜR</p>
-                    </div>
-                </div>
+            
+            <!-- Sağ Köşe Butonları -->
+            <div class="snk-header-actions">
+                <button class="snk-header-btn snk-create-btn">
+                    <i class="fas fa-plus"></i>
+                    <span class="snk-btn-text">Oluştur</span>
+                </button>
                 
-                <!-- Arama Çubuğu -->
-                <div class="snk-search-container">
-                    <input type="text" placeholder="Ara..." class="snk-search-input">
-                    <button class="snk-search-btn"><i class="fas fa-search"></i></button>
-                </div>
-                
-                <!-- Profil Menüsü -->
+                <!-- Profil Menü -->
                 <div class="snk-profile-container">
-                    <div class="snk-profile-trigger" id="profileTrigger">
-                        <img src="../public/img/default-avatar.png" alt="Profil" class="snk-profile-img">
-                        <span class="snk-profile-name">Misafir</span>
-                        <i class="fas fa-chevron-down snk-dropdown-icon"></i>
-                    </div>
+                    <img src="../public/images/profile.png" alt="Profil" class="snk-profile-img" id="profileTrigger">
                     
                     <div class="snk-profile-menu" id="profileMenu">
-                        <a href="#" class="snk-profile-link"><i class="fas fa-user"></i> Profil</a>
-                        <a href="#" class="snk-profile-link"><i class="fas fa-cog"></i> Ayarlar</a>
-                        <a href="#" class="snk-profile-link"><i class="fas fa-sign-in-alt"></i> Giriş Yap</a>
-                        <a href="#" class="snk-profile-link"><i class="fas fa-user-plus"></i> Kayıt Ol</a>
+                        <div class="snk-profile-header">
+                            <img src="../public/images/profile.png" alt="Profil" class="snk-menu-profile-img">
+                            <div class="snk-profile-info">
+                                <span class="snk-profile-name">Kullanıcı Adı</span>
+                                <span class="snk-profile-username">@kullanici</span>
+                            </div>
+                        </div>
+                        
+                        <a href="#" class="snk-menu-item">
+                            <i class="fas fa-user"></i>
+                            Profili Görüntüle
+                        </a>
+                        <a href="#" class="snk-menu-item">
+                            <i class="fas fa-image"></i>
+                            Avatar Düzenle
+                        </a>
+                        <a href="#" class="snk-menu-item">
+                            <i class="fas fa-trophy"></i>
+                            Başarılar
+                        </a>
+                        <a href="#" class="snk-menu-item">
+                            <i class="fas fa-coin"></i>
+                            Katkı Programı
+                        </a>
+                        
+                        <div class="snk-menu-divider"></div>
+                        
+                        <a href="#" class="snk-menu-item">
+                            <i class="fas fa-moon"></i>
+                            Karanlık Mod
+                            <label class="snk-toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="snk-toggle-slider"></span>
+                            </label>
+                        </a>
+                        
+                        <div class="snk-menu-divider"></div>
+                        
+                        <a href="#" class="snk-menu-item">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Çıkış Yap
+                        </a>
+                        
+                        <div class="snk-menu-divider"></div>
+                        
+                        <a href="#" class="snk-menu-item">
+                            <i class="fas fa-ad"></i>
+                            Reklamlar
+                        </a>
+                        <a href="#" class="snk-menu-item">
+                            <i class="fas fa-chart-line"></i>
+                            Premium
+                        </a>
+                        <a href="#" class="snk-menu-item">
+                            <i class="fas fa-cog"></i>
+                            Ayarlar
+                        </a>
                     </div>
                 </div>
             </div>
-            
-            <!-- Navigasyon Menüsü -->
-            <div class="snk-header-left">
-                <nav class="snk-nav">
-                    <a href="index.html" class="snk-nav-link active">
-                        <i class="fas fa-home snk-nav-icon"></i>
-                        <span class="snk-nav-text">Ana Sayfa</span>
+        </header>
+
+        <div class="snk-content-wrapper">
+            <!-- Sidebar -->
+            <div class="snk-sidebar">
+                <!-- Sidebar Header ve Toggle Butonu -->
+                <div class="snk-sidebar-header">
+                    <h3 class="snk-sidebar-title">Menü</h3>
+                    <!-- Sidebar Toggle Button -->
+                    <button class="snk-sidebar-toggle" id="sidebarToggle">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                </div>
+                
+                <!-- Ana Navigasyon -->
+                <div class="snk-sidebar-section">
+                    <a href="index.html" class="snk-sidebar-item active">
+                        <i class="fas fa-home"></i>
+                        <span class="snk-sidebar-text">Ana Sayfa</span>
                     </a>
-                    <a href="kategoriler.html" class="snk-nav-link">
-                        <i class="fas fa-th-large snk-nav-icon"></i>
-                        <span class="snk-nav-text">Kategoriler</span>
+                    <a href="#" class="snk-sidebar-item">
+                        <i class="fas fa-fire"></i>
+                        <span class="snk-sidebar-text">Popüler</span>
                     </a>
-                    <a href="yazarlar.html" class="snk-nav-link">
-                        <i class="fas fa-users snk-nav-icon"></i>
-                        <span class="snk-nav-text">Yazarlar</span>
+                    <a href="#" class="snk-sidebar-item">
+                        <i class="fas fa-compass"></i>
+                        <span class="snk-sidebar-text">Keşfet</span>
                     </a>
-                    <a href="sende-yaz.html" class="snk-nav-link">
-                        <i class="fas fa-pen-fancy snk-nav-icon"></i>
-                        <span class="snk-nav-text">Sende Yaz</span>
+                    <a href="#" class="snk-sidebar-item">
+                        <i class="fas fa-chart-line"></i>
+                        <span class="snk-sidebar-text">Tümü</span>
                     </a>
-                    <a href="iletisim.html" class="snk-nav-link">
-                        <i class="fas fa-envelope snk-nav-icon"></i>
-                        <span class="snk-nav-text">İletişim</span>
+                </div>
+                
+                <!-- Özel Beslemeler -->
+                <div class="snk-sidebar-section">
+                    <h3 class="snk-sidebar-heading">ÖZEL BESLEMELER</h3>
+                    <a href="#" class="snk-sidebar-item">
+                        <i class="fas fa-star"></i>
+                        <span class="snk-sidebar-text">Favoriler</span>
                     </a>
-                </nav>
+                    <a href="#" class="snk-sidebar-item">
+                        <i class="fas fa-history"></i>
+                        <span class="snk-sidebar-text">Geçmiş</span>
+                    </a>
+                </div>
+                
+                <!-- Kategoriler -->
+                <div class="snk-sidebar-section">
+                    <h3 class="snk-sidebar-heading">KATEGORİLER</h3>
+                    <a href="kategoriler.html?category=egitim" class="snk-sidebar-item">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span class="snk-sidebar-text">Eğitim</span>
+                    </a>
+                    <a href="kategoriler.html?category=teknoloji" class="snk-sidebar-item">
+                        <i class="fas fa-laptop-code"></i>
+                        <span class="snk-sidebar-text">Teknoloji</span>
+                    </a>
+                    <a href="kategoriler.html?category=kultur" class="snk-sidebar-item">
+                        <i class="fas fa-landmark"></i>
+                        <span class="snk-sidebar-text">Kültür</span>
+                    </a>
+                    <a href="kategoriler.html?category=spor" class="snk-sidebar-item">
+                        <i class="fas fa-futbol"></i>
+                        <span class="snk-sidebar-text">Spor</span>
+                    </a>
+                </div>
+                
+                <!-- Kaynaklar -->
+                <div class="snk-sidebar-section">
+                    <h3 class="snk-sidebar-heading">KAYNAKLAR</h3>
+                    <a href="hakkimizda.html" class="snk-sidebar-item">
+                        <i class="fas fa-info-circle"></i>
+                        <span class="snk-sidebar-text">Hakkımızda</span>
+                    </a>
+                    <a href="iletisim.html" class="snk-sidebar-item">
+                        <i class="fas fa-envelope"></i>
+                        <span class="snk-sidebar-text">İletişim</span>
+                    </a>
+                </div>
             </div>
+            
+            <!-- Ana İçerik -->
+            <main class="snk-main-content">
+                <div class="snk-content-header">
+                    <h2 class="snk-content-title">En Güncel Paylaşımlar</h2>
+                    <div class="snk-filter-container">
+                        <button class="snk-filter-btn active" id="snk_filterNewest">
+                            <i class="fas fa-clock"></i>
+                            <span>En Yeni</span>
+                        </button>
+                        <button class="snk-filter-btn" id="snk_filterPopular">
+                            <i class="fas fa-fire"></i>
+                            <span>Popüler</span>
+                        </button>
+                        <button class="snk-filter-btn" id="snk_filterTrend">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Trend</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="snk-posts-container" id="snk_postsContainer">
+                    <!-- Blog Yazıları JavaScript ile yüklenir -->
+                    <div class="snk-loading">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Yazılar yükleniyor...</p>
+                    </div>
+                </div>
+            </main>
         </div>
     </div>
-    
-    <!-- Popup -->
-    <div class="snk-popup-overlay" id="popupOverlay">
+
+    <!-- Popup Container -->
+    <div class="snk-popup-overlay" id="snk_popupOverlay">
         <div class="snk-popup-container">
             <div class="snk-popup-header">
-                <h2 class="snk-popup-title" id="popupTitle">Blog Başlığı</h2>
-                <button class="snk-popup-close" id="popupClose">
+                <h2 class="snk-popup-title" id="snk_popupTitle"></h2>
+                <button class="snk-popup-close-btn" id="snk_popupCloseBtn">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            <div class="snk-popup-content" id="popupContent">
-                <!-- Popup içeriği JavaScript ile eklenecek -->
+            <div class="snk-popup-content" id="snk_popupContent">
+                <!-- Popup içeriği JavaScript ile yüklenir -->
             </div>
         </div>
     </div>
 
-    <!-- JavaScript Dosyaları -->
+    <!-- Mobil Menü Butonu -->
+    <button class="snk-mobile-menu-btn" id="mobileSidebarToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- JavaScript dosyaları -->
+    <script src="../components/dom-utils.js"></script>
     <script src="../components/sidebar.js"></script>
-    <script src="../components/popup.js"></script>
     <script src="../components/main.js"></script>
+    <script src="../components/popup.js"></script>
+    <script src="../components/popup-handler.js"></script>
 </body>
 </html>

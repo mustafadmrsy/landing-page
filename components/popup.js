@@ -4,19 +4,23 @@
  */
 
 // DOM elemanlarını tanımla
-const snk_popup_overlay = document.getElementById('popupOverlay');
+const snk_popup_overlay = document.getElementById('snk_popupOverlay');
 const snk_popup_container = document.querySelector('.snk-popup-container');
-const snk_popup_closeBtn = document.getElementById('popupClose');
-const snk_popup_title = document.getElementById('popupTitle');
-const snk_popup_content = document.getElementById('popupContent');
+const snk_popup_closeBtn = document.getElementById('snk_popupCloseBtn');
+const snk_popup_title = document.getElementById('snk_popupTitle');
+const snk_popup_content = document.getElementById('snk_popupContent');
 
 /**
  * Popup'ı açar ve içeriğini doldurur
  * @param {Object} postData - Gösterilecek blog yazısının verileri
  */
 function snk_popup_openPopup(postData) {
+    console.log("Popup açılıyor:", postData.title);
+    
     // Popup başlığını ayarla
-    snk_popup_title.textContent = postData.title;
+    if (snk_popup_title) {
+        snk_popup_title.textContent = postData.title;
+    }
     
     // Popup içeriğini oluştur
     let contentHTML = `
@@ -51,11 +55,15 @@ function snk_popup_openPopup(postData) {
     contentHTML += `</div>`;
     
     // İçeriği popup'a ekle
-    snk_popup_content.innerHTML = contentHTML;
+    if (snk_popup_content) {
+        snk_popup_content.innerHTML = contentHTML;
+    }
     
     // Popup'ı görünür yap
-    snk_popup_overlay.classList.add('active');
-    document.body.style.overflow = 'hidden'; // Sayfa kaydırmayı devre dışı bırak
+    if (snk_popup_overlay) {
+        snk_popup_overlay.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Sayfa kaydırmayı devre dışı bırak
+    }
     
     // İstatistik güncelleme (görüntülenme sayısını artırma)
     snk_popup_updateStats(postData.id);
@@ -65,13 +73,21 @@ function snk_popup_openPopup(postData) {
  * Popup'ı kapatır
  */
 function snk_popup_closePopup() {
-    snk_popup_overlay.classList.remove('active');
-    document.body.style.overflow = ''; // Sayfa kaydırmayı tekrar etkinleştir
+    console.log("Popup kapatılıyor");
+    
+    if (snk_popup_overlay) {
+        snk_popup_overlay.classList.remove('active');
+        document.body.style.overflow = ''; // Sayfa kaydırmayı tekrar etkinleştir
+    }
     
     // İçeriği temizle (hafızayı serbest bırakmak için)
     setTimeout(() => {
-        snk_popup_content.innerHTML = '';
-        snk_popup_title.textContent = '';
+        if (snk_popup_content) {
+            snk_popup_content.innerHTML = '';
+        }
+        if (snk_popup_title) {
+            snk_popup_title.textContent = '';
+        }
     }, 300);
 }
 
@@ -94,7 +110,7 @@ function snk_popup_updateStats(postId) {
  * @param {KeyboardEvent} e - Klavye olayı
  */
 function snk_popup_handleKeyPress(e) {
-    if (e.key === 'Escape' && snk_popup_overlay.classList.contains('active')) {
+    if (e.key === 'Escape' && snk_popup_overlay && snk_popup_overlay.classList.contains('active')) {
         snk_popup_closePopup();
     }
 }
@@ -104,48 +120,40 @@ function snk_popup_handleKeyPress(e) {
  * @param {MouseEvent} e - Fare tıklama olayı
  */
 function snk_popup_handleClickOutside(e) {
-    if (e.target === snk_popup_overlay) {
+    if (snk_popup_overlay && e.target === snk_popup_overlay) {
         snk_popup_closePopup();
     }
 }
-
-// Olay dinleyicileri tanımla
-snk_popup_closeBtn.addEventListener('click', snk_popup_closePopup);
-document.addEventListener('keydown', snk_popup_handleKeyPress);
-snk_popup_overlay.addEventListener('click', snk_popup_handleClickOutside);
-
-// 'Devamını Oku' butonları için olay dinleyicileri ekle
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.snk-read-more-btn').forEach(button => {
-        button.addEventListener('click', (event) => {
-            event.preventDefault(); // Sayfa yenilenmesini önle
-            const postId = button.getAttribute('data-post-id');
-            
-            // İlgili yazıyı getir ve popup'ta göster
-            snk_popup_fetchPostData(postId);
-        });
-    });
-});
 
 /**
  * Belirli bir yazının verilerini getirir
  * @param {number|string} postId - Getirilecek yazının ID'si
  */
 function snk_popup_fetchPostData(postId) {
+    console.log("Post verisi getiriliyor:", postId);
+    
     // Gerçek bir uygulamada burası AJAX ile sunucudan veri çeker
     
     // Yükleniyor mesajı göster
-    snk_popup_content.innerHTML = `
-        <div class="snk-loading">
-            <i class="fas fa-spinner fa-spin"></i> Yazı yükleniyor...
-        </div>
-    `;
-    snk_popup_title.textContent = 'Yükleniyor...';
-    snk_popup_overlay.classList.add('active');
+    if (snk_popup_content) {
+        snk_popup_content.innerHTML = `
+            <div class="snk-loading">
+                <i class="fas fa-spinner fa-spin"></i> Yazı yükleniyor...
+            </div>
+        `;
+    }
+    
+    if (snk_popup_title) {
+        snk_popup_title.textContent = 'Yükleniyor...';
+    }
+    
+    if (snk_popup_overlay) {
+        snk_popup_overlay.classList.add('active');
+    }
     
     // blogPosts.json'dan veri çekme işlemini simüle edelim
     setTimeout(() => {
-        fetch('../../utils/blogPosts.json')
+        fetch('../utils/blogPosts.json')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Veri yüklenemedi');
@@ -163,13 +171,69 @@ function snk_popup_fetchPostData(postId) {
             })
             .catch(error => {
                 console.error('Veri çekme hatası:', error);
-                snk_popup_content.innerHTML = `
-                    <div class="snk-error">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <p>Yazı yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.</p>
-                    </div>
-                `;
-                snk_popup_title.textContent = 'Hata';
+                if (snk_popup_content) {
+                    snk_popup_content.innerHTML = `
+                        <div class="snk-error">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <p>Yazı yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.</p>
+                        </div>
+                    `;
+                }
+                
+                if (snk_popup_title) {
+                    snk_popup_title.textContent = 'Hata';
+                }
             });
     }, 500);
 }
+
+// Sayfa yüklendiğinde hazırlık
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("Popup.js yüklendi");
+    
+    // DOM elemanlarını tekrar seç (lazy loading için)
+    const popupOverlay = document.getElementById('snk_popupOverlay');
+    const popupCloseBtn = document.getElementById('snk_popupCloseBtn');
+    
+    console.log("Popup elemanları:", {popupOverlay, popupCloseBtn});
+    
+    // Olay dinleyicilerini ekle
+    if (popupCloseBtn) {
+        console.log("Popup kapatma butonu olayı ekleniyor");
+        popupCloseBtn.addEventListener('click', snk_popup_closePopup);
+    } else {
+        console.error("Popup kapatma butonu bulunamadı!");
+    }
+    
+    if (popupOverlay) {
+        console.log("Popup dışı tıklama olayı ekleniyor");
+        popupOverlay.addEventListener('click', snk_popup_handleClickOutside);
+    } else {
+        console.error("Popup overlay bulunamadı!");
+    }
+    
+    document.addEventListener('keydown', snk_popup_handleKeyPress);
+    
+    // 'Devamını Oku' butonları için olay dinleyicileri ekle
+    const readMoreButtons = document.querySelectorAll('.snk-read-more-btn');
+    if (readMoreButtons.length > 0) {
+        console.log("Devamını Oku butonları bulundu:", readMoreButtons.length);
+        readMoreButtons.forEach(button => {
+            button.addEventListener('click', (event) => {
+                event.preventDefault(); // Sayfa yenilenmesini önle
+                const postId = button.getAttribute('data-post-id');
+                console.log("Devamını Oku butonuna tıklandı, Post ID:", postId);
+                
+                // İlgili yazıyı getir ve popup'ta göster
+                snk_popup_fetchPostData(postId);
+            });
+        });
+    } else {
+        console.warn("Hiç 'Devamını Oku' butonu bulunamadı");
+    }
+});
+
+// Global olarak bu fonksiyonlara erişim sağla
+window.snk_popup_fetchPostData = snk_popup_fetchPostData;
+window.snk_popup_openPopup = snk_popup_openPopup;
+window.snk_popup_closePopup = snk_popup_closePopup;
