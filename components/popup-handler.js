@@ -382,11 +382,11 @@ function snk_popupHandler_showRegisterForm() {
         // E-posta doğrulama gönderimi
         function sendVerificationEmail(name, surname, email, password) {
             // Normalde burada API'ye istek atılır, şimdilik simulasyon yapıyoruz
-            console.log(`Doğrulama e-postası gönderiliyor: ${email}`);
+            console.log(`Kullanıcı kaydı işleniyor: ${email}`);
             
             // Demo amaçlı asenkron işlem
             setTimeout(() => {
-                showMessage(`E-posta doğrulaması için bilgi gönderildi. Lütfen e-postanızı kontrol ediniz.`, false);
+                showMessage(`Kayıt işleminiz alınmıştır. Onay için bekleyiniz.`, false);
                 
                 // Kullanıcı bilgilerini local storage'a geçici olarak kaydet
                 const userData = {
@@ -395,7 +395,7 @@ function snk_popupHandler_showRegisterForm() {
                     email,
                     password,
                     isVerified: false,
-                    pendingVerification: true,
+                    pendingApproval: true,
                     createdAt: new Date().toISOString()
                 };
                 
@@ -417,6 +417,11 @@ function snk_popupHandler_showRegisterForm() {
                 
                 // UI güncelle
                 registerForm.reset();
+                
+                // Onay bekleme ekranını göster (eğer admin.html'deki fonksiyon varsa)
+                if (typeof window.showPendingApproval === 'function') {
+                    window.showPendingApproval();
+                }
             }, 1500);
         }
         
