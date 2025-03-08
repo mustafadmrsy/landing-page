@@ -29,83 +29,44 @@
             
             <!-- Butonlar ve Profil -->
             <div class="snk-header-actions">
-                <button class="snk-header-btn snk-login-btn" id="snk_login_btn">
-                    <i class="fas fa-sign-in-alt"></i>
-                    Oturum Aç
-                </button>
-                <button class="snk-header-btn snk-register-btn" id="snk_register_btn">
-                    <i class="fas fa-user-plus"></i>
-                    Kaydol
-                </button>
+                <!-- Profil Dropdown Menüsü -->
+                <div class="snk-user-profile-dropdown">
+                    <button id="profileDropdownBtn" class="snk-profile-dropdown-btn">
+                        <i class="fas fa-user"></i> Profilim
+                    </button>
+                    <div id="profileDropdownMenu" class="snk-profile-dropdown-menu">
+                        <div class="snk-profile-header">
+                            <img src="../public/images/profile.png" alt="Profil" class="snk-menu-profile-img">
+                            <div class="snk-profile-info">
+                                <h4 class="snk-user-name">Mustafa Demirsoy</h4>
+                                <p class="snk-user-handle">@mustafademirsoy</p>
+                            </div>
+                        </div>
+                        <ul class="snk-profile-menu-list">
+                            <li><a href="#"><i class="fas fa-user-circle"></i> Profili Görüntüle</a></li>
+                            <li><a href="#"><i class="fas fa-image"></i> Avatar Düzenle</a></li>
+                            <li><a href="#"><i class="fas fa-trophy"></i> Başarılar</a></li>
+                            <li><a href="#"><i class="fas fa-hands-helping"></i> Katkı Programı</a></li>
+                            <li class="snk-toggle-item">
+                                <span><i class="fas fa-moon"></i> Karanlık Mod</span>
+                                <label class="snk-toggle-switch">
+                                    <input type="checkbox" id="darkModeToggle" checked>
+                                    <span class="snk-toggle-slider"></span>
+                                </label>
+                            </li>
+                            <li class="snk-divider"></li>
+                            <li><a href="#" class="snk-logout"><i class="fas fa-sign-out-alt"></i> Çıkış Yap</a></li>
+                            <li><a href="#"><i class="fas fa-ad"></i> Reklamlar</a></li>
+                            <li><a href="#"><i class="fas fa-crown"></i> Premium</a></li>
+                            <li><a href="#"><i class="fas fa-cog"></i> Ayarlar</a></li>
+                        </ul>
+                    </div>
+                </div>
+
                 <button class="snk-header-btn snk-create-btn" id="snk_create_btn">
                     <i class="fas fa-plus"></i>
                     Oluştur
                 </button>
-                
-                <!-- Profil Menü -->
-                <div class="snk-profile-container">
-                    <img src="../public/images/profile.png" alt="Profil" class="snk-profile-img" id="profileTrigger">
-                    
-                    <div class="snk-profile-menu" id="profileMenu">
-                        <div class="snk-profile-header">
-                            <img src="../public/images/profile.png" alt="Profil" class="snk-menu-profile-img">
-                            <div class="snk-profile-info">
-                                <span class="snk-profile-name">Kullanıcı Adı</span>
-                                <span class="snk-profile-username">@kullanici</span>
-                            </div>
-                        </div>
-                        
-                        <a href="userpage.html" class="snk-menu-item">
-                            <i class="fas fa-user"></i>
-                            Profili Görüntüle
-                        </a>
-                        <a href="#" class="snk-menu-item">
-                            <i class="fas fa-image"></i>
-                            Avatar Düzenle
-                        </a>
-                        <a href="#" class="snk-menu-item">
-                            <i class="fas fa-trophy"></i>
-                            Başarılar
-                        </a>
-                        <a href="#" class="snk-menu-item">
-                            <i class="fas fa-coin"></i>
-                            Katkı Programı
-                        </a>
-                        
-                        <div class="snk-menu-divider"></div>
-                        
-                        <a href="#" class="snk-menu-item">
-                            <i class="fas fa-moon"></i>
-                            Karanlık Mod
-                            <label class="snk-toggle-switch">
-                                <input type="checkbox" checked>
-                                <span class="snk-toggle-slider"></span>
-                            </label>
-                        </a>
-                        
-                        <div class="snk-menu-divider"></div>
-                        
-                        <a href="#" class="snk-menu-item">
-                            <i class="fas fa-sign-out-alt"></i>
-                            Çıkış Yap
-                        </a>
-                        
-                        <div class="snk-menu-divider"></div>
-                        
-                        <a href="#" class="snk-menu-item">
-                            <i class="fas fa-ad"></i>
-                            Reklamlar
-                        </a>
-                        <a href="#" class="snk-menu-item">
-                            <i class="fas fa-chart-line"></i>
-                            Premium
-                        </a>
-                        <a href="#" class="snk-menu-item">
-                            <i class="fas fa-cog"></i>
-                            Ayarlar
-                        </a>
-                    </div>
-                </div>
             </div>
         </header>
 
@@ -196,7 +157,16 @@
                     <div class="snk-user-cover">
                         <img src="../public/images/cover.jpg" alt="Kapak Fotoğrafı">
                     </div>
-                    <img src="../public/images/profile.png" alt="Profil Fotoğrafı" class="snk-user-profile">
+                    
+                    <!-- Profil Düzenle Butonu -->
+                    <button class="snk-profile-edit-btn" id="profileEditBtn">
+                        <i class="fas fa-edit"></i> Profili Düzenle
+                    </button>
+                    
+                    <div class="snk-profile-image-container">
+                        <img src="../public/images/profile.png" alt="Profil Fotoğrafı" class="snk-user-profile" id="userProfileImg">
+                    </div>
+                    
                     <div class="snk-user-info">
                         <h1 class="snk-user-name">Ahmet Yılmaz</h1>
                         <div class="snk-user-username">@ahmetyilmaz</div>
@@ -389,44 +359,261 @@
                 
                 <!-- Profil Hakkında Bölümü -->
                 <div class="snk-user-section" id="user_aboutSection">
-                    <!-- Özel tek sütunlu hakkımda kartı -->
+                    <!-- Kişisel Bilgiler Kartı -->
                     <div class="snk-user-about-card-single">
-                        <h2>Hakkımda</h2>
-                        <p>Merhaba, ben Ahmet Yılmaz. İstanbul Teknik Üniversitesi Bilgisayar Mühendisliği mezunuyum ve şu anda bir yazılım firmasında kıdemli geliştirici olarak çalışıyorum.</p>
-                        <p>Teknoloji ve eğitim alanlarında 5 yılı aşkın süredir içerik üretiyorum. Yapay zeka, veri bilimi ve eğitim teknolojileri alanlarında uzmanlaşmış durumdayım.</p>
-                        <p>Senirkent Blog'da düzenli olarak yazılar yazarak bilgi ve deneyimlerimi paylaşmaktan büyük keyif alıyorum. Amacım, teknoloji ve eğitim konularını herkesin anlayabileceği şekilde aktarmak ve okuyucularıma değer katmak.</p>
+                        <h2><i class="fas fa-user-circle"></i> Kişisel Bilgiler</h2>
+                        <div class="snk-about-personal-info">
+                            <div class="snk-about-info-item">
+                                <h4>Ad Soyad</h4>
+                                <p class="snk-user-name-display">Mustafa Demirsoy</p>
+                            </div>
+                            <div class="snk-about-info-item">
+                                <h4>Kullanıcı Adı</h4>
+                                <p class="snk-user-username-display">mustafadmrsy2</p>
+                            </div>
+                            <div class="snk-about-info-item">
+                                <h4>E-posta</h4>
+                                <p class="snk-user-email-display">mustafadmrsy125@gmail.com</p>
+                            </div>
+                            <div class="snk-about-info-item">
+                                <h4>Telefon</h4>
+                                <p class="snk-user-phone-display">05516622309</p>
+                            </div>
+                            <div class="snk-about-info-item">
+                                <h4>Biyografi</h4>
+                                <p class="snk-user-bio-display">Senirkent Blog'da teknoloji ve eğitim konularında içerik üreticisi. Yazılım geliştirme ve yeni teknolojiler konusunda tutkuluyum.</p>
+                            </div>
+                        </div>
                         
-                        <h3>İlgi Alanlarım</h3>
-                        <ul>
-                            <li>Yapay Zeka ve Makine Öğrenmesi</li>
-                            <li>Web Geliştirme ve Tasarım</li>
-                            <li>Eğitim Teknolojileri</li>
-                            <li>Mobil Uygulama Geliştirme</li>
-                            <li>Veri Bilimi ve Analizi</li>
-                        </ul>
-                        
-                        <h3>İletişim</h3>
-                        <div class="snk-user-contact">
-                            <div class="snk-user-contact-item">
-                                <i class="fas fa-envelope"></i>
-                                <span>ahmet.yilmaz@gmail.com</span>
+                        <h2 class="mt-4"><i class="fas fa-share-alt"></i> Sosyal Medya</h2>
+                        <div class="snk-about-social-info">
+                            <div class="snk-about-social-item">
+                                <h4><i class="fab fa-twitter"></i> Twitter</h4>
+                                <p class="snk-user-twitter-display">Twitter</p>
                             </div>
-                            <div class="snk-user-contact-item">
-                                <i class="fas fa-globe"></i>
-                                <span>www.ahmetyilmaz.com</span>
+                            <div class="snk-about-social-item">
+                                <h4><i class="fab fa-instagram"></i> Instagram</h4>
+                                <p class="snk-user-instagram-display">mustafadmrsy</p>
                             </div>
-                            <div class="snk-user-contact-item">
-                                <i class="fab fa-linkedin"></i>
-                                <span>linkedin.com/in/ahmetyilmaz</span>
+                            <div class="snk-about-social-item">
+                                <h4><i class="fab fa-linkedin"></i> LinkedIn</h4>
+                                <p class="snk-user-linkedin-display">LinkedIn</p>
                             </div>
-                            <div class="snk-user-contact-item">
-                                <i class="fab fa-twitter"></i>
-                                <span>@ahmetyilmaz</span>
+                            <div class="snk-about-social-item">
+                                <h4><i class="fab fa-github"></i> GitHub</h4>
+                                <p class="snk-user-github-display">GitHub</p>
+                            </div>
+                            <div class="snk-about-social-item">
+                                <h4><i class="fas fa-globe"></i> Web Sitesi</h4>
+                                <p class="snk-user-website-display">Web Sitesi</p>
+                            </div>
+                            <div class="snk-about-social-item">
+                                <h4><i class="fab fa-youtube"></i> YouTube</h4>
+                                <p class="snk-user-youtube-display">YouTube</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </main>
+        </div>
+    </div>
+
+    <!-- Profil Düzenleme Modal -->
+    <div class="snk-profile-edit-overlay" id="profileEditOverlay">
+        <div class="snk-profile-edit-container">
+            <div class="snk-profile-edit-header">
+                <h3 class="snk-profile-edit-title">Profili Düzenle</h3>
+                <button class="snk-profile-edit-close" id="profileEditClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form class="snk-profile-edit-form" id="profileEditForm">
+                <!-- Sekme Navigasyonu -->
+                <div class="snk-profile-edit-tabs">
+                    <div class="snk-profile-edit-tab active" data-tab="personal">
+                        <i class="fas fa-user-circle"></i> Kişisel Bilgiler
+                    </div>
+                    <div class="snk-profile-edit-tab" data-tab="images">
+                        <i class="fas fa-images"></i> Fotoğraflar
+                    </div>
+                    <div class="snk-profile-edit-tab" data-tab="social">
+                        <i class="fas fa-share-alt"></i> Sosyal Medya
+                    </div>
+                    <div class="snk-profile-edit-tab" data-tab="account">
+                        <i class="fas fa-cog"></i> Hesap Ayarları
+                    </div>
+                </div>
+                
+                <div class="snk-profile-edit-sections">
+                    <!-- Kişisel Bilgiler Sekmesi -->
+                    <div class="snk-profile-edit-section active" id="profileEdit_personal">
+                        <div class="snk-form-group">
+                            <label for="profileDisplayName" class="snk-form-label">Ad Soyad</label>
+                            <input type="text" class="snk-form-control" id="profileDisplayName" name="displayName" placeholder="Ad Soyad">
+                        </div>
+                        
+                        <div class="snk-form-group">
+                            <label for="profileName" class="snk-form-label">Kullanıcı Adı</label>
+                            <input type="text" class="snk-form-control" id="profileName" name="username" placeholder="kullanici_adi">
+                        </div>
+                        
+                        <div class="snk-form-group">
+                            <label for="profileEmail" class="snk-form-label">E-posta</label>
+                            <input type="email" class="snk-form-control" id="profileEmail" name="email" placeholder="ornek@email.com">
+                        </div>
+                        
+                        <div class="snk-form-group">
+                            <label for="profilePhone" class="snk-form-label">Telefon</label>
+                            <input type="tel" class="snk-form-control" id="profilePhone" name="phone" placeholder="05XX XXX XX XX">
+                        </div>
+                        
+                        <div class="snk-form-group">
+                            <label for="profileBio" class="snk-form-label">Biyografi</label>
+                            <textarea class="snk-form-control snk-form-textarea" id="profileBio" name="bio" placeholder="Kendinizi kısaca tanıtın..."></textarea>
+                        </div>
+                        
+                        <div class="snk-form-group">
+                            <label for="profileLocation" class="snk-form-label">Konum</label>
+                            <input type="text" class="snk-form-control" id="profileLocation" name="location" placeholder="Şehir, Ülke">
+                        </div>
+                    </div>
+                    
+                    <!-- Fotoğraflar Sekmesi -->
+                    <div class="snk-profile-edit-section" id="profileEdit_images">
+                        <div class="snk-form-group">
+                            <label class="snk-form-label">Profil Fotoğrafı</label>
+                            <div class="snk-image-preview snk-profile-picture-preview" id="profilePicturePreview">
+                                <div class="snk-image-placeholder">
+                                    <i class="fas fa-user"></i>
+                                    <p>Profil fotoğrafınızı yüklemek için tıklayın veya sürükleyin</p>
+                                </div>
+                                <input type="file" class="snk-image-input" id="profilePictureInput" name="profilePicture" accept="image/*">
+                            </div>
+                        </div>
+                        
+                        <div class="snk-form-group">
+                            <label class="snk-form-label">Kapak Fotoğrafı</label>
+                            <div class="snk-image-preview" id="coverPicturePreview">
+                                <div class="snk-image-placeholder">
+                                    <i class="fas fa-image"></i>
+                                    <p>Kapak fotoğrafınızı yüklemek için tıklayın veya sürükleyin</p>
+                                </div>
+                                <input type="file" class="snk-image-input" id="coverPictureInput" name="coverPicture" accept="image/*">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sosyal Medya Sekmesi -->
+                    <div class="snk-profile-edit-section" id="profileEdit_social">
+                        <div class="snk-form-group">
+                            <label for="profileTwitter" class="snk-form-label">Twitter</label>
+                            <div class="snk-social-input">
+                                <input type="text" class="snk-form-control" id="profileTwitter" name="twitter" placeholder="@kullanici_adi">
+                                <i class="fab fa-twitter"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="snk-form-group">
+                            <label for="profileInstagram" class="snk-form-label">Instagram</label>
+                            <div class="snk-social-input">
+                                <input type="text" class="snk-form-control" id="profileInstagram" name="instagram" placeholder="kullanici_adi">
+                                <i class="fab fa-instagram"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="snk-form-group">
+                            <label for="profileLinkedin" class="snk-form-label">LinkedIn</label>
+                            <div class="snk-social-input">
+                                <input type="text" class="snk-form-control" id="profileLinkedin" name="linkedin" placeholder="linkedin.com/in/...">
+                                <i class="fab fa-linkedin"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="snk-form-group">
+                            <label for="profileGithub" class="snk-form-label">GitHub</label>
+                            <div class="snk-social-input">
+                                <input type="text" class="snk-form-control" id="profileGithub" name="github" placeholder="github.com/...">
+                                <i class="fab fa-github"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="snk-form-group">
+                            <label for="profileWebsite" class="snk-form-label">Web Sitesi</label>
+                            <div class="snk-social-input">
+                                <input type="text" class="snk-form-control" id="profileWebsite" name="website" placeholder="www.ornek.com">
+                                <i class="fas fa-globe"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="snk-form-group">
+                            <label for="profileYoutube" class="snk-form-label">YouTube</label>
+                            <div class="snk-social-input">
+                                <input type="text" class="snk-form-control" id="profileYoutube" name="youtube" placeholder="youtube.com/c/...">
+                                <i class="fab fa-youtube"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Hesap Ayarları Sekmesi -->
+                    <div class="snk-profile-edit-section" id="profileEdit_account">
+                        <div class="snk-form-group">
+                            <label for="profilePassword" class="snk-form-label">Şifre Değiştir</label>
+                            <input type="password" class="snk-form-control" id="profilePassword" name="password" placeholder="Yeni şifre">
+                        </div>
+                        
+                        <div class="snk-form-group">
+                            <label for="profileConfirmPassword" class="snk-form-label">Şifre Tekrar</label>
+                            <input type="password" class="snk-form-control" id="profileConfirmPassword" name="confirmPassword" placeholder="Yeni şifreyi tekrar girin">
+                        </div>
+                        
+                        <div class="snk-form-group">
+                            <label class="snk-form-label">Bildirim Tercihleri</label>
+                            <div class="snk-checkbox-group">
+                                <div class="snk-checkbox">
+                                    <input type="checkbox" id="notifEmail" name="notifEmail">
+                                    <label for="notifEmail">E-posta bildirimleri</label>
+                                </div>
+                                
+                                <div class="snk-checkbox">
+                                    <input type="checkbox" id="notifWeb" name="notifWeb" checked>
+                                    <label for="notifWeb">Web site bildirimleri</label>
+                                </div>
+                                
+                                <div class="snk-checkbox">
+                                    <input type="checkbox" id="notifContent" name="notifContent" checked>
+                                    <label for="notifContent">İçerik güncellemeleri bildirimleri</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="snk-form-group">
+                            <label class="snk-form-label">Gizlilik Ayarları</label>
+                            <div class="snk-checkbox-group">
+                                <div class="snk-checkbox">
+                                    <input type="checkbox" id="privacyProfile" name="privacyProfile" checked>
+                                    <label for="privacyProfile">Profilimi herkes görebilir</label>
+                                </div>
+                                
+                                <div class="snk-checkbox">
+                                    <input type="checkbox" id="privacyEmail" name="privacyEmail">
+                                    <label for="privacyEmail">E-posta adresimi gizle</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Form Butonları -->
+                <div class="snk-profile-buttons">
+                    <button type="button" class="snk-profile-btn snk-profile-cancel-btn" id="profileCancelBtn">
+                        <i class="fas fa-times"></i> İptal
+                    </button>
+                    <button type="submit" class="snk-profile-btn snk-profile-save-btn">
+                        <i class="fas fa-save"></i> Kaydet
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -450,9 +637,11 @@
         <i class="fas fa-bars"></i>
     </button>
 
-    <!-- JavaScript dosyaları -->
-    <script src="../components/dom-utils.js"></script>
+    <!-- JavaScript -->
     <script src="../components/sidebar.js"></script>
+    <script src="../components/profile-editor.js"></script>
+    <script src="../components/profile-dropdown.js"></script>
+    <script src="../components/dom-utils.js"></script>
     <script src="../components/main.js"></script>
     <script src="../components/popup.js"></script>
     <script src="../components/popup-handler.js"></script>
