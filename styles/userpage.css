@@ -1,0 +1,662 @@
+/* Kullanıcı Profil Sayfası CSS - Senirkent Blog */
+
+/* Profil Ana Container */
+.snk-user-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Profil Üst Kısım */
+.snk-user-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    background-color: var(--bg-card);
+    border-radius: 12px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+    position: relative;
+}
+
+.snk-user-cover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 180px;
+    border-radius: 12px 12px 0 0;
+    background-size: cover;
+    background-position: center;
+    background-color: #f0f2f5;
+    overflow: hidden;
+}
+
+.snk-user-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.snk-user-profile {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 5px solid var(--bg-card);
+    object-fit: cover;
+    margin-top: 100px;
+    z-index: 1;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.snk-user-info {
+    margin-top: 1.5rem;
+    width: 100%;
+}
+
+.snk-user-name {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+    color: var(--text-primary);
+}
+
+.snk-user-username {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+.snk-user-bio {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto 1.5rem auto;
+    line-height: 1.6;
+}
+
+.snk-user-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.snk-stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.snk-stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.snk-stat-label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.snk-user-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.snk-user-action-btn {
+    padding: 0.6rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.snk-follow-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+}
+
+.snk-follow-btn:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-2px);
+}
+
+.snk-message-btn {
+    background-color: var(--bg-card);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.snk-message-btn:hover {
+    background-color: var(--hover-color);
+    transform: translateY(-2px);
+}
+
+/* Profil Sekme Navigasyonu */
+.snk-user-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0;
+    margin-bottom: 1.5rem;
+}
+
+.snk-user-tab {
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.snk-user-tab.active {
+    color: var(--primary-color);
+}
+
+.snk-user-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--primary-color);
+    border-radius: 3px 3px 0 0;
+}
+
+.snk-user-tab:hover {
+    color: var(--primary-color);
+}
+
+/* Profil İçerik Alanları */
+.snk-user-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    width: 100%;
+}
+
+.snk-user-section {
+    display: none;
+}
+
+.snk-user-section.active {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    width: 100%;
+}
+
+/* Hakkımda Sekmesi - Sütunları Tamamen Kaldır */
+#user_aboutSection.snk-user-section {
+    columns: 1 !important;
+    column-count: 1 !important;
+    column-gap: 0 !important;
+    column-rule: none !important;
+    column-width: auto !important;
+}
+
+#user_aboutSection .snk-user-about-card {
+    column-span: all !important; 
+    column-count: 1 !important;
+}
+
+/* Dark mode uyumluluğunu koruyalım */
+.eren-dark-theme #user_aboutSection.snk-user-section {
+    columns: 1 !important;
+    column-count: 1 !important;
+}
+
+/* Hakkımda Bölümü Düzenlemesi - Tek Sütun Görünümü */
+#user_aboutSection .snk-user-about-card {
+    padding: 2rem;
+    background-color: var(--bg-card);
+    border-radius: 12px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    margin-bottom: 1.5rem;
+    column-count: 1 !important;
+    column-gap: 0 !important;
+    column-rule: none !important;
+    column-width: auto !important;
+    column-span: all !important;
+}
+
+#user_aboutSection p,
+#user_aboutSection h2,
+#user_aboutSection h3,
+#user_aboutSection ul,
+#user_aboutSection li {
+    column-span: all !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+}
+
+/* Hakkımda Bölümü Düzenlemesi */
+.snk-user-about-card {
+    padding: 2rem;
+    background-color: var(--bg-card);
+    border-radius: 12px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    margin-bottom: 1.5rem;
+}
+
+.snk-user-about-card h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 0.8rem;
+}
+
+.snk-user-about-card h3 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.snk-user-about-card p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    margin-bottom: 1.2rem;
+    text-align: justify;
+}
+
+.snk-user-about-card ul {
+    padding-left: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.snk-user-about-card li {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+/* Hakkımda Bölümü İçin Özel Tek Sütunlu Kart - Sorun Çözümü */
+.snk-user-about-card-single {
+    display: block;
+    padding: 2rem;
+    background-color: var(--bg-card);
+    border-radius: 12px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    margin-bottom: 1.5rem;
+    /* Normal çoklu sütun özelliklerini tamamen devre dışı bırak */
+    columns: initial;
+    column-count: initial;
+    column-gap: initial;
+    column-rule: initial;
+    column-width: initial;
+    column-span: initial;
+}
+
+.snk-user-about-card-single h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 0.8rem;
+}
+
+.snk-user-about-card-single h3 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.snk-user-about-card-single p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    margin-bottom: 1.2rem;
+    text-align: justify;
+}
+
+.snk-user-about-card-single ul {
+    padding-left: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.snk-user-about-card-single li {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+/* Dark Mode için Hakkımda bölümü uyumluluğu */
+.eren-dark-theme .snk-user-about-card-single {
+    background-color: var(--dark-card-bg);
+}
+
+.eren-dark-theme .snk-user-about-card-single h2,
+.eren-dark-theme .snk-user-about-card-single h3 {
+    color: var(--dark-text);
+}
+
+.eren-dark-theme .snk-user-about-card-single p,
+.eren-dark-theme .snk-user-about-card-single li {
+    color: var(--dark-text-secondary);
+}
+
+/* Hakkımda sekmesi için grid yapısını iptal et - BU TAMAMEN ÇÖZÜM SAĞLAYACAK */
+#user_aboutSection.snk-user-section.active {
+    display: block !important; /* grid yerine block yapıyoruz */
+    grid-template-columns: none !important; /* grid sütunlarını kaldırıyoruz */
+    gap: 0 !important; /* grid boşluklarını kaldırıyoruz */
+}
+
+/* Hakkımda kartı için sütun özelliklerini sıfırla */
+#user_aboutSection .snk-user-about-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    column-count: 1 !important;
+    column-rule: none !important;
+    column-gap: 0 !important;
+    column-span: all !important;
+}
+
+/* Dark mode uyumluluğu */
+.eren-dark-theme #user_aboutSection.snk-user-section.active {
+    display: block !important;
+    grid-template-columns: none !important;
+}
+
+/* İletişim bilgileri için stil */
+.snk-user-contact {
+    margin-top: 2rem;
+}
+
+.snk-user-contact-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.snk-user-contact-item i {
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    margin-right: 1rem;
+    width: 24px;
+    text-align: center;
+}
+
+/* Profil Yazı Kartları */
+.snk-user-post-card {
+    background-color: var(--bg-card);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.snk-user-post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+}
+
+.snk-user-post-image {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    position: relative;
+}
+
+.snk-user-post-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.snk-user-post-card:hover .snk-user-post-image img {
+    transform: scale(1.05);
+}
+
+.snk-user-post-category {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 0.4rem 0.8rem;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.snk-user-post-content {
+    padding: 1.2rem;
+}
+
+.snk-user-post-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+    color: var(--text-primary);
+    line-height: 1.4;
+}
+
+.snk-user-post-excerpt {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.snk-user-post-meta {
+    display: flex;
+    justify-content: space-between;
+    color: var(--text-tertiary);
+    font-size: 0.85rem;
+}
+
+/* Profil Rozet Kartları */
+.snk-badge-card {
+    background-color: var(--bg-card);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.snk-badge-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+}
+
+.snk-badge-icon {
+    width: 80px;
+    height: 80px;
+    background-color: var(--primary-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+}
+
+.snk-badge-icon i {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+}
+
+.snk-badge-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.snk-badge-description {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.snk-badge-date {
+    font-size: 0.8rem;
+    color: var(--text-tertiary);
+    margin-top: 0.5rem;
+}
+
+/* Dark Mode Uyumluluğu */
+.eren-dark-theme .snk-user-header,
+.eren-dark-theme .snk-user-post-card,
+.eren-dark-theme .snk-badge-card {
+    background-color: var(--dark-card-bg);
+}
+
+.eren-dark-theme .snk-message-btn {
+    background-color: var(--dark-card-bg);
+    color: var(--dark-text);
+    border-color: var(--dark-border);
+}
+
+.eren-dark-theme .snk-user-cover {
+    background-color: #2a2f3c;
+}
+
+.eren-dark-theme .snk-user-profile {
+    border-color: var(--dark-card-bg);
+}
+
+.eren-dark-theme .snk-user-tab {
+    color: var(--dark-text-secondary);
+}
+
+.eren-dark-theme .snk-user-tab.active,
+.eren-dark-theme .snk-user-tab:hover {
+    color: var(--primary-color);
+}
+
+.eren-dark-theme .snk-user-about-card {
+    background-color: var(--dark-card-bg);
+}
+
+.eren-dark-theme .snk-user-about-card h2,
+.eren-dark-theme .snk-user-about-card h3 {
+    color: var(--dark-text);
+}
+
+.eren-dark-theme .snk-user-about-card p,
+.eren-dark-theme .snk-user-about-card li {
+    color: var(--dark-text-secondary);
+}
+
+/* Animasyonlar */
+.fade-in {
+    animation: fadeIn 0.6s ease forwards;
+    opacity: 0;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.slide-in {
+    animation: slideIn 0.5s ease forwards;
+    opacity: 0;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Duyarlı Tasarım */
+@media (max-width: 768px) {
+    .snk-user-header {
+        padding: 1.5rem;
+    }
+    
+    .snk-user-cover {
+        height: 140px;
+    }
+    
+    .snk-user-profile {
+        width: 120px;
+        height: 120px;
+        margin-top: 80px;
+    }
+    
+    .snk-user-name {
+        font-size: 1.5rem;
+    }
+    
+    .snk-user-stats {
+        gap: 1.5rem;
+    }
+    
+    .snk-user-tabs {
+        overflow-x: auto;
+        justify-content: flex-start;
+        padding-bottom: 0.5rem;
+    }
+    
+    .snk-user-tab {
+        padding: 0.8rem 1.2rem;
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 576px) {
+    .snk-user-stats {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    
+    .snk-user-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .snk-user-action-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
