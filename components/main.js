@@ -17,7 +17,7 @@ let snk_main_activeFilter = 'newest';
 /**
  * Sayfa yüklendiğinde çalışacak fonksiyonlar
  */
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function() {
     console.log("Main.js yüklendi");
     
     // DOM elemanlarını tekrar tanımla (lazy loading için güvenlik)
@@ -65,6 +65,15 @@ document.addEventListener('DOMContentLoaded', () => {
             sidebarPopular.classList.add('active');
         });
     }
+    
+    // Şifre görünürlük butonunu ayarla
+    snk_main_setupPasswordToggle();
+    
+    // Giriş/Kayıt form geçişlerini ayarla
+    snk_main_setupAuthFormToggles();
+    
+    // Login popup kapatma butonunu ayarla
+    snk_main_setupLoginPopupClose();
 });
 
 /**
@@ -934,9 +943,6 @@ function snk_main_replyToComment(commentId, button) {
                 </div>
             `;
             
-            // Yanıtla butonunu gizle
-            button.style.display = 'none';
-            
             // Yanıtı yorumdan hemen sonra ekle
             commentElement.after(newReply);
             
@@ -1137,189 +1143,16 @@ function snk_main_toggleSharePanel(postId, button) {
  * Blog yazısı oluşturma popup'ını açar
  */
 function snk_main_openCreatePostPopup() {
-    // Mevcut popup'ı kontrol et
-    let createPostPopup = document.querySelector('.snk-create-post-popup');
+    console.log("main.js - Blog oluşturma popup açma işlevi çağrıldı");
+    // Bu işlevi artık login-handler.js'deki showBlogCreatePopup fonksiyonu yapacak
+    // Çakışma olmaması için var olan login-handler fonksiyonunu çağıralım
+    const currentUser = JSON.parse(localStorage.getItem('snk_currentUser') || localStorage.getItem('snk_current_user') || '{}');
     
-    // Popup zaten varsa, kapat
-    if (createPostPopup) {
-        createPostPopup.classList.remove('active');
-        setTimeout(() => createPostPopup.remove(), 300);
-        return;
+    if (window.showBlogCreatePopup && typeof window.showBlogCreatePopup === 'function') {
+        window.showBlogCreatePopup(currentUser);
+    } else {
+        console.error("showBlogCreatePopup fonksiyonu bulunamadı");
     }
-    
-    // Popup oluştur
-    createPostPopup = document.createElement('div');
-    createPostPopup.className = 'snk-create-post-popup active';
-    
-    // Popup içeriğini oluştur
-    createPostPopup.innerHTML = `
-        <div class="snk-create-post-container">
-            <div class="snk-create-post-header">
-                <h2 class="snk-create-post-title">
-                    <i class="fas fa-edit"></i> Yeni Blog Yazısı Oluştur
-                </h2>
-                <button class="snk-create-post-close">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <form class="snk-create-post-form">
-                <div class="snk-form-group">
-                    <label for="post-title">Başlık</label>
-                    <input type="text" id="post-title" class="snk-form-control" placeholder="Blog yazınızın başlığını girin" required>
-                </div>
-                
-                <div class="snk-form-group">
-                    <label for="post-category">Kategori</label>
-                    <select id="post-category" class="snk-form-control" required>
-                        <option value="" disabled selected>Kategori seçin</option>
-                        <option value="teknoloji">Teknoloji</option>
-                        <option value="egitim">Eğitim</option>
-                        <option value="yasam">Yaşam</option>
-                        <option value="kultursanat">Kültür & Sanat</option>
-                        <option value="bilim">Bilim</option>
-                    </select>
-                </div>
-                
-                <div class="snk-form-group">
-                    <label for="post-content">İçerik</label>
-                    <textarea id="post-content" class="snk-form-control" placeholder="Blog yazınızın içeriğini girin" rows="8" required></textarea>
-                </div>
-                
-                <div class="snk-form-group">
-                    <label for="post-tags">Etiketler (# ile ayırın)</label>
-                    <input type="text" id="post-tags" class="snk-form-control" placeholder="Örn: #teknoloji #yazılım #web">
-                    <div class="snk-tags-preview"></div>
-                </div>
-                
-                <div class="snk-form-group">
-                    <label for="post-image">Kapak Görseli</label>
-                    <div class="snk-image-upload">
-                        <input type="file" id="post-image" class="snk-image-input" accept="image/*">
-                        <label for="post-image" class="snk-image-label">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                            <span>Görsel Seçin veya Sürükleyin</span>
-                        </label>
-                        <div class="snk-image-preview"></div>
-                    </div>
-                </div>
-                
-                <div class="snk-form-actions">
-                    <button type="button" class="snk-form-button snk-cancel-button">İptal</button>
-                    <button type="submit" class="snk-form-button snk-submit-button">Yazıyı Yayınla</button>
-                </div>
-            </form>
-        </div>
-    `;
-    
-    // Popup'ı sayfaya ekle
-    document.body.appendChild(createPostPopup);
-    
-    // Etiket önizleme işlevi
-    const tagsInput = createPostPopup.querySelector('#post-tags');
-    const tagsPreview = createPostPopup.querySelector('.snk-tags-preview');
-    
-    tagsInput.addEventListener('input', function() {
-        const tags = this.value.match(/#[a-zA-ZğüşıöçĞÜŞİÖÇ0-9_]+/g) || [];
-        
-        tagsPreview.innerHTML = '';
-        tags.forEach(tag => {
-            const tagElement = document.createElement('span');
-            tagElement.className = 'snk-tag';
-            tagElement.textContent = tag;
-            tagsPreview.appendChild(tagElement);
-        });
-    });
-    
-    // Görsel önizleme işlevi
-    const imageInput = createPostPopup.querySelector('#post-image');
-    const imagePreview = createPostPopup.querySelector('.snk-image-preview');
-    let selectedImageData = null;
-    
-    imageInput.addEventListener('change', function() {
-        if (this.files && this.files[0]) {
-            const reader = new FileReader();
-            
-            reader.onload = function(e) {
-                selectedImageData = e.target.result;
-                imagePreview.innerHTML = `
-                    <img src="${selectedImageData}" alt="Seçilen görsel">
-                    <button type="button" class="snk-remove-image">
-                        <i class="fas fa-times"></i>
-                    </button>
-                `;
-                
-                // Görsel kaldırma butonu
-                const removeButton = imagePreview.querySelector('.snk-remove-image');
-                removeButton.addEventListener('click', function() {
-                    imagePreview.innerHTML = '';
-                    imageInput.value = '';
-                    selectedImageData = null;
-                });
-            };
-            
-            reader.readAsDataURL(this.files[0]);
-        }
-    });
-    
-    // Kapatma butonu
-    const closeButton = createPostPopup.querySelector('.snk-create-post-close');
-    closeButton.addEventListener('click', function() {
-        createPostPopup.classList.remove('active');
-        setTimeout(() => createPostPopup.remove(), 300);
-    });
-    
-    // İptal butonu
-    const cancelButton = createPostPopup.querySelector('.snk-cancel-button');
-    cancelButton.addEventListener('click', function() {
-        createPostPopup.classList.remove('active');
-        setTimeout(() => createPostPopup.remove(), 300);
-    });
-    
-    // Form gönderimi
-    const form = createPostPopup.querySelector('.snk-create-post-form');
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Gerekli alanları kontrol et
-        const title = document.getElementById('post-title').value.trim();
-        const category = document.getElementById('post-category').value;
-        const content = document.getElementById('post-content').value.trim();
-        
-        if (!title || !category || !content) {
-            alert('Lütfen tüm gerekli alanları doldurun!');
-            return;
-        }
-        
-        // Form verilerini al
-        const postData = {
-            id: Date.now(), // Benzersiz ID için timestamp
-            title: title,
-            category: category,
-            content: content,
-            tags: (document.getElementById('post-tags').value.match(/#[a-zA-ZğüşıöçĞÜŞİÖÇ0-9_]+/g) || []).map(tag => tag.substring(1)),
-            date: new Date().toISOString().split('T')[0],
-            image: selectedImageData || '', // resim yoksa boş bırak
-            author: 'Kullanıcı', // Gerçek uygulamada giriş yapmış kullanıcı bilgisi
-            views: 0,
-            likes: 0,
-            comments: []
-        };
-        
-        // Blog yazısını ekle ve sayfayı güncelle
-        snk_main_addNewBlogPost(postData);
-        
-        // Popup'ı kapat
-        createPostPopup.classList.remove('active');
-        setTimeout(() => createPostPopup.remove(), 300);
-    });
-    
-    // Popup dışına tıklama ile kapatma
-    createPostPopup.addEventListener('click', function(e) {
-        if (e.target === this) {
-            createPostPopup.classList.remove('active');
-            setTimeout(() => createPostPopup.remove(), 300);
-        }
-    });
 }
 
 /**
@@ -1607,3 +1440,199 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Global erişim için
 window.snk_main_openCreatePostPopup = snk_main_openCreatePostPopup;
+
+// Giriş formunda şifre görünürlüğünü ayarlamak için
+function snk_main_setupPasswordToggle() {
+    console.log("Şifre toggle butonu ayarlanıyor");
+    
+    // Bu fonksiyon document.ready'den sonra çağrıldığında DOM hazır olacak
+    // Ancak 500ms sonra tekrar çağırmak en güvenli yol
+    setTimeout(() => {
+        const passwordToggleBtn = document.getElementById('snk_login_toggle_password');
+        
+        if (passwordToggleBtn) {
+            console.log("Şifre toggle butonu bulundu");
+            
+            // Mevcut event listener'ları temizle (olası duplikasyonu önlemek için)
+            passwordToggleBtn.removeEventListener('click', togglePasswordVisibility);
+            
+            // Yeni event listener ekle
+            passwordToggleBtn.addEventListener('click', togglePasswordVisibility);
+        } else {
+            console.error("Şifre toggle butonu bulunamadı");
+        }
+    }, 500);
+}
+
+// Şifre görünürlüğünü değiştiren yardımcı fonksiyon
+function togglePasswordVisibility(e) {
+    console.log("Şifre toggle butonuna tıklandı");
+    e.preventDefault(); // Form submit'i önle
+    
+    const passwordInput = document.getElementById('loginPassword');
+    if (passwordInput) {
+        // Şifre görünürlüğünü değiştir
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        
+        // İkonu değiştir
+        const icon = this.querySelector('i');
+        if (icon) {
+            icon.classList.toggle('fa-eye');
+            icon.classList.toggle('fa-eye-slash');
+        }
+    } else {
+        console.error("Şifre input alanı bulunamadı");
+    }
+}
+
+// Login popup kapatma butonunu ayarla
+function snk_main_setupLoginPopupClose() {
+    console.log("Login popup kapatma butonu ayarlanıyor");
+    
+    // Bir süre bekleyerek DOM'un tam olarak yüklenmesini sağla
+    setTimeout(() => {
+        const loginCloseBtn = document.getElementById('snk_loginCloseBtn');
+        const loginPopup = document.getElementById('snk_loginPopup');
+        
+        if (loginCloseBtn && loginPopup) {
+            console.log("Login popup kapatma butonu bulundu");
+            
+            // Mevcut event listener'ları temizle (olası duplikasyonu önlemek için)
+            loginCloseBtn.removeEventListener('click', closeLoginPopup);
+            
+            // Yeni event listener ekle
+            loginCloseBtn.addEventListener('click', closeLoginPopup);
+        } else {
+            console.error("Login popup kapatma butonu veya popup bulunamadı:", 
+                          {closeBtn: !!loginCloseBtn, popup: !!loginPopup});
+        }
+    }, 500);
+}
+
+// Popup kapatma yardımcı fonksiyonu
+function closeLoginPopup(e) {
+    console.log("Login kapatma butonuna tıklandı");
+    e.preventDefault();
+    
+    const loginPopup = document.getElementById('snk_loginPopup');
+    if (loginPopup) {
+        loginPopup.classList.remove('active');
+        document.body.style.overflow = ''; // Sayfa scroll'u tekrar etkinleştir
+    }
+}
+
+// Login popup'ını açma fonksiyonu
+function snk_main_openLoginPopup() {
+    console.log("Login popup açılıyor");
+    
+    const loginPopup = document.getElementById('snk_loginPopup');
+    
+    if (loginPopup) {
+        loginPopup.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Sayfa scroll'u devre dışı bırak
+        
+        // Popup açıldıktan sonra şifre görünürlük butonunu tekrar ayarla
+        snk_main_setupPasswordToggle();
+        // Kapatma butonunu tekrar ayarla
+        snk_main_setupLoginPopupClose();
+    } else {
+        console.error("Login popup bulunamadı");
+    }
+}
+
+// Login popup'ını kapatma fonksiyonu
+function snk_main_closeLoginPopup() {
+    closeLoginPopup({preventDefault: () => {}});
+}
+
+// Giriş yapma/kayıt olma formu geçişlerini ayarlamak için
+function snk_main_setupAuthFormToggles() {
+    const showRegisterLink = document.getElementById('showRegisterPopup');
+    
+    if (showRegisterLink) {
+        showRegisterLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Login popup'ı kapat, register popup'ı aç
+            const loginPopup = document.getElementById('snk_loginPopup');
+            if (loginPopup) {
+                loginPopup.classList.remove('active');
+            }
+            
+            // Register popup kodunu buraya ekleyebiliriz
+            // Ya da popup-handler.js'deki fonksiyonu çağırabiliriz
+            if (typeof snk_popupHandler_showRegisterForm === 'function') {
+                snk_popupHandler_showRegisterForm();
+            }
+        });
+    }
+}
+
+// Sayfa yüklendiğinde çalışacak fonksiyonlar
+document.addEventListener('DOMContentLoaded', function() {
+    console.log("Main.js yüklendi");
+    
+    // DOM elemanlarını tekrar tanımla (lazy loading için güvenlik)
+    const postsContainer = document.getElementById('snk_postsContainer');
+    const filterNewest = document.getElementById('snk_filterNewest');
+    const filterPopular = document.getElementById('snk_filterPopular');
+    const sidebarPopular = document.getElementById('snk_sidebarPopular');
+    
+    console.log("Main elemanları:", {postsContainer, filterNewest, filterPopular, sidebarPopular});
+    
+    // Blog yazılarını yükle
+    snk_main_loadBlogPosts();
+    
+    // Filtreleme butonları için olay dinleyicileri ekle
+    snk_main_setupFilterButtons();
+    
+    // Sidebar'daki popüler linki için olay dinleyicisi
+    if (sidebarPopular) {
+        sidebarPopular.addEventListener('click', (e) => {
+            e.preventDefault(); // Sayfanın yenilenmesini engelle
+            
+            // Popüler filtreyi aktifleştir
+            if (filterPopular) {
+                filterPopular.click(); // Popüler filtresine tıklamayı simüle et
+            } else {
+                // Popüler filtresi bulunamazsa manuel olarak uygula
+                snk_main_activeFilter = 'popular';
+                
+                // UI güncelleme
+                document.querySelectorAll('.snk-filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.id === 'snk_filterPopular') {
+                        btn.classList.add('active');
+                    }
+                });
+                
+                // Blog yazılarını filtrele ve göster
+                snk_main_filterPosts();
+            }
+            
+            // Sidebar link'lerinin aktif durumunu güncelle
+            document.querySelectorAll('.snk-sidebar-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            sidebarPopular.classList.add('active');
+        });
+    }
+    
+    // Şifre görünürlük butonunu ayarla
+    snk_main_setupPasswordToggle();
+    
+    // Giriş/Kayıt form geçişlerini ayarla
+    snk_main_setupAuthFormToggles();
+    
+    // Login popup kapatma butonunu ayarla
+    snk_main_setupLoginPopupClose();
+    
+    // Giriş yapma butonunu ayarla
+    const loginButton = document.getElementById('snk_login_btn');
+    if (loginButton) {
+        loginButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            snk_main_openLoginPopup();
+        });
+    }
+});

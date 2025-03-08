@@ -214,67 +214,10 @@
                 
                 <!-- Profil Yazılar Bölümü -->
                 <div class="snk-user-section active" id="user_postsSection">
-                    <!-- Yazı 1 -->
-                    <div class="snk-user-post-card fade-in">
-                        <div class="snk-user-post-image">
-                            <img src="../public/images/placeholder.jpg" alt="Yazı Görseli">
-                            <span class="snk-user-post-category" data-category="teknoloji">Teknoloji</span>
-                        </div>
-                        <div class="snk-user-post-content">
-                            <h3 class="snk-user-post-title">Yapay Zekanın Geleceği ve İş Dünyasına Etkileri</h3>
-                            <p class="snk-user-post-excerpt">Yapay zeka teknolojileri her geçen gün gelişiyor ve iş dünyasında yeni fırsatlar yaratıyor. Peki bu gelişmeler istihdamı nasıl etkileyecek?</p>
-                            <div class="snk-user-post-meta">
-                                <span><i class="fas fa-calendar"></i> 5 Mart 2025</span>
-                                <span><i class="fas fa-eye"></i> 432 Okunma</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Yazı 2 -->
-                    <div class="snk-user-post-card fade-in">
-                        <div class="snk-user-post-image">
-                            <img src="../public/images/placeholder.jpg" alt="Yazı Görseli">
-                            <span class="snk-user-post-category" data-category="egitim">Eğitim</span>
-                        </div>
-                        <div class="snk-user-post-content">
-                            <h3 class="snk-user-post-title">Uzaktan Eğitimde Verimlilik: İpuçları ve Püf Noktaları</h3>
-                            <p class="snk-user-post-excerpt">Uzaktan eğitim sürecinde öğrenciniz veya eğitimci olarak verimliliğinizi artıracak pratik ipuçları ve yöntemler.</p>
-                            <div class="snk-user-post-meta">
-                                <span><i class="fas fa-calendar"></i> 28 Şubat 2025</span>
-                                <span><i class="fas fa-eye"></i> 347 Okunma</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Yazı 3 -->
-                    <div class="snk-user-post-card fade-in">
-                        <div class="snk-user-post-image">
-                            <img src="../public/images/placeholder.jpg" alt="Yazı Görseli">
-                            <span class="snk-user-post-category" data-category="teknoloji">Teknoloji</span>
-                        </div>
-                        <div class="snk-user-post-content">
-                            <h3 class="snk-user-post-title">Blokzincir Teknolojisi ve Günlük Hayattaki Uygulamaları</h3>
-                            <p class="snk-user-post-excerpt">Kripto paraların ötesinde, blokzincir teknolojisinin finans, sağlık ve eğitim gibi alanlarda sunduğu yenilikçi çözümler.</p>
-                            <div class="snk-user-post-meta">
-                                <span><i class="fas fa-calendar"></i> 20 Şubat 2025</span>
-                                <span><i class="fas fa-eye"></i> 589 Okunma</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Yazı 4 -->
-                    <div class="snk-user-post-card fade-in">
-                        <div class="snk-user-post-image">
-                            <img src="../public/images/placeholder.jpg" alt="Yazı Görseli">
-                            <span class="snk-user-post-category" data-category="egitim">Eğitim</span>
-                        </div>
-                        <div class="snk-user-post-content">
-                            <h3 class="snk-user-post-title">Öğrenciler İçin Etkili Zaman Yönetimi Stratejileri</h3>
-                            <p class="snk-user-post-excerpt">Okul, ödev ve sosyal hayat arasında denge kurmakta zorlanan öğrenciler için bilimsel temelli zaman yönetimi teknikleri.</p>
-                            <div class="snk-user-post-meta">
-                                <span><i class="fas fa-calendar"></i> 15 Şubat 2025</span>
-                                <span><i class="fas fa-eye"></i> 412 Okunma</span>
-                            </div>
+                    <div class="snk-user-posts">
+                        <!-- JavaScript ile kullanıcının blog yazıları burada gösterilecek -->
+                        <div class="snk-loading">
+                            <i class="fas fa-spinner fa-spin"></i> Yazılar yükleniyor...
                         </div>
                     </div>
                 </div>
@@ -639,22 +582,19 @@
 
     <!-- JavaScript -->
     <script src="../components/sidebar.js"></script>
-    <script src="../components/profile-editor.js"></script>
-    <script src="../components/profile-dropdown.js"></script>
-    <script src="../components/dom-utils.js"></script>
     <script src="../components/main.js"></script>
+    <script src="../components/profile-dropdown.js"></script>
     <script src="../components/popup.js"></script>
-    <script src="../components/popup-handler.js"></script>
-    <script src="../components/userspage.js"></script>
-    <script src="../darkjs/darkmode.js"></script>
+    <script src="../components/login-handler.js"></script>
+    <script src="../components/profile-editor.js"></script>
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Kullanıcı oturum durumunu kontrol et
-            const currentUser = JSON.parse(localStorage.getItem('snk_currentUser') || '{}');
+            const currentUser = JSON.parse(localStorage.getItem('snk_currentUser') || localStorage.getItem('snk_current_user') || 'null');
             
-            // Kullanıcı giriş yapmış mı kontrol et
-            if (!currentUser.isLoggedIn) {
-                // Giriş yapmamış kullanıcıyı ana sayfaya yönlendir
+            if (!currentUser) {
+                // Kullanıcı oturum açmamış, ana sayfaya yönlendir
                 window.location.href = 'index.html';
                 return;
             }
@@ -662,39 +602,51 @@
             // Kullanıcı bilgilerini sayfaya yerleştir
             const userName = document.querySelector('.snk-user-name');
             if (userName) {
-                userName.textContent = `${currentUser.name} ${currentUser.surname}`;
+                userName.textContent = currentUser.displayName || `${currentUser.name || ''} ${currentUser.surname || ''}`;
             }
             
-            const userUsername = document.querySelector('.snk-profile-username');
+            const userUsername = document.querySelector('.snk-user-handle');
             if (userUsername) {
-                userUsername.textContent = `@${currentUser.name.toLowerCase()}${currentUser.surname.toLowerCase()}`;
+                userUsername.textContent = `@${currentUser.username || (currentUser.name ? currentUser.name.toLowerCase() : '')}`;
             }
             
-            const profileName = document.querySelector('.snk-profile-name');
-            if (profileName) {
-                profileName.textContent = `${currentUser.name} ${currentUser.surname}`;
-            }
+            // Profil sekmesi işlevselliği
+            const tabItems = document.querySelectorAll('.snk-user-tab');
+            const sectionItems = document.querySelectorAll('.snk-user-section');
             
-            // Hakkımda bölümünü güncelle
-            const aboutSection = document.querySelector('.snk-user-about-card-single p');
-            if (aboutSection) {
-                aboutSection.textContent = `Merhaba, ben ${currentUser.name} ${currentUser.surname}. Senirkent MYO Blog kullanıcısıyım.`;
-            }
+            tabItems.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Aktif sekmeyi değiştir
+                    tabItems.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // İlgili içerik bölümünü göster
+                    const tabName = this.getAttribute('data-tab');
+                    sectionItems.forEach(section => {
+                        section.classList.remove('active');
+                        if (section.id === `user_${tabName}Section`) {
+                            section.classList.add('active');
+                        }
+                    });
+                    
+                    // Eğer Yazılar sekmesine tıklandıysa, kullanıcının yazılarını güncelle
+                    if (tabName === 'posts') {
+                        updateUserPostsDisplay();
+                    }
+                });
+            });
             
-            // Oturum Aç ve Kaydol butonlarını gizle, Çıkış Yap butonunu göster
-            const loginBtn = document.getElementById('snk_login_btn');
-            const registerBtn = document.getElementById('snk_register_btn');
-            
-            if (loginBtn) loginBtn.style.display = 'none';
-            if (registerBtn) registerBtn.style.display = 'none';
+            // Sayfa yüklendiğinde kullanıcı yazılarını göster
+            updateUserPostsDisplay();
             
             // Çıkış Yap butonuna işlevsellik ekle
-            const logoutLink = document.querySelector('.snk-menu-item i.fas.fa-sign-out-alt').parentNode;
+            const logoutLink = document.querySelector('.snk-logout');
             if (logoutLink) {
                 logoutLink.addEventListener('click', function(e) {
                     e.preventDefault();
                     // Kullanıcı oturumunu sonlandır
                     localStorage.removeItem('snk_currentUser');
+                    localStorage.removeItem('snk_current_user');
                     // Ana sayfaya yönlendir
                     window.location.href = 'index.html';
                 });
