@@ -2048,6 +2048,7 @@ textarea.snk-form-control {
 
 .snk-cancel-button:hover {
     background: #e0e0e0;
+    color: #333;
 }
 
 /* Mobil Uyumluluk */
@@ -3215,314 +3216,447 @@ textarea.snk-form-control {
     color: var(--info-color);
 }
 
-/* Video Konteyner Stilleri */
-.snk-video-container {
-    position: relative;
-    padding-bottom: 56.25%; /* 16:9 oranı */
-    height: 0;
+/* Blog Kartları - Modern Tasarım */
+.snk-blog-card, .snk-user-post-card {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     overflow: hidden;
-    max-width: 100%;
-    margin: 15px 0;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 24px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
-.snk-video-container iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
+.snk-blog-card:hover, .snk-user-post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.snk-blog-card-image, .snk-user-post-image {
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    position: relative;
+}
+
+.snk-blog-card-image img, .snk-user-post-image img {
     width: 100%;
     height: 100%;
-    border-radius: 8px;
+    object-fit: cover;
+    transition: transform 0.5s ease;
 }
 
-.snk-video-input {
-    margin-top: 15px;
-    padding: 15px;
-    background-color: #f5f5f5;
-    border-radius: 8px;
+.snk-blog-card:hover .snk-blog-card-image img, 
+.snk-user-post-card:hover .snk-user-post-image img {
+    transform: scale(1.05);
 }
 
-.snk-preview-video-btn {
-    margin-top: 10px;
-    background-color: #6c757d;
-    color: white;
-    padding: 5px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+.snk-blog-card-content, .snk-user-post-content {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 }
 
-.snk-preview-video-btn:hover {
-    background-color: #5a6268;
+.snk-blog-card-title, .snk-user-post-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--text-color);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
-.snk-video-preview {
-    margin-top: 15px;
+.snk-blog-card-excerpt, .snk-user-post-excerpt {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-muted);
+    margin-bottom: 15px;
+    flex-grow: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
-.snk-remove-video,
-.snk-remove-image {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    background-color: rgba(0,0,0,0.6);
-    color: white;
-    border: none;
-    border-radius: 50%;
+.snk-blog-card-meta, .snk-user-post-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.snk-blog-card-author, .snk-user-post-author {
+    display: flex;
+    align-items: center;
+}
+
+.snk-blog-card-author-avatar, .snk-user-post-author-avatar {
     width: 30px;
     height: 30px;
-    cursor: pointer;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 10px;
+}
+
+.snk-blog-card-author-avatar img, .snk-user-post-author-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.snk-blog-card-date, .snk-user-post-date,
+.snk-blog-card-views, .snk-user-post-views {
     display: flex;
-    justify-content: center;
     align-items: center;
-    transition: all 0.3s ease;
-    z-index: 10;
 }
 
-.snk-remove-video:hover,
-.snk-remove-image:hover {
-    background-color: rgba(255, 0, 0, 0.8);
+.snk-blog-card-date i, .snk-user-post-date i,
+.snk-blog-card-views i, .snk-user-post-views i {
+    margin-right: 5px;
+    font-size: 14px;
 }
 
-.snk-media-options {
+.snk-blog-card-categories, .snk-user-post-categories {
     display: flex;
-    gap: 10px;
+    flex-wrap: wrap;
+    gap: 8px;
     margin-bottom: 15px;
 }
 
-.snk-media-btn {
-    padding: 8px 15px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+.snk-blog-card-category, .snk-user-post-category {
+    background-color: var(--primary-color-light);
+    color: var(--primary-color);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 10px;
+    border-radius: 20px;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.snk-blog-card-category:hover, .snk-user-post-category:hover {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+.snk-blog-card-footer, .snk-user-post-footer {
+    border-top: 1px solid var(--border-color);
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.snk-blog-card-actions, .snk-user-post-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.snk-post-action-btn {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 6px;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 6px;
     transition: all 0.2s ease;
 }
 
-.snk-media-btn:hover {
-    background-color: #0069d9;
-}
-
-.snk-blog-video {
-    margin: 20px 0;
-}
-
-/* Blogdaki video stilleri */
-.snk-blog-content .snk-video-container {
-    margin: 25px 0;
-}
-
-/* Önizleme stilleri */
-.snk-preview-container {
-    position: relative;
-    margin: 15px 0;
-    max-width: 100%;
-}
-
-.snk-preview-container img {
-    max-width: 100%;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-/* Video Stil Tanımlamaları */
-.snk-video-input {
-    margin-top: 10px;
-}
-
-.snk-video-label {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px dashed #ccc;
-    border-radius: 5px;
-    padding: 20px;
-    text-align: center;
-    margin-bottom: 10px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.snk-video-label:hover {
-    border-color: var(--primary-color);
-    background-color: rgba(var(--primary-rgb), 0.05);
-}
-
-.snk-video-label i {
-    font-size: 24px;
-    margin-right: 10px;
+.snk-post-action-btn:hover {
+    background-color: var(--bg-light);
     color: var(--primary-color);
 }
 
-.snk-video-preview {
-    margin-top: 10px;
-    position: relative;
+.snk-post-action-btn.active, .snk-post-action-btn.liked {
+    color: var(--primary-color);
 }
 
-.snk-preview-container {
-    position: relative;
-    width: 100%;
-    margin-bottom: 15px;
+.snk-post-action-btn.delete-btn {
+    color: var(--danger-color);
 }
 
-.snk-preview-container video {
-    width: 100%;
-    max-height: 300px;
-    border-radius: 5px;
-    object-fit: contain;
-    background-color: #000;
+.snk-post-action-btn.delete-btn:hover {
+    background-color: rgba(var(--danger-rgb), 0.1);
 }
 
-.snk-remove-video {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    background-color: rgba(0,0,0,0.6);
-    color: white;
-    border: none;
+/* Yorum popup stileri */
+.snk-comments-container {
+    display: flex;
+    flex-direction: column;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.snk-comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding: 16px 0;
+}
+
+.snk-comment {
+    display: flex;
+    gap: 15px;
+    padding: 15px;
+    background-color: var(--bg-light);
+    border-radius: 10px;
+}
+
+.snk-comment-avatar {
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    cursor: pointer;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.snk-comment-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.snk-comment-content {
+    flex-grow: 1;
+}
+
+.snk-comment-header {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    transition: all 0.3s ease;
+    margin-bottom: 6px;
 }
 
-.snk-remove-video:hover {
-    background-color: rgba(255, 0, 0, 0.8);
+.snk-comment-header h4 {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0;
+    color: var(--text-color);
 }
 
-.snk-file-info {
+.snk-comment-header span {
     font-size: 12px;
-    color: #666;
-    background-color: #f5f5f5;
-    padding: 5px 10px;
-    border-radius: 3px;
-    margin-top: 5px;
+    color: var(--text-secondary);
 }
 
-.snk-media-options {
+.snk-comment-text {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--text-color);
+}
+
+.snk-comment-form {
     display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
+    flex-direction: column;
+    gap: 12px;
 }
 
-.snk-media-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 8px 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #f8f8f8;
-    cursor: pointer;
-    transition: all 0.2s ease;
+.snk-comment-form textarea {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    resize: vertical;
+    min-height: 100px;
+    font-size: 14px;
+    font-family: inherit;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    transition: border-color 0.2s ease;
 }
 
-.snk-media-btn:hover {
-    background-color: var(--primary-color);
-    color: white;
+.snk-comment-form textarea:focus {
+    outline: none;
     border-color: var(--primary-color);
 }
 
-.snk-media-btn i {
-    margin-right: 5px;
-}
-
-/* Blog kartlarında video işareti için stil */
-.snk-blog-card-badges {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    display: flex;
-    gap: 5px;
-}
-
-.snk-blog-card-badge {
-    background-color: rgba(0, 0, 0, 0.7);
-    color: white;
-    font-size: 12px;
-    padding: 3px 8px;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.snk-blog-card-badge i {
-    font-size: 10px;
-}
-
-.snk-media-options {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 15px;
-}
-
-.snk-media-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.snk-comment-submit {
     padding: 12px 20px;
+    background-color: var(--primary-color);
+    color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
+    font-weight: 600;
     cursor: pointer;
+    transition: background-color 0.2s ease;
+    align-self: flex-end;
+}
+
+.snk-comment-submit:hover {
+    background-color: var(--primary-color-dark);
+}
+
+/* Paylaşım popup stileri */
+.snk-share-popup .snk-popup-container {
+    max-width: 400px;
+}
+
+.snk-share-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.snk-share-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 16px;
     font-weight: 500;
-    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    background-color: var(--bg-light);
+    color: var(--text-color);
+}
+
+.snk-facebook-share {
+    background-color: #3b5998;
+    color: white;
+}
+
+.snk-twitter-share {
+    background-color: #1da1f2;
+    color: white;
+}
+
+.snk-whatsapp-share {
+    background-color: #25d366;
+    color: white;
+}
+
+.snk-copy-link {
+    border: 1px solid var(--border-color);
+}
+
+.snk-share-option:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Onay popup stileri */
+.snk-confirm-popup .snk-popup-container {
+    max-width: 460px;
+}
+
+.snk-confirm-message {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    text-align: center;
+    color: var(--text-color);
+}
+
+.snk-confirm-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.snk-cancel-btn, .snk-confirm-btn {
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    border: none;
+}
+
+.snk-cancel-btn {
+    background-color: var(--bg-light);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
+
+.snk-confirm-btn {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.snk-cancel-btn:hover {
+    background-color: var(--border-color);
+}
+
+.snk-confirm-btn:hover {
+    background-color: var(--danger-color-dark);
+}
+
+/* Bildirim Stilleri */
+.snk-notification {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    padding: 15px 25px 15px 20px;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 15px;
+    max-width: 350px;
+    opacity: 0;
+    transform: translateY(20px);
     transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1100;
 }
 
-.snk-media-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.1);
-    z-index: -1;
-    transform: translateY(100%);
-    transition: transform 0.3s ease;
-}
-
-.snk-media-btn:hover::before {
+.snk-notification.show {
+    opacity: 1;
     transform: translateY(0);
 }
 
-#imageUploadBtn {
-    background-color: #222;
-    color: white;
+.snk-notification i {
+    font-size: 18px;
 }
 
-#imageUploadBtn:hover {
-    background-color: #333;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-    transform: translateY(-2px);
+.snk-notification.success {
+    border-left: 4px solid var(--success-color);
 }
 
-#videoUploadBtn {
-    background-color: #0066CC; /* Vivid Blue */
-    color: white;
+.snk-notification.success i {
+    color: var(--success-color);
 }
 
-#videoUploadBtn:hover {
-    background-color: #0055AA;
-    box-shadow: 0 6px 12px rgba(0, 102, 204, 0.3);
-    transform: translateY(-2px);
+.snk-notification.error {
+    border-left: 4px solid var(--danger-color);
 }
 
-.snk-media-btn i {
-    margin-right: 10px;
-    font-size: 16px;
+.snk-notification.error i {
+    color: var(--danger-color);
+}
+
+.snk-notification.warning {
+    border-left: 4px solid var(--warning-color);
+}
+
+.snk-notification.warning i {
+    color: var(--warning-color);
+}
+
+.snk-notification.info {
+    border-left: 4px solid var(--info-color);
+}
+
+.snk-notification.info i {
+    color: var(--info-color);
 }
