@@ -77,33 +77,20 @@
                         <a href="#" class="snk-menu-item">
                             <i class="fas fa-moon"></i>
                             Karanlık Mod
-                            <label class="snk-toggle-switch">
-                                <input type="checkbox" checked>
-                                <span class="snk-toggle-slider"></span>
+                            <label class="snk-toggle-switch eren-theme-switch">
+                                <input type="checkbox" id="darkModeToggle">
+                                <span class="snk-toggle-slider eren-switch-ball"></span>
                             </label>
                         </a>
                         
                         <div class="snk-menu-divider"></div>
                         
-                        <a href="#" class="snk-menu-item">
+                        <a href="#" class="snk-menu-item" id="snk_logout_link">
                             <i class="fas fa-sign-out-alt"></i>
                             Çıkış Yap
                         </a>
                         
                         <div class="snk-menu-divider"></div>
-                        
-                        <a href="#" class="snk-menu-item">
-                            <i class="fas fa-ad"></i>
-                            Reklamlar
-                        </a>
-                        <a href="#" class="snk-menu-item">
-                            <i class="fas fa-chart-line"></i>
-                            Premium
-                        </a>
-                        <a href="#" class="snk-menu-item">
-                            <i class="fas fa-cog"></i>
-                            Ayarlar
-                        </a>
                     </div>
                 </div>
             </div>
@@ -360,5 +347,101 @@
     <script src="../components/popup-handler.js"></script>
     <script src="../components/verification.js"></script>
     <script src="../components/auth-handlers.js"></script>
+    <script src="../darkjs/darkmode.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Kullanıcı oturum durumunu kontrol et
+            const currentUser = JSON.parse(localStorage.getItem('snk_currentUser') || '{}');
+            
+            // Kullanıcı giriş yapmış mı kontrol et
+            if (currentUser.isLoggedIn) {
+                // Butonları güncelle
+                const loginBtn = document.getElementById('snk_login_btn');
+                const registerBtn = document.getElementById('snk_register_btn');
+                
+                if (loginBtn) {
+                    loginBtn.innerHTML = '<i class="fas fa-user"></i> Profilim';
+                    loginBtn.addEventListener('click', function() {
+                        window.location.href = 'userpage.html';
+                    });
+                }
+                
+                if (registerBtn) {
+                    registerBtn.style.display = 'none';
+                }
+                
+                // Profil menüsünü güncelle
+                const profileName = document.querySelector('.snk-profile-name');
+                const profileUsername = document.querySelector('.snk-profile-username');
+                
+                if (profileName) {
+                    profileName.textContent = `${currentUser.name} ${currentUser.surname}`;
+                }
+                
+                if (profileUsername) {
+                    profileUsername.textContent = `@${currentUser.name.toLowerCase()}${currentUser.surname.toLowerCase()}`;
+                }
+                
+                // Çıkış Yap butonuna işlevsellik ekle
+                const logoutLink = document.getElementById('snk_logout_link');
+                if (logoutLink) {
+                    logoutLink.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        // Kullanıcı oturumunu sonlandır
+                        localStorage.removeItem('snk_currentUser');
+                        // Sayfayı yenile
+                        window.location.reload();
+                    });
+                }
+            } else {
+                // Çıkış Yap butonunu gizle
+                const logoutLink = document.getElementById('snk_logout_link');
+                if (logoutLink) {
+                    logoutLink.style.display = 'none';
+                }
+            }
+            
+            // Profil menüsü açma/kapama işlevselliği
+            const profileTrigger = document.getElementById('profileTrigger');
+            const profileMenu = document.getElementById('profileMenu');
+            
+            if (profileTrigger && profileMenu) {
+                profileTrigger.addEventListener('click', function() {
+                    profileMenu.classList.toggle('active');
+                });
+                
+                // Profil menüsü dışına tıklandığında menüyü kapat
+                document.addEventListener('click', function(e) {
+                    if (!profileTrigger.contains(e.target) && !profileMenu.contains(e.target)) {
+                        profileMenu.classList.remove('active');
+                    }
+                });
+            }
+            
+            // Dark mode işlevselliği
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            if (darkModeToggle) {
+                // localStorage'dan dark mode durumunu kontrol et
+                const isDarkMode = localStorage.getItem('eren-theme') === 'dark';
+                darkModeToggle.checked = isDarkMode;
+                
+                // Dark mode değişikliğini dinle
+                darkModeToggle.addEventListener('change', function() {
+                    if (this.checked) {
+                        localStorage.setItem('eren-theme', 'dark');
+                        document.body.classList.add('dark-mode');
+                    } else {
+                        localStorage.setItem('eren-theme', 'light');
+                        document.body.classList.remove('dark-mode');
+                    }
+                });
+                
+                // Sayfa yüklendiğinde dark mode durumunu uygula
+                if (isDarkMode) {
+                    document.body.classList.add('dark-mode');
+                }
+            }
+        });
+    </script>
 </body>
 </html>

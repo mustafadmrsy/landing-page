@@ -458,5 +458,59 @@
     <script src="../components/popup-handler.js"></script>
     <script src="../components/userspage.js"></script>
     <script src="../darkjs/darkmode.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Kullanıcı oturum durumunu kontrol et
+            const currentUser = JSON.parse(localStorage.getItem('snk_currentUser') || '{}');
+            
+            // Kullanıcı giriş yapmış mı kontrol et
+            if (!currentUser.isLoggedIn) {
+                // Giriş yapmamış kullanıcıyı ana sayfaya yönlendir
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // Kullanıcı bilgilerini sayfaya yerleştir
+            const userName = document.querySelector('.snk-user-name');
+            if (userName) {
+                userName.textContent = `${currentUser.name} ${currentUser.surname}`;
+            }
+            
+            const userUsername = document.querySelector('.snk-profile-username');
+            if (userUsername) {
+                userUsername.textContent = `@${currentUser.name.toLowerCase()}${currentUser.surname.toLowerCase()}`;
+            }
+            
+            const profileName = document.querySelector('.snk-profile-name');
+            if (profileName) {
+                profileName.textContent = `${currentUser.name} ${currentUser.surname}`;
+            }
+            
+            // Hakkımda bölümünü güncelle
+            const aboutSection = document.querySelector('.snk-user-about-card-single p');
+            if (aboutSection) {
+                aboutSection.textContent = `Merhaba, ben ${currentUser.name} ${currentUser.surname}. Senirkent MYO Blog kullanıcısıyım.`;
+            }
+            
+            // Oturum Aç ve Kaydol butonlarını gizle, Çıkış Yap butonunu göster
+            const loginBtn = document.getElementById('snk_login_btn');
+            const registerBtn = document.getElementById('snk_register_btn');
+            
+            if (loginBtn) loginBtn.style.display = 'none';
+            if (registerBtn) registerBtn.style.display = 'none';
+            
+            // Çıkış Yap butonuna işlevsellik ekle
+            const logoutLink = document.querySelector('.snk-menu-item i.fas.fa-sign-out-alt').parentNode;
+            if (logoutLink) {
+                logoutLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // Kullanıcı oturumunu sonlandır
+                    localStorage.removeItem('snk_currentUser');
+                    // Ana sayfaya yönlendir
+                    window.location.href = 'index.html';
+                });
+            }
+        });
+    </script>
 </body>
 </html>

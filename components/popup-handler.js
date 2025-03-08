@@ -234,11 +234,11 @@ function snk_popupHandler_showLoginForm() {
                         lastLogin: new Date().toISOString()
                     }));
                     
-                    // 2 saniye sonra popup'ı kapat
+                    // 2 saniye sonra popup'ı kapat ve kullanıcı sayfasına yönlendir
                     setTimeout(() => {
                         snk_popupHandler_closePopup();
-                        // Sayfayı yenile veya kullanıcı arayüzünü güncelle
-                        window.location.reload();
+                        // Kullanıcı sayfasına yönlendir
+                        window.location.href = 'userpage.html';
                     }, 2000);
                 } else {
                     // Doğrulanmamış e-posta kontrolü

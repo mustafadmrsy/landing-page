@@ -798,48 +798,53 @@
         
         // Kullanıcıyı onayla
         function approveUser(email) {
-            try {
-                console.log('Kullanıcı onaylanıyor:', email);
-                
-                // Bekleyen kullanıcıları al
-                const pendingUsers = JSON.parse(localStorage.getItem('snk_pendingUsers') || '[]');
-                const userIndex = pendingUsers.findIndex(user => user.email === email);
-                
-                if (userIndex !== -1) {
-                    // Kullanıcı bilgilerini al
-                    const userData = pendingUsers[userIndex];
-                    
-                    // Kullanıcıyı onayla
-                    userData.isVerified = true;
-                    userData.pendingApproval = false;
-                    userData.approvedAt = new Date().toISOString();
-                    
-                    // Onaylanmış kullanıcılar listesine ekle
-                    let verifiedUsers = JSON.parse(localStorage.getItem('snk_verifiedUsers') || '[]');
-                    const existingVerifiedIndex = verifiedUsers.findIndex(user => user.email === email);
-                    
-                    if (existingVerifiedIndex !== -1) {
-                        verifiedUsers[existingVerifiedIndex] = userData;
-                    } else {
-                        verifiedUsers.push(userData);
-                    }
-                    
-                    // Local storage'a kaydet
-                    localStorage.setItem('snk_verifiedUsers', JSON.stringify(verifiedUsers));
-                    
-                    // Bekleyen kullanıcılar listesinden kaldır
-                    pendingUsers.splice(userIndex, 1);
-                    localStorage.setItem('snk_pendingUsers', JSON.stringify(pendingUsers));
-                    
-                    showAlert('Başarılı', `${userData.email} kullanıcısı onaylandı.`, 'success');
-                    loadUsers(); // Listeyi güncelle
-                } else {
-                    showAlert('Hata', 'Kullanıcı bulunamadı.', 'error');
-                }
-            } catch (error) {
-                console.error('Kullanıcı onaylanırken hata:', error);
-                showAlert('Hata', 'Kullanıcı onaylanırken bir hata oluştu: ' + error.message, 'error');
+            console.log('Kullanıcı onaylanıyor:', email);
+            
+            // Onay bekleyen kullanıcıları al
+            let pendingUsers = JSON.parse(localStorage.getItem('snk_pendingUsers') || '[]');
+            
+            // Onaylanacak kullanıcıyı bul
+            const userIndex = pendingUsers.findIndex(user => user.email === email);
+            
+            if (userIndex === -1) {
+                showAlert('Hata', 'Kullanıcı bulunamadı.', 'error');
+                return;
             }
+            
+            // Kullanıcıyı al
+            const user = pendingUsers[userIndex];
+            
+            // Kullanıcıyı onaylanmış kullanıcılara ekle
+            let users = JSON.parse(localStorage.getItem('snk_users') || '[]');
+            
+            // Benzersiz ID oluştur
+            const userId = 'user_' + Date.now();
+            
+            // Onaylanmış kullanıcı nesnesi
+            const approvedUser = {
+                id: userId,
+                name: user.name,
+                surname: user.surname,
+                email: user.email,
+                password: user.password,
+                isVerified: true,
+                createdAt: user.createdAt,
+                approvedAt: new Date().toISOString()
+            };
+            
+            // Kullanıcıyı onaylanmış listeye ekle
+            users.push(approvedUser);
+            localStorage.setItem('snk_users', JSON.stringify(users));
+            
+            // Kullanıcıyı bekleyen listesinden kaldır
+            pendingUsers.splice(userIndex, 1);
+            localStorage.setItem('snk_pendingUsers', JSON.stringify(pendingUsers));
+            
+            // Başarılı mesajı göster
+            showAlert('Başarılı', `${user.name} ${user.surname} kullanıcısı onaylandı.`, 'success');
+            
+            // Kullanıcı listelerini yenile
+            loadUsers();
         }
         
         // Global scope'a fonksiyonları ekle
