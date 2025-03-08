@@ -171,6 +171,8 @@ function snk_main_displayBlogPosts(posts) {
     let postsHTML = '';
     
     posts.forEach(post => {
+        const hasVideo = post.videoData ? true : false;
+        
         postsHTML += `
             <div class="snk-post" data-post-id="${post.id}">
                 <div class="snk-post-content-wrapper">
@@ -193,6 +195,14 @@ function snk_main_displayBlogPosts(posts) {
                             <h3 class="snk-post-title">${post.title}</h3>
                         </div>
                         ${post.image ? `<div class="snk-post-image"><img src="${post.image}" alt="${post.title}"></div>` : ''}
+                        ${post.videoData ? `
+                            <div class="snk-post-video">
+                                <video controls>
+                                    <source src="${post.videoData}" type="${post.videoType}">
+                                    Tarayıcınız video etiketini desteklemiyor.
+                                </video>
+                            </div>
+                        ` : ''}
                         <div class="snk-post-summary">${post.summary}</div>
                         <div class="snk-post-footer">
                             <button class="snk-post-action snk-read-more" data-post-id="${post.id}" data-expanded="false">
@@ -204,6 +214,7 @@ function snk_main_displayBlogPosts(posts) {
                             <button class="snk-post-action snk-share-btn" data-post-id="${post.id}">
                                 <i class="fas fa-share"></i> Paylaş
                             </button>
+                            ${hasVideo ? `<span class="snk-post-badge"><i class="fas fa-video"></i> Video</span>` : ''}
                         </div>
                     </div>
                 </div>
@@ -329,6 +340,8 @@ function snk_main_displayPopularPosts(posts, filterType = 'newest') {
     }
     
     topPosts.forEach(post => {
+        const hasVideo = post.videoData ? true : false;
+        
         popularPostsHTML += `
             <div class="snk-popular-post-item" data-post-id="${post.id}">
                 <div class="snk-popular-post-meta">
@@ -341,6 +354,7 @@ function snk_main_displayPopularPosts(posts, filterType = 'newest') {
                     </span>
                 </div>
                 <h4 class="snk-popular-post-title">${post.title}</h4>
+                ${hasVideo ? `<span class="snk-popular-post-badge"><i class="fas fa-video"></i> Video</span>` : ''}
             </div>
         `;
     });
@@ -462,6 +476,14 @@ function snk_main_createAndDisplaySinglePost(post, container) {
                         <h3 class="snk-post-title">${post.title}</h3>
                     </div>
                     ${post.image ? `<div class="snk-post-image"><img src="${post.image}" alt="${post.title}"></div>` : ''}
+                    ${post.videoData ? `
+                        <div class="snk-post-video">
+                            <video controls>
+                                <source src="${post.videoData}" type="${post.videoType}">
+                                Tarayıcınız video etiketini desteklemiyor.
+                            </video>
+                        </div>
+                    ` : ''}
                     <div class="snk-post-summary">
                         <div class="snk-post-full-content">
                             ${post.content}
@@ -1140,7 +1162,7 @@ function snk_main_toggleSharePanel(postId, button) {
 }
 
 /**
- * Blog yazısı oluşturma popup'ını açar
+ * Blog oluşturma popup'ını açar
  */
 function snk_main_openCreatePostPopup() {
     console.log("main.js - Blog oluşturma popup açma işlevi çağrıldı");
@@ -1205,6 +1227,14 @@ function snk_main_addNewBlogPost(postData) {
                         <h3 class="snk-post-title">${postData.title}</h3>
                     </div>
                     ${postData.image ? `<div class="snk-post-image"><img src="${postData.image}" alt="${postData.title}"></div>` : ''}
+                    ${postData.videoData ? `
+                        <div class="snk-post-video">
+                            <video controls>
+                                <source src="${postData.videoData}" type="${postData.videoType}">
+                                Tarayıcınız video etiketini desteklemiyor.
+                            </video>
+                        </div>
+                    ` : ''}
                     <div class="snk-post-summary">${postData.summary}</div>
                     <div class="snk-post-footer">
                         <button class="snk-post-action snk-read-more" data-post-id="${postData.id}" data-expanded="false">
@@ -1216,6 +1246,7 @@ function snk_main_addNewBlogPost(postData) {
                         <button class="snk-post-action snk-share-btn" data-post-id="${postData.id}">
                             <i class="fas fa-share"></i> Paylaş
                         </button>
+                        ${postData.videoData ? `<span class="snk-post-badge"><i class="fas fa-video"></i> Video</span>` : ''}
                     </div>
                 </div>
             </div>
@@ -1546,6 +1577,17 @@ function snk_main_closeLoginPopup() {
     closeLoginPopup({preventDefault: () => {}});
 }
 
+// Giriş yapma butonunu ayarla
+function snk_main_setupLoginButton() {
+    const loginButton = document.getElementById('snk_login_btn');
+    if (loginButton) {
+        loginButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            snk_main_openLoginPopup();
+        });
+    }
+}
+
 // Giriş yapma/kayıt olma formu geçişlerini ayarlamak için
 function snk_main_setupAuthFormToggles() {
     const showRegisterLink = document.getElementById('showRegisterPopup');
@@ -1628,11 +1670,197 @@ document.addEventListener('DOMContentLoaded', function() {
     snk_main_setupLoginPopupClose();
     
     // Giriş yapma butonunu ayarla
-    const loginButton = document.getElementById('snk_login_btn');
-    if (loginButton) {
-        loginButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            snk_main_openLoginPopup();
+    snk_main_setupLoginButton();
+});
+
+/**
+ * Blog yazılarını gösterir
+ * @param {Array} posts - Gösterilecek blog yazıları dizisi
+ */
+function snk_main_displayPosts(posts) {
+    const blogContainer = document.getElementById('blogPosts');
+    if (!blogContainer) return;
+
+    blogContainer.innerHTML = '';
+
+    posts.forEach(post => {
+        const hasVideo = post.videoData ? true : false;
+        
+        const blogCard = document.createElement('div');
+        blogCard.className = 'snk-blog-card';
+        blogCard.setAttribute('data-post-id', post.id);
+        
+        blogCard.innerHTML = `
+            <div class="snk-blog-card-image">
+                <img src="${post.image || '../public/images/blog-placeholder.jpg'}" alt="${post.title}">
+                ${hasVideo ? `<div class="snk-blog-card-badges">
+                    <span class="snk-blog-card-badge"><i class="fas fa-video"></i> Video</span>
+                </div>` : ''}
+            </div>
+            <div class="snk-blog-card-content">
+                <div class="snk-blog-card-categories">
+                    <a href="kategoriler.html?category=${post.category}" class="snk-blog-card-category">${post.category}</a>
+                </div>
+                <h3 class="snk-blog-card-title">${post.title}</h3>
+                <p class="snk-blog-card-excerpt">${post.summary}</p>
+                <div class="snk-blog-card-meta">
+                    <div class="snk-blog-card-author">
+                        <div class="snk-blog-card-author-avatar">
+                            <img src="../public/images/avatar-placeholder.jpg" alt="${post.author}">
+                        </div>
+                        <span>${post.author}</span>
+                    </div>
+                    <div class="snk-blog-card-date">
+                        <i class="far fa-calendar-alt"></i>
+                        <span>${post.date}</span>
+                    </div>
+                    <div class="snk-blog-card-views">
+                        <i class="far fa-eye"></i>
+                        <span>${post.views}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="snk-blog-card-footer">
+                <button class="snk-post-action-btn read-more-btn" data-post-id="${post.id}">
+                    <i class="fas fa-book-open"></i>
+                    <span>Devamını Oku</span>
+                </button>
+                <div class="snk-blog-card-actions">
+                    <button class="snk-post-action-btn like-btn" data-post-id="${post.id}">
+                        <i class="far fa-heart"></i>
+                        <span>0</span>
+                    </button>
+                    <button class="snk-post-action-btn comment-btn" data-post-id="${post.id}">
+                        <i class="far fa-comment"></i>
+                        <span>0</span>
+                    </button>
+                    <button class="snk-post-action-btn share-btn" data-post-id="${post.id}">
+                        <i class="far fa-share-square"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+
+        blogContainer.appendChild(blogCard);
+    });
+
+    // Blog kartlarına olay dinleyicileri ekle
+    addEventListenersToBlogs();
+}
+
+/**
+ * Blog detayı göster
+ * @param {Object} post - Gösterilecek blog yazısı
+ */
+function showBlogDetail(postId) {
+    // localStorage'dan blog yazılarını al
+    const blogPosts = JSON.parse(localStorage.getItem('snk_blog_posts') || '[]');
+    
+    // ID'ye göre blog yazısını bul
+    const post = blogPosts.find(p => p.id.toString() === postId.toString());
+    
+    if (!post) {
+        console.error('Blog yazısı bulunamadı!');
+        return;
+    }
+    
+    // Görüntülenme sayısını artır
+    post.views += 1;
+    localStorage.setItem('snk_blog_posts', JSON.stringify(blogPosts));
+    
+    // Blog detay popup HTML'i
+    const detailPopupHTML = `
+    <div class="snk-popup-overlay" id="blogDetailPopup">
+        <div class="snk-popup-container snk-blog-detail-popup">
+            <div class="snk-popup-header">
+                <h2 class="snk-popup-title">${post.title}</h2>
+                <button class="snk-popup-close-btn" id="blogDetailCloseBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="snk-popup-content">
+                <article class="snk-blog-detail">
+                    <div class="snk-blog-meta">
+                        <div class="snk-blog-author">
+                            <div class="snk-blog-author-avatar">
+                                <img src="../public/images/avatar-placeholder.jpg" alt="${post.author}">
+                            </div>
+                            <span>${post.author}</span>
+                        </div>
+                        <div class="snk-blog-date">
+                            <i class="far fa-calendar-alt"></i>
+                            <span>${post.date}</span>
+                        </div>
+                        <div class="snk-blog-views">
+                            <i class="far fa-eye"></i>
+                            <span>${post.views}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="snk-blog-categories">
+                        <a href="kategoriler.html?category=${post.category}" class="snk-blog-category">${post.category}</a>
+                    </div>
+                    
+                    <div class="snk-blog-image">
+                        <img src="${post.image || '../public/images/blog-placeholder.jpg'}" alt="${post.title}">
+                    </div>
+                    
+                    ${post.videoData ? `
+                    <div class="snk-video-container">
+                        <video controls>
+                            <source src="${post.videoData}" type="${post.videoType}">
+                            Tarayıcınız video etiketini desteklemiyor.
+                        </video>
+                    </div>` : ''}
+                    
+                    <div class="snk-blog-content">
+                        ${post.content}
+                    </div>
+                    
+                    <div class="snk-blog-tags">
+                        ${post.tags && post.tags.length > 0 ? post.tags.map(tag => `<span class="snk-blog-tag">#${tag}</span>`).join('') : ''}
+                    </div>
+                    
+                    <div class="snk-blog-actions">
+                        <button class="snk-blog-action-btn like-detail-btn" data-post-id="${post.id}">
+                            <i class="far fa-heart"></i>
+                            <span>Beğen</span>
+                        </button>
+                        <button class="snk-blog-action-btn comment-detail-btn" data-post-id="${post.id}">
+                            <i class="far fa-comment"></i>
+                            <span>Yorum Yap</span>
+                        </button>
+                        <button class="snk-blog-action-btn share-detail-btn" data-post-id="${post.id}">
+                            <i class="far fa-share-square"></i>
+                            <span>Paylaş</span>
+                        </button>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>`;
+    
+    // Popupı göster
+    document.body.insertAdjacentHTML('beforeend', detailPopupHTML);
+    
+    // Popup kapatma butonu
+    const closeBtn = document.getElementById('blogDetailCloseBtn');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            const popup = document.getElementById('blogDetailPopup');
+            if (popup) {
+                popup.remove();
+            }
         });
     }
-});
+    
+    // ESC tuşu ile popup'ı kapatma
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            const popup = document.getElementById('blogDetailPopup');
+            if (popup) {
+                popup.remove();
+            }
+        }
+    });
+}

@@ -286,7 +286,15 @@ function showBlogCreatePopup(user) {
                     </div>
                     
                     <div class="snk-form-group">
-                        <label for="post-image">Kapak Görseli</label>
+                        <label for="post-image">Medya Ekle</label>
+                        <div class="snk-media-options">
+                            <button type="button" class="snk-media-btn" id="imageUploadBtn">
+                                <i class="fas fa-image"></i> Görsel Ekle
+                            </button>
+                            <button type="button" class="snk-media-btn" id="videoUploadBtn">
+                                <i class="fas fa-video"></i> Video Ekle
+                            </button>
+                        </div>
                         <div class="snk-image-upload">
                             <input type="file" id="post-image" class="snk-image-input" accept="image/*">
                             <label for="post-image" class="snk-image-label">
@@ -294,6 +302,16 @@ function showBlogCreatePopup(user) {
                                 <span>Görsel Seçin veya Sürükleyin</span>
                             </label>
                             <div class="snk-image-preview"></div>
+                        </div>
+                        <div class="snk-video-input" style="display: none;">
+                            <label for="post-video">Video Dosyası</label>
+                            <input type="file" id="post-video" class="snk-video-input" accept="video/*">
+                            <label for="post-video" class="snk-video-label">
+                                <i class="fas fa-film"></i>
+                                <span>Video Dosyası Seçin veya Sürükleyin</span>
+                            </label>
+                            <div class="snk-video-preview"></div>
+                            <p class="snk-file-info" style="display: none;"></p>
                         </div>
                     </div>
                     
@@ -351,47 +369,110 @@ function showBlogCreatePopup(user) {
             imageUrl = imagePreview.src;
         }
 
-        // Blog yazısı nesnesini oluştur
-        const blogPost = {
-            id: Date.now(),
-            title: title,
-            category: category,
-            summary: content.substring(0, 150) + '...',  // İlk 150 karakteri özet olarak al
-            content: content,
-            tags: tags,
-            author: user.username || user.name || 'Anonim',
-            author_id: user.id || Date.now().toString(),
-            date: new Date().toLocaleDateString('tr-TR'),
-            views: 0,
-            image: imageUrl
-        };
+        // Video dosyasını al
+        let videoFile = null;
+        const videoInput = document.getElementById('post-video');
+        if (videoInput && videoInput.files.length > 0) {
+            videoFile = videoInput.files[0];
+        }
 
+        // Verileri kontrol et
+        if (!title || !category || !content) {
+            alert('Lütfen zorunlu alanları doldurun: Başlık, Kategori ve İçerik');
+            return;
+        }
+
+        // Blog post ID oluştur
+        const postId = Date.now();
+
+        // Video dosyası varsa, base64'e çevir ve blog yazısını kaydet
+        if (videoFile) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                // Dosya boyutunu kontrol et - 5MB üzerindeyse uyarı ver
+                if (videoFile.size > 5 * 1024 * 1024) {
+                    if (!confirm('Video dosyası 5MB üzerinde. Bu, uygulama performansını etkileyebilir. Devam etmek istiyor musunuz?')) {
+                        return;
+                    }
+                }
+
+                // Blog yazısı nesnesini oluştur
+                const blogPost = {
+                    id: postId,
+                    title: title,
+                    category: category,
+                    summary: content.substring(0, 150) + '...',  // İlk 150 karakteri özet olarak al
+                    content: content,
+                    tags: tags,
+                    author: user.username || user.name || 'Anonim',
+                    author_id: user.id || Date.now().toString(),
+                    date: new Date().toLocaleDateString('tr-TR'),
+                    views: 0,
+                    image: imageUrl,
+                    videoData: e.target.result,
+                    videoType: videoFile.type,
+                    videoName: videoFile.name
+                };
+
+                savePost(blogPost, user);
+            };
+            reader.readAsDataURL(videoFile);
+        } else {
+            // Video olmadan blog yazısını kaydet
+            const blogPost = {
+                id: postId,
+                title: title,
+                category: category,
+                summary: content.substring(0, 150) + '...',  // İlk 150 karakteri özet olarak al
+                content: content,
+                tags: tags,
+                author: user.username || user.name || 'Anonim',
+                author_id: user.id || Date.now().toString(),
+                date: new Date().toLocaleDateString('tr-TR'),
+                views: 0,
+                image: imageUrl,
+                videoData: null,
+                videoType: null,
+                videoName: null
+            };
+
+            savePost(blogPost, user);
+        }
+    });
+
+    // Blog yazısını kaydet
+    function savePost(blogPost, user) {
         // Mevcut blog yazılarını al
         let blogPosts = JSON.parse(localStorage.getItem('snk_blog_posts') || '[]');
-        
+
         // Yeni blog yazısını ekle
         blogPosts.push(blogPost);
-        
+
         // Güncellenmiş blog yazılarını localStorage'a kaydet
         localStorage.setItem('snk_blog_posts', JSON.stringify(blogPosts));
-        
+
         // Kullanıcının blog yazılarını ayrıca kaydet - profil sayfasında göstermek için
         let userPosts = JSON.parse(localStorage.getItem(`snk_user_posts_${user.id}`) || '[]');
+        userPosts = userPosts.filter(p => p.id.toString() !== blogPost.id.toString());
         userPosts.push(blogPost);
         localStorage.setItem(`snk_user_posts_${user.id}`, JSON.stringify(userPosts));
-        
+
         // Popup'ı kapat
         closePopup(popup);
-        
+
         // Başarılı mesajı göster
         alert('Blog yazınız başarıyla yayınlandı!');
-        
+
         // Son yazılar gösterimini güncelle
-        updateRecentPostsDisplay();
-        
+        if (typeof updateRecentPostsDisplay === 'function') {
+            updateRecentPostsDisplay();
+        }
+
         // Profil sayfasındaki yazılar tabını güncelle
-        updateUserPostsDisplay();
-    });
+        if (typeof updateUserPostsDisplay === 'function') {
+            updateUserPostsDisplay();
+        }
+    }
 
     // Görsel yükleme fonksiyonalitesi
     const imageInput = document.getElementById('post-image');
@@ -420,6 +501,68 @@ function showBlogCreatePopup(user) {
             reader.readAsDataURL(file);
         }
     });
+
+    // Video yükleme fonksiyonalitesi
+    const videoInput = document.getElementById('post-video');
+    const videoPreview = document.querySelector('.snk-video-preview');
+    const fileInfo = document.querySelector('.snk-file-info');
+    
+    videoInput.addEventListener('change', function() {
+        const file = this.files[0];
+        if (file) {
+            const fileName = file.name;
+            const fileSize = file.size / 1024 / 1024; // MB cinsinden
+            const fileType = file.type;
+            
+            fileInfo.style.display = 'block';
+            fileInfo.textContent = `${fileName} (${fileSize.toFixed(2)} MB, ${fileType})`;
+            
+            // Video önizlemesi için
+            const videoUrl = URL.createObjectURL(file);
+            videoPreview.innerHTML = `
+                <div class="snk-preview-container">
+                    <video src="${videoUrl}" controls></video>
+                    <button type="button" class="snk-remove-video">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+            
+            // Videoyu kaldırma butonu için event listener
+            document.querySelector('.snk-remove-video').addEventListener('click', function() {
+                videoPreview.innerHTML = '';
+                videoInput.value = '';
+                fileInfo.style.display = 'none';
+            });
+        }
+    });
+
+    // Video butonuna tıklandığında video giriş alanını göster/gizle
+    const videoUploadBtn = document.getElementById('videoUploadBtn');
+    const videoInputArea = document.querySelector('.snk-video-input');
+    
+    if (videoUploadBtn && videoInputArea) {
+        videoUploadBtn.addEventListener('click', function() {
+            if (videoInputArea.style.display === 'none') {
+                videoInputArea.style.display = 'block';
+            } else {
+                videoInputArea.style.display = 'none';
+                // Video URL ve önizlemeyi temizle
+                if (videoInput) videoInput.value = '';
+                if (videoPreview) videoPreview.innerHTML = '';
+                if (fileInfo) fileInfo.style.display = 'none';
+            }
+        });
+    }
+    
+    // Görsel ekleme butonuna tıklandığında görsel seçiciyi aç
+    const imageUploadBtn = document.getElementById('imageUploadBtn');
+    if (imageUploadBtn) {
+        imageUploadBtn.addEventListener('click', function() {
+            const imageInput = document.getElementById('post-image');
+            if (imageInput) imageInput.click();
+        });
+    }
 
     // Etiket önizlemesi
     const tagsInput = document.getElementById('post-tags');
@@ -620,9 +763,8 @@ function deleteBlogPost(postId) {
                 </div>
             </div>
         </div>
-    </div>
-    `;
-    
+    </div>`;
+
     // Önce tüm popupları temizle
     const existingPopups = document.querySelectorAll('.snk-popup-overlay');
     existingPopups.forEach(popup => popup.remove());
@@ -657,10 +799,10 @@ function deleteBlogPost(postId) {
             
             // Kullanıcının yazılarını al ve güncelle
             let userPosts = JSON.parse(localStorage.getItem(`snk_user_posts_${currentUser.id}`) || '[]');
-            const updatedUserPosts = userPosts.filter(post => post.id.toString() !== postId.toString());
+            userPosts = userPosts.filter(p => p.id.toString() !== postId.toString());
             
             // Kullanıcının güncellenmiş yazılarını kaydet
-            localStorage.setItem(`snk_user_posts_${currentUser.id}`, JSON.stringify(updatedUserPosts));
+            localStorage.setItem(`snk_user_posts_${currentUser.id}`, JSON.stringify(userPosts));
             
             // Genel blog yazılarını al ve güncelle
             const blogPosts = JSON.parse(localStorage.getItem('snk_blog_posts') || '[]');
@@ -686,12 +828,12 @@ function deleteBlogPost(postId) {
             // Kullanıcıya bildirim göster
             showNotification('Blog yazısı başarıyla silindi', 'success');
             
-            // Son yazılar gösterimini güncelle - eğer fonksiyon varsa
+            // Son yazılar gösterimini güncelle
             if (typeof updateRecentPostsDisplay === 'function') {
                 updateRecentPostsDisplay();
             }
             
-            // Profil sayfasındaki yazılar tabını güncelle - eğer fonksiyon varsa
+            // Profil sayfasındaki yazılar tabını güncelle
             if (typeof updateUserPostsDisplay === 'function') {
                 updateUserPostsDisplay();
             }
