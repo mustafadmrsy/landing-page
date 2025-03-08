@@ -6,6 +6,7 @@
     <title>Senirkent Blog</title>
     <link rel="stylesheet" href="../styles/main.css">
     <link rel="stylesheet" href="../styles/index-specific.css">
+    <link rel="stylesheet" href="../styles/userpage.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../styles/auth-forms.css">
 </head>
@@ -29,6 +30,40 @@
             
             <!-- Butonlar ve Profil -->
             <div class="snk-header-actions">
+                <!-- Profil Dropdown Menüsü -->
+                <div class="snk-user-profile-dropdown">
+                    <button id="profileDropdownBtn" class="snk-profile-dropdown-btn">
+                        <i class="fas fa-user"></i> Profilim
+                    </button>
+                    <div id="profileDropdownMenu" class="snk-profile-dropdown-menu">
+                        <div class="snk-profile-header">
+                            <img src="../public/images/profile.png" alt="Profil" class="snk-menu-profile-img">
+                            <div class="snk-profile-info">
+                                <h4 class="snk-user-name">Mustafa Demirsoy</h4>
+                                <p class="snk-user-handle">@mustafademirsoy</p>
+                            </div>
+                        </div>
+                        <ul class="snk-profile-menu-list">
+                            <li><a href="userpage.html"><i class="fas fa-user-circle"></i> Profili Görüntüle</a></li>
+                            <li><a href="#"><i class="fas fa-image"></i> Avatar Düzenle</a></li>
+                            <li><a href="#"><i class="fas fa-trophy"></i> Başarılar</a></li>
+                            <li><a href="#"><i class="fas fa-hands-helping"></i> Katkı Programı</a></li>
+                            <li class="snk-toggle-item">
+                                <span><i class="fas fa-moon"></i> Karanlık Mod</span>
+                                <label class="snk-toggle-switch">
+                                    <input type="checkbox" id="darkModeToggle" checked>
+                                    <span class="snk-toggle-slider"></span>
+                                </label>
+                            </li>
+                            <li class="snk-divider"></li>
+                            <li><a href="#" class="snk-logout"><i class="fas fa-sign-out-alt"></i> Çıkış Yap</a></li>
+                            <li><a href="#"><i class="fas fa-ad"></i> Reklamlar</a></li>
+                            <li><a href="#"><i class="fas fa-crown"></i> Premium</a></li>
+                            <li><a href="#"><i class="fas fa-cog"></i> Ayarlar</a></li>
+                        </ul>
+                    </div>
+                </div>
+
                 <button class="snk-header-btn snk-login-btn" id="snk_login_btn">
                     <i class="fas fa-sign-in-alt"></i>
                     Oturum Aç
@@ -41,58 +76,6 @@
                     <i class="fas fa-plus"></i>
                     Oluştur
                 </button>
-                
-                <!-- Profil Menü -->
-                <div class="snk-profile-container">
-                    <img src="../public/images/profile.png" alt="Profil" class="snk-profile-img" id="profileTrigger">
-                    
-                    <div class="snk-profile-menu" id="profileMenu">
-                        <div class="snk-profile-header">
-                            <img src="../public/images/profile.png" alt="Profil" class="snk-menu-profile-img">
-                            <div class="snk-profile-info">
-                                <span class="snk-profile-name">Kullanıcı Adı</span>
-                                <span class="snk-profile-username">@kullanici</span>
-                            </div>
-                        </div>
-                        
-                        <a href="userpage.html" class="snk-menu-item">
-                            <i class="fas fa-user"></i>
-                            Profili Görüntüle
-                        </a>
-                        <a href="#" class="snk-menu-item">
-                            <i class="fas fa-image"></i>
-                            Avatar Düzenle
-                        </a>
-                        <a href="#" class="snk-menu-item">
-                            <i class="fas fa-trophy"></i>
-                            Başarılar
-                        </a>
-                        <a href="#" class="snk-menu-item">
-                            <i class="fas fa-coin"></i>
-                            Katkı Programı
-                        </a>
-                        
-                        <div class="snk-menu-divider"></div>
-                        
-                        <a href="#" class="snk-menu-item">
-                            <i class="fas fa-moon"></i>
-                            Karanlık Mod
-                            <label class="snk-toggle-switch eren-theme-switch">
-                                <input type="checkbox" id="darkModeToggle">
-                                <span class="snk-toggle-slider eren-switch-ball"></span>
-                            </label>
-                        </a>
-                        
-                        <div class="snk-menu-divider"></div>
-                        
-                        <a href="#" class="snk-menu-item" id="snk_logout_link">
-                            <i class="fas fa-sign-out-alt"></i>
-                            Çıkış Yap
-                        </a>
-                        
-                        <div class="snk-menu-divider"></div>
-                    </div>
-                </div>
             </div>
         </header>
 
@@ -347,6 +330,7 @@
     <script src="../components/popup-handler.js"></script>
     <script src="../components/verification.js"></script>
     <script src="../components/auth-handlers.js"></script>
+    <script src="../components/profile-dropdown.js"></script>
     <script src="../darkjs/darkmode.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
