@@ -6,12 +6,103 @@
     <title>Senirkent MYO Blog - Admin Panel</title>
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
     <style>
+        /* Admin Panel Styles */
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #f7f7f7;
             margin: 0;
             padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #1a1a1a;
+            color: #f0f0f0;
+        }
+        
+        body.dark-mode .admin-container {
+            background-color: #2a2a2a;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        body.dark-mode .admin-header {
+            background-color: #333;
+            color: #fff;
+        }
+        
+        body.dark-mode .tab-button {
+            background-color: #444;
+            color: #ddd;
+        }
+        
+        body.dark-mode .tab-button.active {
+            background-color: #555;
+            color: #fff;
+        }
+        
+        body.dark-mode .user-card {
+            background-color: #333;
+            border: 1px solid #444;
+        }
+        
+        body.dark-mode .verification-code {
+            background-color: #2d3748;
+            color: #90cdf4;
+            border: 1px solid #4a5568;
+        }
+        
+        body.dark-mode .status-badge {
+            background-color: #2d3748;
+            color: #68d391;
+        }
+        
+        body.dark-mode .action-button {
+            background-color: #4a5568;
+            color: #fff;
+        }
+        
+        body.dark-mode .action-button:hover {
+            background-color: #2d3748;
+        }
+        
+        body.dark-mode .modal-content {
+            background-color: #2a2a2a;
+            color: #f0f0f0;
+        }
+        
+        body.dark-mode .alert-box {
+            background-color: #2a2a2a;
+            color: #f0f0f0;
+        }
+        
+        body.dark-mode .alert-success {
+            background-color: #276749;
+        }
+        
+        body.dark-mode .alert-error {
+            background-color: #9b2c2c;
+        }
+        
+        body.dark-mode .status-badge.pending {
+            background-color: #2c5282;
+            color: #90cdf4;
+        }
+        
+        body.dark-mode .status-badge.verified {
+            background-color: #276749;
+            color: #68d391;
+        }
+        
+        body.dark-mode .approve-btn {
+            background-color: #276749;
+            color: #fff;
+        }
+        
+        body.dark-mode .approve-btn:hover {
+            background-color: #1c4532;
         }
         
         .admin-container {
@@ -98,12 +189,14 @@
         
         .verification-code {
             display: inline-block;
-            background-color: #34495e;
-            color: white;
+            background-color: #ebf8ff;
+            color: #3182ce;
+            border: 1px solid #bee3f8;
             padding: 3px 8px;
             border-radius: 4px;
             font-family: monospace;
             font-size: 1rem;
+            letter-spacing: 1px;
         }
         
         .status-badge {
@@ -114,14 +207,19 @@
             font-weight: 500;
         }
         
-        .status-badge.active {
-            background-color: #e8f5e9;
-            color: #2e7d32;
+        .status-badge.pending {
+            background-color: #ebf8ff;
+            color: #3182ce;
         }
         
-        .status-badge.pending {
-            background-color: #fff8e1;
-            color: #f57f17;
+        .status-badge.verified {
+            background-color: #f0fff4;
+            color: #38a169;
+        }
+        
+        .status-badge.active {
+            background-color: #e6fffa;
+            color: #319795;
         }
         
         .refresh-button {
@@ -190,23 +288,21 @@
         }
         
         .approve-btn {
-            background-color: #e8f5e9;
-            color: #2e7d32;
-            border: 1px solid #a5d6a7;
+            background-color: #48bb78;
+            color: white;
         }
         
         .approve-btn:hover {
-            background-color: #c8e6c9;
+            background-color: #38a169;
         }
         
         .reject-btn {
-            background-color: #ffebee;
-            color: #c62828;
-            border: 1px solid #ef9a9a;
+            background-color: #f56565;
+            color: white;
         }
         
         .reject-btn:hover {
-            background-color: #ffcdd2;
+            background-color: #e53e3e;
         }
         
         /* Modal/Confirm Dialog */
@@ -321,6 +417,10 @@
             <i class="fas fa-sync-alt"></i> Listeyi Yenile
         </button>
         
+        <button id="view-local-users-button" class="refresh-button" style="background-color: #27ae60; margin-bottom: 20px;">
+            <i class="fas fa-database"></i> Yerel Kayıtları Görüntüle
+        </button>
+        
         <div class="panel-container">
             <div class="panel">
                 <div class="panel-header">
@@ -345,6 +445,18 @@
                     <div id="verified-users"></div>
                 </div>
             </div>
+            
+            <div class="panel">
+                <div class="panel-header">
+                    Kayıtlı Kullanıcılar
+                </div>
+                <div class="panel-body">
+                    <div id="registered-loader" class="loader">
+                        <div class="loader-spinner"></div>
+                    </div>
+                    <div id="registered-users"></div>
+                </div>
+            </div>
         </div>
     </div>
     
@@ -360,26 +472,55 @@
         </div>
     </div>
     
+    <!-- Registration Pending Modal -->
+    <div id="pending-approval-modal" class="confirm-modal">
+        <div class="confirm-dialog">
+            <div class="confirm-title">Kayıt Onayı Bekleniyor</div>
+            <div class="confirm-message">Kaydınız alınmıştır. Yönetici onayı bekleniyor. Onay durumunuz e-posta ile bildirilecektir.</div>
+            <div class="confirm-buttons">
+                <button id="pending-approval-ok" class="confirm-cancel">Tamam</button>
+            </div>
+        </div>
+    </div>
+    
     <!-- Alert Box -->
     <div id="alert-box" class="alert-box">
         <div class="alert-title">Başarılı</div>
         <div class="alert-message">İşlem başarıyla tamamlandı.</div>
     </div>
+    
+    <!-- Local Users Modal -->
+    <div id="local-users-modal" class="confirm-modal">
+        <div class="confirm-dialog" style="width: 80%; max-width: 800px; max-height: 80vh; overflow-y: auto;">
+            <div class="confirm-title">Yerel Kayıtlı Kullanıcılar</div>
+            <div id="local-users-container" style="margin-bottom: 20px;">
+                <div class="loader-spinner" style="margin: 20px auto;"></div>
+            </div>
+            <div class="confirm-buttons">
+                <button id="local-users-close" class="confirm-cancel">Kapat</button>
+                <button id="local-users-clear" class="confirm-proceed" style="background-color: #e74c3c;">Tüm Yerel Kayıtları Temizle</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Admin Panel Script -->
     <script>
-        // API Endpoints
-        const API_URL = 'http://localhost:3001/api/admin/users';
-        const REJECT_API_URL = 'http://localhost:3001/api/admin/reject-user';
+        // API Endpoints - Using local storage only to avoid API connection issues
+        // const API_URL = 'https://api.senirkentmyo.com/api/admin/users';
+        // const REJECT_API_URL = 'https://api.senirkentmyo.com/api/admin/reject-user';
         
         // DOM Elements
         const pendingUsersContainer = document.getElementById('pending-users');
         const verifiedUsersContainer = document.getElementById('verified-users');
+        const registeredUsersContainer = document.getElementById('registered-users');
         const pendingLoader = document.getElementById('pending-loader');
         const verifiedLoader = document.getElementById('verified-loader');
+        const registeredLoader = document.getElementById('registered-loader');
         const confirmModal = document.getElementById('confirm-modal');
         const confirmCancel = document.getElementById('confirm-cancel');
         const confirmProceed = document.getElementById('confirm-proceed');
+        const pendingApprovalModal = document.getElementById('pending-approval-modal');
+        const pendingApprovalOk = document.getElementById('pending-approval-ok');
         const alertBox = document.getElementById('alert-box');
         
         // Geçici veri tutacağımız değişken
@@ -391,48 +532,54 @@
             loadUsers();
         });
         
-        // Kullanıcıları yükle
-        async function loadUsers() {
+        // Kullanıcıları yükle - Sadece yerel depo kullanarak
+        function loadUsers() {
             showLoaders(true);
             
             try {
                 console.log('Kullanıcı yükleme işlemi başlatıldı');
-                console.log('API_URL:', API_URL);
-                const response = await fetch(API_URL);
                 
-                if (!response.ok) {
-                    throw new Error(`API yanıtı başarısız: ${response.status} ${response.statusText}`);
-                }
+                // Bekleyen kullanıcıları al
+                const pendingUsers = JSON.parse(localStorage.getItem('snk_pendingUsers') || '[]');
+                console.log('Bekleyen kullanıcı verileri:', pendingUsers);
                 
-                const data = await response.json();
-                console.log('API kullanıcı verileri:', data);
-                console.log('Bekleyen kullanıcılar:', data.pendingUsers ? data.pendingUsers.length : 0);
-                console.log('Onaylanmış kullanıcılar:', data.verifiedUsers ? data.verifiedUsers.length : 0);
+                // Onaylanmış kullanıcıları al
+                const verifiedUsers = JSON.parse(localStorage.getItem('snk_verifiedUsers') || '[]');
+                console.log('Onaylanmış kullanıcı verileri:', verifiedUsers);
                 
-                // Bekleyen kullanıcılar listesi
-                if (data.pendingUsers && data.pendingUsers.length > 0) {
-                    displayUsers('pending-users', data.pendingUsers, true);
+                // Bekleyen kullanıcılar (onay bekleyenler)
+                if (pendingUsers.length > 0) {
+                    displayUsers('pending-users', pendingUsers, true);
                 } else {
                     pendingUsersContainer.innerHTML = '<div class="no-users">Bekleyen kullanıcı bulunmamaktadır.</div>';
                 }
                 
-                // Onaylanmış kullanıcılar listesi
-                if (data.verifiedUsers && data.verifiedUsers.length > 0) {
-                    displayUsers('verified-users', data.verifiedUsers, false);
+                // Onaylanmış kullanıcılar
+                if (verifiedUsers.length > 0) {
+                    displayUsers('verified-users', verifiedUsers, false);
                 } else {
                     verifiedUsersContainer.innerHTML = '<div class="no-users">Onaylanmış kullanıcı bulunmamaktadır.</div>';
                 }
+                
+                // Kayıtlı kullanıcılar (onaylanmış kullanıcılarla aynı)
+                if (verifiedUsers.length > 0) {
+                    displayUsers('registered-users', verifiedUsers, false, true);
+                } else {
+                    registeredUsersContainer.innerHTML = '<div class="no-users">Kayıtlı kullanıcı bulunmamaktadır.</div>';
+                }
+                
             } catch (error) {
                 console.error('Kullanıcılar yüklenirken hata:', error);
                 pendingUsersContainer.innerHTML = '<div class="no-users">Kullanıcıları yüklerken bir hata oluştu.</div>';
                 verifiedUsersContainer.innerHTML = '<div class="no-users">Kullanıcıları yüklerken bir hata oluştu.</div>';
+                registeredUsersContainer.innerHTML = '<div class="no-users">Kullanıcıları yüklerken bir hata oluştu.</div>';
             } finally {
                 showLoaders(false);
             }
         }
-
+        
         // Kullanıcıları görüntüle
-        function displayUsers(containerId, users, isPending) {
+        function displayUsers(containerId, users, isPending, isRegistered = false) {
             const container = document.getElementById(containerId);
             
             if (!users || users.length === 0) {
@@ -453,15 +600,32 @@
                     dateDisplay = 'Tarih bilgisi yok';
                 }
                 
+                // Durum gösterimi
+                let statusDisplay = '';
+                if (user.pendingApproval) {
+                    statusDisplay = '<div class="status-badge pending">Onay Bekliyor</div>';
+                } else if (user.isVerified) {
+                    statusDisplay = '<div class="status-badge verified">Onaylanmış</div>';
+                } else if (isRegistered) {
+                    statusDisplay = '<div class="status-badge active">Kayıtlı Kullanıcı</div>';
+                }
+                
                 html += `
                 <div class="user-card">
                     <div class="user-info">
                         <div class="user-name">${user.name} ${user.surname}</div>
                         <div class="user-email">${user.email}</div>
                         <div class="user-date">Kayıt: ${dateDisplay}</div>
-                        ${isPending && user.verificationCode ? `<div class="verification-code">Doğrulama Kodu: ${user.verificationCode}</div>` : ''}
+                        ${statusDisplay}
                     </div>
-                    ${isPending ? `<button class="reject-btn" onclick="showRejectConfirm('${user.email}')">Reddet</button>` : ''}
+                    <div class="action-buttons">
+                        ${isPending ? `
+                            <button class="action-button approve-btn" onclick="approveUser('${user.email}')">Onayla</button>
+                            <button class="action-button reject-btn" onclick="showRejectConfirm('${user.email}')">Reddet</button>
+                        ` : `
+                            <button class="action-button reject-btn" onclick="removeLocalUser('${user.email}')">Sil</button>
+                        `}
+                    </div>
                 </div>
                 `;
             });
@@ -473,6 +637,12 @@
         function showLoaders(show) {
             pendingLoader.style.display = show ? 'block' : 'none';
             verifiedLoader.style.display = show ? 'block' : 'none';
+            registeredLoader.style.display = show ? 'block' : 'none';
+        }
+        
+        // Onay bekleme ekranını göster
+        function showPendingApproval() {
+            pendingApprovalModal.style.display = 'flex';
         }
         
         // Tarih formatla
@@ -489,34 +659,23 @@
             confirmModal.style.display = 'flex';
         }
         
-        // Kullanıcıyı reddet
+        // Kullanıcıyı reddet - Yerel depodan silme işlemi
         async function rejectUser(email) {
             try {
                 console.log('Kullanıcı reddediliyor:', email);
-                console.log('API URL:', REJECT_API_URL);
                 
-                const response = await fetch(REJECT_API_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ email })
-                });
+                // Yerel depodan kullanıcıyı sil
+                const users = JSON.parse(localStorage.getItem('snk_pendingUsers') || '[]');
+                const userIndex = users.findIndex(user => user.email === email);
                 
-                console.log('API yanıtı status:', response.status);
-                
-                if (!response.ok) {
-                    throw new Error(`API yanıtı başarısız: ${response.status} ${response.statusText}`);
-                }
-                
-                const data = await response.json();
-                console.log('API yanıtı data:', data);
-                
-                if (data.success) {
-                    showAlert('Başarılı', data.message, 'success');
+                if (userIndex !== -1) {
+                    users.splice(userIndex, 1);
+                    localStorage.setItem('snk_pendingUsers', JSON.stringify(users));
+                    
+                    showAlert('Başarılı', 'Kullanıcı başarıyla reddedildi.', 'success');
                     loadUsers(); // Kullanıcı listesini yenile
                 } else {
-                    showAlert('Hata', data.message, 'error');
+                    showAlert('Hata', 'Kullanıcı bulunamadı.', 'error');
                 }
             } catch (error) {
                 console.error('Kullanıcı reddedilirken hata:', error);
@@ -540,6 +699,8 @@
         // Event Listeners
         document.getElementById('refresh-button').addEventListener('click', loadUsers);
         
+        document.getElementById('view-local-users-button').addEventListener('click', showLocalUsers);
+        
         confirmCancel.addEventListener('click', () => {
             confirmModal.style.display = 'none';
             userToReject = null;
@@ -553,8 +714,138 @@
             }
         });
         
-        // Global scope'a rejectUser fonksiyonunu ekle
+        pendingApprovalOk.addEventListener('click', () => {
+            pendingApprovalModal.style.display = 'none';
+        });
+        
+        document.getElementById('local-users-close').addEventListener('click', () => {
+            document.getElementById('local-users-modal').style.display = 'none';
+        });
+        
+        document.getElementById('local-users-clear').addEventListener('click', () => {
+            if (confirm('Tüm yerel kullanıcı kayıtlarını silmek istediğinize emin misiniz? Bu işlem geri alınamaz.')) {
+                localStorage.removeItem('snk_users');
+                showAlert('Başarılı', 'Tüm yerel kullanıcı kayıtları temizlendi.', 'success');
+                document.getElementById('local-users-modal').style.display = 'none';
+            }
+        });
+        
+        // Yerel kayıtlı kullanıcıları göster
+        function showLocalUsers() {
+            const localUsersModal = document.getElementById('local-users-modal');
+            const localUsersContainer = document.getElementById('local-users-container');
+            
+            // Yerel depodan kullanıcıları al
+            const users = JSON.parse(localStorage.getItem('snk_users') || '[]');
+            
+            let html = '';
+            
+            if (users.length === 0) {
+                html = '<div class="no-users">Yerel kayıtlı kullanıcı bulunmamaktadır.</div>';
+            } else {
+                html = '<table style="width: 100%; border-collapse: collapse; margin-top: 10px;">';
+                html += '<thead><tr style="background-color: #f2f2f2; text-align: left;">';
+                html += '<th style="padding: 10px; border: 1px solid #ddd;">Ad</th>';
+                html += '<th style="padding: 10px; border: 1px solid #ddd;">Soyad</th>';
+                html += '<th style="padding: 10px; border: 1px solid #ddd;">E-posta</th>';
+                html += '<th style="padding: 10px; border: 1px solid #ddd;">Kayıt Tarihi</th>';
+                html += '<th style="padding: 10px; border: 1px solid #ddd;">İşlemler</th>';
+                html += '</tr></thead><tbody>';
+                
+                users.forEach((user, index) => {
+                    const dateDisplay = user.registrationDate ? formatDate(user.registrationDate) : 'Belirtilmemiş';
+                    
+                    html += `<tr style="border-bottom: 1px solid #ddd;">`;
+                    html += `<td style="padding: 10px; border: 1px solid #ddd;">${user.name || '-'}</td>`;
+                    html += `<td style="padding: 10px; border: 1px solid #ddd;">${user.surname || '-'}</td>`;
+                    html += `<td style="padding: 10px; border: 1px solid #ddd;">${user.email || '-'}</td>`;
+                    html += `<td style="padding: 10px; border: 1px solid #ddd;">${dateDisplay}</td>`;
+                    html += `<td style="padding: 10px; border: 1px solid #ddd;">`;
+                    html += `<button class="action-button reject-btn" onclick="removeLocalUser(${index})">Sil</button>`;
+                    html += `</td>`;
+                    html += `</tr>`;
+                });
+                
+                html += '</tbody></table>';
+            }
+            
+            localUsersContainer.innerHTML = html;
+            localUsersModal.style.display = 'flex';
+        }
+        
+        // Yerel kullanıcıyı kaldır
+        function removeLocalUser(email) {
+            try {
+                // Onaylanmış kullanıcıları al
+                const verifiedUsers = JSON.parse(localStorage.getItem('snk_verifiedUsers') || '[]');
+                const userIndex = verifiedUsers.findIndex(user => user.email === email);
+                
+                if (userIndex >= 0) {
+                    const removedUser = verifiedUsers[userIndex];
+                    verifiedUsers.splice(userIndex, 1);
+                    localStorage.setItem('snk_verifiedUsers', JSON.stringify(verifiedUsers));
+                    
+                    showAlert('Başarılı', `${removedUser.email} kullanıcısı yerel kayıtlardan silindi.`, 'success');
+                    loadUsers(); // Listeyi güncelle
+                } else {
+                    showAlert('Hata', 'Kullanıcı bulunamadı.', 'error');
+                }
+            } catch (error) {
+                console.error('Kullanıcı silinirken hata:', error);
+                showAlert('Hata', 'Kullanıcı silinirken bir hata oluştu: ' + error.message, 'error');
+            }
+        }
+        
+        // Kullanıcıyı onayla
+        function approveUser(email) {
+            try {
+                console.log('Kullanıcı onaylanıyor:', email);
+                
+                // Bekleyen kullanıcıları al
+                const pendingUsers = JSON.parse(localStorage.getItem('snk_pendingUsers') || '[]');
+                const userIndex = pendingUsers.findIndex(user => user.email === email);
+                
+                if (userIndex !== -1) {
+                    // Kullanıcı bilgilerini al
+                    const userData = pendingUsers[userIndex];
+                    
+                    // Kullanıcıyı onayla
+                    userData.isVerified = true;
+                    userData.pendingApproval = false;
+                    userData.approvedAt = new Date().toISOString();
+                    
+                    // Onaylanmış kullanıcılar listesine ekle
+                    let verifiedUsers = JSON.parse(localStorage.getItem('snk_verifiedUsers') || '[]');
+                    const existingVerifiedIndex = verifiedUsers.findIndex(user => user.email === email);
+                    
+                    if (existingVerifiedIndex !== -1) {
+                        verifiedUsers[existingVerifiedIndex] = userData;
+                    } else {
+                        verifiedUsers.push(userData);
+                    }
+                    
+                    // Local storage'a kaydet
+                    localStorage.setItem('snk_verifiedUsers', JSON.stringify(verifiedUsers));
+                    
+                    // Bekleyen kullanıcılar listesinden kaldır
+                    pendingUsers.splice(userIndex, 1);
+                    localStorage.setItem('snk_pendingUsers', JSON.stringify(pendingUsers));
+                    
+                    showAlert('Başarılı', `${userData.email} kullanıcısı onaylandı.`, 'success');
+                    loadUsers(); // Listeyi güncelle
+                } else {
+                    showAlert('Hata', 'Kullanıcı bulunamadı.', 'error');
+                }
+            } catch (error) {
+                console.error('Kullanıcı onaylanırken hata:', error);
+                showAlert('Hata', 'Kullanıcı onaylanırken bir hata oluştu: ' + error.message, 'error');
+            }
+        }
+        
+        // Global scope'a fonksiyonları ekle
         window.showRejectConfirm = showRejectConfirm;
+        window.showPendingApproval = showPendingApproval;
+        window.removeLocalUser = removeLocalUser;
     </script>
 </body>
 </html>
