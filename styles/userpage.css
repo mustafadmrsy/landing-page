@@ -28,34 +28,133 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 180px;
+    height: 220px;
     border-radius: 12px 12px 0 0;
     background-size: cover;
     background-position: center;
     background-color: #f0f2f5;
     overflow: hidden;
+    box-shadow: inset 0 -10px 20px rgba(0, 0, 0, 0.1);
 }
 
 .snk-user-cover img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: all 0.5s ease;
+}
+
+.snk-user-cover img:hover {
+    transform: scale(1.03);
+}
+
+.snk-user-cover:before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Profil fotoğrafı container */
+.snk-profile-image-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin-top: -80px;
+    z-index: 10;
+}
+
+.snk-profile-image-container::after {
+    content: '';
+    position: absolute;
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, var(--primary-color), #6366f1, #a855f7);
+    z-index: -1;
+    opacity: 0.15;
+    filter: blur(5px);
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+}
+
+.snk-profile-image-container:hover::after {
+    transform: scale(1.1);
+    opacity: 0.25;
+    filter: blur(8px);
 }
 
 .snk-user-profile {
-    width: 150px;
-    height: 150px;
+    width: 160px;
+    height: 160px;
     border-radius: 50%;
     border: 5px solid var(--bg-card);
     object-fit: cover;
-    margin-top: 100px;
-    z-index: 1;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 5;
+}
+
+.snk-user-profile:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.95);
+}
+
+/* Profil düzenleme butonu */
+.snk-profile-edit-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #000000;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: none;
+    color: #ffffff;
+    padding: 0.7rem 1.2rem;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    z-index: 10;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(30, 144, 255, 0.4); /* Vivid Blue */
+}
+
+.snk-profile-edit-btn:hover {
+    background: #1E90FF; /* Vivid Blue */
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(30, 144, 255, 0.3);
+    border-color: #1E90FF; /* Vivid Blue */
+}
+
+.snk-profile-edit-btn i {
+    font-size: 1rem;
+    color: #1E90FF; /* Vivid Blue */
+    transition: all 0.3s ease;
+}
+
+.snk-profile-edit-btn:hover i {
+    transform: rotate(20deg);
+    color: white;
 }
 
 .snk-user-info {
     margin-top: 1.5rem;
-    width: 100%;
+    padding-top: 1rem;
+    position: relative;
+    z-index: 5;
 }
 
 .snk-user-name {
@@ -63,20 +162,25 @@
     font-weight: 700;
     margin-bottom: 0.3rem;
     color: var(--text-primary);
+    background: linear-gradient(90deg, var(--primary-color), #6366f1);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
 }
 
 .snk-user-username {
-    font-size: 1.1rem;
     color: var(--text-secondary);
     margin-bottom: 1rem;
+    font-size: 1rem;
 }
 
 .snk-user-bio {
-    font-size: 1rem;
-    color: var(--text-secondary);
-    max-width: 600px;
-    margin: 0 auto 1.5rem auto;
+    max-width: 700px;
+    margin: 0 auto 1.5rem;
     line-height: 1.6;
+    color: var(--text-primary);
+    font-size: 1.05rem;
 }
 
 .snk-user-stats {
@@ -386,6 +490,91 @@
     grid-template-columns: none !important;
 }
 
+/* Hakkında Sekmesi Stiller */
+.snk-about-personal-info,
+.snk-about-social-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.snk-about-info-item,
+.snk-about-social-item {
+    background-color: var(--card-bg-color);
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.snk-about-info-item:hover,
+.snk-about-social-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.snk-about-info-item h4,
+.snk-about-social-item h4 {
+    font-size: 14px;
+    color: var(--secondary-text-color);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.snk-about-info-item p,
+.snk-about-social-item p {
+    font-size: 16px;
+    color: var(--primary-text-color);
+    margin: 0;
+    word-break: break-word;
+}
+
+.snk-user-about-card-single h2 {
+    position: relative;
+    font-size: 20px;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.snk-user-about-card-single h2 i {
+    color: var(--primary-color);
+}
+
+.snk-user-about-card-single h2:after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: var(--primary-color);
+    border-radius: 3px;
+}
+
+.mt-4 {
+    margin-top: 25px;
+}
+
+/* Biyografi alanı için özel stil */
+.snk-about-info-item:nth-child(5) {
+    grid-column: 1 / -1;
+}
+
+/* Mobil uyumlu düzenlemeler */
+@media (max-width: 768px) {
+    .snk-about-personal-info,
+    .snk-about-social-info {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* İletişim bilgileri için stil */
 .snk-user-contact {
     margin-top: 2rem;
@@ -454,20 +643,26 @@
 }
 
 .snk-user-post-title {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 700;
     margin-bottom: 0.8rem;
-    color: var(--text-primary);
     line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    color: var(--text-primary);
 }
 
 .snk-user-post-excerpt {
     font-size: 0.9rem;
     color: var(--text-secondary);
     margin-bottom: 1rem;
-    line-height: 1.6;
+    line-height: 1.5;
     display: -webkit-box;
     -webkit-line-clamp: 3;
+    line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -575,6 +770,547 @@
     color: var(--dark-text-secondary);
 }
 
+/* Profil Düzenleme Modal/Popup */
+.snk-profile-edit-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.snk-profile-edit-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.snk-profile-edit-container {
+    width: 90%;
+    max-width: 750px;
+    max-height: 85vh;
+    background: #000000;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 8px 25px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+    transform: translateY(30px) scale(0.95);
+    transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    padding: 0;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.snk-profile-edit-overlay.active .snk-profile-edit-container {
+    transform: translateY(0) scale(1);
+}
+
+.snk-profile-edit-header {
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    background: #000000;
+    z-index: 2;
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.snk-profile-edit-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    position: relative;
+    padding-left: 12px;
+}
+
+.snk-profile-edit-title:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 70%;
+    background: #1E90FF; /* Vivid Blue */
+    border-radius: 4px;
+}
+
+.snk-profile-edit-close {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #ffffff;
+}
+
+.snk-profile-edit-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(90deg) scale(1.1);
+    color: #1E90FF; /* Vivid Blue */
+}
+
+.snk-profile-edit-form {
+    padding: 1.8rem 2rem;
+    background: #000000;
+    color: #ffffff;
+}
+
+.snk-profile-edit-tabs {
+    display: flex;
+    gap: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0;
+    margin-bottom: 2rem;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+}
+
+.snk-profile-edit-tabs::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+}
+
+.snk-profile-edit-tab {
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+    color: #b0b0b0;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    white-space: nowrap;
+}
+
+.snk-profile-edit-tab:hover {
+    color: #1E90FF; /* Vivid Blue */
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 10px 10px 0 0;
+}
+
+.snk-profile-edit-tab.active {
+    color: #1E90FF; /* Vivid Blue */
+}
+
+.snk-profile-edit-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #1E90FF; /* Vivid Blue */
+    border-radius: 3px 3px 0 0;
+}
+
+.snk-profile-edit-sections {
+    margin-bottom: 2rem;
+}
+
+.snk-profile-edit-section {
+    display: none;
+    animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.snk-profile-edit-section.active {
+    display: block;
+}
+
+.snk-form-group {
+    margin-bottom: 1.8rem;
+}
+
+.snk-form-label {
+    display: block;
+    margin-bottom: 0.7rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #ffffff;
+    position: relative;
+    padding-left: 8px;
+}
+
+.snk-form-label::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 15px;
+    background: #1E90FF; /* Vivid Blue */
+    border-radius: 3px;
+    opacity: 0.9;
+}
+
+.snk-form-control {
+    width: 100%;
+    padding: 1rem 1.2rem;
+    font-size: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    background-color: #121212;
+    color: #ffffff;
+    transition: all 0.3s ease;
+}
+
+.snk-form-control:focus {
+    outline: none;
+    border-color: #1E90FF; /* Vivid Blue */
+    box-shadow: 0 0 0 3px rgba(30, 144, 255, 0.2); /* Vivid Blue with opacity */
+}
+
+.snk-form-control::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Profil Düzenleme Fotoğraf Yükleme Alanları */
+.snk-image-preview {
+    position: relative;
+    width: 100%;
+    height: 180px;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 2px dashed rgba(30, 144, 255, 0.4); /* Vivid Blue */
+    background-color: rgba(18, 18, 18, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 1rem;
+}
+
+.snk-profile-picture-preview {
+    border-radius: 50%;
+    height: 150px;
+    width: 150px;
+    margin: 0 auto;
+    border: 2px solid #1E90FF; /* Vivid Blue */
+    background-color: #121212;
+}
+
+.snk-image-preview:hover {
+    border-color: #1E90FF; /* Vivid Blue */
+    background-color: rgba(30, 144, 255, 0.1);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(30, 144, 255, 0.2);
+}
+
+.snk-image-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    color: #ffffff;
+    padding: 0 1rem;
+    text-align: center;
+}
+
+.snk-image-placeholder i {
+    font-size: 2.5rem;
+    color: #1E90FF; /* Vivid Blue */
+    opacity: 0.8;
+    transition: all 0.3s ease;
+}
+
+.snk-image-preview:hover .snk-image-placeholder i {
+    transform: scale(1.1);
+    opacity: 1;
+}
+
+.snk-image-placeholder p {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.snk-image-input {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.preview-image {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 5;
+}
+
+/* Form Textarea */
+.snk-form-textarea {
+    min-height: 120px;
+    resize: vertical;
+    background-color: #121212;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Sosyal Media Girişleri */
+.snk-social-input {
+    position: relative;
+}
+
+.snk-social-input i {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.snk-social-input input:focus + i {
+    color: #1E90FF; /* Vivid Blue */
+    transform: translateY(-50%) scale(1.1);
+}
+
+/* Checkbox Stilleri */
+.snk-checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.snk-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.snk-checkbox input[type="checkbox"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 5px;
+    background-color: #121212;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.snk-checkbox input[type="checkbox"]:checked {
+    background-color: #1E90FF; /* Vivid Blue */
+    border-color: #1E90FF; /* Vivid Blue */
+}
+
+.snk-checkbox input[type="checkbox"]:checked:after {
+    content: '\f00c';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 12px;
+}
+
+.snk-checkbox label {
+    font-size: 0.95rem;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+/* Profil Butonları */
+.snk-profile-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.snk-profile-btn {
+    padding: 0.8rem 1.8rem;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.snk-profile-cancel-btn {
+    background-color: transparent;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.snk-profile-cancel-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.snk-profile-save-btn {
+    background-color: #1E90FF; /* Vivid Blue */
+    color: white;
+    border: none;
+}
+
+.snk-profile-save-btn:hover {
+    background-color: #007FFF; /* Slightly darker Vivid Blue */
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(30, 144, 255, 0.4); /* Vivid Blue shadow */
+}
+
+/* Dark Mode Uyumluluğu */
+.eren-dark-theme .snk-profile-edit-container {
+    background: #000000;
+}
+
+.eren-dark-theme .snk-profile-edit-header {
+    background: #000000;
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.eren-dark-theme .snk-form-control {
+    background-color: #121212;
+    color: white;
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.eren-dark-theme .snk-form-label {
+    color: white;
+}
+
+.eren-dark-theme .snk-profile-edit-title {
+    color: white;
+}
+
+.eren-dark-theme .snk-profile-edit-close {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.eren-dark-theme .snk-profile-edit-tab {
+    color: #b0b0b0;
+}
+
+.eren-dark-theme .snk-profile-edit-tab.active,
+.eren-dark-theme .snk-profile-edit-tab:hover {
+    color: #1E90FF; /* Vivid Blue */
+}
+
+/* Mobil görünüm düzenlemeleri */
+@media (max-width: 768px) {
+    .snk-profile-edit-container {
+        width: 95%;
+        max-height: 90vh;
+    }
+    
+    .snk-profile-edit-tabs {
+        padding-bottom: 5px;
+    }
+    
+    .snk-profile-edit-tab {
+        padding: 0.7rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .snk-profile-buttons {
+        flex-direction: column-reverse;
+        width: 100%;
+    }
+    
+    .snk-profile-btn {
+        width: 100%;
+        padding: 1rem;
+    }
+    
+    .snk-social-links {
+        grid-template-columns: 1fr;
+    }
+    
+    .snk-user-profile {
+        width: 130px;
+        height: 130px;
+        margin-top: 80px;
+    }
+    
+    .snk-user-cover {
+        height: 160px;
+    }
+    
+    .snk-profile-edit-btn {
+        top: 15px;
+        right: 15px;
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+    }
+    
+    .snk-user-name {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .snk-profile-edit-title {
+        font-size: 1.2rem;
+    }
+    
+    .snk-profile-edit-close {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .snk-user-profile {
+        width: 110px;
+        height: 110px;
+        margin-top: 70px;
+    }
+    
+    .snk-user-cover {
+        height: 140px;
+    }
+    
+    .snk-profile-edit-form {
+        padding: 1rem;
+    }
+}
+
 /* Animasyonlar */
 .fade-in {
     animation: fadeIn 0.6s ease forwards;
@@ -659,4 +1395,220 @@
         width: 100%;
         justify-content: center;
     }
+}
+
+@media (max-width: 768px) {
+    .snk-user-header {
+        padding: 1.5rem;
+    }
+    
+    .snk-user-cover {
+        height: 160px;
+    }
+    
+    .snk-user-profile {
+        width: 130px;
+        height: 130px;
+        margin-top: 80px;
+        border-width: 4px;
+    }
+    
+    .snk-profile-edit-btn {
+        top: 15px;
+        right: 15px;
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+    }
+    
+    .snk-user-name {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .snk-user-profile {
+        width: 110px;
+        height: 110px;
+        margin-top: 70px;
+    }
+    
+    .snk-user-cover {
+        height: 140px;
+    }
+    
+    .snk-profile-edit-btn {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.8rem;
+    }
+}
+
+/* Profil Dropdown Buton ve Menü Stilleri */
+.snk-user-profile-dropdown {
+    position: relative;
+    margin-right: 15px;
+}
+
+.snk-profile-dropdown-btn {
+    background: #000000;
+    border-radius: 50px;
+    padding: 10px 18px;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: 1px solid rgba(30, 144, 255, 0.4); /* Vivid Blue */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.snk-profile-dropdown-btn i {
+    color: #1E90FF; /* Vivid Blue */
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.snk-profile-dropdown-btn:hover {
+    background: #1E90FF; /* Vivid Blue */
+    border-color: #1E90FF;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(30, 144, 255, 0.2);
+}
+
+.snk-profile-dropdown-btn:hover i {
+    color: #ffffff;
+}
+
+.snk-profile-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 280px;
+    background: #000000;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    border: 1px solid rgba(30, 144, 255, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+}
+
+.snk-profile-dropdown-menu.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.snk-profile-menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.snk-profile-menu-list li {
+    padding: 0;
+    margin: 0;
+}
+
+.snk-profile-menu-list li a {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+.snk-profile-menu-list li a i {
+    width: 20px;
+    margin-right: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    transition: all 0.3s ease;
+}
+
+.snk-profile-menu-list li a:hover {
+    background-color: rgba(30, 144, 255, 0.1);
+}
+
+.snk-profile-menu-list li a:hover i {
+    color: #1E90FF; /* Vivid Blue */
+}
+
+.snk-profile-menu-list li.snk-toggle-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    color: #ffffff;
+    font-size: 0.95rem;
+}
+
+.snk-profile-menu-list li.snk-toggle-item span {
+    display: flex;
+    align-items: center;
+}
+
+.snk-profile-menu-list li.snk-toggle-item span i {
+    width: 20px;
+    margin-right: 12px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.snk-profile-menu-list li.snk-divider {
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.1);
+    margin: 8px 0;
+}
+
+.snk-toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 42px;
+    height: 22px;
+}
+
+.snk-toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.snk-toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.2);
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.snk-toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .snk-toggle-slider {
+    background-color: #1E90FF; /* Vivid Blue */
+}
+
+input:checked + .snk-toggle-slider:before {
+    transform: translateX(20px);
+}
+
+.snk-logout {
+    color: #ff4d4d !important;
 }
