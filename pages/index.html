@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../styles/main.css">
     <link rel="stylesheet" href="../styles/index-specific.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../styles/auth-forms.css">
 </head>
 <body>
     <div class="snk-container">
@@ -253,6 +254,99 @@
         </div>
     </div>
 
+    <!-- Login Popup -->
+    <div class="snk-popup-overlay" id="snk_loginPopup">
+        <div class="snk-popup-container auth-popup">
+            <div class="snk-popup-header">
+                <h2 class="snk-popup-title">Giriş Yap</h2>
+                <button class="snk-popup-close-btn" id="snk_loginCloseBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="snk-popup-content">
+                <div id="loginAlertBox" class="auth-alert"></div>
+                <form id="loginForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="loginEmail">E-posta</label>
+                        <input type="email" id="loginEmail" name="email" placeholder="ol2413615XXX@isparta.edu.tr" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Şifre</label>
+                        <input type="password" id="loginPassword" name="password" required>
+                    </div>
+                    <button type="submit" class="auth-button">Giriş Yap</button>
+                </form>
+                <div class="auth-links">
+                    <p>Hesabınız yok mu? <a href="#" id="showRegisterPopup">Kayıt Ol</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Popup -->
+    <div class="snk-popup-overlay" id="snk_registerPopup">
+        <div class="snk-popup-container auth-popup">
+            <div class="snk-popup-header">
+                <h2 class="snk-popup-title">Kayıt Ol</h2>
+                <button class="snk-popup-close-btn" id="snk_registerCloseBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="snk-popup-content">
+                <div id="registerAlertBox" class="auth-alert"></div>
+                <form id="registerForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="registerName">Ad</label>
+                        <input type="text" id="registerName" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerSurname">Soyad</label>
+                        <input type="text" id="registerSurname" name="surname" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerEmail">Öğrenci E-posta</label>
+                        <input type="email" id="registerEmail" name="email" placeholder="ol2413615XXX@isparta.edu.tr" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Şifre</label>
+                        <input type="password" id="registerPassword" name="password" required>
+                    </div>
+                    <button type="submit" class="auth-button">Kayıt Ol</button>
+                </form>
+                <div class="auth-links">
+                    <p>Zaten bir hesabınız var mı? <a href="#" id="showLoginPopup">Giriş Yap</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Verification Popup -->
+    <div class="snk-popup-overlay" id="snk_verificationPopup">
+        <div class="snk-popup-container auth-popup">
+            <div class="snk-popup-header">
+                <h2 class="snk-popup-title">E-posta Doğrulama</h2>
+                <button class="snk-popup-close-btn" id="snk_verificationCloseBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="snk-popup-content">
+                <div id="verificationAlertBox" class="auth-alert"></div>
+                <p class="verification-info">Hesabınızı aktifleştirmek için size verilen doğrulama kodunu giriniz.</p>
+                <form id="verificationForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="verificationCode">Doğrulama Kodu</label>
+                        <input type="text" id="verificationCode" name="verificationCode" required>
+                        <input type="hidden" id="verificationEmail" name="email">
+                    </div>
+                    <button type="submit" class="auth-button">Doğrula</button>
+                </form>
+                <div class="auth-links">
+                    <p><a href="#" id="resendVerificationCode">Yeni kod gönder</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Mobil Menü Butonu -->
     <button class="snk-mobile-menu-btn" id="mobileSidebarToggle">
         <i class="fas fa-bars"></i>
@@ -264,5 +358,7 @@
     <script src="../components/main.js"></script>
     <script src="../components/popup.js"></script>
     <script src="../components/popup-handler.js"></script>
+    <script src="../components/verification.js"></script>
+    <script src="../components/auth-handlers.js"></script>
 </body>
 </html>

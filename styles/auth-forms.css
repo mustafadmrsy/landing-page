@@ -1,0 +1,129 @@
+/* Auth Forms - Senirkent Blog */
+
+.snk-form-message {
+    padding: 10px;
+    margin: 15px 0;
+    border-radius: 4px;
+    font-size: 14px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.snk-error-message {
+    background-color: rgba(231, 76, 60, 0.15);
+    color: #e74c3c;
+    border-left: 3px solid #e74c3c;
+}
+
+.snk-success-message {
+    background-color: rgba(46, 204, 113, 0.15);
+    color: #2ecc71;
+    border-left: 3px solid #2ecc71;
+}
+
+.snk-email-info {
+    display: block;
+    font-size: 12px;
+    color: #7f8c8d;
+    margin-top: 5px;
+}
+
+/* E-posta doğrulama sayfası stilleri */
+.snk-verification-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #fff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    text-align: center;
+}
+
+.snk-verification-success {
+    color: #2ecc71;
+    margin-bottom: 20px;
+}
+
+.snk-verification-error {
+    color: #e74c3c;
+    margin-bottom: 20px;
+}
+
+.snk-verification-btn {
+    display: inline-block;
+    background: linear-gradient(45deg, #3498db, #2980b9);
+    color: white;
+    padding: 12px 25px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 25px;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.snk-verification-btn:hover {
+    background: linear-gradient(45deg, #2980b9, #3498db);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* E-posta test modu bilgisi */
+.mail-test-info {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-left: 4px solid #17a2b8;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.mail-test-info a {
+    color: #17a2b8;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.mail-test-info a:hover {
+    color: #138496;
+}
+
+/* E-posta başarı mesajı */
+.mail-success-info {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #f1f9f1;
+    border-left: 4px solid #28a745;
+    border-radius: 4px;
+    font-size: 0.9em;
+    color: #155724;
+}
+
+.mail-success-info strong {
+    font-weight: bold;
+}
+
+/* E-posta doğrulama sonrası animasyon */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.snk-animation-fadeInUp {
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+/* Responsive tasarım */
+@media screen and (max-width: 768px) {
+    .snk-verification-container {
+        margin: 30px 15px;
+        padding: 20px;
+    }
+}

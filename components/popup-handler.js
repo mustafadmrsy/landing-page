@@ -168,6 +168,8 @@ function snk_popupHandler_showLoginForm() {
                 
                 <button type="submit" class="snk-auth-submit">Oturum Aç</button>
                 
+                <div id="snk_login_message" class="snk-form-message" style="display: none;"></div>
+                
                 <div class="snk-auth-divider">
                     <span>veya</span>
                 </div>
@@ -198,12 +200,57 @@ function snk_popupHandler_showLoginForm() {
         const loginForm = document.getElementById('snk_login_form');
         const passwordToggle = document.getElementById('snk_login_toggle_password');
         const switchToRegister = document.getElementById('snk_switch_to_register');
+        const messageDiv = document.getElementById('snk_login_message');
+        
+        // Mesaj gösterme fonksiyonu
+        function showMessage(message, isError = true) {
+            messageDiv.textContent = message;
+            messageDiv.style.display = 'block';
+            messageDiv.className = 'snk-form-message ' + (isError ? 'snk-error-message' : 'snk-success-message');
+        }
         
         if (loginForm) {
             loginForm.addEventListener('submit', function(e) {
                 e.preventDefault();
-                // Bu aşamada gerçek bir login işlemi yapılmayacak, sadece demo olarak mesaj gösteriyoruz
-                alert('Oturum açma işlevi henüz uygulanmadı. Bu bir prototiptir.');
+                
+                const email = document.getElementById('snk_login_email').value.trim();
+                const password = document.getElementById('snk_login_password').value;
+                
+                // Kullanıcı veritabanını kontrol et
+                const users = JSON.parse(localStorage.getItem('snk_users') || '[]');
+                const user = users.find(u => u.email === email && u.password === password);
+                
+                if (user) {
+                    // Başarılı giriş
+                    showMessage('Giriş başarılı. Yönlendiriliyorsunuz...', false);
+                    
+                    // Kullanıcı oturum durumunu güncelle
+                    localStorage.setItem('snk_currentUser', JSON.stringify({
+                        id: user.id,
+                        name: user.name,
+                        surname: user.surname,
+                        email: user.email,
+                        isLoggedIn: true,
+                        lastLogin: new Date().toISOString()
+                    }));
+                    
+                    // 2 saniye sonra popup'ı kapat
+                    setTimeout(() => {
+                        snk_popupHandler_closePopup();
+                        // Sayfayı yenile veya kullanıcı arayüzünü güncelle
+                        window.location.reload();
+                    }, 2000);
+                } else {
+                    // Doğrulanmamış e-posta kontrolü
+                    const pendingUsers = JSON.parse(localStorage.getItem('snk_pendingUsers') || '[]');
+                    const pendingUser = pendingUsers.find(u => u.email === email);
+                    
+                    if (pendingUser) {
+                        showMessage('Hesabınız henüz doğrulanmamış. Lütfen e-postanızı kontrol ediniz.');
+                    } else {
+                        showMessage('Geçersiz e-posta veya şifre.');
+                    }
+                }
             });
         }
         
@@ -252,7 +299,8 @@ function snk_popupHandler_showRegisterForm() {
                 
                 <div class="snk-form-group">
                     <label for="snk_register_email">E-posta</label>
-                    <input type="email" id="snk_register_email" class="snk-form-input" placeholder="E-posta adresiniz" required>
+                    <input type="email" id="snk_register_email" class="snk-form-input" placeholder="E-posta adresiniz (@isparta.edu.tr)" required>
+                    <small class="snk-email-info">Sadece @isparta.edu.tr uzantılı e-postalar kabul edilmektedir.</small>
                 </div>
                 
                 <div class="snk-form-group">
@@ -281,6 +329,8 @@ function snk_popupHandler_showRegisterForm() {
                 </div>
                 
                 <button type="submit" class="snk-auth-submit">Kaydol</button>
+                
+                <div id="snk_register_message" class="snk-form-message" style="display: none;"></div>
                 
                 <div class="snk-auth-divider">
                     <span>veya</span>
@@ -312,12 +362,101 @@ function snk_popupHandler_showRegisterForm() {
         const registerForm = document.getElementById('snk_register_form');
         const passwordToggle = document.getElementById('snk_register_toggle_password');
         const switchToLogin = document.getElementById('snk_switch_to_login');
+        const emailInput = document.getElementById('snk_register_email');
+        const messageDiv = document.getElementById('snk_register_message');
+        
+        // E-posta formatı kontrolü
+        function isValidEmail(email) {
+            // ol2413615008@isparta.edu.tr formatında e-postalar
+            const regex = /^ol\d{10}@isparta\.edu\.tr$/;
+            return regex.test(email);
+        }
+        
+        // Hata mesajını göster
+        function showMessage(message, isError = true) {
+            messageDiv.textContent = message;
+            messageDiv.style.display = 'block';
+            messageDiv.className = 'snk-form-message ' + (isError ? 'snk-error-message' : 'snk-success-message');
+        }
+        
+        // E-posta doğrulama gönderimi
+        function sendVerificationEmail(name, surname, email, password) {
+            // Normalde burada API'ye istek atılır, şimdilik simulasyon yapıyoruz
+            console.log(`Doğrulama e-postası gönderiliyor: ${email}`);
+            
+            // Demo amaçlı asenkron işlem
+            setTimeout(() => {
+                showMessage(`E-posta doğrulaması için bilgi gönderildi. Lütfen e-postanızı kontrol ediniz.`, false);
+                
+                // Kullanıcı bilgilerini local storage'a geçici olarak kaydet
+                const userData = {
+                    name,
+                    surname,
+                    email,
+                    password,
+                    isVerified: false,
+                    pendingVerification: true,
+                    createdAt: new Date().toISOString()
+                };
+                
+                // Kaydedilen kullanıcıları al veya boş dizi başlat
+                let pendingUsers = JSON.parse(localStorage.getItem('snk_pendingUsers') || '[]');
+                
+                // Daha önce bu e-posta ile kayıt var mı kontrol et
+                const existingUserIndex = pendingUsers.findIndex(user => user.email === email);
+                if (existingUserIndex !== -1) {
+                    // Varsa güncelle
+                    pendingUsers[existingUserIndex] = userData;
+                } else {
+                    // Yoksa ekle
+                    pendingUsers.push(userData);
+                }
+                
+                // Local storage'a kaydet
+                localStorage.setItem('snk_pendingUsers', JSON.stringify(pendingUsers));
+                
+                // UI güncelle
+                registerForm.reset();
+            }, 1500);
+        }
         
         if (registerForm) {
             registerForm.addEventListener('submit', function(e) {
                 e.preventDefault();
-                // Bu aşamada gerçek bir kayıt işlemi yapılmayacak, sadece demo olarak mesaj gösteriyoruz
-                alert('Kaydolma işlevi henüz uygulanmadı. Bu bir prototiptir.');
+                
+                const name = document.getElementById('snk_register_name').value.trim();
+                const surname = document.getElementById('snk_register_surname').value.trim();
+                const email = document.getElementById('snk_register_email').value.trim();
+                const password = document.getElementById('snk_register_password').value;
+                const passwordConfirm = document.getElementById('snk_register_password_confirm').value;
+                
+                // E-posta formatı kontrolü
+                if (!isValidEmail(email)) {
+                    showMessage('Geçersiz e-posta formatı. Sadece isparta.edu.tr uzantılı e-postalar (örn: ol2413615008@isparta.edu.tr) kabul edilmektedir.');
+                    return;
+                }
+                
+                // Şifre eşleşmesi kontrolü
+                if (password !== passwordConfirm) {
+                    showMessage('Şifreler eşleşmiyor. Lütfen tekrar kontrol ediniz.');
+                    return;
+                }
+                
+                // Şifre uzunluğu kontrolü
+                if (password.length < 6) {
+                    showMessage('Şifre en az 6 karakter uzunluğunda olmalıdır.');
+                    return;
+                }
+                
+                // Kayıtlı kullanıcıları kontrol et
+                const users = JSON.parse(localStorage.getItem('snk_users') || '[]');
+                if (users.some(user => user.email === email)) {
+                    showMessage('Bu e-posta adresi ile daha önce kayıt yapılmış.');
+                    return;
+                }
+                
+                // Doğrulama e-postası gönder
+                sendVerificationEmail(name, surname, email, password);
             });
         }
         
@@ -338,6 +477,18 @@ function snk_popupHandler_showRegisterForm() {
             switchToLogin.addEventListener('click', function(e) {
                 e.preventDefault();
                 snk_popupHandler_showLoginForm();
+            });
+        }
+        
+        // E-posta input alanı için canlı kontrol
+        if (emailInput) {
+            emailInput.addEventListener('blur', function() {
+                const email = this.value.trim();
+                if (email && !isValidEmail(email)) {
+                    showMessage('Geçersiz e-posta formatı. Sadece isparta.edu.tr uzantılı e-postalar (örn: ol2413615008@isparta.edu.tr) kabul edilmektedir.');
+                } else {
+                    messageDiv.style.display = 'none';
+                }
             });
         }
     }, 100);

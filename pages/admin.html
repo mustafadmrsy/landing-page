@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Senirkent MYO Blog - Admin Panel</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        
+        .page-title {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .page-title:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background-color: #3498db;
+        }
+        
+        .panel-container {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .panel-container {
+                flex-direction: column;
+            }
+        }
+        
+        .panel {
+            flex: 1;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .panel-header {
+            background-color: #3498db;
+            color: white;
+            padding: 15px 20px;
+            font-size: 1.2rem;
+        }
+        
+        .panel-body {
+            padding: 20px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        
+        .user-card {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        
+        .user-card.verified {
+            border-left-color: #2ecc71;
+        }
+        
+        .user-info {
+            margin-bottom: 8px;
+        }
+        
+        .user-info strong {
+            color: #34495e;
+            font-weight: 600;
+        }
+        
+        .verification-code {
+            display: inline-block;
+            background-color: #34495e;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 1rem;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .status-badge.active {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .status-badge.pending {
+            background-color: #fff8e1;
+            color: #f57f17;
+        }
+        
+        .refresh-button {
+            display: block;
+            margin: 0 auto 30px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .refresh-button:hover {
+            background-color: #2980b9;
+        }
+        
+        .no-users {
+            text-align: center;
+            color: #7f8c8d;
+            padding: 30px 0;
+            font-style: italic;
+        }
+        
+        /* Loader */
+        .loader {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+        
+        .loader-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 2s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Aksiyon Butonları */
+        .action-buttons {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .action-button {
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s;
+        }
+        
+        .approve-btn {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #a5d6a7;
+        }
+        
+        .approve-btn:hover {
+            background-color: #c8e6c9;
+        }
+        
+        .reject-btn {
+            background-color: #ffebee;
+            color: #c62828;
+            border: 1px solid #ef9a9a;
+        }
+        
+        .reject-btn:hover {
+            background-color: #ffcdd2;
+        }
+        
+        /* Modal/Confirm Dialog */
+        .confirm-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .confirm-dialog {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 400px;
+            max-width: 90%;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .confirm-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .confirm-message {
+            margin-bottom: 20px;
+            color: #34495e;
+        }
+        
+        .confirm-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        .confirm-cancel {
+            background-color: #ecf0f1;
+            border: none;
+            color: #7f8c8d;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .confirm-proceed {
+            background-color: #e74c3c;
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        /* Alert Box */
+        .alert-box {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 4px;
+            background-color: #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: none;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+            max-width: 350px;
+        }
+        
+        .alert-box.success {
+            border-left: 4px solid #2ecc71;
+        }
+        
+        .alert-box.error {
+            border-left: 4px solid #e74c3c;
+        }
+        
+        .alert-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+        
+        .alert-message {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <h1 class="page-title">Senirkent MYO Blog - Admin Panel</h1>
+        
+        <button id="refresh-button" class="refresh-button">
+            <i class="fas fa-sync-alt"></i> Listeyi Yenile
+        </button>
+        
+        <div class="panel-container">
+            <div class="panel">
+                <div class="panel-header">
+                    Onay Bekleyen Kullanıcılar
+                </div>
+                <div class="panel-body">
+                    <div id="pending-loader" class="loader">
+                        <div class="loader-spinner"></div>
+                    </div>
+                    <div id="pending-users"></div>
+                </div>
+            </div>
+            
+            <div class="panel">
+                <div class="panel-header">
+                    Doğrulanmış Kullanıcılar
+                </div>
+                <div class="panel-body">
+                    <div id="verified-loader" class="loader">
+                        <div class="loader-spinner"></div>
+                    </div>
+                    <div id="verified-users"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Confirm Modal -->
+    <div id="confirm-modal" class="confirm-modal">
+        <div class="confirm-dialog">
+            <div class="confirm-title">Kullanıcıyı Reddet</div>
+            <div class="confirm-message">Bu kullanıcıyı gerçekten reddetmek istiyor musunuz? Bu işlem geri alınamaz.</div>
+            <div class="confirm-buttons">
+                <button id="confirm-cancel" class="confirm-cancel">İptal</button>
+                <button id="confirm-proceed" class="confirm-proceed">Reddet</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Alert Box -->
+    <div id="alert-box" class="alert-box">
+        <div class="alert-title">Başarılı</div>
+        <div class="alert-message">İşlem başarıyla tamamlandı.</div>
+    </div>
+
+    <!-- Admin Panel Script -->
+    <script>
+        // API Endpoints
+        const API_URL = 'http://localhost:3001/api/admin/users';
+        const REJECT_API_URL = 'http://localhost:3001/api/admin/reject-user';
+        
+        // DOM Elements
+        const pendingUsersContainer = document.getElementById('pending-users');
+        const verifiedUsersContainer = document.getElementById('verified-users');
+        const pendingLoader = document.getElementById('pending-loader');
+        const verifiedLoader = document.getElementById('verified-loader');
+        const confirmModal = document.getElementById('confirm-modal');
+        const confirmCancel = document.getElementById('confirm-cancel');
+        const confirmProceed = document.getElementById('confirm-proceed');
+        const alertBox = document.getElementById('alert-box');
+        
+        // Geçici veri tutacağımız değişken
+        let userToReject = null;
+        
+        // Sayfa yüklendiğinde kullanıcıları yükle
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Admin panel DOM yüklendi');
+            loadUsers();
+        });
+        
+        // Kullanıcıları yükle
+        async function loadUsers() {
+            showLoaders(true);
+            
+            try {
+                console.log('Kullanıcı yükleme işlemi başlatıldı');
+                console.log('API_URL:', API_URL);
+                const response = await fetch(API_URL);
+                
+                if (!response.ok) {
+                    throw new Error(`API yanıtı başarısız: ${response.status} ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                console.log('API kullanıcı verileri:', data);
+                console.log('Bekleyen kullanıcılar:', data.pendingUsers ? data.pendingUsers.length : 0);
+                console.log('Onaylanmış kullanıcılar:', data.verifiedUsers ? data.verifiedUsers.length : 0);
+                
+                // Bekleyen kullanıcılar listesi
+                if (data.pendingUsers && data.pendingUsers.length > 0) {
+                    displayUsers('pending-users', data.pendingUsers, true);
+                } else {
+                    pendingUsersContainer.innerHTML = '<div class="no-users">Bekleyen kullanıcı bulunmamaktadır.</div>';
+                }
+                
+                // Onaylanmış kullanıcılar listesi
+                if (data.verifiedUsers && data.verifiedUsers.length > 0) {
+                    displayUsers('verified-users', data.verifiedUsers, false);
+                } else {
+                    verifiedUsersContainer.innerHTML = '<div class="no-users">Onaylanmış kullanıcı bulunmamaktadır.</div>';
+                }
+            } catch (error) {
+                console.error('Kullanıcılar yüklenirken hata:', error);
+                pendingUsersContainer.innerHTML = '<div class="no-users">Kullanıcıları yüklerken bir hata oluştu.</div>';
+                verifiedUsersContainer.innerHTML = '<div class="no-users">Kullanıcıları yüklerken bir hata oluştu.</div>';
+            } finally {
+                showLoaders(false);
+            }
+        }
+
+        // Kullanıcıları görüntüle
+        function displayUsers(containerId, users, isPending) {
+            const container = document.getElementById(containerId);
+            
+            if (!users || users.length === 0) {
+                container.innerHTML = '<div class="no-users">Kullanıcı bulunamadı.</div>';
+                return;
+            }
+            
+            let html = '';
+            
+            users.forEach(user => {
+                // Tarih bilgisi kontrol
+                let dateDisplay = '';
+                if (user.registrationDate) {
+                    dateDisplay = formatDate(user.registrationDate);
+                } else if (user.createdAt) {
+                    dateDisplay = formatDate(user.createdAt);
+                } else {
+                    dateDisplay = 'Tarih bilgisi yok';
+                }
+                
+                html += `
+                <div class="user-card">
+                    <div class="user-info">
+                        <div class="user-name">${user.name} ${user.surname}</div>
+                        <div class="user-email">${user.email}</div>
+                        <div class="user-date">Kayıt: ${dateDisplay}</div>
+                        ${isPending && user.verificationCode ? `<div class="verification-code">Doğrulama Kodu: ${user.verificationCode}</div>` : ''}
+                    </div>
+                    ${isPending ? `<button class="reject-btn" onclick="showRejectConfirm('${user.email}')">Reddet</button>` : ''}
+                </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+        
+        // Yükleyicileri göster/gizle
+        function showLoaders(show) {
+            pendingLoader.style.display = show ? 'block' : 'none';
+            verifiedLoader.style.display = show ? 'block' : 'none';
+        }
+        
+        // Tarih formatla
+        function formatDate(dateString) {
+            if (!dateString) return 'Belirtilmemiş';
+            
+            const date = new Date(dateString);
+            return date.toLocaleString('tr-TR');
+        }
+        
+        // Reddetme onayını göster
+        function showRejectConfirm(email) {
+            userToReject = email;
+            confirmModal.style.display = 'flex';
+        }
+        
+        // Kullanıcıyı reddet
+        async function rejectUser(email) {
+            try {
+                console.log('Kullanıcı reddediliyor:', email);
+                console.log('API URL:', REJECT_API_URL);
+                
+                const response = await fetch(REJECT_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email })
+                });
+                
+                console.log('API yanıtı status:', response.status);
+                
+                if (!response.ok) {
+                    throw new Error(`API yanıtı başarısız: ${response.status} ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                console.log('API yanıtı data:', data);
+                
+                if (data.success) {
+                    showAlert('Başarılı', data.message, 'success');
+                    loadUsers(); // Kullanıcı listesini yenile
+                } else {
+                    showAlert('Hata', data.message, 'error');
+                }
+            } catch (error) {
+                console.error('Kullanıcı reddedilirken hata:', error);
+                showAlert('Hata', 'Kullanıcı reddedilirken bir hata oluştu: ' + error.message, 'error');
+            }
+        }
+        
+        // Bildirim göster
+        function showAlert(title, message, type) {
+            alertBox.querySelector('.alert-title').textContent = title;
+            alertBox.querySelector('.alert-message').textContent = message;
+            
+            alertBox.className = `alert-box ${type}`;
+            alertBox.style.display = 'block';
+            
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 5000);
+        }
+        
+        // Event Listeners
+        document.getElementById('refresh-button').addEventListener('click', loadUsers);
+        
+        confirmCancel.addEventListener('click', () => {
+            confirmModal.style.display = 'none';
+            userToReject = null;
+        });
+        
+        confirmProceed.addEventListener('click', () => {
+            if (userToReject) {
+                rejectUser(userToReject);
+                confirmModal.style.display = 'none';
+                userToReject = null;
+            }
+        });
+        
+        // Global scope'a rejectUser fonksiyonunu ekle
+        window.showRejectConfirm = showRejectConfirm;
+    </script>
+</body>
+</html>
