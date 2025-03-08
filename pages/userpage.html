@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Senirkent Blog</title>
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/index-specific.css">
+    <link rel="stylesheet" href="../styles/userpage.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="snk-container">
+        <!-- Header -->
+        <header class="snk-header">
+            <!-- Logo Alanı -->
+            <div class="snk-header-logo">
+                <img src="../public/images/logo.png" alt="Senirkent Blog" class="snk-logo-img">
+                <h1 class="snk-site-title">Senirkent Blog</h1>
+            </div>
+            
+            <!-- Arama Alanı -->
+            <div class="snk-header-search">
+                <div class="snk-search-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <input type="text" class="snk-search-input" placeholder="Blog'da ara...">
+            </div>
+            
+            <!-- Butonlar ve Profil -->
+            <div class="snk-header-actions">
+                <button class="snk-header-btn snk-login-btn" id="snk_login_btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Oturum Aç
+                </button>
+                <button class="snk-header-btn snk-register-btn" id="snk_register_btn">
+                    <i class="fas fa-user-plus"></i>
+                    Kaydol
+                </button>
+                <button class="snk-header-btn snk-create-btn" id="snk_create_btn">
+                    <i class="fas fa-plus"></i>
+                    Oluştur
+                </button>
+                
+                <!-- Profil Menü -->
+                <div class="snk-profile-container">
+                    <img src="../public/images/profile.png" alt="Profil" class="snk-profile-img" id="profileTrigger">
+                    
+                    <div class="snk-profile-menu" id="profileMenu">
+                        <div class="snk-profile-header">
+                            <img src="../public/images/profile.png" alt="Profil" class="snk-menu-profile-img">
+                            <div class="snk-profile-info">
+                                <span class="snk-profile-name">Kullanıcı Adı</span>
+                                <span class="snk-profile-username">@kullanici</span>
+                            </div>
+                        </div>
+                        
+                        <a href="userpage.html" class="snk-menu-item">
+                            <i class="fas fa-user"></i>
+                            Profili Görüntüle
+                        </a>
+                        <a href="#" class="snk-menu-item">
+                            <i class="fas fa-image"></i>
+                            Avatar Düzenle
+                        </a>
+                        <a href="#" class="snk-menu-item">
+                            <i class="fas fa-trophy"></i>
+                            Başarılar
+                        </a>
+                        <a href="#" class="snk-menu-item">
+                            <i class="fas fa-coin"></i>
+                            Katkı Programı
+                        </a>
+                        
+                        <div class="snk-menu-divider"></div>
+                        
+                        <a href="#" class="snk-menu-item">
+                            <i class="fas fa-moon"></i>
+                            Karanlık Mod
+                            <label class="snk-toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="snk-toggle-slider"></span>
+                            </label>
+                        </a>
+                        
+                        <div class="snk-menu-divider"></div>
+                        
+                        <a href="#" class="snk-menu-item">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Çıkış Yap
+                        </a>
+                        
+                        <div class="snk-menu-divider"></div>
+                        
+                        <a href="#" class="snk-menu-item">
+                            <i class="fas fa-ad"></i>
+                            Reklamlar
+                        </a>
+                        <a href="#" class="snk-menu-item">
+                            <i class="fas fa-chart-line"></i>
+                            Premium
+                        </a>
+                        <a href="#" class="snk-menu-item">
+                            <i class="fas fa-cog"></i>
+                            Ayarlar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="snk-content-wrapper">
+            <!-- Sidebar -->
+            <div class="snk-sidebar">
+                <!-- Sidebar Header ve Toggle Butonu -->
+                <div class="snk-sidebar-header">
+                    <h3 class="snk-sidebar-title">Menü</h3>
+                    <!-- Sidebar Toggle Button -->
+                    <button class="snk-sidebar-toggle" id="sidebarToggle">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                </div>
+                
+                <!-- Ana Navigasyon -->
+                <div class="snk-sidebar-section">
+                    <a href="index.html" class="snk-sidebar-item active">
+                        <i class="fas fa-home"></i>
+                        <span class="snk-sidebar-text">Ana Sayfa</span>
+                    </a>
+                    <a href="#" class="snk-sidebar-item" id="snk_sidebarPopular">
+                        <i class="fas fa-fire"></i>
+                        <span class="snk-sidebar-text">Popüler</span>
+                    </a>
+                    <a href="#" class="snk-sidebar-item">
+                        <i class="fas fa-compass"></i>
+                        <span class="snk-sidebar-text">Keşfet</span>
+                    </a>
+                    <a href="Categories.html" class="snk-sidebar-item">
+                        <i class="fas fa-th-large"></i>
+                        <span class="snk-sidebar-text">Tüm Yazılar</span>
+                    </a>
+                </div>
+                
+                <!-- Özel Beslemeler -->
+                <div class="snk-sidebar-section">
+                    <h3 class="snk-sidebar-heading">ÖZEL BESLEMELER</h3>
+                    <a href="#" class="snk-sidebar-item">
+                        <i class="fas fa-star"></i>
+                        <span class="snk-sidebar-text">Favoriler</span>
+                    </a>
+                    <a href="#" class="snk-sidebar-item">
+                        <i class="fas fa-history"></i>
+                        <span class="snk-sidebar-text">Geçmiş</span>
+                    </a>
+                </div>
+                
+                <!-- Kategoriler -->
+                <div class="snk-sidebar-section">
+                    <h3 class="snk-sidebar-heading">KATEGORİLER</h3>
+                    <a href="kategoriler.html?category=egitim" class="snk-sidebar-item">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span class="snk-sidebar-text">Eğitim</span>
+                    </a>
+                    <a href="kategoriler.html?category=teknoloji" class="snk-sidebar-item">
+                        <i class="fas fa-laptop-code"></i>
+                        <span class="snk-sidebar-text">Teknoloji</span>
+                    </a>
+                    <a href="kategoriler.html?category=kultur" class="snk-sidebar-item">
+                        <i class="fas fa-landmark"></i>
+                        <span class="snk-sidebar-text">Kültür</span>
+                    </a>
+                    <a href="kategoriler.html?category=spor" class="snk-sidebar-item">
+                        <i class="fas fa-futbol"></i>
+                        <span class="snk-sidebar-text">Spor</span>
+                    </a>
+                </div>
+                
+                <!-- Kaynaklar -->
+                <div class="snk-sidebar-section">
+                    <h3 class="snk-sidebar-heading">KAYNAKLAR</h3>
+                    <a href="hakkimizda.html" class="snk-sidebar-item">
+                        <i class="fas fa-info-circle"></i>
+                        <span class="snk-sidebar-text">Hakkımızda</span>
+                    </a>
+                    <a href="iletisim.html" class="snk-sidebar-item">
+                        <i class="fas fa-envelope"></i>
+                        <span class="snk-sidebar-text">İletişim</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Ana İçerik -->
+            <main class="snk-main-content snk-user-main">
+                <!-- Profil Üst Kısmı -->
+                <div class="snk-user-header">
+                    <div class="snk-user-cover">
+                        <img src="../public/images/cover.jpg" alt="Kapak Fotoğrafı">
+                    </div>
+                    <img src="../public/images/profile.png" alt="Profil Fotoğrafı" class="snk-user-profile">
+                    <div class="snk-user-info">
+                        <h1 class="snk-user-name">Ahmet Yılmaz</h1>
+                        <div class="snk-user-username">@ahmetyilmaz</div>
+                        <p class="snk-user-bio">Senirkent Blog'da teknoloji ve eğitim konularında içerik üreticisi. Yazılım geliştirme ve yeni teknolojiler konusunda tutkuluyum.</p>
+                        
+                        <div class="snk-user-stats">
+                            <div class="snk-stat-item">
+                                <span class="snk-stat-value">57</span>
+                                <span class="snk-stat-label">Yazı</span>
+                            </div>
+                            <div class="snk-stat-item">
+                                <span class="snk-stat-value">142</span>
+                                <span class="snk-stat-label">Takipçi</span>
+                            </div>
+                            <div class="snk-stat-item">
+                                <span class="snk-stat-value">38</span>
+                                <span class="snk-stat-label">Takip</span>
+                            </div>
+                            <div class="snk-stat-item">
+                                <span class="snk-stat-value">12</span>
+                                <span class="snk-stat-label">Rozet</span>
+                            </div>
+                        </div>
+                        
+                        <div class="snk-user-actions">
+                            <button class="snk-user-action-btn snk-follow-btn" id="user_followBtn">
+                                <i class="fas fa-user-plus"></i>
+                                Takip Et
+                            </button>
+                            <button class="snk-user-action-btn snk-message-btn" id="user_messageBtn">
+                                <i class="fas fa-envelope"></i>
+                                Mesaj Gönder
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Profil Sekme Navigasyonu -->
+                <div class="snk-user-tabs" id="user_tabNav">
+                    <div class="snk-user-tab active" data-tab="posts">Yazılar</div>
+                    <div class="snk-user-tab" data-tab="badges">Rozetler</div>
+                    <div class="snk-user-tab" data-tab="favorites">Favoriler</div>
+                    <div class="snk-user-tab" data-tab="about">Hakkında</div>
+                </div>
+                
+                <!-- Profil Yazılar Bölümü -->
+                <div class="snk-user-section active" id="user_postsSection">
+                    <!-- Yazı 1 -->
+                    <div class="snk-user-post-card fade-in">
+                        <div class="snk-user-post-image">
+                            <img src="../public/images/placeholder.jpg" alt="Yazı Görseli">
+                            <span class="snk-user-post-category" data-category="teknoloji">Teknoloji</span>
+                        </div>
+                        <div class="snk-user-post-content">
+                            <h3 class="snk-user-post-title">Yapay Zekanın Geleceği ve İş Dünyasına Etkileri</h3>
+                            <p class="snk-user-post-excerpt">Yapay zeka teknolojileri her geçen gün gelişiyor ve iş dünyasında yeni fırsatlar yaratıyor. Peki bu gelişmeler istihdamı nasıl etkileyecek?</p>
+                            <div class="snk-user-post-meta">
+                                <span><i class="fas fa-calendar"></i> 5 Mart 2025</span>
+                                <span><i class="fas fa-eye"></i> 432 Okunma</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Yazı 2 -->
+                    <div class="snk-user-post-card fade-in">
+                        <div class="snk-user-post-image">
+                            <img src="../public/images/placeholder.jpg" alt="Yazı Görseli">
+                            <span class="snk-user-post-category" data-category="egitim">Eğitim</span>
+                        </div>
+                        <div class="snk-user-post-content">
+                            <h3 class="snk-user-post-title">Uzaktan Eğitimde Verimlilik: İpuçları ve Püf Noktaları</h3>
+                            <p class="snk-user-post-excerpt">Uzaktan eğitim sürecinde öğrenciniz veya eğitimci olarak verimliliğinizi artıracak pratik ipuçları ve yöntemler.</p>
+                            <div class="snk-user-post-meta">
+                                <span><i class="fas fa-calendar"></i> 28 Şubat 2025</span>
+                                <span><i class="fas fa-eye"></i> 347 Okunma</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Yazı 3 -->
+                    <div class="snk-user-post-card fade-in">
+                        <div class="snk-user-post-image">
+                            <img src="../public/images/placeholder.jpg" alt="Yazı Görseli">
+                            <span class="snk-user-post-category" data-category="teknoloji">Teknoloji</span>
+                        </div>
+                        <div class="snk-user-post-content">
+                            <h3 class="snk-user-post-title">Blokzincir Teknolojisi ve Günlük Hayattaki Uygulamaları</h3>
+                            <p class="snk-user-post-excerpt">Kripto paraların ötesinde, blokzincir teknolojisinin finans, sağlık ve eğitim gibi alanlarda sunduğu yenilikçi çözümler.</p>
+                            <div class="snk-user-post-meta">
+                                <span><i class="fas fa-calendar"></i> 20 Şubat 2025</span>
+                                <span><i class="fas fa-eye"></i> 589 Okunma</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Yazı 4 -->
+                    <div class="snk-user-post-card fade-in">
+                        <div class="snk-user-post-image">
+                            <img src="../public/images/placeholder.jpg" alt="Yazı Görseli">
+                            <span class="snk-user-post-category" data-category="egitim">Eğitim</span>
+                        </div>
+                        <div class="snk-user-post-content">
+                            <h3 class="snk-user-post-title">Öğrenciler İçin Etkili Zaman Yönetimi Stratejileri</h3>
+                            <p class="snk-user-post-excerpt">Okul, ödev ve sosyal hayat arasında denge kurmakta zorlanan öğrenciler için bilimsel temelli zaman yönetimi teknikleri.</p>
+                            <div class="snk-user-post-meta">
+                                <span><i class="fas fa-calendar"></i> 15 Şubat 2025</span>
+                                <span><i class="fas fa-eye"></i> 412 Okunma</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Profil Rozetler Bölümü -->
+                <div class="snk-user-section" id="user_badgesSection">
+                    <!-- Rozet 1 -->
+                    <div class="snk-badge-card slide-in">
+                        <div class="snk-badge-icon">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <h3 class="snk-badge-name">İçerik Üretici</h3>
+                        <p class="snk-badge-description">50'den fazla yazı yayınladı</p>
+                        <span class="snk-badge-date">10 Ocak 2025</span>
+                    </div>
+                    
+                    <!-- Rozet 2 -->
+                    <div class="snk-badge-card slide-in">
+                        <div class="snk-badge-icon">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <h3 class="snk-badge-name">Popüler Yazar</h3>
+                        <p class="snk-badge-description">Yazıları 10.000+ kez okundu</p>
+                        <span class="snk-badge-date">15 Aralık 2024</span>
+                    </div>
+                    
+                    <!-- Rozet 3 -->
+                    <div class="snk-badge-card slide-in">
+                        <div class="snk-badge-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3 class="snk-badge-name">Topluluk Lideri</h3>
+                        <p class="snk-badge-description">100+ takipçiye ulaştı</p>
+                        <span class="snk-badge-date">5 Kasım 2024</span>
+                    </div>
+                    
+                    <!-- Rozet 4 -->
+                    <div class="snk-badge-card slide-in">
+                        <div class="snk-badge-icon">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                        <h3 class="snk-badge-name">Teknoloji Uzmanı</h3>
+                        <p class="snk-badge-description">Teknoloji kategorisinde 25+ yazı yazdı</p>
+                        <span class="snk-badge-date">1 Ekim 2024</span>
+                    </div>
+                </div>
+                
+                <!-- Profil Favoriler Bölümü -->
+                <div class="snk-user-section" id="user_favoritesSection">
+                    <!-- Favori 1 -->
+                    <div class="snk-user-post-card fade-in">
+                        <div class="snk-user-post-image">
+                            <img src="../public/images/placeholder.jpg" alt="Yazı Görseli">
+                            <span class="snk-user-post-category" data-category="kultur">Kültür</span>
+                        </div>
+                        <div class="snk-user-post-content">
+                            <h3 class="snk-user-post-title">Geleneksel Türk Sanatının Modern Yorumları</h3>
+                            <p class="snk-user-post-excerpt">Günümüz sanatçıları geleneksel Türk sanatlarını nasıl yorumluyor ve çağdaş eserlere dönüştürüyor?</p>
+                            <div class="snk-user-post-meta">
+                                <span><i class="fas fa-user"></i> Zeynep Kaya</span>
+                                <span><i class="fas fa-eye"></i> 722 Okunma</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Favori 2 -->
+                    <div class="snk-user-post-card fade-in">
+                        <div class="snk-user-post-image">
+                            <img src="../public/images/placeholder.jpg" alt="Yazı Görseli">
+                            <span class="snk-user-post-category" data-category="spor">Spor</span>
+                        </div>
+                        <div class="snk-user-post-content">
+                            <h3 class="snk-user-post-title">Doğa Sporlarının Fiziksel ve Zihinsel Sağlığa Etkileri</h3>
+                            <p class="snk-user-post-excerpt">Doğa sporları yapmanın vücut ve zihin sağlığına olan olumlu etkileri ve başlangıç için öneriler.</p>
+                            <div class="snk-user-post-meta">
+                                <span><i class="fas fa-user"></i> Murat Demir</span>
+                                <span><i class="fas fa-eye"></i> 536 Okunma</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Profil Hakkında Bölümü -->
+                <div class="snk-user-section" id="user_aboutSection">
+                    <!-- Özel tek sütunlu hakkımda kartı -->
+                    <div class="snk-user-about-card-single">
+                        <h2>Hakkımda</h2>
+                        <p>Merhaba, ben Ahmet Yılmaz. İstanbul Teknik Üniversitesi Bilgisayar Mühendisliği mezunuyum ve şu anda bir yazılım firmasında kıdemli geliştirici olarak çalışıyorum.</p>
+                        <p>Teknoloji ve eğitim alanlarında 5 yılı aşkın süredir içerik üretiyorum. Yapay zeka, veri bilimi ve eğitim teknolojileri alanlarında uzmanlaşmış durumdayım.</p>
+                        <p>Senirkent Blog'da düzenli olarak yazılar yazarak bilgi ve deneyimlerimi paylaşmaktan büyük keyif alıyorum. Amacım, teknoloji ve eğitim konularını herkesin anlayabileceği şekilde aktarmak ve okuyucularıma değer katmak.</p>
+                        
+                        <h3>İlgi Alanlarım</h3>
+                        <ul>
+                            <li>Yapay Zeka ve Makine Öğrenmesi</li>
+                            <li>Web Geliştirme ve Tasarım</li>
+                            <li>Eğitim Teknolojileri</li>
+                            <li>Mobil Uygulama Geliştirme</li>
+                            <li>Veri Bilimi ve Analizi</li>
+                        </ul>
+                        
+                        <h3>İletişim</h3>
+                        <div class="snk-user-contact">
+                            <div class="snk-user-contact-item">
+                                <i class="fas fa-envelope"></i>
+                                <span>ahmet.yilmaz@gmail.com</span>
+                            </div>
+                            <div class="snk-user-contact-item">
+                                <i class="fas fa-globe"></i>
+                                <span>www.ahmetyilmaz.com</span>
+                            </div>
+                            <div class="snk-user-contact-item">
+                                <i class="fab fa-linkedin"></i>
+                                <span>linkedin.com/in/ahmetyilmaz</span>
+                            </div>
+                            <div class="snk-user-contact-item">
+                                <i class="fab fa-twitter"></i>
+                                <span>@ahmetyilmaz</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Popup Container -->
+    <div class="snk-popup-overlay" id="snk_popupOverlay">
+        <div class="snk-popup-container">
+            <div class="snk-popup-header">
+                <h2 class="snk-popup-title" id="snk_popupTitle"></h2>
+                <button class="snk-popup-close-btn" id="snk_popupCloseBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="snk-popup-content" id="snk_popupContent">
+                <!-- Popup içeriği JavaScript ile yüklenir -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobil Menü Butonu -->
+    <button class="snk-mobile-menu-btn" id="mobileSidebarToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- JavaScript dosyaları -->
+    <script src="../components/dom-utils.js"></script>
+    <script src="../components/sidebar.js"></script>
+    <script src="../components/main.js"></script>
+    <script src="../components/popup.js"></script>
+    <script src="../components/popup-handler.js"></script>
+    <script src="../components/userspage.js"></script>
+    <script src="../darkjs/darkmode.js"></script>
+</body>
+</html>

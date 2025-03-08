@@ -20,17 +20,27 @@
                 <h1 class="snk-site-title">Senirkent Blog</h1>
             </div>
             
-            <!-- Arama -->
+            <!-- Arama Alanı -->
             <div class="snk-header-search">
-                <i class="fas fa-search snk-search-icon"></i>
-                <input type="text" class="snk-search-input" placeholder="Senirkent Blog'da Ara">
+                <div class="snk-search-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <input type="text" class="snk-search-input" placeholder="Blog'da ara...">
             </div>
             
-            <!-- Sağ Köşe Butonları -->
+            <!-- Butonlar ve Profil -->
             <div class="snk-header-actions">
-                <button class="snk-header-btn snk-create-btn">
+                <button class="snk-header-btn snk-login-btn" id="snk_login_btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Oturum Aç
+                </button>
+                <button class="snk-header-btn snk-register-btn" id="snk_register_btn">
+                    <i class="fas fa-user-plus"></i>
+                    Kaydol
+                </button>
+                <button class="snk-header-btn snk-create-btn" id="snk_create_btn">
                     <i class="fas fa-plus"></i>
-                    <span class="snk-btn-text">Oluştur</span>
+                    Oluştur
                 </button>
                 
                 <!-- Profil Menü -->
@@ -46,7 +56,7 @@
                             </div>
                         </div>
                         
-                        <a href="#" class="snk-menu-item">
+                        <a href="userpage.html" class="snk-menu-item">
                             <i class="fas fa-user"></i>
                             Profili Görüntüle
                         </a>
@@ -68,9 +78,9 @@
                         <a href="#" class="snk-menu-item">
                             <i class="fas fa-moon"></i>
                             Karanlık Mod
-                            <label class="eren-theme-switch">
+                            <label class="snk-toggle-switch">
                                 <input type="checkbox" checked>
-                                <span class="eren-switch-ball"></span>
+                                <span class="snk-toggle-slider"></span>
                             </label>
                         </a>
                         
