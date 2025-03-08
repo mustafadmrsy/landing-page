@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Senirkent MYO Blog - Admin Panel</title>
-    <link rel="stylesheet" href="../css/main.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/main.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" type="text/css">
     <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../styles/darkmode.css" type="text/css">
     <style>
         /* Admin Panel Styles */
         body {
@@ -407,9 +408,181 @@
                 opacity: 1;
             }
         }
+        
+        /* Local Users Modal */
+        .local-users-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .local-users-dialog {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 400px;
+            max-width: 90%;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .local-users-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .local-users-message {
+            margin-bottom: 20px;
+            color: #34495e;
+        }
+        
+        .local-users-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        .local-users-cancel {
+            background-color: #ecf0f1;
+            border: none;
+            color: #7f8c8d;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .local-users-clear {
+            background-color: #e74c3c;
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        /* Admin Login Form Styles */
+        .admin-login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        
+        .admin-login-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            width: 400px;
+            max-width: 90%;
+            text-align: center;
+        }
+        
+        body.dark-mode .admin-login-container {
+            background-color: #2a2a2a;
+            color: #f0f0f0;
+        }
+        
+        .admin-login-container h2 {
+            margin-top: 0;
+            color: #3498db;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .admin-password-input {
+            width: 100%;
+            padding: 12px;
+            margin: 15px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+        
+        body.dark-mode .admin-password-input {
+            background-color: #333;
+            color: #fff;
+            border-color: #444;
+        }
+        
+        .admin-login-buttons {
+            margin-top: 20px;
+        }
+        
+        .admin-login-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        .admin-login-button:hover {
+            background-color: #2980b9;
+        }
+        
+        body.dark-mode .admin-login-button {
+            background-color: #2c5282;
+        }
+        
+        body.dark-mode .admin-login-button:hover {
+            background-color: #1a365d;
+        }
+        
+        /* Admin Karşılama Mesajı */
+        .admin-welcome-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #2c3e50;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            z-index: 1000;
+            display: none;
+            animation: slideText 15s linear infinite;
+            overflow: hidden;
+            white-space: nowrap;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        @keyframes slideText {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        /* Dark Mode için karşılama mesajı */
+        body.dark-mode .admin-welcome-banner {
+            background-color: #1a1a2e;
+            color: #f0f0f0;
+            box-shadow: 0 2px 5px rgba(255,255,255,0.1);
+        }
     </style>
 </head>
 <body>
+    <div class="admin-welcome-banner">
+        Hoşgeldiniz, Admin Paneline!
+    </div>
     <div class="admin-container">
         <h1 class="page-title">Senirkent MYO Blog - Admin Panel</h1>
         
@@ -420,6 +593,18 @@
         <button id="view-local-users-button" class="refresh-button" style="background-color: #27ae60; margin-bottom: 20px;">
             <i class="fas fa-database"></i> Yerel Kayıtları Görüntüle
         </button>
+        
+        <button id="admin-logout-button" class="refresh-button" style="background-color: #e74c3c; margin-bottom: 20px;">
+            <i class="fas fa-sign-out-alt"></i> Çıkış Yap
+        </button>
+        
+        <div class="refresh-button" style="display: inline-flex; align-items: center; justify-content: center; background-color: #3498db; margin-bottom: 20px;">
+            <i class="fas fa-moon"></i> Dark Mode
+            <label class="snk-toggle-switch eren-theme-switch" style="margin-left: 10px;">
+                <input type="checkbox" id="darkModeToggle">
+                <span class="snk-toggle-slider eren-switch-ball"></span>
+            </label>
+        </div>
         
         <div class="panel-container">
             <div class="panel">
@@ -504,6 +689,8 @@
     </div>
 
     <!-- Admin Panel Script -->
+    <script src="../components/admin-auth.js"></script>
+    <script src="../darkjs/darkmode.js"></script>
     <script>
         // API Endpoints - Using local storage only to avoid API connection issues
         // const API_URL = 'https://api.senirkentmyo.com/api/admin/users';
@@ -530,6 +717,11 @@
         document.addEventListener('DOMContentLoaded', () => {
             console.log('Admin panel DOM yüklendi');
             loadUsers();
+            // Burayı kaldırıyoruz çünkü admin-auth.js içinde karşılama mesajını gösteriyoruz
+            // document.querySelector('.admin-welcome-banner').style.display = 'block';
+            // setTimeout(() => {
+            //     document.querySelector('.admin-welcome-banner').style.display = 'none';
+            // }, 5000);
         });
         
         // Kullanıcıları yükle - Sadece yerel depo kullanarak
@@ -851,6 +1043,40 @@
         window.showRejectConfirm = showRejectConfirm;
         window.showPendingApproval = showPendingApproval;
         window.removeLocalUser = removeLocalUser;
+        
+        // Dark Mode Toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        if (darkModeToggle) {
+            // localStorage'dan dark mode durumunu kontrol et
+            const isDarkMode = localStorage.getItem('eren-theme') === 'dark';
+            darkModeToggle.checked = isDarkMode;
+            
+            // Dark mode değişikliğini dinle
+            darkModeToggle.addEventListener('change', function() {
+                if (this.checked) {
+                    localStorage.setItem('eren-theme', 'dark');
+                    document.body.classList.add('dark-mode');
+                } else {
+                    localStorage.setItem('eren-theme', 'light');
+                    document.body.classList.remove('dark-mode');
+                }
+            });
+            
+            // Sayfa yüklendiğinde dark mode durumunu uygula
+            if (isDarkMode) {
+                document.body.classList.add('dark-mode');
+            }
+        }
+        
+        // Admin Çıkış İşlemi
+        document.getElementById('admin-logout-button').addEventListener('click', function() {
+            // Admin oturum bilgilerini temizle
+            localStorage.removeItem('snk_adminLoggedIn');
+            localStorage.removeItem('snk_adminLoginTime');
+            
+            // Sayfayı yenile
+            window.location.reload();
+        });
     </script>
 </body>
 </html>
