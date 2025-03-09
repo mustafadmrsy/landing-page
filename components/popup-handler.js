@@ -158,28 +158,8 @@ function snk_popupHandler_showLoginForm() {
                     </div>
                 </div>
                 
-                <div class="snk-form-options">
-                    <div class="snk-remember-me">
-                        <input type="checkbox" id="snk_remember_me">
-                        <label for="snk_remember_me">Beni hatırla</label>
-                    </div>
-                    <a href="#" class="snk-forgot-password">Şifremi unuttum</a>
-                </div>
-                
                 <button type="submit" class="snk-auth-submit">Oturum Aç</button>
-                
                 <div id="snk_login_message" class="snk-form-message" style="display: none;"></div> 
-                <div class="snk-social-login">
-                    <button type="button" class="snk-social-btn snk-google-btn">
-                        <i class="fab fa-google"></i>
-                        Google ile Giriş Yap
-                    </button>
-                    <button type="button" class="snk-social-btn snk-facebook-btn">
-                        <i class="fab fa-facebook-f"></i>
-                        Facebook ile Giriş Yap
-                    </button>
-                </div>
-                
                 <div class="snk-auth-toggle">
                     Hesabınız yok mu? <a href="#" id="snk_switch_to_register">Kaydolun</a>
                 </div>
@@ -262,13 +242,29 @@ function snk_popupHandler_showLoginForm() {
             });
         }
         
+        // "Kaydolun" bağlantısı event listener'ı - düzeltildi
+        console.log('switchToRegister elementi:', switchToRegister);
         if (switchToRegister) {
-            switchToRegister.addEventListener('click', function(e) {
-                e.preventDefault();
-                snk_popupHandler_showRegisterForm();
+            // Event listener'ı temizle ve yeniden ekle (olası çift bağlantıları önlemek için)
+            switchToRegister.removeEventListener('click', handleSwitchToRegister);
+            switchToRegister.addEventListener('click', handleSwitchToRegister);
+        } else {
+            console.error('"Kaydolun" bağlantısı bulunamadı (#snk_switch_to_register)');
+            // Alternatif olarak document event delegation yöntemini kullan
+            document.addEventListener('click', function(e) {
+                if (e.target && e.target.id === 'snk_switch_to_register') {
+                    handleSwitchToRegister(e);
+                }
             });
         }
-    }, 100);
+        
+        // Kayıt formuna geçiş için işleyici fonksiyon
+        function handleSwitchToRegister(e) {
+            console.log('Kayıt formuna geçiş yapılıyor');
+            e.preventDefault();
+            snk_popupHandler_showRegisterForm();
+        }
+    }, 200); // Zaman aşımını 200ms'ye çıkardık, DOM elementlerinin yüklenmesi için daha fazla zaman
 }
 
 /**
@@ -326,21 +322,6 @@ function snk_popupHandler_showRegisterForm() {
                 <button type="submit" class="snk-auth-submit">Kaydol</button>
                 
                 <div id="snk_register_message" class="snk-form-message" style="display: none;"></div>
-                
-                <div class="snk-auth-divider">
-                </div>
-                
-                <div class="snk-social-login">
-                    <button type="button" class="snk-social-btn snk-google-btn">
-                        <i class="fab fa-google"></i>
-                        Google ile Kaydol
-                    </button>
-                    <button type="button" class="snk-social-btn snk-facebook-btn">
-                        <i class="fab fa-facebook-f"></i>
-                        Facebook ile Kaydol
-                    </button>
-                </div>
-                
                 <div class="snk-auth-toggle">
                     Zaten hesabınız var mı? <a href="#" id="snk_switch_to_login">Oturum Açın</a>
                 </div>
@@ -497,11 +478,27 @@ function snk_popupHandler_showRegisterForm() {
             });
         }
         
+        // "Oturum Açın" bağlantısı event listener'ı - düzeltildi
+        console.log('switchToLogin elementi:', switchToLogin);
         if (switchToLogin) {
-            switchToLogin.addEventListener('click', function(e) {
-                e.preventDefault();
-                snk_popupHandler_showLoginForm();
+            // Event listener'ı temizle ve yeniden ekle (olası çift bağlantıları önlemek için)
+            switchToLogin.removeEventListener('click', handleSwitchToLogin);
+            switchToLogin.addEventListener('click', handleSwitchToLogin);
+        } else {
+            console.error('"Oturum Açın" bağlantısı bulunamadı (#snk_switch_to_login)');
+            // Alternatif olarak document event delegation yöntemini kullan
+            document.addEventListener('click', function(e) {
+                if (e.target && e.target.id === 'snk_switch_to_login') {
+                    handleSwitchToLogin(e);
+                }
             });
+        }
+        
+        // Oturum açma formuna geçiş için işleyici fonksiyon
+        function handleSwitchToLogin(e) {
+            console.log('Oturum açma formuna geçiş yapılıyor');
+            e.preventDefault();
+            snk_popupHandler_showLoginForm();
         }
         
         // E-posta input alanı için canlı kontrol
@@ -515,36 +512,157 @@ function snk_popupHandler_showRegisterForm() {
                 }
             });
         }
-    }, 100);
+    }, 200); // Zaman aşımını 200ms'ye çıkardık, DOM elementlerinin yüklenmesi için daha fazla zaman
 }
 
 // Sayfa yüklendiğinde hazırlık
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Popup Handler yüklendi');
     
-    // Popup olaylarını ayarla
+    // Popup eventlerini kurulum
     snk_popupHandler_setupEvents();
+
+    // "Devamını Oku" butonları için eventleri ekle
+    snk_popupHandler_setupReadMoreButtons();
     
-    // "Devamını Oku" butonlarını ayarla
-    // Burada setupReadMoreButtons fonksiyonunu çağırmıyoruz çünkü
-    // butonlar main.js tarafından dinamik olarak oluşturuluyor olabilir
-    
-    // Ana içerik yüklendiğinde butonları ayarla
-    const postsContainer = document.getElementById('snk_postsContainer');
-    if (postsContainer) {
-        // MutationObserver ile DOM değişikliklerini izle
-        const observer = new MutationObserver(function(mutations) {
-            // DOM değiştiğinde "Devamını Oku" butonlarını ayarla
-            snk_popupHandler_setupReadMoreButtons();
-        });
-        
-        // Gözlem yapılandırması
-        const config = { childList: true, subtree: true };
-        
-        // Gözlemi başlat
-        observer.observe(postsContainer, config);
-    }
+    // Kullanım Koşulları ve Gizlilik Politikası bağlantıları için click event'lerini ayarla
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('snk-terms-link')) {
+            e.preventDefault();
+            const linkText = e.target.textContent.trim();
+            if (linkText === "Kullanım Koşulları") {
+                snk_popupHandler_showTermsPopup();
+            } else if (linkText === "Gizlilik Politikası") {
+                snk_popupHandler_showPrivacyPopup();
+            }
+        }
+    });
 });
+
+/**
+ * Kullanım Koşulları popup'ını gösterir
+ */
+function snk_popupHandler_showTermsPopup() {
+    const currentDate = new Date();
+    const formattedDate = `${currentDate.getDate().toString().padStart(2, '0')}.${(currentDate.getMonth() + 1).toString().padStart(2, '0')}.${currentDate.getFullYear()}`;
+    
+    const termsContent = `
+        <div class="snk-terms-policy-container">
+            <h2 class="snk-terms-policy-title">Kullanım Koşulları</h2>
+            <p class="snk-terms-policy-date">Son Güncelleme: ${formattedDate}</p>
+            
+            <div class="snk-terms-policy-section">
+                <h3>1. Kabul Edilen Koşullar</h3>
+                <p>Bu blog platformunu kullanarak aşağıdaki koşulları kabul etmiş sayılırsınız. Kullanım koşullarını kabul etmiyorsanız, lütfen platformu kullanmayın.</p>
+            </div>
+            
+            <div class="snk-terms-policy-section">
+                <h3>2. Hizmet Tanımı</h3>
+                <p>Bu platform, kullanıcıların blog yazıları oluşturması ve yayınlaması için tasarlanmıştır. Platformun sunulan hizmetler konusunda herhangi bir garanti vermediğini ve değişikliğe tabi olabileceğini kabul edersiniz.</p>
+            </div>
+            
+            <div class="snk-terms-policy-section">
+                <h3>3. Kullanıcı Yükümlülükleri</h3>
+                <ul class="snk-terms-policy-list">
+                    <li>Yasalara ve etik kurallara uygun içerik yayınlamak.</li>
+                    <li>Diğer kullanıcıların haklarına saygı göstermek.</li>
+                    <li>Platforma zarar verebilecek veya hizmetin sürekliliğini riske atacak herhangi bir faaliyetten kaçınmak.</li>
+                </ul>
+            </div>
+            
+            <div class="snk-terms-policy-section">
+                <h3>4. İçerik Sahipliği</h3>
+                <p>Platformda yayınladığınız tüm içeriklerin sorumluluğu size aittir. Yayınladığınız içeriğin telif hakkı ve diğer yasal düzenlemelere uygun olduğunu taahhüt edersiniz.</p>
+            </div>
+            
+            <div class="snk-terms-policy-section">
+                <h3>5. Hesap Kapatma ve Erişim Engelleme</h3>
+                <p>Platform, kullanıcıların kurallara aykırı davranması durumunda hesaplarını askıya alma veya sonlandırma hakkını saklı tutar.</p>
+            </div>
+            
+            <div class="snk-terms-policy-back">
+                <button id="snk_terms_back_button" class="snk-back-button">
+                    <i class="fas fa-arrow-left"></i> Kayıt Formuna Geri Dön
+                </button>
+            </div>
+        </div>
+    `;
+    
+    snk_popupHandler_openPopup('Kullanım Koşulları', termsContent);
+    
+    // Geri dönüş butonu event listener'ı ekle
+    setTimeout(() => {
+        const backButton = document.getElementById('snk_terms_back_button');
+        if (backButton) {
+            backButton.addEventListener('click', function() {
+                snk_popupHandler_showRegisterForm();
+            });
+        }
+    }, 100);
+}
+
+/**
+ * Gizlilik Politikası popup'ını gösterir
+ */
+function snk_popupHandler_showPrivacyPopup() {
+    const currentDate = new Date();
+    const formattedDate = `${currentDate.getDate().toString().padStart(2, '0')}.${(currentDate.getMonth() + 1).toString().padStart(2, '0')}.${currentDate.getFullYear()}`;
+    
+    const privacyContent = `
+        <div class="snk-terms-policy-container">
+            <h2 class="snk-terms-policy-title">Gizlilik Politikası</h2>
+            <p class="snk-terms-policy-date">Son Güncelleme: ${formattedDate}</p>
+            
+            <div class="snk-terms-policy-section">
+                <h3>1. Toplanan Bilgiler</h3>
+                <p>Platformu kullanırken aşağıdaki bilgiler toplanabilir:</p>
+                <ul class="snk-terms-policy-list">
+                    <li>Ad, e-posta adresi ve diğer hesap bilgileri.</li>
+                    <li>Blog yazıları, yorumlar ve diğer paylaşılan içerikler.</li>
+                    <li>IP adresi, tarayıcı bilgileri ve platform kullanım verileri.</li>
+                </ul>
+            </div>
+            
+            <div class="snk-terms-policy-section">
+                <h3>2. Bilgilerin Kullanımı</h3>
+                <p>Toplanan bilgiler, platformun daha iyi hizmet sunması, güvenliğin sağlanması ve yasal yükümlülüklerin yerine getirilmesi amacıyla kullanılabilir.</p>
+            </div>
+            
+            <div class="snk-terms-policy-section">
+                <h3>3. Çerezler ve Takip Teknolojileri</h3>
+                <p>Platform, kullanıcı deneyimini iyileştirmek için çerezler ve benzeri teknolojiler kullanabilir. Tarayıcı ayarlarınızı değiştirerek çerezleri reddedebilirsiniz.</p>
+            </div>
+            
+            <div class="snk-terms-policy-section">
+                <h3>4. Bilgilerin Paylaşımı</h3>
+                <p>Kullanıcı bilgileriniz, özel durumlar dışında (yasal zorunluluklar, hizmet sağlayıcılarla paylaşım vb.) üçüncü kişilerle paylaşılmaz.</p>
+            </div>
+            
+            <div class="snk-terms-policy-section">
+                <h3>5. Güvenlik</h3>
+                <p>Bilgilerinizin güvenliğini sağlamak için uygun teknik ve idari önlemler alınmaktadır. Ancak internet üzerinden veri iletiminin tam güvenlik sağlamayabileceğini unutmayın.</p>
+            </div>
+            
+            <div class="snk-terms-policy-back">
+                <button id="snk_privacy_back_button" class="snk-back-button">
+                    <i class="fas fa-arrow-left"></i> Kayıt Formuna Geri Dön
+                </button>
+            </div>
+        </div>
+    `;
+    
+    snk_popupHandler_openPopup('Gizlilik Politikası', privacyContent);
+    
+    // Geri dönüş butonu event listener'ı ekle
+    setTimeout(() => {
+        const backButton = document.getElementById('snk_privacy_back_button');
+        if (backButton) {
+            backButton.addEventListener('click', function() {
+                snk_popupHandler_showRegisterForm();
+            });
+        }
+    }, 100);
+}
 
 // Global alanda tanımla
 window.snk_popupHandler_openPopup = snk_popupHandler_openPopup;
