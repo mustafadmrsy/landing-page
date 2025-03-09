@@ -50,9 +50,7 @@ function validateAdminLogin() {
     
     // Şifre doğru mu kontrol et
     if (enteredPassword === ADMIN_PASSWORD) {
-        // Başarılı giriş
-        localStorage.setItem('snk_adminLoggedIn', 'true');
-        localStorage.setItem('snk_adminLoginTime', Date.now());
+        // Başarılı giriş - artık localStorage kullanmıyoruz, yalnızca oturum için geçerli
         
         // Giriş formunu kaldır
         const loginForm = document.querySelector('.admin-login-overlay');
@@ -86,29 +84,20 @@ function showAdminContent() {
         welcomeBanner.style.display = 'block';
         welcomeBanner.innerHTML = `Hoşgeldiniz, Değerli Yönetim Üyesi! | Senirkent MYO Blog Admin Paneline Hoşgeldiniz! | ${new Date().toLocaleDateString('tr-TR')} | Yönetim Paneli Aktif`;
     }
+    
+    // Çıkış butonu için olay dinleyici ekle
+    const logoutButton = document.getElementById('admin-logout-button');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', logoutAdmin);
+    }
 }
 
 /**
- * Admin oturum durumunu kontrol et
- * @returns {boolean} Admin girişi yapılmış mı?
+ * Admin çıkışı yapma
  */
-function checkAdminSession() {
-    const isLoggedIn = localStorage.getItem('snk_adminLoggedIn') === 'true';
-    const loginTime = parseInt(localStorage.getItem('snk_adminLoginTime') || '0');
-    const currentTime = Date.now();
-    
-    // Oturum süresi kontrolü (24 saat)
-    const sessionDuration = 24 * 60 * 60 * 1000; // 24 saat
-    
-    // Oturum süresi dolmuş mu kontrol et
-    if (isLoggedIn && (currentTime - loginTime) < sessionDuration) {
-        return true;
-    } else {
-        // Süresi dolmuşsa oturum bilgilerini temizle
-        localStorage.removeItem('snk_adminLoggedIn');
-        localStorage.removeItem('snk_adminLoginTime');
-        return false;
-    }
+function logoutAdmin() {
+    // Sayfayı yeniden yükle
+    window.location.reload();
 }
 
 /**
@@ -127,14 +116,8 @@ function initAdminPage() {
         adminContainer.style.display = 'none';
     }
     
-    // Admin oturumu var mı kontrol et
-    if (checkAdminSession()) {
-        // Oturum varsa içeriği göster
-        showAdminContent();
-    } else {
-        // Oturum yoksa giriş formunu göster
-        showAdminLoginForm();
-    }
+    // Her seferinde giriş formunu göster (localStorage kontrolünü kaldırdık)
+    showAdminLoginForm();
     
     // Dark mode değişikliklerini dinle
     window.addEventListener('storage', function(e) {
@@ -154,5 +137,5 @@ document.addEventListener('DOMContentLoaded', initAdminPage);
 // Fonksiyonları global scope'a ekle
 window.showAdminLoginForm = showAdminLoginForm;
 window.validateAdminLogin = validateAdminLogin;
-window.checkAdminSession = checkAdminSession;
 window.initAdminPage = initAdminPage;
+window.logoutAdmin = logoutAdmin;

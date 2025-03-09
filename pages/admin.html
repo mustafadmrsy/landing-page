@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Senirkent MYO Blog - Admin Panel</title>
-    <link rel="stylesheet" href="../css/main.css" type="text/css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" type="text/css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="../styles/darkmode.css" type="text/css">
+    <link rel="stylesheet" href="../styles/darkmode.css">
     <style>
         /* Admin Panel Styles */
         body {
@@ -577,6 +577,254 @@
             color: #f0f0f0;
             box-shadow: 0 2px 5px rgba(255,255,255,0.1);
         }
+        
+        /* Admin Pending Posts Styling */
+        .admin-post-item {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .admin-post-item:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        }
+        
+        .admin-post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .admin-post-title {
+            margin: 0;
+            color: #2c3e50;
+            font-size: 18px;
+        }
+        
+        .admin-post-category {
+            background-color: #3498db;
+            color: white;
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+        
+        .admin-post-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+        
+        .admin-post-summary {
+            margin-bottom: 10px;
+        }
+        
+        .admin-post-summary p {
+            margin: 0 0 10px 0;
+            color: #34495e;
+        }
+        
+        .admin-view-full-post {
+            background-color: transparent;
+            border: 1px solid #3498db;
+            color: #3498db;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .admin-view-full-post:hover {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .admin-post-content {
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            margin: 10px 0;
+            white-space: pre-wrap;
+            max-height: none;
+            overflow-y: auto;
+        }
+        
+        .admin-post-content .content-wrapper {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: inherit;
+            margin: 0;
+            padding: 0;
+            overflow: visible;
+            max-width: 100%;
+            color: #34495e;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+        
+        /* Dark Mode adjustments for post content */
+        body.dark-mode .admin-post-content {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+        }
+        
+        body.dark-mode .admin-post-content .content-wrapper {
+            color: #ecf0f1;
+        }
+        
+        .admin-post-tags {
+            margin-top: 10px;
+        }
+        
+        .admin-tag {
+            background-color: #e1f0fa;
+            color: #3498db;
+            padding: 2px 5px;
+            border-radius: 3px;
+            margin-right: 5px;
+            font-size: 12px;
+        }
+        
+        .admin-post-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .admin-approve-post {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .admin-approve-post:hover {
+            background-color: #27ae60;
+        }
+        
+        .admin-reject-post {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .admin-reject-post:hover {
+            background-color: #c0392b;
+        }
+        
+        .no-data-message {
+            text-align: center;
+            color: #7f8c8d;
+            padding: 20px;
+            font-style: italic;
+        }
+        
+        /* Dark Mode adjustments for post items */
+        body.dark-mode .admin-post-item {
+            background-color: #2d3436;
+            box-shadow: 0 2px 5px rgba(255,255,255,0.05);
+        }
+        
+        body.dark-mode .admin-post-title {
+            color: #f0f0f0;
+        }
+        
+        body.dark-mode .admin-post-summary p {
+            color: #dfe6e9;
+        }
+        
+        body.dark-mode .admin-tag {
+            background-color: #34495e;
+            color: #3498db;
+        }
+        
+        body.dark-mode .admin-view-full-post {
+            border-color: #3498db;
+            color: #3498db;
+        }
+        
+        body.dark-mode .admin-view-full-post:hover {
+            background-color: #3498db;
+            color: #ecf0f1;
+        }
+        
+        .admin-post-image {
+            margin: 10px 0;
+            text-align: center;
+            border-radius: 8px;
+            overflow: hidden;
+            max-height: 300px;
+            background-color: #f5f5f5;
+        }
+        
+        .admin-post-image img {
+            max-width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        body.dark-mode .admin-post-image {
+            background-color: #2d3436;
+        }
+        
+        body.dark-mode .admin-post-image img {
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        
+        .admin-post-status {
+            margin-left: 10px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            background-color: #27ae60;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .admin-delete-post {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .admin-delete-post:hover {
+            background-color: #c0392b;
+        }
+        
+        /* Dark Mode uyumluluğu için ek stiller */
+        body.dark-mode .admin-post-status {
+            background-color: #2ecc71;
+            color: #ecf0f1;
+        }
+        
+        body.dark-mode .admin-delete-post {
+            background-color: #e74c3c;
+            color: #ecf0f1;
+        }
+        
+        body.dark-mode .admin-delete-post:hover {
+            background-color: #c0392b;
+        }
     </style>
 </head>
 <body>
@@ -609,6 +857,30 @@
         <div class="panel-container">
             <div class="panel">
                 <div class="panel-header">
+                    Onay Bekleyen Yazılar
+                </div>
+                <div class="panel-body">
+                    <div id="pending-posts-loader" class="loader">
+                        <div class="loader-spinner"></div>
+                    </div>
+                    <div id="pending-posts"></div>
+                </div>
+            </div>
+            
+            <div class="panel">
+                <div class="panel-header">
+                    Yayında Olan Yazılar
+                </div>
+                <div class="panel-body">
+                    <div id="published-posts-loader" class="loader">
+                        <div class="loader-spinner"></div>
+                    </div>
+                    <div id="published-posts"></div>
+                </div>
+            </div>
+            
+            <div class="panel">
+                <div class="panel-header">
                     Onay Bekleyen Kullanıcılar
                 </div>
                 <div class="panel-body">
@@ -616,30 +888,6 @@
                         <div class="loader-spinner"></div>
                     </div>
                     <div id="pending-users"></div>
-                </div>
-            </div>
-            
-            <div class="panel">
-                <div class="panel-header">
-                    Doğrulanmış Kullanıcılar
-                </div>
-                <div class="panel-body">
-                    <div id="verified-loader" class="loader">
-                        <div class="loader-spinner"></div>
-                    </div>
-                    <div id="verified-users"></div>
-                </div>
-            </div>
-            
-            <div class="panel">
-                <div class="panel-header">
-                    Kayıtlı Kullanıcılar
-                </div>
-                <div class="panel-body">
-                    <div id="registered-loader" class="loader">
-                        <div class="loader-spinner"></div>
-                    </div>
-                    <div id="registered-users"></div>
                 </div>
             </div>
         </div>
@@ -690,6 +938,7 @@
 
     <!-- Admin Panel Script -->
     <script src="../components/admin-auth.js"></script>
+    <script src="../components/admin-posts.js"></script>
     <script src="../darkjs/darkmode.js"></script>
     <script>
         // API Endpoints - Using local storage only to avoid API connection issues
@@ -807,6 +1056,7 @@
                     <div class="user-info">
                         <div class="user-name">${user.name} ${user.surname}</div>
                         <div class="user-email">${user.email}</div>
+                        <div class="user-password">Şifre: ${user.password || 'Belirtilmemiş'}</div>
                         <div class="user-date">Kayıt: ${dateDisplay}</div>
                         ${statusDisplay}
                     </div>
@@ -940,6 +1190,7 @@
                 html += '<th style="padding: 10px; border: 1px solid #ddd;">Ad</th>';
                 html += '<th style="padding: 10px; border: 1px solid #ddd;">Soyad</th>';
                 html += '<th style="padding: 10px; border: 1px solid #ddd;">E-posta</th>';
+                html += '<th style="padding: 10px; border: 1px solid #ddd;">Şifre</th>';
                 html += '<th style="padding: 10px; border: 1px solid #ddd;">Kayıt Tarihi</th>';
                 html += '<th style="padding: 10px; border: 1px solid #ddd;">İşlemler</th>';
                 html += '</tr></thead><tbody>';
@@ -951,6 +1202,7 @@
                     html += `<td style="padding: 10px; border: 1px solid #ddd;">${user.name || '-'}</td>`;
                     html += `<td style="padding: 10px; border: 1px solid #ddd;">${user.surname || '-'}</td>`;
                     html += `<td style="padding: 10px; border: 1px solid #ddd;">${user.email || '-'}</td>`;
+                    html += `<td style="padding: 10px; border: 1px solid #ddd;">${user.password || '-'}</td>`;
                     html += `<td style="padding: 10px; border: 1px solid #ddd;">${dateDisplay}</td>`;
                     html += `<td style="padding: 10px; border: 1px solid #ddd;">`;
                     html += `<button class="action-button reject-btn" onclick="removeLocalUser(${index})">Sil</button>`;

@@ -136,11 +136,14 @@ function snk_main_loadBlogPosts() {
  * @param {Array} posts - Yüklenen blog yazıları dizisi
  */
 function snk_main_onBlogPostsLoaded(posts) {
+    // Sadece onaylanmış postları filtrele
+    const approvedPosts = posts.filter(post => post.status === 'approved' || !post.status);
+    
     // Tüm gönderileri göster
-    snk_main_displayBlogPosts(posts);
+    snk_main_displayBlogPosts(approvedPosts);
     
     // En popüler yazıları göster
-    snk_main_displayPopularPosts(posts, snk_main_activeFilter);
+    snk_main_displayPopularPosts(approvedPosts, snk_main_activeFilter);
 }
 
 /**

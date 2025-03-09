@@ -363,7 +363,9 @@ function showBlogCreatePopup(user) {
             author_id: user.id || Date.now().toString(),
             date: new Date().toLocaleDateString('tr-TR'),
             views: 0,
-            image: imageUrl
+            image: imageUrl,
+            status: 'pending',  // Onay bekliyor durumu
+            createdDate: new Date().toLocaleDateString('tr-TR')
         };
 
         // Mevcut blog yazılarını al
@@ -385,7 +387,7 @@ function showBlogCreatePopup(user) {
             closePopup(popup);
             
             // Başarılı mesajı göster
-            alert('Blog yazınız başarıyla yayınlandı!');
+            alert('Blog yazınız başarıyla gönderildi! Onaylandıktan sonra yayınlanacaktır.');
             
             // Ana sayfayı yeniden yükle - yazılar gösterilecek
             if (window.location.pathname.includes('index.html') || window.location.pathname === '/' || window.location.pathname.endsWith('/')) {
@@ -403,7 +405,7 @@ function showBlogCreatePopup(user) {
                 notif.innerHTML = `
                     <div class="snk-notification-content">
                         <i class="fas fa-check-circle"></i>
-                        <p>Blog yazınız başarıyla yayınlandı! <a href="index.html">Ana sayfada görüntülemek için tıklayın</a>.</p>
+                        <p>Blog yazınız başarıyla gönderildi! Onaylandıktan sonra yayınlanacaktır. <a href="index.html">Ana sayfada görüntülemek için tıklayın</a>.</p>
                     </div>
                     <button class="snk-notification-close"><i class="fas fa-times"></i></button>
                 `;
@@ -736,12 +738,12 @@ function deleteBlogPost(postId) {
             // Kullanıcıya bildirim göster
             showNotification('Blog yazısı başarıyla silindi', 'success');
             
-            // Son yazılar gösterimini güncelle - eğer fonksiyon varsa
+            // Son yazılar gösterimini güncelle
             if (typeof updateRecentPostsDisplay === 'function') {
                 updateRecentPostsDisplay();
             }
             
-            // Profil sayfasındaki yazılar tabını güncelle - eğer fonksiyon varsa
+            // Profil sayfasındaki yazılar tabını güncelle
             if (typeof updateUserPostsDisplay === 'function') {
                 updateUserPostsDisplay();
             }
