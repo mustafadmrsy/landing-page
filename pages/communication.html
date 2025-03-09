@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="../styles/comment-system.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../styles/auth-forms.css">
+    <link rel="stylesheet" href="../styles/contact.css">
+    <link rel="stylesheet" href="../styles/darkmode.css">
 </head>
 <body>
     <div class="snk-container">
@@ -20,7 +22,7 @@
         <header class="snk-header">
             <!-- Logo Alanı -->
             <div class="snk-header-logo">
-                <img src="../public/img/logo.png" alt="Senirkent Blog" class="snk-logo-img">
+                <img src="../public/images/logo.png" alt="Senirkent Blog" class="snk-logo-img">
                 <h1 class="snk-site-title">Senirkent Blog</h1>
             </div>
             
@@ -49,6 +51,9 @@
                         </div>
                         <ul class="snk-profile-menu-list">
                             <li><a href="userpage.html"><i class="fas fa-user-circle"></i> Profili Görüntüle</a></li>
+                            <li><a href="#"><i class="fas fa-image"></i> Avatar Düzenle</a></li>
+                            <li><a href="#"><i class="fas fa-trophy"></i> Başarılar</a></li>
+                            <li><a href="#"><i class="fas fa-hands-helping"></i> Katkı Programı</a></li>
                             <li class="snk-toggle-item">
                                 <span><i class="fas fa-moon"></i> Karanlık Mod</span>
                                 <label class="snk-toggle-switch">
@@ -58,6 +63,8 @@
                             </li>
                             <li class="snk-divider"></li>
                             <li><a href="#" class="snk-logout"><i class="fas fa-sign-out-alt"></i> Çıkış Yap</a></li>
+                            <li><a href="#"><i class="fas fa-ad"></i> Reklamlar</a></li>
+                            <li><a href="#"><i class="fas fa-crown"></i> Premium</a></li>
                             <li><a href="#"><i class="fas fa-cog"></i> Ayarlar</a></li>
                         </ul>
                     </div>
@@ -100,9 +107,13 @@
                         <i class="fas fa-fire"></i>
                         <span class="snk-sidebar-text">Popüler</span>
                     </a>
+                    <a href="#" class="snk-sidebar-item">
+                        <i class="fas fa-compass"></i>
+                        <span class="snk-sidebar-text">Keşfet</span>
+                    </a>
                     <a href="Categories.html" class="snk-sidebar-item">
                         <i class="fas fa-th-large"></i>
-                        <span class="snk-sidebar-text">Kategoriler</span>
+                        <span class="snk-sidebar-text">Tüm Yazılar</span>
                     </a>
                 </div>
                 
@@ -117,7 +128,29 @@
                         <i class="fas fa-history"></i>
                         <span class="snk-sidebar-text">Geçmiş</span>
                     </a>
-                </div>               
+                </div>
+                
+                <!-- Kategoriler -->
+                <div class="snk-sidebar-section">
+                    <h3 class="snk-sidebar-heading">KATEGORİLER</h3>
+                    <a href="kategoriler.html?category=egitim" class="snk-sidebar-item">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span class="snk-sidebar-text">Eğitim</span>
+                    </a>
+                    <a href="kategoriler.html?category=teknoloji" class="snk-sidebar-item">
+                        <i class="fas fa-laptop-code"></i>
+                        <span class="snk-sidebar-text">Teknoloji</span>
+                    </a>
+                    <a href="kategoriler.html?category=kultur" class="snk-sidebar-item">
+                        <i class="fas fa-landmark"></i>
+                        <span class="snk-sidebar-text">Kültür</span>
+                    </a>
+                    <a href="kategoriler.html?category=spor" class="snk-sidebar-item">
+                        <i class="fas fa-futbol"></i>
+                        <span class="snk-sidebar-text">Spor</span>
+                    </a>
+                </div>
+                
                 <!-- Kaynaklar -->
                 <div class="snk-sidebar-section">
                     <h3 class="snk-sidebar-heading">KAYNAKLAR</h3>
@@ -135,46 +168,90 @@
             <!-- Ana İçerik -->
             <main class="snk-main-content">
                 <div class="snk-content-layout">
-                    <!-- Sol Sütun (Blog Yazıları) -->
-                    <div class="snk-content-main">
-                        <div class="snk-content-header">
-                            <h2 class="snk-content-title">En Güncel Paylaşımlar</h2>
-                            <div class="snk-filter-container">
-                                <button class="snk-filter-btn active" id="snk_filterNewest">
-                                    <i class="fas fa-clock"></i>
-                                    <span>En Yeni</span>
-                                </button>
-                                <button class="snk-filter-btn" id="snk_filterPopular">
-                                    <i class="fas fa-fire"></i>
-                                    <span>Popüler</span>
-                                </button>
+                    <div class="snk-contact-container">
+                        <div class="snk-contact-header">
+                            <h2 class="snk-content-title">Bizimle İletişime Geçin</h2>
+                            <p class="snk-contact-subtitle">Sorularınız, önerileriniz veya işbirliği talepleriniz için aşağıdaki iletişim formunu kullanabilirsiniz.</p>
+                        </div>
+                        
+                        <div class="snk-contact-content">
+                            <!-- Sol taraf - İletişim Formu -->
+                            <div class="snk-contact-form-container">
+                                <h3 class="snk-contact-section-title"><i class="fas fa-paper-plane"></i> İletişim Formu</h3>
+                                <form class="snk-contact-form" id="contactForm" action="mailto:senirkentblog@outlook.com.tr" method="post" enctype="text/plain">
+                                    <div class="snk-form-group">
+                                        <label for="name"><i class="fas fa-user"></i> Adınız Soyadınız</label>
+                                        <input type="text" id="name" name="name" class="snk-form-input" placeholder="Adınız ve soyadınız" required>
+                                    </div>
+                                    <div class="snk-form-group">
+                                        <label for="email"><i class="fas fa-envelope"></i> E-posta Adresiniz</label>
+                                        <input type="email" id="email" name="email" class="snk-form-input" placeholder="E-posta adresiniz" required>
+                                    </div>
+                                    <div class="snk-form-group">
+                                        <label for="subject"><i class="fas fa-heading"></i> Konu</label>
+                                        <input type="text" id="subject" name="subject" class="snk-form-input" placeholder="Mesajınızın konusu" required>
+                                    </div>
+                                    <div class="snk-form-group">
+                                        <label for="message"><i class="fas fa-comment-alt"></i> Mesajınız</label>
+                                        <textarea id="message" name="message" class="snk-form-textarea" placeholder="Mesajınızı buraya yazın..." rows="5" required></textarea>
+                                    </div>
+                                    <button type="submit" class="snk-contact-submit-btn">
+                                        <i class="fas fa-paper-plane"></i> Mesajı Gönder
+                                    </button>
+                                </form>
+                            </div>
+                            
+                            <!-- Sağ taraf - İletişim Bilgileri -->
+                            <div class="snk-contact-info-container">
+                                <h3 class="snk-contact-section-title"><i class="fas fa-info-circle"></i> İletişim Bilgilerimiz</h3>
+                                <div class="snk-contact-info">
+                                    <div class="snk-contact-info-item">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <div>
+                                            <h4>Adres</h4>
+                                            <p>Senirkent Meslek Yüksekokulu, Isparta, Türkiye</p>
+                                        </div>
+                                    </div>
+                                    <div class="snk-contact-info-item">
+                                        <i class="fas fa-phone-alt"></i>
+                                        <div>
+                                            <h4>Telefon</h4>
+                                            <p>+90 246 XXX XX XX</p>
+                                        </div>
+                                    </div>
+                                    <div class="snk-contact-info-item">
+                                        <i class="fas fa-envelope"></i>
+                                        <div>
+                                            <h4>E-posta</h4>
+                                            <p>info@senirkentblog.com</p>
+                                        </div>
+                                    </div>
+                                    <div class="snk-contact-info-item">
+                                        <i class="fas fa-clock"></i>
+                                        <div>
+                                            <h4>Çalışma Saatleri</h4>
+                                            <p>Pazartesi - Cuma: 09:00 - 17:00</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="snk-social-media">
+                                    <h3 class="snk-contact-section-title"><i class="fas fa-share-alt"></i> Sosyal Medya</h3>
+                                    <div class="snk-social-icons">
+                                        <a href="#" class="snk-social-icon"><i class="fab fa-twitter"></i></a>
+                                        <a href="https://www.instagram.com/senirkentblog/" class="snk-social-icon" target="_blank"><i class="fab fa-instagram"></i></a>
+                                        <a href="https://www.linkedin.com/company/senirkent-blog/about/" class="snk-social-icon" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         
-                        <!-- Son Blog Yazıları -->
-                        <div class="snk-recent-posts" id="snk_postsContainer">
-                            <!-- Blog Yazıları JavaScript ile yüklenir -->
-                            <div class="snk-loading">
-                                <i class="fas fa-spinner fa-spin"></i> Yükleniyor...
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Sağ Sütun (Kutucuklar için) -->
-                    <div class="snk-content-sidebar" id="snk_contentSidebar">
-                        <!-- En Çok Okunan Yazılar Kutucuğu -->
-                        <div class="snk-sidebar-widget">
-                            <div class="snk-sidebar-widget-header">
-                                <h3 class="snk-sidebar-widget-title">En Çok Okunan Yazılar</h3>
-                            </div>
-                            <div class="snk-sidebar-widget-content">
-                                <div class="snk-popular-posts" id="snk_popularPosts">
-                                    <!-- JavaScript ile doldurulacak -->
-                                    <div class="snk-loading">
-                                        <i class="fas fa-spinner fa-spin"></i> Yükleniyor...
-                                    </div>
-                                </div>
-                                <a href="Categories.html" class="snk-more-link">Daha fazla göster <i class="fas fa-angle-right"></i></a>
+                        <!-- Harita Bölümü -->
+                        <div class="snk-map-container">
+                            <h3 class="snk-contact-section-title"><i class="fas fa-map"></i> Konum</h3>
+                            <div class="snk-map">
+                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3158.5796663094287!2d30.55394251089855!3d38.105546671482695!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14c5b975752bc8c7%3A0x41b61d56e9071f3e!2sSenirkent%20Meslek%20Y%C3%BCksekokulu!5e0!3m2!1str!2str!4v1646498567123!5m2!1str!2str" 
+                                    width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
                             </div>
                         </div>
                     </div>
@@ -337,5 +414,7 @@
     <script src="../components/sidebar.js"></script>
     <script src="../components/popup.js"></script>
     <script src="../components/comment-system.js"></script>
+    <script src="../components/"></script>
+    <script src="../darkjs/darkmode.js"></script>
 </body>
 </html>

@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="../styles/comment-system.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../styles/auth-forms.css">
+    <link rel="stylesheet" href="../styles/about.css">
+    <link rel="stylesheet" href="../styles/darkmode.css">
 </head>
 <body>
     <div class="snk-container">
@@ -20,7 +22,7 @@
         <header class="snk-header">
             <!-- Logo Alanı -->
             <div class="snk-header-logo">
-                <img src="../public/img/logo.png" alt="Senirkent Blog" class="snk-logo-img">
+                <img src="../images/logo.png" alt="Senirkent Blog" class="snk-logo-img">
                 <h1 class="snk-site-title">Senirkent Blog</h1>
             </div>
             
@@ -41,7 +43,7 @@
                     </button>
                     <div id="profileDropdownMenu" class="snk-profile-dropdown-menu">
                         <div class="snk-profile-header">
-                            <img src="../public/images/profile.png" alt="Profil" class="snk-menu-profile-img">
+                            <img src="../images/profile.png" alt="Profil" class="snk-menu-profile-img">
                             <div class="snk-profile-info">
                                 <h4 class="snk-user-name">Mustafa Demirsoy</h4>
                                 <p class="snk-user-handle">@mustafademirsoy</p>
@@ -49,6 +51,9 @@
                         </div>
                         <ul class="snk-profile-menu-list">
                             <li><a href="userpage.html"><i class="fas fa-user-circle"></i> Profili Görüntüle</a></li>
+                            <li><a href="#"><i class="fas fa-image"></i> Avatar Düzenle</a></li>
+                            <li><a href="#"><i class="fas fa-trophy"></i> Başarılar</a></li>
+                            <li><a href="#"><i class="fas fa-hands-helping"></i> Katkı Programı</a></li>
                             <li class="snk-toggle-item">
                                 <span><i class="fas fa-moon"></i> Karanlık Mod</span>
                                 <label class="snk-toggle-switch">
@@ -58,6 +63,8 @@
                             </li>
                             <li class="snk-divider"></li>
                             <li><a href="#" class="snk-logout"><i class="fas fa-sign-out-alt"></i> Çıkış Yap</a></li>
+                            <li><a href="#"><i class="fas fa-ad"></i> Reklamlar</a></li>
+                            <li><a href="#"><i class="fas fa-crown"></i> Premium</a></li>
                             <li><a href="#"><i class="fas fa-cog"></i> Ayarlar</a></li>
                         </ul>
                     </div>
@@ -100,9 +107,13 @@
                         <i class="fas fa-fire"></i>
                         <span class="snk-sidebar-text">Popüler</span>
                     </a>
+                    <a href="#" class="snk-sidebar-item">
+                        <i class="fas fa-compass"></i>
+                        <span class="snk-sidebar-text">Keşfet</span>
+                    </a>
                     <a href="Categories.html" class="snk-sidebar-item">
                         <i class="fas fa-th-large"></i>
-                        <span class="snk-sidebar-text">Kategoriler</span>
+                        <span class="snk-sidebar-text">Tüm Yazılar</span>
                     </a>
                 </div>
                 
@@ -117,7 +128,29 @@
                         <i class="fas fa-history"></i>
                         <span class="snk-sidebar-text">Geçmiş</span>
                     </a>
-                </div>               
+                </div>
+                
+                <!-- Kategoriler -->
+                <div class="snk-sidebar-section">
+                    <h3 class="snk-sidebar-heading">KATEGORİLER</h3>
+                    <a href="kategoriler.html?category=egitim" class="snk-sidebar-item">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span class="snk-sidebar-text">Eğitim</span>
+                    </a>
+                    <a href="kategoriler.html?category=teknoloji" class="snk-sidebar-item">
+                        <i class="fas fa-laptop-code"></i>
+                        <span class="snk-sidebar-text">Teknoloji</span>
+                    </a>
+                    <a href="kategoriler.html?category=kultur" class="snk-sidebar-item">
+                        <i class="fas fa-landmark"></i>
+                        <span class="snk-sidebar-text">Kültür</span>
+                    </a>
+                    <a href="kategoriler.html?category=spor" class="snk-sidebar-item">
+                        <i class="fas fa-futbol"></i>
+                        <span class="snk-sidebar-text">Spor</span>
+                    </a>
+                </div>
+                
                 <!-- Kaynaklar -->
                 <div class="snk-sidebar-section">
                     <h3 class="snk-sidebar-heading">KAYNAKLAR</h3>
@@ -134,47 +167,132 @@
             
             <!-- Ana İçerik -->
             <main class="snk-main-content">
-                <div class="snk-content-layout">
-                    <!-- Sol Sütun (Blog Yazıları) -->
-                    <div class="snk-content-main">
-                        <div class="snk-content-header">
-                            <h2 class="snk-content-title">En Güncel Paylaşımlar</h2>
-                            <div class="snk-filter-container">
-                                <button class="snk-filter-btn active" id="snk_filterNewest">
-                                    <i class="fas fa-clock"></i>
-                                    <span>En Yeni</span>
-                                </button>
-                                <button class="snk-filter-btn" id="snk_filterPopular">
-                                    <i class="fas fa-fire"></i>
-                                    <span>Popüler</span>
-                                </button>
+                <div class="snk-about-container">
+                    <div class="snk-about-header">
+                        <h2 class="snk-about-title">Hakkımızda</h2>
+                        <p class="snk-about-subtitle">Senirkent Blog ekibi olarak, en güncel ve kaliteli içerikleri sizlerle paylaşmaktayız.</p>
+                    </div>
+
+                    <div class="snk-about-grid">
+                        <!-- Biz Kimiz? -->
+                        <div class="snk-about-card">
+                            <div class="snk-about-card-icon">
+                                <i class="fas fa-users"></i>
                             </div>
+                            <h3 class="snk-about-card-title">Biz Kimiz?</h3>
+                            <p class="snk-about-card-text">Biz, Eren Kaya ve Mustafa Demirsoy, Isparta Uygulamalı Bilimler Üniversitesi'nde Bilgisayar Programcılığı öğrencileri olarak, öğrencilere yönelik faydalı bir platform oluşturmayı amaçlıyoruz. Bu platform, öğrencilerin bilgi paylaşımında bulunabileceği, ders notlarına ve kaynaklara erişebileceği, güncel duyurular ve etkinliklerden haberdar olabileceği bir destek ağı sunar.
+
+                                Hedefimiz, öğrenciler için rehber niteliğinde bir topluluk oluşturmak ve akademik gelişimlerini destekleyerek onların daha verimli bir öğrenme deneyimi yaşamasını sağlamaktır.</p>
                         </div>
-                        
-                        <!-- Son Blog Yazıları -->
-                        <div class="snk-recent-posts" id="snk_postsContainer">
-                            <!-- Blog Yazıları JavaScript ile yüklenir -->
-                            <div class="snk-loading">
-                                <i class="fas fa-spinner fa-spin"></i> Yükleniyor...
+
+                        <!-- Misyonumuz -->
+                        <div class="snk-about-card">
+                            <div class="snk-about-card-icon">
+                                <i class="fas fa-bullseye"></i>
                             </div>
+                            <h3 class="snk-about-card-title">Misyonumuz</h3>
+                            <p class="snk-about-card-text">Öğrenciler arasında bilgi paylaşımını kolaylaştıran, akademik gelişimi destekleyen ve topluluk ruhunu güçlendiren bir platform sunuyoruz. Üniversitemizdeki öğrencilerin ders notlarına, kaynaklara ve güncel duyurulara kolayca erişmesini sağlarken, fikir alışverişi yapabilecekleri bir ortam oluşturuyoruz.
+
+                                Öğrencilerin birbirine destek olabileceği, bilgiye hızlı ve doğru şekilde ulaşabileceği etkileşimli bir topluluk inşa etmek için çalışıyoruz.</p>
+                        </div>
+
+                        <!-- Vizyonumuz -->
+                        <div class="snk-about-card">
+                            <div class="snk-about-card-icon">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                            <h3 class="snk-about-card-title">Vizyonumuz</h3>
+                            <p class="snk-about-card-text">Gelecekte, üniversitemizdeki tüm öğrencilerin aktif olarak katkı sağladığı, bilgiye erişimin hızlı ve verimli olduğu, sürekli güncellenen ve genişleyen bir öğrenci destek platformu haline gelmeyi hedefliyoruz.
+
+                                Uzun vadede, sadece kendi üniversitemizle sınırlı kalmayıp, diğer üniversitelerle iş birliği yaparak daha geniş bir öğrenci ağı oluşturmayı ve öğrencilere daha fazla imkan sunmayı amaçlıyoruz.
+                                
+                                </p>
                         </div>
                     </div>
-                    
-                    <!-- Sağ Sütun (Kutucuklar için) -->
-                    <div class="snk-content-sidebar" id="snk_contentSidebar">
-                        <!-- En Çok Okunan Yazılar Kutucuğu -->
-                        <div class="snk-sidebar-widget">
-                            <div class="snk-sidebar-widget-header">
-                                <h3 class="snk-sidebar-widget-title">En Çok Okunan Yazılar</h3>
-                            </div>
-                            <div class="snk-sidebar-widget-content">
-                                <div class="snk-popular-posts" id="snk_popularPosts">
-                                    <!-- JavaScript ile doldurulacak -->
-                                    <div class="snk-loading">
-                                        <i class="fas fa-spinner fa-spin"></i> Yükleniyor...
+
+                    <div class="snk-about-section">
+                        <h3 class="snk-team-title">Ekibimiz</h3>
+                        <div class="snk-team-container">
+                            <!-- Kurucu Üyeler -->
+                            <div class="snk-team-category">
+                                <h4 class="snk-team-category-title">Kurucu Üyeler</h4>
+                                <div class="snk-team-cards">
+                                    <!-- Kurucu Üye 1 -->
+                                    <div class="snk-team-card">
+                                        <div class="snk-team-card-inner">
+                                            <div class="snk-team-avatar">
+                                                <img src="../public/img/mustafa-demirsoy.jpg" alt="Mustafa Demirsoy">
+                                            </div>
+                                            <div class="snk-team-info">
+                                                <h5 class="snk-team-name">Mustafa Demirsoy</h5>
+                                                <p class="snk-team-role">Kurucu & Yazılım ve Geliştirme Departmanı Sorumlusu</p>
+                                                <div class="snk-team-social">
+                                                    <a href="http://linkedin.com/in/mustafa-demirsoy-085b4a271" target="_blank" class="snk-team-social-link"><i class="fab fa-linkedin-in"></i></a>
+                                                    <a href="https://x.com/mmustafadmrsyy" target="_blank" class="snk-team-social-link"><i class="fab fa-twitter"></i></a>
+                                                    <a href="https://www.instagram.com/mustafadmrsy/" target="_blank" class="snk-team-social-link"><i class="fab fa-instagram"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Kurucu Üye 2 -->
+                                    <div class="snk-team-card">
+                                        <div class="snk-team-card-inner">
+                                            <div class="snk-team-avatar">
+                                                <img src="../public/img/eren-kaya.jpg" alt="Eren Kaya">
+                                            </div>
+                                            <div class="snk-team-info">
+                                                <h5 class="snk-team-name">Eren Kaya</h5>
+                                                <p class="snk-team-role">Kurucu & Yazılım ve Geliştirme Departmanı Sorumlusu</p>
+                                                <div class="snk-team-social">
+                                                    <a href="http://www.linkedin.com/in/eren-kaya1452" target="_blank" class="snk-team-social-link"><i class="fab fa-linkedin-in"></i></a>
+                                                    <a href="https://x.com/NixionFrost" target="_blank" class="snk-team-social-link"><i class="fab fa-twitter"></i></a>
+                                                    <a href="https://www.instagram.com/kyernn0/" target="_blank" class="snk-team-social-link"><i class="fab fa-instagram"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <a href="Categories.html" class="snk-more-link">Daha fazla göster <i class="fas fa-angle-right"></i></a>
+                            </div>
+                            
+                            <!-- Normal Üyeler -->
+                            <div class="snk-team-category">
+                                <h4 class="snk-team-category-title">Ekip Üyeleri</h4>
+                                <div class="snk-team-cards">
+                                    <!-- Normal Üye 1 -->
+                                    <div class="snk-team-card">
+                                        <div class="snk-team-card-inner">
+                                            <div class="snk-team-avatar">
+                                                <img src="../public/img/ilkan-divarcı.png" alt="İlkan Divarcı">
+                                            </div>
+                                            <div class="snk-team-info">
+                                                <h5 class="snk-team-name">İlkan Divarcı</h5>
+                                                <p class="snk-team-role">Tasarım Departmanı Sorumlusu</p>
+                                                <div class="snk-team-social">
+                                                    <a href="https://www.linkedin.com/in/ilkan-divarc%C4%B1-2683282b0/" target="_blank" class="snk-team-social-link"><i class="fab fa-linkedin-in"></i></a>
+                                                    <a href="https://www.instagram.com/ilkan.divarci?utm_source=qr&igsh=cDRucnJsaTE1cmNu" target="_blank" class="snk-team-social-link"><i class="fab fa-instagram"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Normal Üye 2 -->
+                                    <div class="snk-team-card">
+                                        <div class="snk-team-card-inner">
+                                            <div class="snk-team-avatar">
+                                                <img src="../public/img/alimert-vural.jpg" alt="Ali Mert Vural">
+                                            </div>
+                                            <div class="snk-team-info">
+                                                <h5 class="snk-team-name">Ali Mert Vural</h5>
+                                                <p class="snk-team-role">Sosyal Medya Departmanı Sorumlusu</p>
+                                                <div class="snk-team-social">
+                                                    <a href="https://tr.linkedin.com/in/alimert-vural-237811355" target="_blank" class="snk-team-social-link"><i class="fab fa-linkedin-in"></i></a>
+                                                    <a href="https://www.instagram.com/alimertvural0?igsh=NGEzdTZtNGQyZzR4" target="_blank" class="snk-team-social-link"><i class="fab fa-instagram"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -322,20 +440,10 @@
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script src="../components/login-handler.js"></script>
     <script src="../components/comment-system.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Tüm sayfa içeriği yüklendikten sonra ana fonksiyonlar başlatılır
-            snk_main_initializePage();
-
-            // Sayfa tıklamalarının boşluk kontrolü
-            document.addEventListener('click', function(e) {
-                console.log('Sayfa tıklandı:', e.target);
-            });
-        });
-    </script>
     <script src="../components/main.js"></script>
     <script src="../components/sidebar.js"></script>
     <script src="../components/popup.js"></script>
     <script src="../components/comment-system.js"></script>
+    <script src="../darkjs/darkmode.js"></script>
 </body>
 </html>
