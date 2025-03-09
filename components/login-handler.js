@@ -141,17 +141,38 @@ function handleLogin(e) {
     // Örnek bir kontrol
     if (email && password) {
         // LocalStorage'dan kullanıcıları kontrol et
-        const users = JSON.parse(localStorage.getItem('snk_users')) || [];
-        const user = users.find(u => u.email === email && u.password === password);
+        const users = JSON.parse(localStorage.getItem('snk_users') || '[]');
+        const verifiedUsers = JSON.parse(localStorage.getItem('snk_verifiedUsers') || '[]');
+        const pendingUsers = JSON.parse(localStorage.getItem('snk_pendingUsers') || '[]');
+        
+        // Kullanıcıyı ara ve kullanıcı durumunu kontrol et
+        let user = users.find(u => u.email === email && u.password === password) || 
+                   verifiedUsers.find(u => u.email === email && u.password === password);
+        
+        // Onay bekleyen kullanıcı kontrolü
+        const isPending = pendingUsers.find(u => u.email === email && u.password === password);
+        
+        if (isPending) {
+            // Kullanıcı onay bekliyor
+            showLoginMessage('Hesabınız henüz onaylanmamış. Lütfen admin onayını bekleyin.', 'error');
+            return;
+        }
         
         if (user) {
+            // Güvenlik kontrolü: Kullanıcının isVerified veya isActive durumu kontrol et
+            if (user.isVerified === false) {
+                showLoginMessage('Hesabınız henüz doğrulanmamış. Lütfen doğrulama işlemini tamamlayın.', 'error');
+                return;
+            }
+            
             // Giriş başarılı
             showLoginMessage('Giriş başarılı! Yönlendiriliyorsunuz...', 'success');
             
             // Kullanıcı bilgilerini sakla
             const currentUser = {
                 ...user,
-                isLoggedIn: true
+                isLoggedIn: true,
+                lastLoginAt: new Date().toISOString()
             };
             localStorage.setItem('snk_currentUser', JSON.stringify(currentUser));
             
@@ -378,82 +399,30 @@ function showBlogCreatePopup(user) {
             // Güncellenmiş blog yazılarını localStorage'a kaydet
             localStorage.setItem('snk_blog_posts', JSON.stringify(blogPosts));
             
-            // Kullanıcının blog yazılarını ayrıca kaydet - profil sayfasında göstermek için
+            // Kullanıcının kendi blog yazılarına da ekleyelim
             let userPosts = JSON.parse(localStorage.getItem(`snk_user_posts_${user.id}`) || '[]');
             userPosts.push(blogPost);
             localStorage.setItem(`snk_user_posts_${user.id}`, JSON.stringify(userPosts));
             
+            // Kullanıcı bilgilerini sakla
+            const currentUser = {
+                ...user,
+                isLoggedIn: true
+            };
+            localStorage.setItem('snk_currentUser', JSON.stringify(currentUser));
+            
             // Popup'ı kapat
             closePopup(popup);
             
-            // Başarılı mesajı göster
-            alert('Blog yazınız başarıyla gönderildi! Onaylandıktan sonra yayınlanacaktır.');
+            // Blog yazısının onaya gönderildiğini bildiren onay popup'ı göster
+            showApprovalPendingNotification();
             
-            // Ana sayfayı yeniden yükle - yazılar gösterilecek
-            if (window.location.pathname.includes('index.html') || window.location.pathname === '/' || window.location.pathname.endsWith('/')) {
-                // Ana sayfadayız, blog yazılarını yeniden yükle
-                if (typeof snk_main_loadBlogPosts === 'function') {
-                    snk_main_loadBlogPosts();
-                } else {
-                    // Fonksiyon yoksa sayfayı yenile
-                    window.location.reload();
-                }
-            } else {
-                // Ana sayfada değiliz, kullanıcıya bir bildirim gösterelim
-                const notif = document.createElement('div');
-                notif.className = 'snk-notification';
-                notif.innerHTML = `
-                    <div class="snk-notification-content">
-                        <i class="fas fa-check-circle"></i>
-                        <p>Blog yazınız başarıyla gönderildi! Onaylandıktan sonra yayınlanacaktır. <a href="index.html">Ana sayfada görüntülemek için tıklayın</a>.</p>
-                    </div>
-                    <button class="snk-notification-close"><i class="fas fa-times"></i></button>
-                `;
-                document.body.appendChild(notif);
-                
-                // Bildirim kapatma işlevi
-                notif.querySelector('.snk-notification-close').addEventListener('click', function() {
-                    notif.classList.add('snk-notification-closing');
-                    setTimeout(() => notif.remove(), 300);
-                });
-                
-                // 5 saniye sonra bildirim otomatik kapansın
-                setTimeout(() => {
-                    notif.classList.add('snk-notification-closing');
-                    setTimeout(() => notif.remove(), 300);
-                }, 5000);
-            }
-            
-            // Son yazılar gösterimini güncelle
-            if (typeof updateRecentPostsDisplay === 'function') {
-                updateRecentPostsDisplay();
-            }
-            
-            // Profil sayfasındaki yazılar tabını güncelle
-            if (typeof updateUserPostsDisplay === 'function') {
-                updateUserPostsDisplay();
-            }
+            // 3 saniye sonra sayfayı yeniden yükle
+            setTimeout(() => {
+                window.location.reload();
+            }, 3000);
         } catch (e) {
             console.error('LocalStorage hatası:', e);
-            
-            // LocalStorage dolu olduğunda eski kayıtları temizle
-            if (e.name === 'QuotaExceededError') {
-                // En eski blog yazısını sil
-                if (blogPosts.length > 1) {
-                    blogPosts.shift(); // En eski blog yazısını çıkar
-                    try {
-                        localStorage.setItem('snk_blog_posts', JSON.stringify(blogPosts));
-                        localStorage.setItem(`snk_user_posts_${user.id}`, JSON.stringify([blogPost]));
-                        showTemporaryMessage('Blog yazınız eklendi, ancak bazı eski yazılar kaldırıldı (depolama limiti)', 'warning');
-                    } catch (e2) {
-                        showTemporaryMessage('Depolama alanı dolu! Lütfen bazı içerikleri silin.', 'error');
-                    }
-                } else {
-                    showTemporaryMessage('Depolama alanı dolu! Lütfen bazı içerikleri silin.', 'error');
-                }
-            } else {
-                showTemporaryMessage('Blog yazısı eklenirken bir hata oluştu!', 'error');
-            }
         }
     });
 
@@ -622,20 +591,41 @@ function showLoginPopup() {
         // Örnek bir kontrol
         if (email && password) {
             // LocalStorage'dan kullanıcıları kontrol et
-            const users = JSON.parse(localStorage.getItem('snk_users')) || [];
-            const user = users.find(u => u.email === email && u.password === password);
-
+            const users = JSON.parse(localStorage.getItem('snk_users') || '[]');
+            const verifiedUsers = JSON.parse(localStorage.getItem('snk_verifiedUsers') || '[]');
+            const pendingUsers = JSON.parse(localStorage.getItem('snk_pendingUsers') || '[]');
+            
+            // Kullanıcıyı ara ve kullanıcı durumunu kontrol et
+            let user = users.find(u => u.email === email && u.password === password) || 
+                       verifiedUsers.find(u => u.email === email && u.password === password);
+            
+            // Onay bekleyen kullanıcı kontrolü
+            const isPending = pendingUsers.find(u => u.email === email && u.password === password);
+            
+            if (isPending) {
+                // Kullanıcı onay bekliyor
+                showLoginMessage('Hesabınız henüz onaylanmamış. Lütfen admin onayını bekleyin.', 'error');
+                return;
+            }
+            
             if (user) {
+                // Güvenlik kontrolü: Kullanıcının isVerified veya isActive durumu kontrol et
+                if (user.isVerified === false) {
+                    showLoginMessage('Hesabınız henüz doğrulanmamış. Lütfen doğrulama işlemini tamamlayın.', 'error');
+                    return;
+                }
+                
                 // Giriş başarılı
                 showLoginMessage('Giriş başarılı! Yönlendiriliyorsunuz...', 'success');
-
+                
                 // Kullanıcı bilgilerini sakla
                 const currentUser = {
                     ...user,
-                    isLoggedIn: true
+                    isLoggedIn: true,
+                    lastLoginAt: new Date().toISOString()
                 };
                 localStorage.setItem('snk_currentUser', JSON.stringify(currentUser));
-
+                
                 // 1 saniye sonra sayfayı yeniden yükle
                 setTimeout(() => {
                     window.location.reload();
@@ -721,12 +711,22 @@ function deleteBlogPost(postId) {
             // Güncellenmiş blog yazılarını localStorage'a kaydet
             localStorage.setItem('snk_blog_posts', JSON.stringify(updatedBlogPosts));
             
+            // Admin panelindeki onay bekleyen yazıları da güncelle
+            const pendingPosts = JSON.parse(localStorage.getItem('snk_pending_posts') || '[]');
+            const updatedPendingPosts = pendingPosts.filter(post => post.id.toString() !== postId.toString());
+            localStorage.setItem('snk_pending_posts', JSON.stringify(updatedPendingPosts));
+            
+            // Admin panelindeki onaylanmış yazıları da güncelle
+            const approvedPosts = JSON.parse(localStorage.getItem('snk_approved_posts') || '[]');
+            const updatedApprovedPosts = approvedPosts.filter(post => post.id.toString() !== postId.toString());
+            localStorage.setItem('snk_approved_posts', JSON.stringify(updatedApprovedPosts));
+            
             // Sayfadaki tüm eşleşen yazıları DOM'dan kaldır
             const postElements = document.querySelectorAll(`[data-post-id="${postId}"]`);
             console.log(`Silinen yazı için ${postElements.length} adet DOM elemanı bulundu`);
             
             postElements.forEach(element => {
-                const postCard = element.closest('.snk-user-post-card, .snk-blog-card, .snk-post-card');
+                const postCard = element.closest('.snk-user-post-card, .snk-blog-card, .snk-post-card, .snk-admin-post-item');
                 if (postCard) {
                     postCard.classList.add('removing');
                     setTimeout(() => {
@@ -734,6 +734,15 @@ function deleteBlogPost(postId) {
                     }, 300);
                 }
             });
+            
+            // Admin paneline bildirim gönder (eğer olay ileticisi varsa)
+            if (window.dispatchEvent) {
+                const deleteEvent = new CustomEvent('blogPostDeleted', { 
+                    detail: { postId: postId, userId: currentUser.id } 
+                });
+                window.dispatchEvent(deleteEvent);
+                console.log('Admin paneline silme bildirimi gönderildi:', postId);
+            }
             
             // Kullanıcıya bildirim göster
             showNotification('Blog yazısı başarıyla silindi', 'success');
@@ -927,6 +936,46 @@ function showNotification(message, type = 'info') {
     }, 3000);
 }
 
+// Blog yazısının onaya gönderildiğini bildiren onay popup'ı göster
+function showApprovalPendingNotification() {
+    // Önceki popup varsa kaldır
+    const existingNotification = document.getElementById('approval-notification');
+    if (existingNotification) {
+        existingNotification.remove();
+    }
+    
+    // Notifikasyon HTML'i oluştur
+    const notificationHTML = `
+    <div id="approval-notification" class="snk-notification-overlay">
+        <div class="snk-notification-container">
+            <div class="snk-notification-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3>Blog Yazınız Başarıyla Oluşturuldu!</h3>
+            <p>Blog yazınız başarıyla kaydedildi ve şu anda yönetici onayı bekliyor.</p>
+            <p>Yazınız onaylandığında tüm kullanıcılar tarafından görülebilecek.</p>
+            <button id="understand-button" class="snk-notification-button">Anladım</button>
+        </div>
+    </div>`;
+    
+    // Notifikasyonu ekle
+    document.body.insertAdjacentHTML('beforeend', notificationHTML);
+    
+    // Notifikasyonu göster
+    const notification = document.getElementById('approval-notification');
+    setTimeout(() => {
+        notification.classList.add('active');
+    }, 10);
+    
+    // Anladım butonuna tıklanınca notifikasyonu kapat
+    document.getElementById('understand-button').addEventListener('click', function() {
+        notification.classList.remove('active');
+        setTimeout(() => {
+            notification.remove();
+        }, 300);
+    });
+}
+
 // Kullanıcı blog yazılarını görüntüle
 function updateUserPostsDisplay() {
     console.log("Kullanıcı yazıları görüntüleme fonksiyonu çağrıldı");
@@ -941,6 +990,20 @@ function updateUserPostsDisplay() {
     // Kullanıcı yazılarını al
     const userPosts = JSON.parse(localStorage.getItem(`snk_user_posts_${user.id}`) || '[]');
     console.log(`${userPosts.length} adet kullanıcı yazısı bulundu`);
+    
+    // Eğer kullanıcı yazıları boşsa, genel blog yazılarından kullanıcıya ait olanları da kontrol et
+    if (userPosts.length === 0) {
+        const allPosts = JSON.parse(localStorage.getItem('snk_blog_posts') || '[]');
+        const userPostsFromAll = allPosts.filter(post => post.author_id === user.id);
+        
+        // Kullanıcıya ait yazılar varsa bunları kullanıcı yazıları arasına ekleyelim
+        if (userPostsFromAll.length > 0) {
+            localStorage.setItem(`snk_user_posts_${user.id}`, JSON.stringify(userPostsFromAll));
+            console.log(`Genel blog yazılarından ${userPostsFromAll.length} adet yazı kullanıcı yazılarına eklendi`);
+            updateUserPostsDisplay(); // Güncellenmiş listeyi göstermek için tekrar çağır
+            return;
+        }
+    }
     
     // Yazıların görüntüleneceği container'ı bul
     const postsContainer = document.querySelector('.snk-user-posts');
@@ -1066,4 +1129,5 @@ function updateUserPostsDisplay() {
 
 // Global erişim için
 window.showBlogCreatePopup = showBlogCreatePopup;
+window.showApprovalPendingNotification = showApprovalPendingNotification;
 window.updateUserPostsDisplay = updateUserPostsDisplay;

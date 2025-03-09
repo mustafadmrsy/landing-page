@@ -384,37 +384,62 @@ function snk_popupHandler_showRegisterForm() {
                 
                 // Kullanıcı bilgilerini local storage'a geçici olarak kaydet
                 const userData = {
-                    name,
-                    surname,
-                    email,
-                    password,
+                    id: 'user_' + Date.now(),
+                    name: name || '',
+                    surname: surname || '',
+                    email: email || '',
+                    password: password || '',
                     isVerified: false,
                     pendingApproval: true,
-                    createdAt: new Date().toISOString()
+                    createdAt: new Date().toISOString(),
+                    registrationDate: new Date().toLocaleDateString('tr-TR')
                 };
                 
                 // Kaydedilen kullanıcıları al veya boş dizi başlat
-                let pendingUsers = JSON.parse(localStorage.getItem('snk_pendingUsers') || '[]');
+                let pendingUsers = [];
+                try {
+                    pendingUsers = JSON.parse(localStorage.getItem('snk_pendingUsers') || '[]');
+                    if (!Array.isArray(pendingUsers)) {
+                        console.error('snk_pendingUsers bir dizi değil, sıfırlanıyor');
+                        pendingUsers = [];
+                    }
+                } catch (error) {
+                    console.error('snk_pendingUsers parse edilemedi:', error);
+                    pendingUsers = [];
+                }
                 
                 // Daha önce bu e-posta ile kayıt var mı kontrol et
                 const existingUserIndex = pendingUsers.findIndex(user => user.email === email);
                 if (existingUserIndex !== -1) {
                     // Varsa güncelle
+                    console.log(`${email} için mevcut kayıt güncelleniyor`);
                     pendingUsers[existingUserIndex] = userData;
                 } else {
                     // Yoksa ekle
+                    console.log(`${email} için yeni kayıt ekleniyor`);
                     pendingUsers.push(userData);
                 }
                 
                 // Local storage'a kaydet
-                localStorage.setItem('snk_pendingUsers', JSON.stringify(pendingUsers));
+                try {
+                    localStorage.setItem('snk_pendingUsers', JSON.stringify(pendingUsers));
+                    console.log('Onay bekleyen kullanıcı kaydedildi:', userData);
+                    console.log('Toplam bekleyen kullanıcı sayısı:', pendingUsers.length);
+                } catch (error) {
+                    console.error('Kullanıcı kaydedilemedi:', error);
+                }
                 
                 // UI güncelle
-                registerForm.reset();
+                if (registerForm) {
+                    registerForm.reset();
+                }
                 
                 // Onay bekleme ekranını göster (eğer admin.html'deki fonksiyon varsa)
                 if (typeof window.showPendingApproval === 'function') {
                     window.showPendingApproval();
+                } else {
+                    // Fonksiyon yoksa alternatif bir bildirim göster
+                    alert('Kaydınız alınmıştır! Yönetici onayı bekleniyor.');
                 }
             }, 1500);
         }

@@ -508,30 +508,36 @@ function snk_main_showBlogPopup(postId, focusComments = false) {
     // Popup'ı DOM'a ekle
     const popupElement = document.createElement('div');
     popupElement.innerHTML = popupHTML;
-    document.body.appendChild(popupElement.firstElementChild);
+    const popup = popupElement.firstElementChild;
+    document.body.appendChild(popup);
     
     // Popup kapatma olaylarını ekle
-    const popup = document.querySelector('.snk-popup-overlay');
-    const closeButton = popup.querySelector('.snk-popup-close');
-    
-    // Kapatma butonuna tıklama
-    closeButton.addEventListener('click', function() {
-        document.body.removeChild(popup);
-    });
-    
-    // Overlay'e tıklama ile kapatma
-    popup.addEventListener('click', function(event) {
-        if (event.target === popup) {
-            document.body.removeChild(popup);
+    if (popup) {
+        const closeButton = popup.querySelector('.snk-popup-close');
+        
+        // Kapatma butonuna tıklama
+        if (closeButton) {
+            closeButton.addEventListener('click', function() {
+                if (document.body.contains(popup)) {
+                    document.body.removeChild(popup);
+                }
+            });
         }
-    });
-    
-    // ESC tuşu ile kapatma
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape' && document.body.contains(popup)) {
-            document.body.removeChild(popup);
-        }
-    });
+        
+        // Overlay'e tıklama ile kapatma
+        popup.addEventListener('click', function(event) {
+            if (event.target === popup && document.body.contains(popup)) {
+                document.body.removeChild(popup);
+            }
+        });
+        
+        // ESC tuşu ile kapatma
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && document.body.contains(popup)) {
+                document.body.removeChild(popup);
+            }
+        });
+    }
     
     // Yorumlara odaklan (eğer isteniyorsa)
     if (focusComments && document.getElementById('snk-popup-comments')) {
@@ -648,69 +654,10 @@ function snk_main_displayPopularPosts(posts, filterType = 'newest') {
             const post = posts.find(p => p.id === postId);
             
             if (post) {
-                // İlgili blog yazısını ana içerik alanında göster
-                const postsContainer = document.getElementById('snk_postsContainer');
-                
-                if (postsContainer) {
-                    // Tüm yazıları gizle
-                    const allPosts = document.querySelectorAll('.snk-post');
-                    allPosts.forEach(postEl => {
-                        postEl.style.display = 'none';
-                    });
-                    
-                    // Seçilen yazıyı bul
-                    const targetPost = document.querySelector(`.snk-post[data-post-id="${postId}"]`);
-                    
-                    if (targetPost) {
-                        // Yazıyı göster
-                        targetPost.style.display = 'flex';
-                        
-                        // İçeriğini genişlet
-                        targetPost.classList.add('expanded');
-                        const contentElement = targetPost.querySelector('.snk-post-summary');
-                        
-                        if (contentElement) {
-                            // Tam içeriği oluştur
-                            const fullContentHTML = `
-                                <div class="snk-post-full-content">
-                                    ${post.content}
-                                    ${post.tags && post.tags.length ? `
-                                        <div class="snk-post-tags">
-                                            ${post.tags.map(tag => `<span class="snk-tag">#${tag}</span>`).join('')}
-                                        </div>
-                                    ` : ''}
-                                </div>
-                            `;
-                            
-                            // İçeriği ekle
-                            contentElement.innerHTML = fullContentHTML;
-                        }
-                        
-                        // Sayfayı ilgili yazıya kaydır
-                        targetPost.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        
-                        // İlgili "Devamını Oku" butonunu "Daralt" olarak değiştir
-                        const readMoreBtn = targetPost.querySelector('.snk-post-action.snk-read-more');
-                        if (readMoreBtn) {
-                            readMoreBtn.innerHTML = '<i class="fas fa-angle-up"></i> Daralt';
-                            readMoreBtn.dataset.expanded = 'true';
-                        }
-                        
-                        // Filtre başlığını güncelle
-                        const contentTitle = document.querySelector('.snk-content-title');
-                        if (contentTitle) {
-                            contentTitle.textContent = 'Seçili Yazı';
-                        }
-                    } else {
-                        // Yazı bulunamadıysa tüm yazıları göster
-                        allPosts.forEach(postEl => {
-                            postEl.style.display = 'flex';
-                        });
-                        
-                        // İlgili yazıyı oluştur ve ekle
-                        snk_main_createAndDisplaySinglePost(post, postsContainer);
-                    }
-                }
+                // İlgili blog yazısını popup olarak göster
+                snk_main_showBlogPopup(postId);
+            } else {
+                console.error('Post bulunamadı, ID:', postId);
             }
         });
     });
@@ -1594,7 +1541,7 @@ function snk_main_setupPasswordToggle() {
     console.log("Şifre toggle butonu ayarlanıyor");
     
     // Bu fonksiyon document.ready'den sonra çağrıldığında DOM hazır olacak
-    // Ancak 500ms sonra tekrar çağırmak en güvenli yol
+    // Ancak 300ms sonra tekrar çağırmak en güvenli yol
     setTimeout(() => {
         const passwordToggleBtn = document.getElementById('snk_login_toggle_password');
         
@@ -1607,16 +1554,19 @@ function snk_main_setupPasswordToggle() {
             // Yeni event listener ekle
             passwordToggleBtn.addEventListener('click', togglePasswordVisibility);
         } else {
-            console.error("Şifre toggle butonu bulunamadı");
+            console.log("Şifre toggle butonu bulunamadı (henüz yüklenmemiş olabilir)");
         }
-    }, 500);
+    }, 300);
 }
 
 // Şifre görünürlüğünü değiştiren yardımcı fonksiyon
 function togglePasswordVisibility(e) {
     console.log("Şifre toggle butonuna tıklandı");
-    e.preventDefault(); // Form submit'i önle
+    // Tarayıcının varsayılan davranışını engelle
+    e.preventDefault();
+    e.stopPropagation();
     
+    // Şifre input alanını bul
     const passwordInput = document.getElementById('loginPassword');
     if (passwordInput) {
         // Şifre görünürlüğünü değiştir
@@ -1626,8 +1576,15 @@ function togglePasswordVisibility(e) {
         // İkonu değiştir
         const icon = this.querySelector('i');
         if (icon) {
-            icon.classList.toggle('fa-eye');
-            icon.classList.toggle('fa-eye-slash');
+            if (type === 'text') {
+                // Şifre gösteriliyor, ikonu göz kapalı yap
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                // Şifre gizli, ikonu göz açık yap
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
         }
     } else {
         console.error("Şifre input alanı bulunamadı");
@@ -1655,7 +1612,7 @@ function snk_main_setupLoginPopupClose() {
             console.error("Login popup kapatma butonu veya popup bulunamadı:", 
                           {closeBtn: !!loginCloseBtn, popup: !!loginPopup});
         }
-    }, 500);
+    }, 300);
 }
 
 // Popup kapatma yardımcı fonksiyonu

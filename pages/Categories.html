@@ -9,9 +9,13 @@
     <link rel="stylesheet" href="../styles/categories.css">
     <link rel="stylesheet" href="../styles/darkmode.css">
     <link rel="stylesheet" href="../styles/blog-card.css">
-    <link rel="stylesheet" href="../styles/blog-popup.css">
+    <link rel="stylesheet" href="../styles/popup.css">
+    <link rel="stylesheet" href="../styles/category-custom.css">
+    <link rel="stylesheet" href="../styles/login-form.css">
     <link rel="stylesheet" href="../styles/notification.css">
     <link rel="stylesheet" href="../styles/comment-system.css">
+    <link rel="stylesheet" href="../styles/auth-forms.css">
+    <link rel="stylesheet" href="../styles/userpage.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -20,8 +24,8 @@
         <header class="snk-header">
             <!-- Logo Alanı -->
             <div class="snk-header-logo">
-                <img src="../public/images/logo.png" alt="Senirkent Blog" class="snk-logo-img">
-                <h1 class="snk-site-title">Senirkent Blog</h1>
+                <img src="../public/img/logo.png" alt="Senirkent Blog" class="snk-logo-img">
+                <h1 class="snk-site-title">Kategoriler</h1>
             </div>
             
             <!-- Arama Alanı -->
@@ -34,83 +38,39 @@
             
             <!-- Butonlar ve Profil -->
             <div class="snk-header-actions">
-                <button class="snk-header-btn snk-login-btn" id="snk_login_btn">
-                    <i class="fas fa-sign-in-alt"></i>
-                    Oturum Aç
-                </button>
-                <button class="snk-header-btn snk-register-btn" id="snk_register_btn">
-                    <i class="fas fa-user-plus"></i>
-                    Kaydol
-                </button>
-                <button class="snk-header-btn snk-create-btn" id="snk_create_btn">
-                    <i class="fas fa-plus"></i>
-                    Oluştur
-                </button>
-                
-                <!-- Profil Menü -->
-                <div class="snk-profile-container">
-                    <img src="../public/images/profile.png" alt="Profil" class="snk-profile-img" id="profileTrigger">
-                    
-                    <div class="snk-profile-menu" id="profileMenu">
+                <!-- Profil Dropdown Menüsü -->
+                <div class="snk-user-profile-dropdown">
+                    <button id="profileDropdownBtn" class="snk-profile-dropdown-btn">
+                        <i class="fas fa-user"></i> Profilim
+                    </button>
+                    <div id="profileDropdownMenu" class="snk-profile-dropdown-menu">
                         <div class="snk-profile-header">
                             <img src="../public/images/profile.png" alt="Profil" class="snk-menu-profile-img">
                             <div class="snk-profile-info">
-                                <span class="snk-profile-name">Kullanıcı Adı</span>
-                                <span class="snk-profile-username">@kullanici</span>
+                                <h4 class="snk-user-name">Mustafa Demirsoy</h4>
+                                <p class="snk-user-handle">@mustafademirsoy</p>
                             </div>
                         </div>
-                        
-                        <a href="userpage.html" class="snk-menu-item">
-                            <i class="fas fa-user"></i>
-                            Profili Görüntüle
-                        </a>
-                        <a href="#" class="snk-menu-item">
-                            <i class="fas fa-image"></i>
-                            Avatar Düzenle
-                        </a>
-                        <a href="#" class="snk-menu-item">
-                            <i class="fas fa-trophy"></i>
-                            Başarılar
-                        </a>
-                        <a href="#" class="snk-menu-item">
-                            <i class="fas fa-coin"></i>
-                            Katkı Programı
-                        </a>
-                        
-                        <div class="snk-menu-divider"></div>
-                        
-                        <a href="#" class="snk-menu-item">
-                            <i class="fas fa-moon"></i>
-                            Karanlık Mod
-                            <label class="snk-toggle-switch">
-                                <input type="checkbox" checked>
-                                <span class="snk-toggle-slider"></span>
-                            </label>
-                        </a>
-                        
-                        <div class="snk-menu-divider"></div>
-                        
-                        <a href="#" class="snk-menu-item">
-                            <i class="fas fa-sign-out-alt"></i>
-                            Çıkış Yap
-                        </a>
-                        
-                        <div class="snk-menu-divider"></div>
-                        
-                        <a href="#" class="snk-menu-item">
-                            <i class="fas fa-ad"></i>
-                            Reklamlar
-                        </a>
-                        <a href="#" class="snk-menu-item">
-                            <i class="fas fa-chart-line"></i>
-                            Premium
-                        </a>
-                        <a href="#" class="snk-menu-item">
-                            <i class="fas fa-cog"></i>
-                            Ayarlar
-                        </a>
+                        <ul class="snk-profile-menu-list">
+                            <li><a href="userpage.html"><i class="fas fa-user-circle"></i> Profili Görüntüle</a></li>
+                            <li class="snk-toggle-item">
+                                <span><i class="fas fa-moon"></i> Karanlık Mod</span>
+                                <label class="snk-toggle-switch">
+                                    <input type="checkbox" id="darkModeToggle" checked>
+                                    <span class="snk-toggle-slider"></span>
+                                </label>
+                            </li>
+                            <li class="snk-divider"></li>
+                            <li><a href="#" class="snk-logout" id="snk_logout_btn" onclick="snk_profileDropdown_logout()"><i class="fas fa-sign-out-alt"></i> Çıkış Yap</a></li>
+                            <li><a href="#"><i class="fas fa-cog"></i> Ayarlar</a></li>
+                        </ul>
                     </div>
                 </div>
+
+                <button class="snk-header-btn snk-create-btn" id="snk_create_btn" onclick="setupCreateButton()">
+                    <i class="fas fa-plus"></i>
+                    Oluştur
+                </button>
             </div>
         </header>
 
@@ -136,13 +96,9 @@
                         <i class="fas fa-fire"></i>
                         <span class="snk-sidebar-text">Popüler</span>
                     </a>
-                    <a href="#" class="snk-sidebar-item">
-                        <i class="fas fa-compass"></i>
-                        <span class="snk-sidebar-text">Keşfet</span>
-                    </a>
                     <a href="Categories.html" class="snk-sidebar-item">
                         <i class="fas fa-th-large"></i>
-                        <span class="snk-sidebar-text">Tüm Yazılar</span>
+                        <span class="snk-sidebar-text">Kategoriler</span>
                     </a>
                 </div>
                 
@@ -158,28 +114,6 @@
                         <span class="snk-sidebar-text">Geçmiş</span>
                     </a>
                 </div>
-                
-                <!-- Kategoriler -->
-                <div class="snk-sidebar-section">
-                    <h3 class="snk-sidebar-heading">KATEGORİLER</h3>
-                    <a href="Categories.html?category=egitim" class="snk-sidebar-item">
-                        <i class="fas fa-graduation-cap"></i>
-                        <span class="snk-sidebar-text">Eğitim</span>
-                    </a>
-                    <a href="Categories.html?category=teknoloji" class="snk-sidebar-item">
-                        <i class="fas fa-laptop-code"></i>
-                        <span class="snk-sidebar-text">Teknoloji</span>
-                    </a>
-                    <a href="Categories.html?category=kultur" class="snk-sidebar-item">
-                        <i class="fas fa-landmark"></i>
-                        <span class="snk-sidebar-text">Kültür</span>
-                    </a>
-                    <a href="Categories.html?category=spor" class="snk-sidebar-item">
-                        <i class="fas fa-futbol"></i>
-                        <span class="snk-sidebar-text">Spor</span>
-                    </a>
-                </div>
-                
                 <!-- Kaynaklar -->
                 <div class="snk-sidebar-section">
                     <h3 class="snk-sidebar-heading">KAYNAKLAR</h3>
@@ -352,14 +286,197 @@
         <i class="fas fa-bars"></i>
     </button>
 
+    <!-- Blog Oluşturma Popup HTML Yapısı -->
+    <div class="snk-blog-create-container" id="snk_blogCreateContainer" style="display: none;">
+        <!-- Bu container dinamik olarak doldurulacak -->
+    </div>
+
     <!-- JavaScript dosyaları -->
     <script src="../components/dom-utils.js"></script>
     <script src="../components/sidebar.js"></script>
     <script src="../components/popup.js"></script>
     <script src="../components/popup-handler.js"></script>
+    <script src="../components/profile-dropdown.js"></script>
+    <script src="../components/login-handler.js"></script>
     <script src="../components/categories.js"></script>
     <script src="../components/main.js"></script>
     <script src="../components/comment-system.js"></script>
     <script src="../darkjs/darkmode.js"></script>
+    
+    <!-- Sayfa özel scriptleri -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Kategoriler sayfası özel scriptleri yükleniyor...');
+            
+            // Çıkış Yap butonunu ayarla
+            const logoutBtn = document.querySelector('.snk-logout');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    console.log('Çıkış yapılıyor...');
+                    
+                    // LocalStorage'dan kullanıcı verilerini temizle
+                    localStorage.removeItem('snk_currentUser');
+                    localStorage.removeItem('snk_userToken');
+                    localStorage.removeItem('snk_authExpires');
+                    
+                    // Profil dropdown menüsünü kapat
+                    const profileDropdownMenu = document.getElementById('profileDropdownMenu');
+                    if (profileDropdownMenu) {
+                        profileDropdownMenu.classList.remove('active');
+                    }
+                    
+                    alert('Başarıyla çıkış yapıldı.');
+                    
+                    // Ana sayfaya yönlendir
+                    window.location.href = '../pages/index.html';
+                });
+                console.log('Çıkış butonu olayı tanımlandı');
+            }
+            
+            // Oluştur butonunu ayarla
+            const createBtn = document.getElementById('snk_create_btn');
+            if (createBtn) {
+                createBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    console.log('Oluştur butonuna tıklandı');
+                    
+                    // LocalStorage'dan kullanıcı bilgisini kontrol et
+                    const currentUser = JSON.parse(localStorage.getItem('snk_currentUser') || '{}');
+                    
+                    if (currentUser && currentUser.username) {
+                        // Kullanıcı giriş yapmış, blog oluşturma modalını göster
+                        createBlogPost(currentUser);
+                    } else {
+                        // Kullanıcı giriş yapmamış, login modalını göster
+                        alert('Blog yazısı oluşturmak için giriş yapmalısınız!');
+                        // Giriş sayfasına yönlendir
+                        window.location.href = '../pages/index.html';
+                    }
+                });
+                console.log('Oluştur butonu olayı tanımlandı');
+            } else {
+                console.error('Oluştur butonu bulunamadı!');
+            }
+            
+            // Blog yazısı oluşturma popup'ını göster
+            function createBlogPost(user) {
+                console.log("Blog yazısı oluşturma popup'ı açılıyor...");
+                
+                // Tüm popup'ları temizle
+                const existingPopups = document.querySelectorAll('.snk-popup-overlay');
+                existingPopups.forEach(popup => {
+                    popup.remove();
+                });
+                
+                // Blog oluşturma popup HTML'ini oluştur
+                const popupHTML = `
+                <div class="snk-popup-overlay active" id="blogCreatePopup">
+                    <div class="snk-popup-container">
+                        <div class="snk-popup-header">
+                            <h2 class="snk-popup-title">Yeni Blog Yazısı</h2>
+                            <button class="snk-popup-close-btn" id="blogCreateCloseBtn">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="snk-popup-content">
+                            <form class="snk-create-post-form">
+                                <div class="snk-form-group">
+                                    <label for="post-title">Başlık</label>
+                                    <input type="text" id="post-title" class="snk-form-control" placeholder="Blog yazınızın başlığını girin" required>
+                                </div>
+                                
+                                <div class="snk-form-group">
+                                    <label for="post-category">Kategori</label>
+                                    <select id="post-category" class="snk-form-control" required>
+                                        <option value="" disabled selected>Kategori seçin</option>
+                                        <option value="teknoloji">Teknoloji</option>
+                                        <option value="egitim">Eğitim</option>
+                                        <option value="yasam">Yaşam</option>
+                                        <option value="seyahat">Seyahat</option>
+                                        <option value="spor">Spor</option>
+                                        <option value="kultur">Kültür & Sanat</option>
+                                        <option value="bilim">Bilim</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="snk-form-group">
+                                    <label for="post-image">Kapak Görseli</label>
+                                    <input type="file" id="post-image" class="snk-form-control" accept="image/*">
+                                    <small class="snk-form-text">Önerilen: 1200x630 piksel</small>
+                                </div>
+                                
+                                <div class="snk-form-group">
+                                    <label for="post-content">İçerik</label>
+                                    <textarea id="post-content" class="snk-form-control" rows="10" placeholder="Blog yazınızın içeriğini buraya girin..." required></textarea>
+                                </div>
+                                
+                                <div class="snk-form-group">
+                                    <label for="post-tags">Etiketler</label>
+                                    <input type="text" id="post-tags" class="snk-form-control" placeholder="Etiketleri virgülle ayırarak girin (örn: yazılım, web, teknoloji)">
+                                </div>
+                                
+                                <div class="snk-form-actions">
+                                    <button type="button" class="snk-btn snk-btn-secondary" id="post-cancel">İptal Et</button>
+                                    <button type="button" class="snk-btn snk-btn-primary" id="post-submit">Yayınla</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>`;
+                
+                // HTML'i body'e ekle
+                document.body.insertAdjacentHTML('beforeend', popupHTML);
+                
+                // Popup kapatma olay dinleyicisi
+                const closeBtn = document.getElementById('blogCreateCloseBtn');
+                if (closeBtn) {
+                    closeBtn.addEventListener('click', function() {
+                        const popup = document.getElementById('blogCreatePopup');
+                        if (popup) {
+                            popup.remove();
+                        }
+                    });
+                }
+                
+                // İptal butonu olay dinleyicisi
+                const cancelBtn = document.getElementById('post-cancel');
+                if (cancelBtn) {
+                    cancelBtn.addEventListener('click', function() {
+                        const popup = document.getElementById('blogCreatePopup');
+                        if (popup) {
+                            popup.remove();
+                        }
+                    });
+                }
+                
+                // Form gönderme olay dinleyicisi
+                const submitBtn = document.getElementById('post-submit');
+                if (submitBtn) {
+                    submitBtn.addEventListener('click', function() {
+                        // Form verilerini al
+                        const title = document.getElementById('post-title').value;
+                        const category = document.getElementById('post-category').value;
+                        const content = document.getElementById('post-content').value;
+                        const tags = document.getElementById('post-tags').value;
+                        
+                        // Basit doğrulama
+                        if (!title || !category || !content) {
+                            alert('Lütfen gerekli alanları doldurun (Başlık, Kategori, İçerik)');
+                            return;
+                        }
+                        
+                        alert('Blog yazınız başarıyla oluşturuldu!');
+                        
+                        // Popup'ı kapat
+                        const popup = document.getElementById('blogCreatePopup');
+                        if (popup) {
+                            popup.remove();
+                        }
+                    });
+                }
+            }
+        });
+    </script>
 </body>
 </html>
