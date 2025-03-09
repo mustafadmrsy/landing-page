@@ -192,7 +192,7 @@ function setupCreateButton() {
     
     const createButton = document.querySelector('.snk-create-btn');
     if (createButton) {
-        createButton.addEventListener('click', function() {
+        createButton.addEventListener('click', function(e) {
             console.log("Oluştur butonuna tıklandı");
             const currentUser = JSON.parse(localStorage.getItem('snk_currentUser') || localStorage.getItem('snk_current_user') || '{}');
             
@@ -372,25 +372,87 @@ function showBlogCreatePopup(user) {
         // Yeni blog yazısını ekle
         blogPosts.push(blogPost);
         
-        // Güncellenmiş blog yazılarını localStorage'a kaydet
-        localStorage.setItem('snk_blog_posts', JSON.stringify(blogPosts));
-        
-        // Kullanıcının blog yazılarını ayrıca kaydet - profil sayfasında göstermek için
-        let userPosts = JSON.parse(localStorage.getItem(`snk_user_posts_${user.id}`) || '[]');
-        userPosts.push(blogPost);
-        localStorage.setItem(`snk_user_posts_${user.id}`, JSON.stringify(userPosts));
-        
-        // Popup'ı kapat
-        closePopup(popup);
-        
-        // Başarılı mesajı göster
-        alert('Blog yazınız başarıyla yayınlandı!');
-        
-        // Son yazılar gösterimini güncelle
-        updateRecentPostsDisplay();
-        
-        // Profil sayfasındaki yazılar tabını güncelle
-        updateUserPostsDisplay();
+        try {
+            // Güncellenmiş blog yazılarını localStorage'a kaydet
+            localStorage.setItem('snk_blog_posts', JSON.stringify(blogPosts));
+            
+            // Kullanıcının blog yazılarını ayrıca kaydet - profil sayfasında göstermek için
+            let userPosts = JSON.parse(localStorage.getItem(`snk_user_posts_${user.id}`) || '[]');
+            userPosts.push(blogPost);
+            localStorage.setItem(`snk_user_posts_${user.id}`, JSON.stringify(userPosts));
+            
+            // Popup'ı kapat
+            closePopup(popup);
+            
+            // Başarılı mesajı göster
+            alert('Blog yazınız başarıyla yayınlandı!');
+            
+            // Ana sayfayı yeniden yükle - yazılar gösterilecek
+            if (window.location.pathname.includes('index.html') || window.location.pathname === '/' || window.location.pathname.endsWith('/')) {
+                // Ana sayfadayız, blog yazılarını yeniden yükle
+                if (typeof snk_main_loadBlogPosts === 'function') {
+                    snk_main_loadBlogPosts();
+                } else {
+                    // Fonksiyon yoksa sayfayı yenile
+                    window.location.reload();
+                }
+            } else {
+                // Ana sayfada değiliz, kullanıcıya bir bildirim gösterelim
+                const notif = document.createElement('div');
+                notif.className = 'snk-notification';
+                notif.innerHTML = `
+                    <div class="snk-notification-content">
+                        <i class="fas fa-check-circle"></i>
+                        <p>Blog yazınız başarıyla yayınlandı! <a href="index.html">Ana sayfada görüntülemek için tıklayın</a>.</p>
+                    </div>
+                    <button class="snk-notification-close"><i class="fas fa-times"></i></button>
+                `;
+                document.body.appendChild(notif);
+                
+                // Bildirim kapatma işlevi
+                notif.querySelector('.snk-notification-close').addEventListener('click', function() {
+                    notif.classList.add('snk-notification-closing');
+                    setTimeout(() => notif.remove(), 300);
+                });
+                
+                // 5 saniye sonra bildirim otomatik kapansın
+                setTimeout(() => {
+                    notif.classList.add('snk-notification-closing');
+                    setTimeout(() => notif.remove(), 300);
+                }, 5000);
+            }
+            
+            // Son yazılar gösterimini güncelle
+            if (typeof updateRecentPostsDisplay === 'function') {
+                updateRecentPostsDisplay();
+            }
+            
+            // Profil sayfasındaki yazılar tabını güncelle
+            if (typeof updateUserPostsDisplay === 'function') {
+                updateUserPostsDisplay();
+            }
+        } catch (e) {
+            console.error('LocalStorage hatası:', e);
+            
+            // LocalStorage dolu olduğunda eski kayıtları temizle
+            if (e.name === 'QuotaExceededError') {
+                // En eski blog yazısını sil
+                if (blogPosts.length > 1) {
+                    blogPosts.shift(); // En eski blog yazısını çıkar
+                    try {
+                        localStorage.setItem('snk_blog_posts', JSON.stringify(blogPosts));
+                        localStorage.setItem(`snk_user_posts_${user.id}`, JSON.stringify([blogPost]));
+                        showTemporaryMessage('Blog yazınız eklendi, ancak bazı eski yazılar kaldırıldı (depolama limiti)', 'warning');
+                    } catch (e2) {
+                        showTemporaryMessage('Depolama alanı dolu! Lütfen bazı içerikleri silin.', 'error');
+                    }
+                } else {
+                    showTemporaryMessage('Depolama alanı dolu! Lütfen bazı içerikleri silin.', 'error');
+                }
+            } else {
+                showTemporaryMessage('Blog yazısı eklenirken bir hata oluştu!', 'error');
+            }
+        }
     });
 
     // Görsel yükleme fonksiyonalitesi
@@ -515,17 +577,6 @@ function showLoginPopup() {
                         </div>
                         <button type="submit" class="snk-auth-submit">Oturum Aç</button>
                         <div id="loginAlertBox" class="snk-form-message" style="display: none;"></div>
-                        <div class="snk-auth-divider">
-                            <span>veya</span>
-                        </div>
-                        <div class="snk-social-login">
-                            <button type="button" class="snk-social-btn snk-google-btn">
-                                <i class="fab fa-google"></i> Google ile Giriş Yap
-                            </button>
-                            <button type="button" class="snk-social-btn snk-facebook-btn">
-                                <i class="fab fa-facebook-f"></i> Facebook ile Giriş Yap
-                            </button>
-                        </div>
                         <div class="snk-auth-toggle">
                             Hesabınız yok mu? <a href="#" id="showRegisterPopup">Kaydolun</a>
                         </div>
@@ -620,9 +671,8 @@ function deleteBlogPost(postId) {
                 </div>
             </div>
         </div>
-    </div>
-    `;
-    
+    </div>`;
+
     // Önce tüm popupları temizle
     const existingPopups = document.querySelectorAll('.snk-popup-overlay');
     existingPopups.forEach(popup => popup.remove());
@@ -742,7 +792,7 @@ function updateRecentPostsDisplay() {
     // "Devamını Oku" butonlarına tıklama olayı ekle
     const readMoreButtons = document.querySelectorAll('.snk-read-more-btn');
     readMoreButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function(e) {
             e.preventDefault();
             const postId = this.getAttribute('data-post-id');
             openBlogPostPopup(postId);
@@ -953,17 +1003,17 @@ function updateUserPostsDisplay() {
                 </div>
             </div>
             <div class="snk-user-post-actions">
-                <button class="snk-post-action-btn" data-action="like" data-post-id="${post.id}">
-                    <i class="far fa-heart"></i> Beğen
-                </button>
-                <button class="snk-post-action-btn" data-action="comment" data-post-id="${post.id}">
-                    <i class="far fa-comment"></i> Yorum
-                </button>
-                <button class="snk-post-action-btn" data-action="share" data-post-id="${post.id}">
-                    <i class="far fa-share-square"></i> Paylaş
-                </button>
-                <button class="snk-post-action-btn delete-btn" data-action="delete" data-post-id="${post.id}">
-                    <i class="far fa-trash-alt"></i> Sil
+              <button class="snk-action-btn snk-like-button" data-post-id="1741484977975" style="background: #007bff; color: white; border-radius: 20px; padding: 6px 12px; border: none; cursor: pointer;">
+                                <i class="far fa-thumbs-up" style="margin-right: 5px;"></i> Beğen
+                                <span class="snk-like-count" style="font-weight: bold;">0</span>
+                            </button>           <button class="snk-action-btn snk-comment-button" data-post-id="1741484977975" style="background: black; color: white; border-radius: 20px; padding: 6px 12px; border: none; cursor: pointer;">
+                                <i class="far fa-comment" style="margin-right: 5px;"></i> Yorum Yap
+                            </button>
+               <button class="snk-action-btn snk-share-button" data-post-id="1741484977975" style="background: #007bff; color: white; border-radius: 20px; padding: 6px 12px; border: none; cursor: pointer;">
+                                <i class="far fa-share-square" style="margin-right: 5px;"></i> Paylaş
+                            </button>
+                <button class="snk-post-action-btn delete-btn" data-action="delete" data-post-id="${post.id}" style="background: #ff3852; color: white; border-radius: 20px; padding: 6px 12px; border: none; cursor: pointer;">
+                    <i class="far fa-trash-alt" style="margin-right: 5px;"></i> Sil
                 </button>
             </div>
         `;
@@ -1003,7 +1053,8 @@ function updateUserPostsDisplay() {
         
         // Silme butonu
         if (deleteBtn) {
-            deleteBtn.addEventListener('click', function() {
+            deleteBtn.addEventListener('click', function(e) {
+                e.preventDefault();
                 const postId = this.getAttribute('data-post-id');
                 deleteBlogPost(postId);
             });

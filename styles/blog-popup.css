@@ -1,0 +1,324 @@
+/* Blog Popup CSS - Reddit Tarzı Tasarım */
+.snk-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.75);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    overflow-y: auto;
+    z-index: 1000;
+    padding: 30px 0;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.snk-popup-content {
+    background-color: #1A1A1B;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 900px;
+    position: relative;
+    margin: auto;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.snk-popup-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border: none;
+    color: #D7DADC;
+    font-size: 24px;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.snk-popup-close:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: rotate(90deg);
+    color: #FF4500;
+}
+
+.snk-popup-article {
+    padding: 25px;
+    overflow-y: auto;
+    max-height: 90vh;
+    scrollbar-width: thin;
+    scrollbar-color: #818384 #1A1A1B;
+}
+
+.snk-popup-article::-webkit-scrollbar {
+    width: 8px;
+}
+
+.snk-popup-article::-webkit-scrollbar-track {
+    background: #1A1A1B;
+}
+
+.snk-popup-article::-webkit-scrollbar-thumb {
+    background-color: #818384;
+    border-radius: 10px;
+    border: 2px solid #1A1A1B;
+}
+
+.snk-popup-header {
+    margin-bottom: 25px;
+}
+
+.snk-popup-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: #818384;
+}
+
+.snk-popup-category {
+    color: #0079D3;
+    font-weight: 600;
+}
+
+.snk-popup-title {
+    font-size: 28px;
+    color: #D7DADC;
+    margin: 0;
+    line-height: 1.3;
+}
+
+.snk-popup-featured-image {
+    margin-bottom: 25px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.snk-popup-featured-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.snk-popup-content-body {
+    color: #D7DADC;
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.snk-popup-footer {
+    margin-top: 30px;
+    border-top: 1px solid #343536;
+    padding-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.snk-popup-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.snk-popup-tag {
+    background-color: rgba(255, 255, 255, 0.04);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    color: #0079D3;
+}
+
+.snk-popup-actions {
+    display: flex;
+    gap: 15px;
+}
+
+.snk-popup-action-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: none;
+    border-radius: 20px;
+    color: #D7DADC;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.snk-popup-action-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.snk-popup-action-btn i {
+    font-size: 16px;
+}
+
+/* Yorumlar bölümü */
+.snk-popup-comments {
+    margin-top: 30px;
+    border-top: 1px solid #343536;
+    padding-top: 20px;
+}
+
+.snk-comments-title {
+    font-size: 20px;
+    color: #D7DADC;
+    margin-bottom: 20px;
+}
+
+.snk-comment-form {
+    margin-bottom: 25px;
+}
+
+.snk-comment-textarea {
+    width: 100%;
+    min-height: 100px;
+    background-color: #272729;
+    border: 1px solid #343536;
+    border-radius: 4px;
+    padding: 15px;
+    color: #D7DADC;
+    font-size: 14px;
+    resize: vertical;
+    margin-bottom: 10px;
+}
+
+.snk-comment-textarea:focus {
+    outline: none;
+    border-color: #0079D3;
+}
+
+.snk-comment-submit {
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #0079D3, #0061A9);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.snk-comment-submit:hover {
+    background: linear-gradient(135deg, #0061A9, #24A0ED);
+    transform: translateY(-2px);
+}
+
+.snk-comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.snk-comment {
+    display: flex;
+    gap: 15px;
+    background-color: #272729;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.snk-comment-avatar {
+    flex-shrink: 0;
+}
+
+.snk-comment-avatar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.snk-comment-content {
+    flex-grow: 1;
+}
+
+.snk-comment-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.snk-comment-author {
+    font-weight: 600;
+    color: #D7DADC;
+}
+
+.snk-comment-date {
+    font-size: 12px;
+    color: #818384;
+}
+
+.snk-comment-text {
+    color: #D7DADC;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.snk-no-comments {
+    text-align: center;
+    padding: 20px;
+    color: #818384;
+    font-style: italic;
+}
+
+/* Animasyonlar */
+@keyframes snk-popup-appear {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.snk-popup-content {
+    animation: snk-popup-appear 0.3s ease forwards;
+}
+
+/* Responsive düzenlemeler */
+@media (max-width: 768px) {
+    .snk-popup-content {
+        width: 95%;
+    }
+    
+    .snk-popup-article {
+        padding: 15px;
+    }
+    
+    .snk-popup-title {
+        font-size: 22px;
+    }
+    
+    .snk-popup-meta {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .snk-popup-footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

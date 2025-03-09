@@ -1,0 +1,79 @@
+/* Bildirim stilleri */
+.snk-notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 400px;
+    animation: slideIn 0.3s ease-out forwards;
+}
+
+.snk-notification-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.snk-notification-content i {
+    font-size: 24px;
+    color: #8effa0;
+}
+
+.snk-notification-content p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.snk-notification-content a {
+    color: #8effa0;
+    text-decoration: underline;
+    font-weight: 500;
+}
+
+.snk-notification-close {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 5px;
+    transition: transform 0.3s;
+}
+
+.snk-notification-close:hover {
+    transform: rotate(90deg);
+}
+
+.snk-notification-closing {
+    animation: slideOut 0.3s ease-in forwards;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+}

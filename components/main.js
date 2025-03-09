@@ -32,7 +32,9 @@ document.addEventListener('DOMContentLoaded', function() {
     snk_main_loadBlogPosts();
     
     // Filtreleme butonları için olay dinleyicileri ekle
-    snk_main_setupFilterButtons();
+    if (filterNewest && filterPopular) {
+        snk_main_setupFilterButtons();
+    }
     
     // Sidebar'daki popüler linki için olay dinleyicisi
     if (sidebarPopular) {
@@ -80,22 +82,27 @@ document.addEventListener('DOMContentLoaded', function() {
  * Blog yazılarını JSON dosyasından yükler
  */
 function snk_main_loadBlogPosts() {
-    console.log("Blog yazıları yükleniyor");
+    console.log('Blog yazıları yükleniyor...');
     
-    if (!snk_main_postsContainer) {
-        console.error("Posts container bulunamadı!");
+    // Yükleniyor mesajını göster
+    const container = document.getElementById('snk_postsContainer');
+    if (!container) {
+        console.error('Blog yazıları konteyneri bulunamadı');
         return;
     }
     
-    // Yükleniyor mesajını göster
-    snk_main_postsContainer.innerHTML = `
+    container.innerHTML = `
         <div class="snk-loading">
             <i class="fas fa-spinner fa-spin"></i> Blog yazıları yükleniyor...
         </div>
     `;
     
-    // JSON dosyasından verileri çek
-    fetch('/utils/blogPosts.json')
+    // Önce localStorage'dan kullanıcı yazılarını al
+    const localPosts = JSON.parse(localStorage.getItem('snk_blog_posts') || '[]');
+    console.log('LocalStorage\'dan yüklenen yazı sayısı:', localPosts.length);
+    
+    // Daha sonra JSON dosyasından varsayılan yazıları yükle
+    fetch('../utils/blogPosts.json')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Blog yazıları yüklenemedi');
@@ -106,7 +113,7 @@ function snk_main_loadBlogPosts() {
             console.log("Blog verileri yüklendi:", data.posts.length);
             
             // Blog yazılarını sakla
-            snk_main_blogPosts = data.posts;
+            snk_main_blogPosts = [...localPosts, ...data.posts];
             
             // Yazıları ekrana göster
             snk_main_onBlogPostsLoaded(snk_main_blogPosts);
@@ -134,13 +141,18 @@ function snk_main_onBlogPostsLoaded(posts) {
     
     // En popüler yazıları göster
     snk_main_displayPopularPosts(posts, snk_main_activeFilter);
-    
-    // Filtre butonlarına olay dinleyicileri ekle
+}
+
+/**
+ * Filtreleme butonlarını ayarla
+ */
+function snk_main_setupFilterButtons() {
     const newestBtn = document.getElementById('snk_filterNewest');
     const popularBtn = document.getElementById('snk_filterPopular');
     
     if (newestBtn && popularBtn) {
         newestBtn.addEventListener('click', () => {
+            snk_main_activeFilter = 'newest';
             newestBtn.classList.add('active');
             popularBtn.classList.remove('active');
             const sortedPosts = [...snk_main_blogPosts].sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -149,6 +161,7 @@ function snk_main_onBlogPostsLoaded(posts) {
         });
         
         popularBtn.addEventListener('click', () => {
+            snk_main_activeFilter = 'popular';
             popularBtn.classList.add('active');
             newestBtn.classList.remove('active');
             const sortedPosts = [...snk_main_blogPosts].sort((a, b) => b.views - a.views);
@@ -159,131 +172,401 @@ function snk_main_onBlogPostsLoaded(posts) {
 }
 
 /**
- * Blog yazılarını görüntüle
- * @param {Array} posts - Gösterilecek blog yazıları dizisi
+ * Blog kartları oluşturma fonksiyonu
+ * @param {Array} posts - Blog gönderileri dizisi
+ * @param {HTMLElement} container - Blog kartlarının ekleneceği konteyner
+ */
+function snk_main_createBlogCards(posts, container) {
+    if (!container) {
+        console.error("Blog kartları için konteyner bulunamadı");
+        return;
+    }
+    
+    // Konteyner içeriğini temizle
+    container.innerHTML = '';
+    
+    // Her bir gönderi için kart oluştur
+    posts.forEach(post => {
+        // Blog kartı öğesi oluştur
+        const cardElement = document.createElement('div');
+        cardElement.className = 'snk-blog-card';
+        cardElement.dataset.postId = post.id;
+        
+        // Kart içeriği HTML'i
+        cardElement.innerHTML = `
+            <div class="snk-blog-card-image">
+                <img src="${post.imageSrc || '../assets/post-img-default.jpg'}" alt="${post.title}">
+            </div>
+            <div class="snk-blog-card-content">
+                <div class="snk-blog-card-categories">
+                    ${post.categories.map(cat => `<span class="snk-blog-category">${cat}</span>`).join('')}
+                </div>
+                <h3 class="snk-blog-card-title">${post.title}</h3>
+                <p class="snk-blog-card-summary">${post.summary}</p>
+                <div class="snk-blog-card-meta">
+                    <span><i class="fas fa-user"></i> ${post.author}</span>
+                    <span><i class="fas fa-calendar-alt"></i> ${post.date}</span>
+                    <span><i class="fas fa-eye"></i> ${post.views} Okunma</span>
+                </div>
+                <div class="snk-post-actions">
+                    <button class="snk-action-button snk-like-button" data-post-id="${post.id}">
+                        <i class="far fa-heart"></i> <span class="snk-like-count">0</span> Beğen
+                    </button>
+                    <button class="snk-action-button snk-comment-button" data-post-id="${post.id}">
+                        <i class="far fa-comment"></i> Yorum Yap
+                    </button>
+                    <button class="snk-action-button snk-share-button" data-post-id="${post.id}">
+                        <i class="far fa-share-square"></i> Paylaş
+                    </button>
+                </div>
+                <div class="snk-blog-card-read-more">
+                    <button class="snk-blog-read-more-btn" data-post-id="${post.id}">
+                        Devamını Oku <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        // Kartı konteyner'a ekle
+        container.appendChild(cardElement);
+        
+        // Kart etkileşimlerini ayarla
+        snk_main_setupPostInteractions(cardElement, post);
+    });
+}
+
+/**
+ * Blog kartları için etkileşimleri ayarlayan fonksiyon
+ * @param {HTMLElement} postElement - Post elementi
+ * @param {Object} postData - Post verisi
+ */
+function snk_main_setupPostInteractions(postElement, postData) {
+    // Devamını Oku butonu
+    const readMoreBtn = postElement.querySelector('.snk-blog-read-more-btn');
+    if (readMoreBtn) {
+        readMoreBtn.addEventListener('click', function(event) {
+            event.preventDefault();
+            const postId = parseInt(this.dataset.postId);
+            snk_main_showBlogPopup(postId);
+        });
+    }
+    
+    // Beğeni butonu
+    const likeButton = postElement.querySelector('.snk-like-button');
+    if (likeButton) {
+        likeButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            SNK_CommentSystem.toggleLike(this);
+        });
+    }
+    
+    // Yorum butonu
+    const commentButton = postElement.querySelector('.snk-comment-button');
+    if (commentButton) {
+        commentButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            const postId = this.getAttribute('data-post-id');
+            SNK_CommentSystem.openCommentModal(postId);
+        });
+    }
+    
+    // Paylaş butonu
+    const shareButton = postElement.querySelector('.snk-share-button');
+    if (shareButton) {
+        shareButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation(); // Tıklama olayının yayılmasını önle
+            const postId = this.getAttribute('data-post-id');
+            console.log("Paylaş butonuna tıklandı. Post ID:", postId);
+            
+            const post = snk_main_blogPosts.find(p => p.id === postId);
+            
+            if (post) {
+                // Paylaş fonksiyonunu çağır
+                SNK_CommentSystem.sharePost(postId, event);
+            }
+        });
+    }
+}
+
+/**
+ * Blog gönderilerini görüntüleme fonksiyonu (Reddit tarzı yeni tasarım için)
+ * @param {Array} posts - Görüntülenecek blog gönderileri dizisi
  */
 function snk_main_displayBlogPosts(posts) {
-    const postsContainer = document.getElementById('snk_postsContainer');
-    
-    if (!postsContainer) return;
+    console.log("Blog gönderileri görüntüleniyor:", posts);
     
     // HTML içeriğini hazırla
     let postsHTML = '';
     
-    posts.forEach(post => {
-        postsHTML += `
-            <div class="snk-post" data-post-id="${post.id}">
-                <div class="snk-post-content-wrapper">
-                    <div class="snk-post-vote">
-                        <button class="snk-vote-btn snk-upvote">
-                            <i class="fas fa-arrow-up"></i>
-                        </button>
-                        <span class="snk-vote-count">0</span>
-                        <button class="snk-vote-btn snk-downvote">
-                            <i class="fas fa-arrow-down"></i>
-                        </button>
+    if (posts.length === 0) {
+        postsHTML = `
+            <div class="snk-empty-state">
+                <i class="fas fa-search"></i>
+                <p>Gösterilecek blog yazısı bulunamadı.</p>
+            </div>
+        `;
+    } else {
+        posts.forEach(post => {
+            // Gönderi açıklamasını 150 karakterle sınırla
+            const shortDescription = post.summary.length > 150
+                ? post.summary.substring(0, 150) + '...'
+                : post.summary;
+                
+            postsHTML += `
+                <div class="snk-blog-card" data-post-id="${post.id}">
+                    <div class="snk-blog-image">
+                        <img src="${post.image || 'assets/images/default-post.jpg'}" alt="${post.title}">
                     </div>
-                    <div class="snk-post-main">
-                        <div class="snk-post-header">
-                            <div class="snk-post-info">
-                                <span class="snk-post-category">r/${post.category}</span>
-                                <span class="snk-post-author">Posted by u/${post.author}</span>
-                                <span class="snk-post-date">${new Date(post.date).toLocaleDateString('tr-TR', {day: 'numeric', month: 'long', year: 'numeric'})}</span>
+                    <div class="snk-blog-content">
+                        <div class="snk-blog-header">
+                            <div class="snk-blog-meta">
+                                <span class="snk-blog-category">${post.category}</span>
+                                <span class="snk-blog-author"><i class="fas fa-user"></i> ${post.author || 'Anonim'}</span>
+                                <span class="snk-blog-date"><i class="fas fa-calendar-alt"></i> ${post.date || 'Tarih bilgisi yok'}</span>
                             </div>
-                            <h3 class="snk-post-title">${post.title}</h3>
+                            <h2 class="snk-blog-title">${post.title}</h2>
                         </div>
-                        ${post.image ? `<div class="snk-post-image"><img src="${post.image}" alt="${post.title}"></div>` : ''}
-                        <div class="snk-post-summary">${post.summary}</div>
-                        <div class="snk-post-footer">
-                            <button class="snk-post-action snk-read-more" data-post-id="${post.id}" data-expanded="false">
-                                <i class="fas fa-angle-down"></i> Devamını Oku
+                        <p class="snk-blog-description">${shortDescription}</p>
+                        <div class="snk-blog-actions">
+                            <button class="snk-action-btn snk-like-button" data-post-id="${post.id}">
+                                <i class="far fa-thumbs-up"></i> Beğen
+                                <span class="snk-like-count">${post.likes || 0}</span>
                             </button>
-                            <button class="snk-post-action snk-comment-btn" data-post-id="${post.id}">
-                                <i class="fas fa-comment-alt"></i> Yorumlar
+                            <button class="snk-action-btn snk-comment-button" data-post-id="${post.id}">
+                                <i class="far fa-comment"></i> Yorum Yap
                             </button>
-                            <button class="snk-post-action snk-share-btn" data-post-id="${post.id}">
-                                <i class="fas fa-share"></i> Paylaş
+                            <button class="snk-action-btn snk-share-button" data-post-id="${post.id}">
+                                <i class="far fa-share-square"></i> Paylaş
+                            </button>
+                            <button class="snk-read-more-btn snk-read-more" data-post-id="${post.id}">
+                                Devamını Oku <i class="fas fa-arrow-right"></i>
                             </button>
                         </div>
                     </div>
                 </div>
-            </div>
-        `;
-    });
-    
-    // Eğer hiç yazı yoksa
-    if (posts.length === 0) {
-        postsHTML = '<div class="snk-no-posts">Gösterilecek yazı bulunamadı.</div>';
+            `;
+        });
     }
     
     // İçeriği DOM'a ekle
-    postsContainer.innerHTML = postsHTML;
-    
-    // "Devamını Oku" butonlarını ayarla
-    const readMoreButtons = postsContainer.querySelectorAll('.snk-read-more');
-    
+    if (snk_main_postsContainer) {
+        snk_main_postsContainer.innerHTML = postsHTML;
+        
+        // Etkileşimleri kur
+        snk_main_setupPostInteractions(snk_main_postsContainer);
+    }
+}
+
+/**
+ * Yazı etkileşimlerini kuran fonksiyon (yeni Reddit tarzı tasarım için)
+ * @param {HTMLElement} container - İçinde etkileşimli elemanların olduğu konteyner
+ */
+function snk_main_setupPostInteractions(container) {
+    // Devamını Oku butonları
+    const readMoreButtons = container.querySelectorAll('.snk-read-more');
     readMoreButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const isExpanded = this.dataset.expanded === 'true';
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
             const postId = parseInt(this.dataset.postId);
+            console.log("Devamını Oku butonuna tıklandı. Post ID:", postId);
+            snk_main_showBlogPopup(postId);
+        });
+    });
+    
+    // Beğen butonları
+    const likeButtons = container.querySelectorAll('.snk-like-button');
+    likeButtons.forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            SNK_CommentSystem.toggleLike(this);
+        });
+    });
+    
+    // Yorum butonları
+    const commentButtons = container.querySelectorAll('.snk-comment-button');
+    commentButtons.forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            const postId = parseInt(this.dataset.postId);
+            console.log("Yorum butonuna tıklandı. Post ID:", postId);
+            
+            // Popup içinde yorum bölümüne odaklanma
+            SNK_CommentSystem.openCommentModal(postId);
+        });
+    });
+    
+    // Paylaş butonları
+    const shareButtons = container.querySelectorAll('.snk-share-button');
+    shareButtons.forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation(); // Tıklama olayının yayılmasını önle
+            const postId = parseInt(this.dataset.postId);
+            console.log("Paylaş butonuna tıklandı. Post ID:", postId);
+            
             const post = snk_main_blogPosts.find(p => p.id === postId);
-            
-            if (!post) return;
-            
-            const postElement = this.closest('.snk-post');
-            const summaryElement = postElement.querySelector('.snk-post-summary');
-            
-            if (isExpanded) {
-                // İçeriği daralt
-                this.innerHTML = '<i class="fas fa-angle-down"></i> Devamını Oku';
-                this.dataset.expanded = 'false';
-                postElement.classList.remove('expanded');
-                
-                // Özeti göster
-                summaryElement.textContent = post.summary;
-            } else {
-                // İçeriği genişlet
-                this.innerHTML = '<i class="fas fa-angle-up"></i> Daralt';
-                this.dataset.expanded = 'true';
-                postElement.classList.add('expanded');
-                
-                // Tam içeriği göster
-                const fullContentHTML = `
-                    <div class="snk-post-full-content">
-                        ${post.content}
-                        ${post.tags && post.tags.length ? `
-                            <div class="snk-post-tags">
-                                ${post.tags.map(tag => `<span class="snk-tag">#${tag}</span>`).join('')}
-                            </div>
-                        ` : ''}
-                    </div>
-                `;
-                
-                // İçeriği ekle
-                summaryElement.innerHTML = fullContentHTML;
+            if (post) {
+                // Paylaş fonksiyonunu çağır
+                SNK_CommentSystem.sharePost(postId, event);
             }
         });
     });
+}
+
+/**
+ * Blog popup'ını gösterme fonksiyonu (Reddit tarzı tasarım için yenilendi)
+ * @param {number} postId - Gösterilecek yazının ID'si
+ * @param {boolean} focusComments - Yorum bölümüne odaklanılacak mı
+ */
+function snk_main_showBlogPopup(postId, focusComments = false) {
+    console.log("Blog popup gösteriliyor. Post ID:", postId);
     
-    // Yorum butonlarını ayarla
-    const commentButtons = postsContainer.querySelectorAll('.snk-comment-btn');
+    // İlgili gönderiyi bul
+    const post = snk_main_blogPosts.find(p => p.id === postId);
     
-    commentButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const postId = parseInt(this.dataset.postId);
-            snk_main_toggleComments(postId);
-        });
+    if (!post) {
+        console.error("Gösterilen yazı bulunamadı. ID:", postId);
+        return;
+    }
+    
+    // Popup HTML'ini oluştur
+    const popupHTML = `
+        <div class="snk-popup-overlay">
+            <div class="snk-popup-content">
+                <button class="snk-popup-close">&times;</button>
+                <article class="snk-popup-article">
+                    <header class="snk-popup-header">
+                        <div class="snk-popup-meta">
+                            <span class="snk-popup-category">${post.category}</span>
+                            <span class="snk-popup-author">Yazar: ${post.author || 'Anonim'}</span>
+                            <span class="snk-popup-date">${post.date || 'Tarih bilgisi yok'}</span>
+                            <span class="snk-popup-views"><i class="far fa-eye"></i> ${post.views || 0} görüntülenme</span>
+                        </div>
+                        <h1 class="snk-popup-title">${post.title}</h1>
+                    </header>
+                    
+                    <div class="snk-popup-featured-image">
+                        <img src="${post.image || 'assets/images/default-post.jpg'}" alt="${post.title}">
+                    </div>
+                    
+                    <div class="snk-popup-content-body">
+                        ${post.content || post.summary}
+                    </div>
+                    
+                    <footer class="snk-popup-footer">
+                        <div class="snk-popup-tags">
+                            ${post.tags ? post.tags.map(tag => `<span class="snk-popup-tag">#${tag}</span>`).join('') : ''}
+                        </div>
+                        
+                        <div class="snk-popup-actions">
+                            <button class="snk-popup-action-btn snk-popup-like">
+                                <i class="far fa-thumbs-up"></i> Beğen
+                                <span class="snk-popup-like-count">${post.likes || 0}</span>
+                            </button>
+                            <button class="snk-popup-action-btn snk-popup-share">
+                                <i class="far fa-share-square"></i> Paylaş
+                            </button>
+                        </div>
+                    </footer>
+                    
+                    <div class="snk-popup-comments" id="snk-popup-comments">
+                        <h3 class="snk-comments-title">Yorumlar</h3>
+                        <div class="snk-comment-form">
+                            <textarea placeholder="Yorumunuzu buraya yazın..." class="snk-comment-textarea" id="snk_comment_textarea_${postId}"></textarea>
+                            <button class="snk-comment-submit" id="snk_comment_submit_${postId}">Gönder</button>
+                            <button class="snk-comment-cancel" id="snk_comment_cancel_${postId}">İptal</button>
+                        </div>
+                        <div class="snk-comments-list">
+                            ${post.comments && post.comments.length > 0 
+                                ? post.comments.map(comment => `
+                                    <div class="snk-comment">
+                                        <div class="snk-comment-avatar">
+                                            <img src="${comment.avatar || 'assets/images/default-avatar.jpg'}" alt="${comment.author}">
+                                        </div>
+                                        <div class="snk-comment-content">
+                                            <div class="snk-comment-header">
+                                                <span class="snk-comment-author">${comment.author}</span>
+                                                <span class="snk-comment-date">${comment.date}</span>
+                                            </div>
+                                            <div class="snk-comment-text">${comment.text}</div>
+                                        </div>
+                                    </div>
+                                `).join('') 
+                                : '<div class="snk-no-comments">Henüz yorum yapılmamış. İlk yorumu sen yap!</div>'
+                            }
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    `;
+    
+    // Popup'ı DOM'a ekle
+    const popupElement = document.createElement('div');
+    popupElement.innerHTML = popupHTML;
+    document.body.appendChild(popupElement.firstElementChild);
+    
+    // Popup kapatma olaylarını ekle
+    const popup = document.querySelector('.snk-popup-overlay');
+    const closeButton = popup.querySelector('.snk-popup-close');
+    
+    // Kapatma butonuna tıklama
+    closeButton.addEventListener('click', function() {
+        document.body.removeChild(popup);
     });
     
-    // Paylaşım butonlarını ayarla
-    const shareButtons = postsContainer.querySelectorAll('.snk-share-btn');
-    
-    shareButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const postId = parseInt(this.dataset.postId);
-            snk_main_toggleSharePanel(postId, this);
-        });
+    // Overlay'e tıklama ile kapatma
+    popup.addEventListener('click', function(event) {
+        if (event.target === popup) {
+            document.body.removeChild(popup);
+        }
     });
+    
+    // ESC tuşu ile kapatma
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape' && document.body.contains(popup)) {
+            document.body.removeChild(popup);
+        }
+    });
+    
+    // Yorumlara odaklan (eğer isteniyorsa)
+    if (focusComments && document.getElementById('snk-popup-comments')) {
+        document.getElementById('snk-popup-comments').scrollIntoView({ behavior: 'smooth' });
+        setTimeout(() => {
+            document.querySelector('.snk-comment-textarea').focus();
+        }, 500);
+    }
+}
+
+/**
+ * Blog yazılarını aktif filtreye göre filtreler
+ */
+function snk_main_filterPosts() {
+    let filteredPosts = [...snk_main_blogPosts]; // Tüm yazıların bir kopyasını oluşt
+    
+    console.log("Yazılar filtreleniyor:", snk_main_activeFilter);
+    
+    // Filtreleme türüne göre sırala
+    switch (snk_main_activeFilter) {
+        case 'newest':
+            // Tarihe göre en yeniden eskiye sırala
+            filteredPosts.sort((a, b) => {
+                const dateA = new Date(a.date.split('.').reverse().join('-'));
+                const dateB = new Date(b.date.split('.').reverse().join('-'));
+                return dateB - dateA;
+            });
+            break;
+            
+        case 'popular':
+            // Görüntülenme sayısına göre sırala
+            filteredPosts.sort((a, b) => (b.views || 0) - (a.views || 0));
+            break;
+    }
+    
+    // Filtrelenmiş yazıları göster
+    snk_main_displayBlogPosts(filteredPosts);
+    snk_main_displayPopularPosts(filteredPosts, snk_main_activeFilter);
 }
 
 /**
@@ -443,15 +726,6 @@ function snk_main_createAndDisplaySinglePost(post, container) {
     const postHTML = `
         <div class="snk-post expanded" data-post-id="${post.id}">
             <div class="snk-post-content-wrapper">
-                <div class="snk-post-vote">
-                    <button class="snk-vote-btn snk-upvote">
-                        <i class="fas fa-arrow-up"></i>
-                    </button>
-                    <span class="snk-vote-count">0</span>
-                    <button class="snk-vote-btn snk-downvote">
-                        <i class="fas fa-arrow-down"></i>
-                    </button>
-                </div>
                 <div class="snk-post-main">
                     <div class="snk-post-header">
                         <div class="snk-post-info">
@@ -491,166 +765,20 @@ function snk_main_createAndDisplaySinglePost(post, container) {
     // Yazıyı container'a ekle
     container.insertAdjacentHTML('afterbegin', postHTML);
     
-    // Oy butonlarını ayarla
-    snk_main_setupVoteButtons();
-    
-    // Filtre başlığını güncelle
-    const contentTitle = document.querySelector('.snk-content-title');
-    if (contentTitle) {
-        contentTitle.textContent = 'Seçili Yazı';
+    // Kategori filtresini kontrol et
+    if (typeof updateCategoryVisibility === 'function') {
+        updateCategoryVisibility();
     }
     
-    // Genişletilmiş yazı için gerekli event listener'ları ekle
-    const readMoreBtn = container.querySelector('.snk-post-action.snk-read-more');
-    if (readMoreBtn) {
-        readMoreBtn.addEventListener('click', function() {
-            const isExpanded = this.dataset.expanded === 'true';
-            const postId = parseInt(this.dataset.postId);
-            
-            if (isExpanded) {
-                // İçeriği daralt
-                this.innerHTML = '<i class="fas fa-angle-down"></i> Devamını Oku';
-                this.dataset.expanded = 'false';
-                
-                // Tüm yazıları göster
-                const allPosts = document.querySelectorAll('.snk-post');
-                allPosts.forEach(postEl => {
-                    postEl.style.display = 'flex';
-                    postEl.classList.remove('expanded');
-                    
-                    // Özeti geri yükle
-                    const summaryEl = postEl.querySelector('.snk-post-summary');
-                    if (summaryEl && postEl.getAttribute('data-post-id') != postId) {
-                        const post = snk_main_blogPosts.find(p => p.id === parseInt(postEl.getAttribute('data-post-id')));
-                        if (post) {
-                            summaryEl.textContent = post.summary;
-                        }
-                    }
-                });
-                
-                // Başlığı geri yükle
-                const contentTitle = document.querySelector('.snk-content-title');
-                if (contentTitle) {
-                    contentTitle.textContent = 'En Güncel Paylaşımlar';
-                }
-                
-                // İlgili yazının özetini göster
-                const currentPost = document.querySelector(`.snk-post[data-post-id="${postId}"]`);
-                const summaryEl = currentPost.querySelector('.snk-post-summary');
-                if (summaryEl) {
-                    const post = snk_main_blogPosts.find(p => p.id === postId);
-                    if (post) {
-                        summaryEl.textContent = post.summary;
-                    }
-                }
-            } else {
-                // İçeriği genişlet
-                this.innerHTML = '<i class="fas fa-angle-up"></i> Daralt';
-                this.dataset.expanded = 'true';
-                
-                const post = snk_main_blogPosts.find(p => p.id === postId);
-                if (post) {
-                    // Yazının içeriğini göster
-                    const currentPost = document.querySelector(`.snk-post[data-post-id="${postId}"]`);
-                    currentPost.classList.add('expanded');
-                    
-                    const summaryEl = currentPost.querySelector('.snk-post-summary');
-                    if (summaryEl) {
-                        // Tam içeriği oluştur
-                        const fullContentHTML = `
-                            <div class="snk-post-full-content">
-                                ${post.content}
-                                ${post.tags && post.tags.length ? `
-                                    <div class="snk-post-tags">
-                                        ${post.tags.map(tag => `<span class="snk-tag">#${tag}</span>`).join('')}
-                                    </div>
-                                ` : ''}
-                            </div>
-                        `;
-                        
-                        // İçeriği ekle
-                        summaryEl.innerHTML = fullContentHTML;
-                    }
-                }
-            }
-        });
-    }
+    // Etkileşim fonksiyonlarını ayarla - ZORUNLU
+    snk_main_setupPostInteractions(container, post);
+    
+    // Başarı mesajı göster
+    alert('Blog yazınız başarıyla oluşturuldu!');
 }
 
 /**
- * Blog yazılarını aktif filtreye göre filtreler
- */
-function snk_main_filterPosts() {
-    let filteredPosts = [...snk_main_blogPosts]; // Tüm yazıların bir kopyasını oluştur
-    
-    console.log("Yazılar filtreleniyor:", snk_main_activeFilter);
-    
-    // Filtreleme türüne göre sırala
-    switch (snk_main_activeFilter) {
-        case 'newest':
-            // Tarihe göre en yeniden eskiye sırala
-            filteredPosts.sort((a, b) => {
-                const dateA = new Date(a.date.split('.').reverse().join('-'));
-                const dateB = new Date(b.date.split('.').reverse().join('-'));
-                return dateB - dateA;
-            });
-            break;
-            
-        case 'popular':
-            // Görüntülenme sayısına göre sırala
-            filteredPosts.sort((a, b) => (b.views || 0) - (a.views || 0));
-            break;
-    }
-    
-    // Filtrelenmiş yazıları göster
-    snk_main_displayBlogPosts(filteredPosts);
-    snk_main_displayPopularPosts(filteredPosts, snk_main_activeFilter);
-}
-
-/**
- * Belirli bir kategoriye göre yazıları filtreler (kategori sayfası için)
- * @param {string} category - Filtrelenecek kategori adı
- */
-function snk_main_filterByCategory(category) {
-    console.log("Kategori filtreleniyor:", category);
-    
-    // Tüm yazılar yüklü değilse önce yükle
-    if (snk_main_blogPosts.length === 0) {
-        fetch('/utils/blogPosts.json')
-            .then(response => response.json())
-            .then(data => {
-                snk_main_blogPosts = data.posts;
-                // Kategori filtrelemesini yap
-                const filteredPosts = snk_main_blogPosts.filter(post => 
-                    post.category.toLowerCase() === category.toLowerCase()
-                );
-                snk_main_displayBlogPosts(filteredPosts);
-            })
-            .catch(error => {
-                console.error('Kategori filtreleme hatası:', error);
-                if (snk_main_postsContainer) {
-                    snk_main_postsContainer.innerHTML = `
-                        <div class="snk-error">
-                            <i class="fas fa-exclamation-triangle"></i>
-                            <p>Blog yazıları yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.</p>
-                        </div>
-                    `;
-                }
-            });
-    } else {
-        // Veri zaten yüklü ise doğrudan filtrele
-        const filteredPosts = snk_main_blogPosts.filter(post => 
-            post.category.toLowerCase() === category.toLowerCase()
-        );
-        snk_main_displayBlogPosts(filteredPosts);
-    }
-}
-
-// Global erişim için
-window.snk_main_filterByCategory = snk_main_filterByCategory;
-
-/**
- * Blog yazısında yorum bölümünü gösterir
+ * Blog yazılarında yorum bölümünü gösterir
  * @param {number} postId - Yorum yapılacak yazının ID'si
  */
 function snk_main_toggleComments(postId) {
@@ -751,10 +879,14 @@ function snk_main_toggleComments(postId) {
     const formHTML = `
         <div class="snk-new-comment" id="snk_comment_form_container_${postId}">
             <form class="snk-comment-form" id="snk_comment_form_${postId}">
-                <textarea class="snk-comment-textarea" id="snk_comment_textarea_${postId}" placeholder="Yorumunuzu buraya yazın..."></textarea>
+                <textarea placeholder="Yorumunuzu buraya yazın..." class="snk-comment-textarea" id="snk_comment_textarea_${postId}"></textarea>
                 <div class="snk-comment-form-actions">
-                    <button type="button" class="snk-comment-btn snk-comment-cancel" id="snk_comment_cancel_${postId}">İptal</button>
-                    <button type="submit" class="snk-comment-btn snk-comment-submit" id="snk_comment_submit_${postId}">Yorum Yap</button>
+                    <button type="button" class="snk-comment-btn snk-comment-cancel" id="snk_comment_cancel_${postId}">
+                        İptal
+                    </button>
+                    <button type="submit" class="snk-comment-btn snk-comment-submit" id="snk_comment_submit_${postId}">
+                        Yorum Yap
+                    </button>
                 </div>
             </form>
         </div>
@@ -819,7 +951,7 @@ function snk_main_toggleComments(postId) {
 }
 
 /**
- * Blog yazısında bir yorumu beğenmek için kullanılır
+ * Blog yazılarında bir yorumu beğenmek için kullanılır
  * @param {number} commentId - Beğenilecek yorumun ID'si
  * @param {HTMLElement} button - Tıklanan beğeni butonu
  */
@@ -852,7 +984,7 @@ function snk_main_likeComment(commentId, button) {
 }
 
 /**
- * Blog yazısında bir yoruma yanıt verme formunu gösterir
+ * Blog yazılarında bir yoruma yanıt verme formunu gösterir
  * @param {number} commentId - Yanıtlanacak yorumun ID'si
  * @param {HTMLElement} button - Tıklanan yanıtla butonu
  */
@@ -880,10 +1012,14 @@ function snk_main_replyToComment(commentId, button) {
     // Formun HTML içeriğini oluştur
     replyForm.innerHTML = `
         <form class="snk-reply-form" id="snk_reply_form_${postId}_${commentId}">
-            <textarea class="snk-reply-textarea" id="snk_reply_textarea_${postId}_${commentId}" placeholder="Yanıtınızı buraya yazın..."></textarea>
+            <textarea placeholder="Yanıtınızı buraya yazın..." class="snk-reply-textarea" id="snk_reply_textarea_${postId}_${commentId}"></textarea>
             <div class="snk-reply-form-actions">
-                <button type="button" class="snk-reply-btn snk-reply-cancel" id="snk_reply_cancel_${postId}_${commentId}">İptal</button>
-                <button type="submit" class="snk-reply-btn snk-reply-submit" id="snk_reply_submit_${postId}_${commentId}">Yanıtla</button>
+                <button type="button" class="snk-reply-btn snk-reply-cancel" id="snk_reply_cancel_${postId}_${commentId}">
+                    İptal
+                </button>
+                <button type="submit" class="snk-reply-btn snk-reply-submit" id="snk_reply_submit_${postId}_${commentId}">
+                    Yanıtla
+                </button>
             </div>
         </form>
     `;
@@ -962,7 +1098,7 @@ function snk_main_replyToComment(commentId, button) {
 }
 
 /**
- * Blog yazısında paylaşım panelini gösterir/gizler
+ * Blog yazılarında paylaşım panelini gösterir/gizler
  * @param {number} postId - Paylaşılacak yazının ID'si
  * @param {HTMLElement} button - Tıklanan paylaş butonu
  */
@@ -988,7 +1124,10 @@ function snk_main_toggleSharePanel(postId, button) {
         } else {
             // Aynı yazının paneliyse, kapat ve çık
             sharePanel.classList.remove('active');
-            setTimeout(() => sharePanel.remove(), 300);
+            setTimeout(() => {
+                sharePanel.remove();
+                document.removeEventListener('click', handleClickOutside);
+            }, 300);
             return;
         }
     }
@@ -1140,7 +1279,7 @@ function snk_main_toggleSharePanel(postId, button) {
 }
 
 /**
- * Blog yazısı oluşturma popup'ını açar
+ * Blog oluşturma popup'ını açar
  */
 function snk_main_openCreatePostPopup() {
     console.log("main.js - Blog oluşturma popup açma işlevi çağrıldı");
@@ -1186,15 +1325,6 @@ function snk_main_addNewBlogPost(postData) {
     const postHTML = `
         <div class="snk-post" data-post-id="${postData.id}" data-category="${postData.category}">
             <div class="snk-post-content-wrapper">
-                <div class="snk-post-vote">
-                    <button class="snk-vote-btn snk-upvote">
-                        <i class="fas fa-arrow-up"></i>
-                    </button>
-                    <span class="snk-vote-count">0</span>
-                    <button class="snk-vote-btn snk-downvote">
-                        <i class="fas fa-arrow-down"></i>
-                    </button>
-                </div>
                 <div class="snk-post-main">
                     <div class="snk-post-header">
                         <div class="snk-post-info">
@@ -1205,15 +1335,24 @@ function snk_main_addNewBlogPost(postData) {
                         <h3 class="snk-post-title">${postData.title}</h3>
                     </div>
                     ${postData.image ? `<div class="snk-post-image"><img src="${postData.image}" alt="${postData.title}"></div>` : ''}
-                    <div class="snk-post-summary">${postData.summary}</div>
+                    <div class="snk-post-summary">
+                        <div class="snk-post-full-content">
+                            ${postData.content}
+                            ${postData.tags && postData.tags.length ? `
+                                <div class="snk-post-tags">
+                                    ${postData.tags.map(tag => `<span class="snk-tag">#${tag}</span>`).join('')}
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
                     <div class="snk-post-footer">
-                        <button class="snk-post-action snk-read-more" data-post-id="${postData.id}" data-expanded="false">
-                            <i class="fas fa-angle-down"></i> Devamını Oku
+                        <button class="snk-post-action snk-read-more" data-post-id="${postData.id}" data-expanded="true">
+                            <i class="fas fa-angle-up"></i> Daralt
                         </button>
-                        <button class="snk-post-action snk-comment-btn" data-post-id="${postData.id}">
+                        <button class="snk-post-action">
                             <i class="fas fa-comment-alt"></i> Yorumlar
                         </button>
-                        <button class="snk-post-action snk-share-btn" data-post-id="${postData.id}">
+                        <button class="snk-post-action">
                             <i class="fas fa-share"></i> Paylaş
                         </button>
                     </div>
@@ -1253,6 +1392,7 @@ function snk_main_addNewBlogPost(postData) {
 function snk_main_setupPostInteractions(postElement, postData) {
     // Oylama butonları için olay dinleyicileri
     const voteButtons = postElement.querySelectorAll('.snk-vote-btn');
+    /* Oy verme butonları kaldırıldı
     voteButtons.forEach(button => {
         button.addEventListener('click', function() {
             const voteCount = postElement.querySelector('.snk-vote-count');
@@ -1260,28 +1400,36 @@ function snk_main_setupPostInteractions(postElement, postData) {
             
             if (this.classList.contains('snk-upvote')) {
                 voteCount.textContent = currentCount + 1;
-                this.classList.add('active');
+                this.classList.toggle('active');
                 postElement.querySelector('.snk-downvote').classList.remove('active');
-                postData.likes++; // Beğeni sayısını güncelle
             } else {
                 voteCount.textContent = currentCount - 1;
-                this.classList.add('active');
+                this.classList.toggle('active');
                 postElement.querySelector('.snk-upvote').classList.remove('active');
-                postData.likes = Math.max(0, postData.likes - 1); // Beğeni sayısını güncelle (negatif olmamasını sağla)
             }
         });
     });
+    */
     
     // "Devamını Oku" butonu için olay dinleyicisi
     const readMoreBtn = postElement.querySelector('.snk-read-more');
     if (readMoreBtn) {
         readMoreBtn.addEventListener('click', function() {
             const isExpanded = this.dataset.expanded === 'true';
-            const summary = postElement.querySelector('.snk-post-summary');
+            const summary = postElement.querySelector('.snk-blog-description');
+            
+            // Özet elementi bulunamadıysa işleme devam etme
+            if (!summary) {
+                console.error('Blog özet elementi bulunamadı');
+                return;
+            }
             
             if (!isExpanded) {
+                // Content kontrolü yap, yoksa summary kullan
+                const content = postData && postData.content ? postData.content : (postData && postData.summary ? postData.summary : 'İçerik bulunamadı');
+                
                 // Post içeriğini genişlet
-                summary.innerHTML = postData.content;
+                summary.innerHTML = content;
                 
                 // Buton metnini değiştir
                 this.innerHTML = '<i class="fas fa-angle-up"></i> Küçült';
@@ -1290,8 +1438,11 @@ function snk_main_setupPostInteractions(postElement, postData) {
                 // Gradient ve animasyon sınıflarını ekle
                 this.classList.add('expanded');
             } else {
+                // Summary kontrolü yap
+                const summaryText = postData && postData.summary ? postData.summary : 'İçerik bulunamadı';
+                
                 // Post içeriğini küçült
-                summary.innerHTML = postData.summary;
+                summary.innerHTML = summaryText;
                 
                 // Buton metnini değiştir
                 this.innerHTML = '<i class="fas fa-angle-down"></i> Devamını Oku';
@@ -1304,33 +1455,27 @@ function snk_main_setupPostInteractions(postElement, postData) {
     }
     
     // Yorum butonu için olay dinleyicisi
-    const commentBtn = postElement.querySelector('.snk-comment-btn');
+    const commentBtn = postElement.querySelector('.snk-comment-button');
     if (commentBtn) {
         commentBtn.addEventListener('click', function() {
             const postId = parseInt(this.dataset.postId);
-            // snk_main_toggleComments fonksiyonunu güvenli şekilde çağır
-            if (typeof snk_main_toggleComments === 'function') {
-                snk_main_toggleComments(postId);
-            } else {
-                console.error('snk_main_toggleComments function not found');
-                alert('Yorumlar şu anda kullanılamıyor. Lütfen daha sonra tekrar deneyin.');
-            }
+            SNK_CommentSystem.openCommentModal(postId);
         });
     }
     
     // Paylaş butonu için olay dinleyicisi
-    const shareBtn = postElement.querySelector('.snk-share-btn');
+    const shareBtn = postElement.querySelector('.snk-share-button');
     if (shareBtn) {
-        shareBtn.addEventListener('click', function() {
+        shareBtn.addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation(); // Tıklama olayının yayılmasını önle
             const postId = parseInt(this.dataset.postId);
-            // snk_main_toggleSharePanel fonksiyonunu güvenli şekilde çağır
-            if (typeof snk_main_toggleSharePanel === 'function') {
-                snk_main_toggleSharePanel(postId, this);
-            } else {
-                console.error('snk_main_toggleSharePanel function not found');
-                // Basit bir paylaşım paneli göster
-                const url = window.location.href;
-                alert(`Bu gönderiyi paylaşmak için şu linki kullanabilirsiniz: ${url}#post-${postId}`);
+            console.log("Paylaş butonuna tıklandı. Post ID:", postId);
+            
+            const post = snk_main_blogPosts.find(p => p.id === postId);
+            if (post) {
+                // Paylaş fonksiyonunu çağır
+                SNK_CommentSystem.sharePost(postId, event);
             }
         });
     }
@@ -1636,3 +1781,45 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+/**
+ * Belirli bir kategoriye göre yazıları filtreler (kategori sayfası için)
+ * @param {string} category - Filtrelenecek kategori adı
+ */
+function snk_main_filterByCategory(category) {
+    console.log("Kategori filtreleniyor:", category);
+    
+    // Tüm yazılar yüklü değilse önce yükle
+    if (snk_main_blogPosts.length === 0) {
+        fetch('../utils/blogPosts.json')
+            .then(response => response.json())
+            .then(data => {
+                snk_main_blogPosts = data.posts;
+                // Kategori filtrelemesini yap
+                const filteredPosts = snk_main_blogPosts.filter(post => 
+                    post.category.toLowerCase() === category.toLowerCase()
+                );
+                snk_main_displayBlogPosts(filteredPosts);
+            })
+            .catch(error => {
+                console.error('Kategori filtreleme hatası:', error);
+                if (snk_main_postsContainer) {
+                    snk_main_postsContainer.innerHTML = `
+                        <div class="snk-error">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <p>Blog yazıları yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.</p>
+                        </div>
+                    `;
+                }
+            });
+    } else {
+        // Veri zaten yüklü ise doğrudan filtrele
+        const filteredPosts = snk_main_blogPosts.filter(post => 
+            post.category.toLowerCase() === category.toLowerCase()
+        );
+        snk_main_displayBlogPosts(filteredPosts);
+    }
+}
+
+// Global erişim için
+window.snk_main_filterByCategory = snk_main_filterByCategory;

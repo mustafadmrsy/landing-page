@@ -7,7 +7,12 @@
     <link rel="stylesheet" href="../styles/main.css">
     <link rel="stylesheet" href="../styles/index-specific.css">
     <link rel="stylesheet" href="../styles/userpage.css">
+    <link rel="stylesheet" href="../styles/blog-card.css">
+    <link rel="stylesheet" href="../styles/blog-popup.css">
+    <link rel="stylesheet" href="../styles/notification.css">
+    <link rel="stylesheet" href="../styles/comment-system.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../styles/auth-forms.css">
 </head>
 <body>
     <div class="snk-container">
@@ -218,6 +223,76 @@
                         <!-- JavaScript ile kullanıcının blog yazıları burada gösterilecek -->
                         <div class="snk-loading">
                             <i class="fas fa-spinner fa-spin"></i> Yazılar yükleniyor...
+                        </div>
+                        
+                        <!-- Örnek Blog Kartı 1 (JavaScript ile dinamik oluşturulacak) -->
+                        <div class="snk-user-post-card fade-in">
+                            <div class="snk-user-post-image">
+                                <img src="../public/images/placeholder.jpg" alt="Yazı Görseli">
+                                <span class="snk-user-post-category" data-category="egitim">Eğitim</span>
+                            </div>
+                            <div class="snk-user-post-content">
+                                <h3 class="snk-user-post-title">Web Geliştirme İçin Başlangıç Rehberi</h3>
+                                <p class="snk-user-post-excerpt">Web geliştirme dünyasına yeni adım atanlar için kapsamlı bir rehber. HTML, CSS ve JavaScript temelleri ile başlayarak modern web uygulamaları geliştirmeye kadar ilerleyin.</p>
+                                <div class="snk-user-post-meta">
+                                    <span><i class="fas fa-calendar-alt"></i> 12 Şubat 2025</span>
+                                    <span><i class="fas fa-eye"></i> 348 Okunma</span>
+                                </div>
+                                <div class="snk-post-actions">
+                                    <button class="snk-action-button snk-like-button" data-post-id="1">
+                                        <i class="far fa-heart"></i> <span class="snk-like-count">0</span> Beğen
+                                    </button>
+                                    <button class="snk-action-button snk-comment-button" data-post-id="1">
+                                        <i class="far fa-comment"></i> Yorum Yap
+                                    </button>
+                                    <button class="snk-action-button snk-share-button" data-post-id="1">
+                                        <i class="far fa-share-square"></i> Paylaş
+                                    </button>
+                                    <button class="snk-action-button snk-delete-button" data-post-id="1">
+                                        <i class="far fa-trash-alt"></i> Sil
+                                    </button>
+                                </div>
+                                <div class="snk-user-post-read-more">
+                                    <button class="snk-user-read-more-btn">
+                                        Devamını Oku <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Örnek Blog Kartı 2 (JavaScript ile dinamik oluşturulacak) -->
+                        <div class="snk-user-post-card fade-in">
+                            <div class="snk-user-post-image">
+                                <img src="../public/images/placeholder.jpg" alt="Yazı Görseli">
+                                <span class="snk-user-post-category" data-category="teknoloji">Teknoloji</span>
+                            </div>
+                            <div class="snk-user-post-content">
+                                <h3 class="snk-user-post-title">Yapay Zeka ve Günlük Hayatımıza Etkileri</h3>
+                                <p class="snk-user-post-excerpt">Yapay zeka teknolojilerinin günlük hayatımıza nasıl entegre olduğu ve gelecekte bizi nelerin beklediği hakkında detaylı bir inceleme.</p>
+                                <div class="snk-user-post-meta">
+                                    <span><i class="fas fa-calendar-alt"></i> 5 Mart 2025</span>
+                                    <span><i class="fas fa-eye"></i> 205 Okunma</span>
+                                </div>
+                                <div class="snk-post-actions">
+                                    <button class="snk-action-button snk-like-button" data-post-id="2">
+                                        <i class="far fa-heart"></i> <span class="snk-like-count">0</span> Beğen
+                                    </button>
+                                    <button class="snk-action-button snk-comment-button" data-post-id="2">
+                                        <i class="far fa-comment"></i> Yorum Yap
+                                    </button>
+                                    <button class="snk-action-button snk-share-button" data-post-id="2">
+                                        <i class="far fa-share-square"></i> Paylaş
+                                    </button>
+                                    <button class="snk-action-button snk-delete-button" data-post-id="2">
+                                        <i class="far fa-trash-alt"></i> Sil
+                                    </button>
+                                </div>
+                                <div class="snk-user-post-read-more">
+                                    <button class="snk-user-read-more-btn">
+                                        Devamını Oku <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -581,11 +656,10 @@
     </button>
 
     <!-- JavaScript -->
-    <script src="../components/sidebar.js"></script>
+    <script src="../components/login-handler.js"></script>
+    <script src="../components/comment-system.js"></script>
     <script src="../components/main.js"></script>
     <script src="../components/profile-dropdown.js"></script>
-    <script src="../components/popup.js"></script>
-    <script src="../components/login-handler.js"></script>
     <script src="../components/profile-editor.js"></script>
     
     <script>

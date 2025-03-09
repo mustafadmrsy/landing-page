@@ -597,20 +597,26 @@
 /* Profil Yazı Kartları */
 .snk-user-post-card {
     background-color: var(--bg-card);
-    border-radius: 12px;
+    border-radius: 15px;
     overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .snk-user-post-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+    transform: translateY(-6px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    border-color: rgba(0, 0, 0, 0.1);
 }
 
 .snk-user-post-image {
     width: 100%;
-    height: 180px;
+    height: 200px;
     overflow: hidden;
     position: relative;
 }
@@ -623,29 +629,36 @@
 }
 
 .snk-user-post-card:hover .snk-user-post-image img {
-    transform: scale(1.05);
+    transform: scale(1.08);
 }
 
 .snk-user-post-category {
     position: absolute;
-    top: 12px;
-    right: 12px;
-    padding: 0.4rem 0.8rem;
-    background-color: var(--primary-color);
+    top: 15px;
+    right: 15px;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
     color: white;
     border-radius: 50px;
     font-size: 0.8rem;
     font-weight: 600;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    z-index: 2;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .snk-user-post-content {
-    padding: 1.2rem;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
 }
 
 .snk-user-post-title {
-    font-size: 1.1rem;
+    font-size: 1.25rem;
     font-weight: 700;
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.9rem;
     line-height: 1.4;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -653,18 +666,24 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     color: var(--text-primary);
+    transition: color 0.3s ease;
+}
+
+.snk-user-post-card:hover .snk-user-post-title {
+    color: var(--primary-color);
 }
 
 .snk-user-post-excerpt {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     color: var(--text-secondary);
-    margin-bottom: 1rem;
-    line-height: 1.5;
+    margin-bottom: 1.2rem;
+    line-height: 1.6;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    flex-grow: 1;
 }
 
 .snk-user-post-meta {
@@ -672,6 +691,106 @@
     justify-content: space-between;
     color: var(--text-tertiary);
     font-size: 0.85rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    margin-top: auto;
+}
+
+.snk-user-post-meta span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.snk-user-post-meta i {
+    color: var(--primary-color);
+    opacity: 0.7;
+}
+
+/* Devamını Oku Butonu */
+.snk-user-post-read-more {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    text-align: right;
+}
+
+.snk-user-read-more-btn {
+    padding: 0.6rem 1.2rem;
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.snk-user-read-more-btn::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transform: rotate(45deg);
+    transition: all 0.6s ease;
+    z-index: 1;
+}
+
+.snk-user-read-more-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.snk-user-read-more-btn:hover i {
+    transform: translateX(4px);
+}
+
+.snk-user-read-more-btn:hover::before {
+    transform: rotate(45deg) translate(300%, 300%);
+}
+
+.snk-user-read-more-btn i {
+    transition: transform 0.3s ease;
+    font-size: 14px;
+}
+
+/* Yazılar Bölümü Grid Düzeni */
+#user_postsSection.snk-user-section.active {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.8rem;
+}
+
+/* Mobil Görünüm */
+@media (max-width: 768px) {
+    .snk-user-post-card {
+        max-width: 100%;
+    }
+    
+    .snk-user-post-image {
+        height: 180px;
+    }
+    
+    .snk-user-post-content {
+        padding: 1.2rem;
+    }
+    
+    .snk-user-post-title {
+        font-size: 1.1rem;
+    }
+    
+    #user_postsSection.snk-user-section.active {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
 }
 
 /* Profil Rozet Kartları */

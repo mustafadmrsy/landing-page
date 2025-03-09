@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="../styles/main.css">
     <link rel="stylesheet" href="../styles/index-specific.css">
     <link rel="stylesheet" href="../styles/userpage.css">
+    <link rel="stylesheet" href="../styles/blog-card.css">
+    <link rel="stylesheet" href="../styles/blog-popup.css">
+    <link rel="stylesheet" href="../styles/notification.css">
+    <link rel="stylesheet" href="../styles/comment-system.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../styles/auth-forms.css">
 </head>
@@ -179,7 +183,7 @@
                         </div>
                         
                         <!-- Son Blog Yazıları -->
-                        <div class="snk-recent-posts">
+                        <div class="snk-recent-posts" id="snk_postsContainer">
                             <!-- Blog Yazıları JavaScript ile yüklenir -->
                             <div class="snk-loading">
                                 <i class="fas fa-spinner fa-spin"></i> Yükleniyor...
@@ -259,17 +263,6 @@
                         </div>
                         <button type="submit" class="snk-auth-submit">Oturum Aç</button>
                         <div id="loginAlertBox" class="snk-form-message" style="display: none;"></div>
-                        <div class="snk-auth-divider">
-                            <span>veya</span>
-                        </div>
-                        <div class="snk-social-login">
-                            <button type="button" class="snk-social-btn snk-google-btn">
-                                <i class="fab fa-google"></i> Google ile Giriş Yap
-                            </button>
-                            <button type="button" class="snk-social-btn snk-facebook-btn">
-                                <i class="fab fa-facebook-f"></i> Facebook ile Giriş Yap
-                            </button>
-                        </div>
                         <div class="snk-auth-toggle">
                             Hesabınız yok mu? <a href="#" id="showRegisterPopup">Kaydolun</a>
                         </div>
@@ -360,107 +353,21 @@
     <script src="../darkjs/darkmode.js"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script src="../components/login-handler.js"></script>
+    <script src="../components/comment-system.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Kullanıcı oturum durumunu kontrol et
-            const currentUser = JSON.parse(localStorage.getItem('snk_currentUser') || '{}');
-            
-            // Kullanıcı giriş yapmış mı kontrol et
-            if (currentUser.isLoggedIn) {
-                // Butonları güncelle
-                const loginBtn = document.getElementById('snk_login_btn');
-                const registerBtn = document.getElementById('snk_register_btn');
-                
-                if (loginBtn) {
-                    loginBtn.innerHTML = '<i class="fas fa-user"></i> Profilim';
-                    loginBtn.addEventListener('click', function() {
-                        window.location.href = 'userpage.html';
-                    });
-                }
-                
-                if (registerBtn) {
-                    registerBtn.style.display = 'none';
-                }
-                
-                // Profil menüsünü güncelle
-                const profileName = document.querySelector('.snk-profile-name');
-                const profileUsername = document.querySelector('.snk-profile-username');
-                
-                if (profileName) {
-                    profileName.textContent = `${currentUser.name} ${currentUser.surname}`;
-                }
-                
-                if (profileUsername) {
-                    profileUsername.textContent = `@${currentUser.name.toLowerCase()}${currentUser.surname.toLowerCase()}`;
-                }
-                
-                // Çıkış Yap butonuna işlevsellik ekle
-                const logoutLink = document.getElementById('snk_logout_link');
-                if (logoutLink) {
-                    logoutLink.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        // Kullanıcı oturumunu sonlandır
-                        localStorage.removeItem('snk_currentUser');
-                        // Sayfayı yenile
-                        window.location.reload();
-                    });
-                }
-            } else {
-                // Çıkış Yap butonunu gizle
-                const logoutLink = document.getElementById('snk_logout_link');
-                if (logoutLink) {
-                    logoutLink.style.display = 'none';
-                }
-            }
-            
-            // Profil menüsü açma/kapama işlevselliği
-            const profileTrigger = document.getElementById('profileTrigger');
-            const profileMenu = document.getElementById('profileMenu');
-            
-            if (profileTrigger && profileMenu) {
-                profileTrigger.addEventListener('click', function() {
-                    profileMenu.classList.toggle('active');
-                });
-                
-                // Profil menüsü dışına tıklandığında menüyü kapat
-                document.addEventListener('click', function(e) {
-                    if (!profileTrigger.contains(e.target) && !profileMenu.contains(e.target)) {
-                        profileMenu.classList.remove('active');
-                    }
-                });
-            }
-            
-            // Dark mode işlevselliği
-            const darkModeToggle = document.getElementById('darkModeToggle');
-            if (darkModeToggle) {
-                // localStorage'dan dark mode durumunu kontrol et
-                const isDarkMode = localStorage.getItem('eren-theme') === 'dark';
-                darkModeToggle.checked = isDarkMode;
-                
-                // Dark mode değişikliğini dinle
-                darkModeToggle.addEventListener('change', function() {
-                    if (this.checked) {
-                        localStorage.setItem('eren-theme', 'dark');
-                        document.body.classList.add('dark-mode');
-                    } else {
-                        localStorage.setItem('eren-theme', 'light');
-                        document.body.classList.remove('dark-mode');
-                    }
-                });
-                
-                // Sayfa yüklendiğinde dark mode durumunu uygula
-                if (isDarkMode) {
-                    document.body.classList.add('dark-mode');
-                }
-            }
+            // Tüm sayfa içeriği yüklendikten sonra ana fonksiyonlar başlatılır
+            snk_main_initializePage();
+
+            // Sayfa tıklamalarının boşluk kontrolü
+            document.addEventListener('click', function(e) {
+                console.log('Sayfa tıklandı:', e.target);
+            });
         });
     </script>
-    
-    <!-- JavaScript Dosyaları -->
     <script src="../components/main.js"></script>
     <script src="../components/sidebar.js"></script>
     <script src="../components/popup.js"></script>
-    <script src="../components/login-handler.js"></script>
-    <script src="../components/auth-handlers.js"></script>
+    <script src="../components/comment-system.js"></script>
 </body>
 </html>

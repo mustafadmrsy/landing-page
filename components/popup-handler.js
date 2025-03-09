@@ -168,12 +168,7 @@ function snk_popupHandler_showLoginForm() {
                 
                 <button type="submit" class="snk-auth-submit">Oturum Aç</button>
                 
-                <div id="snk_login_message" class="snk-form-message" style="display: none;"></div>
-                
-                <div class="snk-auth-divider">
-                    <span>veya</span>
-                </div>
-                
+                <div id="snk_login_message" class="snk-form-message" style="display: none;"></div> 
                 <div class="snk-social-login">
                     <button type="button" class="snk-social-btn snk-google-btn">
                         <i class="fab fa-google"></i>
@@ -333,7 +328,6 @@ function snk_popupHandler_showRegisterForm() {
                 <div id="snk_register_message" class="snk-form-message" style="display: none;"></div>
                 
                 <div class="snk-auth-divider">
-                    <span>veya</span>
                 </div>
                 
                 <div class="snk-social-login">

@@ -151,7 +151,17 @@ function snk_popup_fetchPostData(postId) {
         snk_popup_overlay.classList.add('active');
     }
     
-    // blogPosts.json'dan veri çekme işlemini simüle edelim
+    // Önce localStorage'dan kullanıcı gönderilerini kontrol et
+    const localPosts = JSON.parse(localStorage.getItem('snk_blog_posts') || '[]');
+    const localPost = localPosts.find(post => post.id === parseInt(postId) || post.id === postId);
+    
+    if (localPost) {
+        console.log("Yazı localStorage'da bulundu:", localPost.title);
+        snk_popup_openPopup(localPost);
+        return;
+    }
+    
+    // Kullanıcı gönderilerinde bulunamadıysa, blogPosts.json'dan veri çek
     setTimeout(() => {
         fetch('../utils/blogPosts.json')
             .then(response => {

@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="../styles/index-specific.css">
     <link rel="stylesheet" href="../styles/categories.css">
     <link rel="stylesheet" href="../styles/darkmode.css">
+    <link rel="stylesheet" href="../styles/blog-card.css">
+    <link rel="stylesheet" href="../styles/blog-popup.css">
+    <link rel="stylesheet" href="../styles/notification.css">
+    <link rel="stylesheet" href="../styles/comment-system.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -274,7 +278,7 @@
                 <!-- Son Yazılar Bölümü -->
                 <div class="snk-categories-recent">
                     <h2 class="snk-recent-title">Son Eklenen Yazılar</h2>
-                    <div class="snk-recent-posts">
+                    <div class="snk-recent-posts" id="snk_postsContainer">
                         <!-- Yazı 1 -->
                         <div class="snk-recent-post-card">
                             <div class="snk-recent-post-image">
@@ -351,10 +355,11 @@
     <!-- JavaScript dosyaları -->
     <script src="../components/dom-utils.js"></script>
     <script src="../components/sidebar.js"></script>
-    <script src="../components/main.js"></script>
     <script src="../components/popup.js"></script>
     <script src="../components/popup-handler.js"></script>
     <script src="../components/categories.js"></script>
+    <script src="../components/main.js"></script>
+    <script src="../components/comment-system.js"></script>
     <script src="../darkjs/darkmode.js"></script>
 </body>
 </html>
