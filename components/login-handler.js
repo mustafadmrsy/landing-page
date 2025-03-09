@@ -74,6 +74,28 @@ function initLoginPopup() {
     } else {
         console.error('Login formu bulunamadı!');
     }
+    
+    // Şifremi unuttum linklerini kontrol et ve event listener ekle
+    setupForgotPasswordLinks();
+}
+
+// Şifremi unuttum linklerini ayarla
+function setupForgotPasswordLinks() {
+    document.addEventListener('click', function(e) {
+        // Şifremi unuttum linkine tıklandıysa
+        if (e.target && (e.target.classList.contains('snk-forgot-password') || e.target.closest('.snk-forgot-password'))) {
+            e.preventDefault();
+            
+            // Tüm popupları kapat
+            clearAllPopups();
+            
+            // localStorage'a bildirim mesajı ekle
+            localStorage.setItem('snk_notification', 'Şifrenizi mi unuttunuz? Lütfen iletişim formundan bizimle iletişime geçin.');
+            
+            // İletişim sayfasına yönlendir
+            window.location.href = 'communication.html';
+        }
+    });
 }
 
 // Login popup'ı aç
@@ -287,11 +309,12 @@ function showBlogCreatePopup(user) {
                         <label for="post-category">Kategori</label>
                         <select id="post-category" class="snk-form-control" required>
                             <option value="" disabled selected>Kategori seçin</option>
-                            <option value="teknoloji">Teknoloji</option>
-                            <option value="egitim">Eğitim</option>
-                            <option value="yasam">Yaşam</option>
-                            <option value="kultursanat">Kültür & Sanat</option>
-                            <option value="bilim">Bilim</option>
+                            <option value="akademik-destek">Akademik Destek</option>
+                            <option value="kariyer-staj">Kariyer ve Staj</option>
+                            <option value="sosyal-hayat">Sosyal Hayat</option>
+                            <option value="psikolojik-destek">Psikolojik Destek</option>
+                            <option value="burs-firsatlar">Burs ve Fırsatlar</option>
+                            <option value="random">Random</option>
                         </select>
                     </div>
                     
@@ -411,16 +434,10 @@ function showBlogCreatePopup(user) {
             };
             localStorage.setItem('snk_currentUser', JSON.stringify(currentUser));
             
-            // Popup'ı kapat
-            closePopup(popup);
-            
-            // Blog yazısının onaya gönderildiğini bildiren onay popup'ı göster
-            showApprovalPendingNotification();
-            
-            // 3 saniye sonra sayfayı yeniden yükle
+            // 1 saniye sonra sayfayı yeniden yükle
             setTimeout(() => {
                 window.location.reload();
-            }, 3000);
+            }, 1000);
         } catch (e) {
             console.error('LocalStorage hatası:', e);
         }
@@ -578,6 +595,26 @@ function showLoginPopup() {
             closePopup(popup);
         }
     });
+
+    // Şifre görme butonunu aktifleştir
+    const passwordToggleButton = document.getElementById('snk_login_toggle_password');
+    const passwordInputField = document.getElementById('loginPassword');
+    
+    if (passwordToggleButton && passwordInputField) {
+        passwordToggleButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Şifre tipini değiştir
+            const type = passwordInputField.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInputField.setAttribute('type', type);
+            
+            // İkonu değiştir
+            const icon = passwordToggleButton.querySelector('i');
+            if (icon) {
+                icon.classList.toggle('fa-eye');
+                icon.classList.toggle('fa-eye-slash');
+            }
+        });
+    }
 
     // Form gönderildiğinde login işlemini gerçekleştir
     document.getElementById('loginForm').addEventListener('submit', function(e) {
@@ -996,7 +1033,7 @@ function updateUserPostsDisplay() {
         const allPosts = JSON.parse(localStorage.getItem('snk_blog_posts') || '[]');
         const userPostsFromAll = allPosts.filter(post => post.author_id === user.id);
         
-        // Kullanıcıya ait yazılar varsa bunları kullanıcı yazıları arasına ekleyelim
+        // Kullanıcıya ait yazılar varsa bunları kullanıcı yazılarına da ekleyelim
         if (userPostsFromAll.length > 0) {
             localStorage.setItem(`snk_user_posts_${user.id}`, JSON.stringify(userPostsFromAll));
             console.log(`Genel blog yazılarından ${userPostsFromAll.length} adet yazı kullanıcı yazılarına eklendi`);

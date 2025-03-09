@@ -15,9 +15,50 @@
     <link rel="stylesheet" href="../styles/auth-forms.css">
     <link rel="stylesheet" href="../styles/contact.css">
     <link rel="stylesheet" href="../styles/darkmode.css">
+    <script src="../components/login-handler.js" defer></script>
+    <script src="../components/password-toggle.js" defer></script>
+    <style>
+        .snk-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--color-primary, #007bff);
+            color: #fff;
+            padding: 15px 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 9999;
+            animation: slideIn 0.3s ease-out forwards;
+            max-width: 400px;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .notification-close {
+            position: absolute;
+            top: 5px;
+            right: 8px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        
+        body.eren-dark-theme .snk-notification {
+            background-color: #2c3e50;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+    </style>
 </head>
 <body>
-    div class="snk-container">
+    <!-- Bildirim alanı - JavaScript ile dinamik oluşturulacak -->
+    <div id="notificationArea"></div>
+    
+    <div class="snk-container">
         <!-- Header -->
         <header class="snk-header">
             <!-- Logo Alanı -->
@@ -370,6 +411,44 @@
     <script src="../components/comment-system.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // LocalStorage'dan bildirim mesajını kontrol et
+            const notification = localStorage.getItem('snk_notification');
+            if (notification) {
+                // Bildirim div'ini oluştur
+                const notificationDiv = document.createElement('div');
+                notificationDiv.className = 'snk-notification';
+                notificationDiv.innerHTML = `
+                    ${notification}
+                    <button class="notification-close">&times;</button>
+                `;
+                
+                // Bildirim alanına ekle
+                document.getElementById('notificationArea').appendChild(notificationDiv);
+                
+                // Bildirim kapatma butonu işlevi
+                const closeButton = notificationDiv.querySelector('.notification-close');
+                if (closeButton) {
+                    closeButton.addEventListener('click', function() {
+                        notificationDiv.remove();
+                        localStorage.removeItem('snk_notification');
+                    });
+                }
+                
+                // 10 saniye sonra otomatik kapat
+                setTimeout(() => {
+                    if (notificationDiv.parentNode) {
+                        notificationDiv.remove();
+                        localStorage.removeItem('snk_notification');
+                    }
+                }, 10000);
+            }
+            
+            // Dark mode durumunu kontrol et ve ayarla
+            const isDarkMode = localStorage.getItem('eren-theme') === 'dark';
+            if (isDarkMode) {
+                document.body.classList.add('eren-dark-theme');
+            }
+            
             // Tüm sayfa içeriği yüklendikten sonra ana fonksiyonlar başlatılır
             snk_main_initializePage();
 

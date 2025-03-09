@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="../styles/auth-forms.css">
     <link rel="stylesheet" href="../styles/userpage.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="../components/login-handler.js" defer></script>
+    <script src="../components/password-toggle.js" defer></script>
 </head>
 <body>
     <div class="snk-container">
@@ -25,7 +27,7 @@
             <!-- Logo Alanı -->
             <div class="snk-header-logo">
                 <img src="../public/img/logo.png" alt="Senirkent Blog" class="snk-logo-img">
-                <h1 class="snk-site-title">Kategoriler</h1>
+                <h1 class="snk-site-title">Senirkent Blog</h1>
             </div>
             
             <!-- Arama Alanı -->
@@ -61,13 +63,21 @@
                                 </label>
                             </li>
                             <li class="snk-divider"></li>
-                            <li><a href="#" class="snk-logout" id="snk_logout_btn" onclick="snk_profileDropdown_logout()"><i class="fas fa-sign-out-alt"></i> Çıkış Yap</a></li>
+                            <li><a href="#" class="snk-logout"><i class="fas fa-sign-out-alt"></i> Çıkış Yap</a></li>
                             <li><a href="#"><i class="fas fa-cog"></i> Ayarlar</a></li>
                         </ul>
                     </div>
                 </div>
 
-                <button class="snk-header-btn snk-create-btn" id="snk_create_btn" onclick="setupCreateButton()">
+                <button class="snk-header-btn snk-login-btn" id="snk_login_btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Oturum Aç
+                </button>
+                <button class="snk-header-btn snk-register-btn" id="snk_register_btn">
+                    <i class="fas fa-user-plus"></i>
+                    Kaydol
+                </button>
+                <button class="snk-header-btn snk-create-btn" id="snk_create_btn">
                     <i class="fas fa-plus"></i>
                     Oluştur
                 </button>
@@ -135,77 +145,111 @@
                     <h1 class="snk-categories-title">Kategoriler</h1>
                     <div class="snk-categories-filters">
                         <button class="snk-category-filter active" data-filter="all">Tümü</button>
-                        <button class="snk-category-filter" data-filter="egitim">Eğitim</button>
-                        <button class="snk-category-filter" data-filter="teknoloji">Teknoloji</button>
-                        <button class="snk-category-filter" data-filter="kultur">Kültür</button>
-                        <button class="snk-category-filter" data-filter="spor">Spor</button>
+                        <button class="snk-category-filter" data-filter="akademik-destek">Akademik Destek</button>
+                        <button class="snk-category-filter" data-filter="kariyer-staj">Kariyer ve Staj</button>
+                        <button class="snk-category-filter" data-filter="sosyal-hayat">Sosyal Hayat</button>
+                        <button class="snk-category-filter" data-filter="psikolojik-destek">Psikolojik Destek</button>
+                        <button class="snk-category-filter" data-filter="burs-firsatlar">Burs ve Fırsatlar</button>
+                        <button class="snk-category-filter" data-filter="random">Random</button>
                     </div>
                 </div>
                 
                 <!-- Kategori Kartları Container -->
                 <div class="snk-categories-container">
-                    <!-- Eğitim Kategori Kartı -->
-                    <div class="snk-category-card" data-category="egitim">
+                    <!-- Akademik Destek Kategori Kartı -->
+                    <div class="snk-category-card" data-category="akademik-destek">
                         <div class="snk-category-card-header">
                             <i class="fas fa-graduation-cap snk-category-icon"></i>
-                            <h2 class="snk-category-name">Eğitim</h2>
+                            <h2 class="snk-category-name">Akademik Destek</h2>
                         </div>
                         <div class="snk-category-content">
-                            <p>Eğitim dünyasındaki gelişmeler, öğrenci hikayeleri ve akademik başarılar.</p>
+                            <p>Ödevler, sınavlar, dersler ve akademik konularda öğrencilere yardımcı olacak içerikler.</p>
                         </div>
                         <div class="snk-category-stats">
                             <span><i class="fas fa-file-alt"></i> 24 Yazı</span>
                             <span><i class="fas fa-eye"></i> 1.2K Görüntülenme</span>
                         </div>
-                        <a href="Categories.html?category=egitim" class="snk-category-btn">Yazıları Gör</a>
+                        <a href="Categories.html?category=akademik-destek" class="snk-category-btn">Yazıları Gör</a>
                     </div>
                     
-                    <!-- Teknoloji Kategori Kartı -->
-                    <div class="snk-category-card" data-category="teknoloji">
+                    <!-- Kariyer ve Staj Kategori Kartı -->
+                    <div class="snk-category-card" data-category="kariyer-staj">
                         <div class="snk-category-card-header">
-                            <i class="fas fa-laptop-code snk-category-icon"></i>
-                            <h2 class="snk-category-name">Teknoloji</h2>
+                            <i class="fas fa-briefcase snk-category-icon"></i>
+                            <h2 class="snk-category-name">Kariyer ve Staj</h2>
                         </div>
                         <div class="snk-category-content">
-                            <p>Teknoloji haberleri, yeni ürünler ve dijital dünya gelişmeleri.</p>
+                            <p>Staj imkanları, iş ilanları, CV hazırlama ve kariyer gelişimi ile ilgili içerikler.</p>
                         </div>
                         <div class="snk-category-stats">
                             <span><i class="fas fa-file-alt"></i> 18 Yazı</span>
                             <span><i class="fas fa-eye"></i> 2.3K Görüntülenme</span>
                         </div>
-                        <a href="Categories.html?category=teknoloji" class="snk-category-btn">Yazıları Gör</a>
+                        <a href="Categories.html?category=kariyer-staj" class="snk-category-btn">Yazıları Gör</a>
                     </div>
                     
-                    <!-- Kültür Kategori Kartı -->
-                    <div class="snk-category-card" data-category="kultur">
+                    <!-- Sosyal Hayat Kategori Kartı -->
+                    <div class="snk-category-card" data-category="sosyal-hayat">
                         <div class="snk-category-card-header">
-                            <i class="fas fa-landmark snk-category-icon"></i>
-                            <h2 class="snk-category-name">Kültür</h2>
+                            <i class="fas fa-users snk-category-icon"></i>
+                            <h2 class="snk-category-name">Sosyal Hayat</h2>
                         </div>
                         <div class="snk-category-content">
-                            <p>Sanat etkinlikleri, kültürel değerler ve geleneksel yaşam.</p>
+                            <p>Kampüs etkinlikleri, öğrenci kulüpleri ve sosyal aktiviteler hakkında bilgiler.</p>
+                        </div>
+                        <div class="snk-category-stats">
+                            <span><i class="fas fa-file-alt"></i> 15 Yazı</span>
+                            <span><i class="fas fa-eye"></i> 1.8K Görüntülenme</span>
+                        </div>
+                        <a href="Categories.html?category=sosyal-hayat" class="snk-category-btn">Yazıları Gör</a>
+                    </div>
+
+                    <!-- Psikolojik Destek Kategori Kartı -->
+                    <div class="snk-category-card" data-category="psikolojik-destek">
+                        <div class="snk-category-card-header">
+                            <i class="fas fa-brain snk-category-icon"></i>
+                            <h2 class="snk-category-name">Psikolojik Destek</h2>
+                        </div>
+                        <div class="snk-category-content">
+                            <p>Öğrenci psikolojisi, stresle başa çıkma yöntemleri ve kişisel gelişim rehberleri.</p>
                         </div>
                         <div class="snk-category-stats">
                             <span><i class="fas fa-file-alt"></i> 12 Yazı</span>
-                            <span><i class="fas fa-eye"></i> 950 Görüntülenme</span>
+                            <span><i class="fas fa-eye"></i> 1.5K Görüntülenme</span>
                         </div>
-                        <a href="Categories.html?category=kultur" class="snk-category-btn">Yazıları Gör</a>
+                        <a href="Categories.html?category=psikolojik-destek" class="snk-category-btn">Yazıları Gör</a>
                     </div>
-                    
-                    <!-- Spor Kategori Kartı -->
-                    <div class="snk-category-card" data-category="spor">
+
+                    <!-- Burs ve Fırsatlar Kategori Kartı -->
+                    <div class="snk-category-card" data-category="burs-firsatlar">
                         <div class="snk-category-card-header">
-                            <i class="fas fa-futbol snk-category-icon"></i>
-                            <h2 class="snk-category-name">Spor</h2>
+                            <i class="fas fa-hand-holding-usd snk-category-icon"></i>
+                            <h2 class="snk-category-name">Burs ve Fırsatlar</h2>
                         </div>
                         <div class="snk-category-content">
-                            <p>Spor müsabakaları, takım haberleri ve sporcu hikayeleri.</p>
+                            <p>Burs imkanları, öğrenci destekleri, yurt dışı fırsatları ve ekonomik yardımlar.</p>
+                        </div>
+                        <div class="snk-category-stats">
+                            <span><i class="fas fa-file-alt"></i> 20 Yazı</span>
+                            <span><i class="fas fa-eye"></i> 2.7K Görüntülenme</span>
+                        </div>
+                        <a href="Categories.html?category=burs-firsatlar" class="snk-category-btn">Yazıları Gör</a>
+                    </div>
+
+                    <!-- Random Kategori Kartı -->
+                    <div class="snk-category-card" data-category="random">
+                        <div class="snk-category-card-header">
+                            <i class="fas fa-random snk-category-icon"></i>
+                            <h2 class="snk-category-name">Random</h2>
+                        </div>
+                        <div class="snk-category-content">
+                            <p>Öğrenci hayatına dair eğlenceli içerikler, anketler ve ilginç konular.</p>
                         </div>
                         <div class="snk-category-stats">
                             <span><i class="fas fa-file-alt"></i> 16 Yazı</span>
-                            <span><i class="fas fa-eye"></i> 1.8K Görüntülenme</span>
+                            <span><i class="fas fa-eye"></i> 1.9K Görüntülenme</span>
                         </div>
-                        <a href="Categories.html?category=spor" class="snk-category-btn">Yazıları Gör</a>
+                        <a href="Categories.html?category=random" class="snk-category-btn">Yazıları Gör</a>
                     </div>
                 </div>
                 
@@ -297,7 +341,6 @@
     <script src="../components/popup.js"></script>
     <script src="../components/popup-handler.js"></script>
     <script src="../components/profile-dropdown.js"></script>
-    <script src="../components/login-handler.js"></script>
     <script src="../components/categories.js"></script>
     <script src="../components/main.js"></script>
     <script src="../components/comment-system.js"></script>
@@ -308,23 +351,16 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Kategoriler sayfası özel scriptleri yükleniyor...');
             
-            // Çıkış Yap butonunu ayarla
-            const logoutBtn = document.querySelector('.snk-logout');
+            // Çıkış butonunu ayarla
+            const logoutBtn = document.getElementById('snk_logout_btn');
             if (logoutBtn) {
                 logoutBtn.addEventListener('click', function(e) {
                     e.preventDefault();
-                    console.log('Çıkış yapılıyor...');
+                    console.log('Çıkış butonuna tıklandı');
                     
-                    // LocalStorage'dan kullanıcı verilerini temizle
+                    // Kullanıcı bilgilerini localStorage'den sil
                     localStorage.removeItem('snk_currentUser');
-                    localStorage.removeItem('snk_userToken');
-                    localStorage.removeItem('snk_authExpires');
-                    
-                    // Profil dropdown menüsünü kapat
-                    const profileDropdownMenu = document.getElementById('profileDropdownMenu');
-                    if (profileDropdownMenu) {
-                        profileDropdownMenu.classList.remove('active');
-                    }
+                    localStorage.removeItem('snk_isLoggedIn');
                     
                     alert('Başarıyla çıkış yapıldı.');
                     
@@ -334,148 +370,7 @@
                 console.log('Çıkış butonu olayı tanımlandı');
             }
             
-            // Oluştur butonunu ayarla
-            const createBtn = document.getElementById('snk_create_btn');
-            if (createBtn) {
-                createBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    console.log('Oluştur butonuna tıklandı');
-                    
-                    // LocalStorage'dan kullanıcı bilgisini kontrol et
-                    const currentUser = JSON.parse(localStorage.getItem('snk_currentUser') || '{}');
-                    
-                    if (currentUser && currentUser.username) {
-                        // Kullanıcı giriş yapmış, blog oluşturma modalını göster
-                        createBlogPost(currentUser);
-                    } else {
-                        // Kullanıcı giriş yapmamış, login modalını göster
-                        alert('Blog yazısı oluşturmak için giriş yapmalısınız!');
-                        // Giriş sayfasına yönlendir
-                        window.location.href = '../pages/index.html';
-                    }
-                });
-                console.log('Oluştur butonu olayı tanımlandı');
-            } else {
-                console.error('Oluştur butonu bulunamadı!');
-            }
-            
-            // Blog yazısı oluşturma popup'ını göster
-            function createBlogPost(user) {
-                console.log("Blog yazısı oluşturma popup'ı açılıyor...");
-                
-                // Tüm popup'ları temizle
-                const existingPopups = document.querySelectorAll('.snk-popup-overlay');
-                existingPopups.forEach(popup => {
-                    popup.remove();
-                });
-                
-                // Blog oluşturma popup HTML'ini oluştur
-                const popupHTML = `
-                <div class="snk-popup-overlay active" id="blogCreatePopup">
-                    <div class="snk-popup-container">
-                        <div class="snk-popup-header">
-                            <h2 class="snk-popup-title">Yeni Blog Yazısı</h2>
-                            <button class="snk-popup-close-btn" id="blogCreateCloseBtn">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                        <div class="snk-popup-content">
-                            <form class="snk-create-post-form">
-                                <div class="snk-form-group">
-                                    <label for="post-title">Başlık</label>
-                                    <input type="text" id="post-title" class="snk-form-control" placeholder="Blog yazınızın başlığını girin" required>
-                                </div>
-                                
-                                <div class="snk-form-group">
-                                    <label for="post-category">Kategori</label>
-                                    <select id="post-category" class="snk-form-control" required>
-                                        <option value="" disabled selected>Kategori seçin</option>
-                                        <option value="teknoloji">Teknoloji</option>
-                                        <option value="egitim">Eğitim</option>
-                                        <option value="yasam">Yaşam</option>
-                                        <option value="seyahat">Seyahat</option>
-                                        <option value="spor">Spor</option>
-                                        <option value="kultur">Kültür & Sanat</option>
-                                        <option value="bilim">Bilim</option>
-                                    </select>
-                                </div>
-                                
-                                <div class="snk-form-group">
-                                    <label for="post-image">Kapak Görseli</label>
-                                    <input type="file" id="post-image" class="snk-form-control" accept="image/*">
-                                    <small class="snk-form-text">Önerilen: 1200x630 piksel</small>
-                                </div>
-                                
-                                <div class="snk-form-group">
-                                    <label for="post-content">İçerik</label>
-                                    <textarea id="post-content" class="snk-form-control" rows="10" placeholder="Blog yazınızın içeriğini buraya girin..." required></textarea>
-                                </div>
-                                
-                                <div class="snk-form-group">
-                                    <label for="post-tags">Etiketler</label>
-                                    <input type="text" id="post-tags" class="snk-form-control" placeholder="Etiketleri virgülle ayırarak girin (örn: yazılım, web, teknoloji)">
-                                </div>
-                                
-                                <div class="snk-form-actions">
-                                    <button type="button" class="snk-btn snk-btn-secondary" id="post-cancel">İptal Et</button>
-                                    <button type="button" class="snk-btn snk-btn-primary" id="post-submit">Yayınla</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>`;
-                
-                // HTML'i body'e ekle
-                document.body.insertAdjacentHTML('beforeend', popupHTML);
-                
-                // Popup kapatma olay dinleyicisi
-                const closeBtn = document.getElementById('blogCreateCloseBtn');
-                if (closeBtn) {
-                    closeBtn.addEventListener('click', function() {
-                        const popup = document.getElementById('blogCreatePopup');
-                        if (popup) {
-                            popup.remove();
-                        }
-                    });
-                }
-                
-                // İptal butonu olay dinleyicisi
-                const cancelBtn = document.getElementById('post-cancel');
-                if (cancelBtn) {
-                    cancelBtn.addEventListener('click', function() {
-                        const popup = document.getElementById('blogCreatePopup');
-                        if (popup) {
-                            popup.remove();
-                        }
-                    });
-                }
-                
-                // Form gönderme olay dinleyicisi
-                const submitBtn = document.getElementById('post-submit');
-                if (submitBtn) {
-                    submitBtn.addEventListener('click', function() {
-                        // Form verilerini al
-                        const title = document.getElementById('post-title').value;
-                        const category = document.getElementById('post-category').value;
-                        const content = document.getElementById('post-content').value;
-                        const tags = document.getElementById('post-tags').value;
-                        
-                        // Basit doğrulama
-                        if (!title || !category || !content) {
-                            alert('Lütfen gerekli alanları doldurun (Başlık, Kategori, İçerik)');
-                            return;
-                        }
-                        
-                        alert('Blog yazınız başarıyla oluşturuldu!');
-                        
-                        // Popup'ı kapat
-                        const popup = document.getElementById('blogCreatePopup');
-                        if (popup) {
-                            popup.remove();
-                        }
-                    });
-                }
-            }
+            // NOT: Buradaki oluştur butonu kontrolü kaldırıldı, login-handler.js dosyasındaki setupCreateButton() fonksiyonu kullanılacak
         });
     </script>
 </body>
