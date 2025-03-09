@@ -1541,7 +1541,7 @@ function snk_main_setupPasswordToggle() {
     console.log("Şifre toggle butonu ayarlanıyor");
     
     // Bu fonksiyon document.ready'den sonra çağrıldığında DOM hazır olacak
-    // Ancak 500ms sonra tekrar çağırmak en güvenli yol
+    // Ancak 300ms sonra tekrar çağırmak en güvenli yol
     setTimeout(() => {
         const passwordToggleBtn = document.getElementById('snk_login_toggle_password');
         
@@ -1554,16 +1554,19 @@ function snk_main_setupPasswordToggle() {
             // Yeni event listener ekle
             passwordToggleBtn.addEventListener('click', togglePasswordVisibility);
         } else {
-            console.error("Şifre toggle butonu bulunamadı");
+            console.log("Şifre toggle butonu bulunamadı (henüz yüklenmemiş olabilir)");
         }
-    }, 500);
+    }, 300);
 }
 
 // Şifre görünürlüğünü değiştiren yardımcı fonksiyon
 function togglePasswordVisibility(e) {
     console.log("Şifre toggle butonuna tıklandı");
-    e.preventDefault(); // Form submit'i önle
+    // Tarayıcının varsayılan davranışını engelle
+    e.preventDefault();
+    e.stopPropagation();
     
+    // Şifre input alanını bul
     const passwordInput = document.getElementById('loginPassword');
     if (passwordInput) {
         // Şifre görünürlüğünü değiştir
@@ -1573,8 +1576,15 @@ function togglePasswordVisibility(e) {
         // İkonu değiştir
         const icon = this.querySelector('i');
         if (icon) {
-            icon.classList.toggle('fa-eye');
-            icon.classList.toggle('fa-eye-slash');
+            if (type === 'text') {
+                // Şifre gösteriliyor, ikonu göz kapalı yap
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                // Şifre gizli, ikonu göz açık yap
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
         }
     } else {
         console.error("Şifre input alanı bulunamadı");
@@ -1602,7 +1612,7 @@ function snk_main_setupLoginPopupClose() {
             console.error("Login popup kapatma butonu veya popup bulunamadı:", 
                           {closeBtn: !!loginCloseBtn, popup: !!loginPopup});
         }
-    }, 500);
+    }, 300);
 }
 
 // Popup kapatma yardımcı fonksiyonu

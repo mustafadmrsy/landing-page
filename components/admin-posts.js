@@ -38,8 +38,19 @@ async function loadAllPosts() {
         publishedPostsLoader.style.display = 'block';
     }
 
-    // localStorage'dan postları yükle
-    let allPosts = JSON.parse(localStorage.getItem('snk_blogPosts') || '[]');
+    // localStorage'dan postları yükle - İki farklı anahtar kontrolü yapılıyor
+    let allPosts = JSON.parse(localStorage.getItem('snk_blog_posts') || '[]');
+    
+    // Eğer snk_blog_posts boş ama eski anahtar snk_blogPosts doluysa, onun içeriğini kullan
+    if (allPosts.length === 0) {
+        allPosts = JSON.parse(localStorage.getItem('snk_blogPosts') || '[]');
+        
+        // Eğer eski anahtardan veri yüklendiyse, yeni anahtara da kaydet
+        if (allPosts.length > 0) {
+            localStorage.setItem('snk_blog_posts', JSON.stringify(allPosts));
+            console.log('Blog yazıları yeni anahtara taşındı: snk_blog_posts');
+        }
+    }
     
     // Post ID'lerini kontrol et ve gerekirse ekle
     allPosts = allPosts.map(post => {
@@ -230,7 +241,7 @@ function approvePost(postId) {
     // Onay işlemi için onay kutusu göster
     if (confirm('Bu yazıyı onaylamak istediğinize emin misiniz?')) {
         // LocalStorage'dan tüm yazıları al
-        const allPosts = JSON.parse(localStorage.getItem('snk_blogPosts') || '[]');
+        const allPosts = JSON.parse(localStorage.getItem('snk_blog_posts') || '[]');
         
         // Onaylanacak yazıyı bul
         const postIndex = allPosts.findIndex(post => post.id.toString() === postId.toString());
@@ -241,7 +252,7 @@ function approvePost(postId) {
             allPosts[postIndex].approvedDate = new Date().toLocaleDateString('tr-TR');
             
             // LocalStorage'a kaydet
-            localStorage.setItem('snk_blogPosts', JSON.stringify(allPosts));
+            localStorage.setItem('snk_blog_posts', JSON.stringify(allPosts));
             
             // Yazının yazarının ID'sini al
             const authorId = allPosts[postIndex].author_id;
@@ -280,7 +291,7 @@ function rejectPost(postId) {
     // Red işlemi için onay kutusu göster
     if (confirm('Bu yazıyı reddetmek istediğinize emin misiniz?')) {
         // LocalStorage'dan tüm yazıları al
-        const allPosts = JSON.parse(localStorage.getItem('snk_blogPosts') || '[]');
+        const allPosts = JSON.parse(localStorage.getItem('snk_blog_posts') || '[]');
         
         // Reddedilecek yazıyı bul
         const postIndex = allPosts.findIndex(post => post.id.toString() === postId.toString());
@@ -291,7 +302,7 @@ function rejectPost(postId) {
             allPosts[postIndex].rejectedDate = new Date().toLocaleDateString('tr-TR');
             
             // LocalStorage'a kaydet
-            localStorage.setItem('snk_blogPosts', JSON.stringify(allPosts));
+            localStorage.setItem('snk_blog_posts', JSON.stringify(allPosts));
             
             // Yazının yazarının ID'sini al
             const authorId = allPosts[postIndex].author_id;
@@ -329,7 +340,7 @@ function deletePost(postId) {
     // Silme işlemi için onay kutusu göster
     if (confirm('Bu yazıyı silmek istediğinize emin misiniz?')) {
         // LocalStorage'dan tüm yazıları al
-        const allPosts = JSON.parse(localStorage.getItem('snk_blogPosts') || '[]');
+        const allPosts = JSON.parse(localStorage.getItem('snk_blog_posts') || '[]');
         
         // Silinecek yazıyı bul
         const postIndex = allPosts.findIndex(post => post.id.toString() === postId.toString());
@@ -339,7 +350,7 @@ function deletePost(postId) {
             allPosts.splice(postIndex, 1);
             
             // LocalStorage'a kaydet
-            localStorage.setItem('snk_blogPosts', JSON.stringify(allPosts));
+            localStorage.setItem('snk_blog_posts', JSON.stringify(allPosts));
             
             // Yazının yazarının ID'sini al
             const authorId = allPosts[postIndex].author_id;
