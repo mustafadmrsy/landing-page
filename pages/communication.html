@@ -142,10 +142,6 @@
                         <i class="fas fa-home"></i>
                         <span class="snk-sidebar-text">Ana Sayfa</span>
                     </a>
-                    <a href="#" class="snk-sidebar-item" id="snk_sidebarPopular">
-                        <i class="fas fa-fire"></i>
-                        <span class="snk-sidebar-text">Popüler</span>
-                    </a>
                     <a href="Categories.html" class="snk-sidebar-item">
                         <i class="fas fa-th-large"></i>
                         <span class="snk-sidebar-text">Kategoriler</span>
@@ -335,27 +331,32 @@
             </div>
             <div class="snk-popup-content">
                 <div id="registerAlertBox" class="auth-alert"></div>
-                <form id="registerForm" class="auth-form">
-                    <div class="form-group">
+                <form id="registerForm" class="snk-auth-form">
+                    <div class="snk-form-group">
                         <label for="registerName">Ad</label>
-                        <input type="text" id="registerName" name="name" required>
+                        <input type="text" id="registerName" name="name" class="snk-form-input" required>
                     </div>
-                    <div class="form-group">
+                    <div class="snk-form-group">
                         <label for="registerSurname">Soyad</label>
-                        <input type="text" id="registerSurname" name="surname" required>
+                        <input type="text" id="registerSurname" name="surname" class="snk-form-input" required>
                     </div>
-                    <div class="form-group">
+                    <div class="snk-form-group">
                         <label for="registerEmail">Öğrenci E-posta</label>
-                        <input type="email" id="registerEmail" name="email" placeholder="ol2413615XXX@isparta.edu.tr" required>
+                        <input type="email" id="registerEmail" name="email" class="snk-form-input" placeholder="ol2413615XXX@isparta.edu.tr" required>
                     </div>
-                    <div class="form-group">
+                    <div class="snk-form-group">
                         <label for="registerPassword">Şifre</label>
-                        <input type="password" id="registerPassword" name="password" required>
+                        <div class="snk-password-container">
+                            <input type="password" id="registerPassword" name="password" class="snk-form-input" required>
+                            <button type="button" class="snk-password-toggle" id="snk_register_toggle_password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
                     </div>
-                    <button type="submit" class="auth-button">Kayıt Ol</button>
+                    <button type="submit" class="snk-auth-submit">Kayıt Ol</button>
                 </form>
-                <div class="auth-links">
-                    <p>Zaten bir hesabınız var mı? <a href="#" id="showLoginPopup">Giriş Yap</a></p>
+                <div class="snk-auth-toggle">
+                    Hesabınız var mı? <a href="#" id="showLoginPopup">Giriş Yap</a>
                 </div>
             </div>
         </div>
@@ -396,7 +397,6 @@
     <!-- JavaScript dosyaları -->
     <script src="../components/dom-utils.js"></script>
     <script src="../components/sidebar.js"></script>
-    <script src="../components/main.js"></script>
     <script src="../components/popup.js"></script>
     <script src="../components/popup-handler.js"></script>
     <script src="../components/verification.js"></script>
@@ -405,6 +405,8 @@
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script src="../components/login-handler.js"></script>
     <script src="../components/comment-system.js"></script>
+    <script src="../components/main.js"></script>
+    <script src="../darkjs/darkmode.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // LocalStorage'dan bildirim mesajını kontrol et
@@ -445,20 +447,105 @@
                 document.body.classList.add('eren-dark-theme');
             }
             
-            // Tüm sayfa içeriği yüklendikten sonra ana fonksiyonlar başlatılır
-            snk_main_initializePage();
-
-            // Sayfa tıklamalarının boşluk kontrolü
-            document.addEventListener('click', function(e) {
-                console.log('Sayfa tıklandı:', e.target);
+            // Şifre gösterme/gizleme işlevi için özel kod
+            function setupPasswordToggles() {
+                console.log("Şifre toggle butonları ayarlanıyor (iletişim sayfası)");
+                
+                // Login için şifre göster/gizle 
+                const loginToggle = document.getElementById('snk_login_toggle_password');
+                if (loginToggle) {
+                    const loginPassword = document.getElementById('loginPassword');
+                    if (loginPassword) {
+                        loginToggle.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            const type = loginPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+                            loginPassword.setAttribute('type', type);
+                            const icon = loginToggle.querySelector('i');
+                            if (icon) {
+                                icon.classList.toggle('fa-eye');
+                                icon.classList.toggle('fa-eye-slash');
+                            }
+                        });
+                    }
+                }
+                
+                // Register için şifre göster/gizle
+                const registerToggle = document.getElementById('snk_register_toggle_password');
+                if (registerToggle) {
+                    console.log("Register toggle butonu bulundu");
+                    const registerPassword = document.getElementById('registerPassword');
+                    if (registerPassword) {
+                        console.log("Register password input bulundu");
+                        registerToggle.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            console.log("Register toggle butonuna tıklandı");
+                            const type = registerPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+                            registerPassword.setAttribute('type', type);
+                            console.log("Şifre tipi değiştirildi:", type);
+                            const icon = registerToggle.querySelector('i');
+                            if (icon) {
+                                icon.classList.toggle('fa-eye');
+                                icon.classList.toggle('fa-eye-slash');
+                            }
+                        });
+                    } else {
+                        console.warn("Register password input bulunamadı");
+                    }
+                } else {
+                    console.warn("Register toggle butonu bulunamadı");
+                }
+            }
+            
+            // İlk yüklemede şifre butonlarını ayarla
+            setupPasswordToggles();
+            
+            // Popup açıldığında şifre butonlarını tekrar ayarla
+            const registerBtn = document.getElementById('snk_register_btn');
+            if (registerBtn) {
+                registerBtn.addEventListener('click', function() {
+                    setTimeout(setupPasswordToggles, 300);
+                });
+            }
+            
+            const loginBtn = document.getElementById('snk_login_btn');
+            if (loginBtn) {
+                loginBtn.addEventListener('click', function() {
+                    setTimeout(setupPasswordToggles, 300);
+                });
+            }
+            
+            // Kayıt formunda şifre göster/gizle butonu için doğrudan olay dinleyici
+            document.addEventListener('click', function(event) {
+                if (event.target && event.target.id === 'snk_register_toggle_password') {
+                    console.log("Şifre toggle butonu tıklandı (delegasyon ile)");
+                    const registerPassword = document.getElementById('registerPassword');
+                    if (registerPassword) {
+                        const type = registerPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+                        registerPassword.setAttribute('type', type);
+                        const icon = event.target.querySelector('i') || event.target;
+                        if (icon.classList) {
+                            icon.classList.toggle('fa-eye');
+                            icon.classList.toggle('fa-eye-slash');
+                        }
+                    }
+                }
+                // Eğer ikon tıklandıysa
+                else if (event.target && event.target.parentElement && event.target.parentElement.id === 'snk_register_toggle_password') {
+                    console.log("Şifre toggle ikonu tıklandı");
+                    const registerPassword = document.getElementById('registerPassword');
+                    if (registerPassword) {
+                        const type = registerPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+                        registerPassword.setAttribute('type', type);
+                        const icon = event.target;
+                        if (icon.classList) {
+                            icon.classList.toggle('fa-eye');
+                            icon.classList.toggle('fa-eye-slash');
+                        }
+                    }
+                }
             });
+            
         });
     </script>
-    <script src="../components/main.js"></script>
-    <script src="../components/sidebar.js"></script>
-    <script src="../components/popup.js"></script>
-    <script src="../components/comment-system.js"></script>
-    <script src="../components/"></script>
-    <script src="../darkjs/darkmode.js"></script>
 </body>
 </html>
