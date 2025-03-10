@@ -415,32 +415,78 @@ function showBlogCreatePopup(user) {
         // Mevcut blog yazılarını al
         let blogPosts = JSON.parse(localStorage.getItem('snk_blog_posts') || '[]');
         
-        // Yeni blog yazısını ekle
+        // Eğer fazla post varsa, localStorage dolmasını önlemek için
+        // en eski postları sadeleştir (içeriklerini kısalt)
+        if (blogPosts.length > 10) {
+            console.log('Blog yazıları sınırı aşıldı, eski yazılar optimize ediliyor...');
+            
+            // En eski yazıları bul ve optimize et (ilk 5 yazı)
+            for (let i = 0; i < Math.min(5, blogPosts.length); i++) {
+                if (blogPosts[i].content && blogPosts[i].content.length > 200) {
+                    // İçeriği kısalt ve optimize edildiğini belirt
+                    blogPosts[i].content = blogPosts[i].content.substring(0, 200) + '...';
+                    blogPosts[i].optimized = true;
+                }
+            }
+        }
+        
+        // Yeni yazıyı ekle
         blogPosts.push(blogPost);
         
+        // localStorage'a kaydet - kotayı aşarsa düzgün hata yönetimi sağla
         try {
-            // Güncellenmiş blog yazılarını localStorage'a kaydet
             localStorage.setItem('snk_blog_posts', JSON.stringify(blogPosts));
+        } catch (storageError) {
+            console.warn('LocalStorage kotası aşıldı, eski yazılar temizleniyor...');
             
-            // Kullanıcının kendi blog yazılarına da ekleyelim
+            // Kota aşılırsa, daha agresif bir temizlik yap
+            // En eski 5 yazıyı tamamen kaldır
+            if (blogPosts.length > 5) {
+                blogPosts = blogPosts.slice(5);
+                blogPosts.push(blogPost); // Yeni yazıyı tekrar ekle
+                localStorage.setItem('snk_blog_posts', JSON.stringify(blogPosts));
+            } else {
+                // Yazılar çok büyük, tüm yazıları sil ve sadece yeni yazıyı kaydet
+                localStorage.setItem('snk_blog_posts', JSON.stringify([blogPost]));
+            }
+        }
+        
+        // Kullanıcının kendi blog yazılarını optimize et ve güncelle
+        try {
             let userPosts = JSON.parse(localStorage.getItem(`snk_user_posts_${user.id}`) || '[]');
+            
+            // Eğer kullanıcının çok yazısı varsa, eski yazıları optimize et
+            if (userPosts.length > 15) {
+                for (let i = 0; i < Math.min(10, userPosts.length); i++) {
+                    if (userPosts[i].content && userPosts[i].content.length > 200) {
+                        userPosts[i].content = userPosts[i].content.substring(0, 200) + '...';
+                        userPosts[i].optimized = true;
+                    }
+                }
+            }
+            
             userPosts.push(blogPost);
             localStorage.setItem(`snk_user_posts_${user.id}`, JSON.stringify(userPosts));
-            
-            // Kullanıcı bilgilerini sakla
-            const currentUser = {
-                ...user,
-                isLoggedIn: true
-            };
-            localStorage.setItem('snk_currentUser', JSON.stringify(currentUser));
-            
-            // 1 saniye sonra sayfayı yeniden yükle
-            setTimeout(() => {
-                window.location.reload();
-            }, 1000);
-        } catch (e) {
-            console.error('LocalStorage hatası:', e);
+        } catch (userStorageError) {
+            // Kullanıcı yazıları için kota aşılırsa, en eski yazıları sil
+            console.warn('Kullanıcı yazıları için LocalStorage kotası aşıldı, temizleniyor...');
+            localStorage.setItem(`snk_user_posts_${user.id}`, JSON.stringify([blogPost]));
         }
+        
+        // Kullanıcı bilgilerini sakla
+        const currentUser = {
+            ...user,
+            isLoggedIn: true
+        };
+        localStorage.setItem('snk_currentUser', JSON.stringify(currentUser));
+        
+        // Bildirim göster
+        showNotification('Blog yazınız başarıyla kaydedildi!', 'success');
+        
+        // 1 saniye sonra sayfayı yeniden yükle
+        setTimeout(() => {
+            window.location.reload();
+        }, 1000);
     });
 
     // Görsel yükleme fonksiyonalitesi

@@ -151,13 +151,64 @@ function snk_popup_fetchPostData(postId) {
         snk_popup_overlay.classList.add('active');
     }
     
-    // Önce localStorage'dan kullanıcı gönderilerini kontrol et
-    const localPosts = JSON.parse(localStorage.getItem('snk_blog_posts') || '[]');
-    const localPost = localPosts.find(post => post.id === parseInt(postId) || post.id === postId);
+    // Tüm olası localStorage anahtarlarını kontrol et
+    const storageKeys = ['snk_blog_posts', 'snk_blogPosts', 'blog_posts'];
+    let foundPost = null;
+    let allPosts = [];
     
-    if (localPost) {
-        console.log("Yazı localStorage'da bulundu:", localPost.title);
-        snk_popup_openPopup(localPost);
+    // Her bir anahtar için kontrol et
+    for (const key of storageKeys) {
+        const posts = JSON.parse(localStorage.getItem(key) || '[]');
+        
+        // Bu anahtardan gelen yazıları allPosts'a ekle
+        allPosts = [...allPosts, ...posts];
+        
+        // PostId ile eşleşen yazıyı bul
+        const post = posts.find(post => 
+            post.id === parseInt(postId) || 
+            post.id === postId || 
+            post.id === postId.toString()
+        );
+        
+        if (post) {
+            foundPost = post;
+            console.log(`Yazı ${key} içinde bulundu:`, post.title);
+            break;
+        }
+    }
+    
+    // Yazı bulunduysa göster
+    if (foundPost) {
+        // Eğer yazı bulunduysa durumunu approved olarak ayarla
+        foundPost.status = foundPost.status || 'approved';
+        
+        // Yazıyı göster
+        snk_popup_openPopup(foundPost);
+        
+        // Yazıyı tüm localStorage anahtarlarına kaydet (veri tutarlılığı için)
+        // Bu, yazının ana sayfada ve admin sayfasında görünmesini sağlar
+        for (const key of storageKeys) {
+            let posts = JSON.parse(localStorage.getItem(key) || '[]');
+            
+            // Yazı bu anahtarda varsa, güncelle
+            const existingIndex = posts.findIndex(post => 
+                post.id === parseInt(postId) || 
+                post.id === postId || 
+                post.id === postId.toString()
+            );
+            
+            if (existingIndex !== -1) {
+                posts[existingIndex] = foundPost;
+            } else {
+                // Yazı bu anahtarda yoksa, ekle
+                posts.push(foundPost);
+            }
+            
+            // Güncellenmiş yazıları localStorage'a kaydet
+            localStorage.setItem(key, JSON.stringify(posts));
+            console.log(`Yazı ${key} içine kaydedildi`);
+        }
+        
         return;
     }
     
@@ -174,7 +225,23 @@ function snk_popup_fetchPostData(postId) {
                 const post = data.posts.find(post => post.id === parseInt(postId) || post.id === postId);
                 
                 if (post) {
+                    // Yazı durumunu approved olarak ayarla
+                    post.status = post.status || 'approved';
+                    
+                    // Popup'ı açarak yazıyı göster
                     snk_popup_openPopup(post);
+                    
+                    // Bu yazıyı localStorage'a da ekle
+                    for (const key of storageKeys) {
+                        let posts = JSON.parse(localStorage.getItem(key) || '[]');
+                        
+                        // Yazı zaten mevcutsa ekleme
+                        if (!posts.some(p => p.id === post.id)) {
+                            posts.push(post);
+                            localStorage.setItem(key, JSON.stringify(posts));
+                            console.log(`Yazı ${key} içine kaydedildi`);
+                        }
+                    }
                 } else {
                     throw new Error('Yazı bulunamadı');
                 }
