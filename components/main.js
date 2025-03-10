@@ -5,14 +5,11 @@
 
 // DOM elemanlarını tanımla
 const snk_main_postsContainer = document.getElementById('snk_postsContainer');
-const snk_main_filterButtons = document.querySelectorAll('.snk-filter-btn');
 const snk_main_filterNewest = document.getElementById('snk_filterNewest');
 const snk_main_filterPopular = document.getElementById('snk_filterPopular');
 
 // Blog yazılarının tutulacağı dizi
 let snk_main_blogPosts = [];
-// Aktif filtreleme türü
-let snk_main_activeFilter = 'newest';
 
 /**
  * Sayfa yüklendiğinde çalışacak fonksiyonlar
@@ -32,9 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
     snk_main_loadBlogPosts();
     
     // Filtreleme butonları için olay dinleyicileri ekle
-    if (filterNewest && filterPopular) {
-        snk_main_setupFilterButtons();
-    }
+    snk_main_setupFilterButtons();
     
     // Sidebar'daki popüler linki için olay dinleyicisi
     if (sidebarPopular) {
@@ -46,8 +41,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 filterPopular.click(); // Popüler filtresine tıklamayı simüle et
             } else {
                 // Popüler filtresi bulunamazsa manuel olarak uygula
-                snk_main_activeFilter = 'popular';
-                
                 // UI güncelleme
                 document.querySelectorAll('.snk-filter-btn').forEach(btn => {
                     btn.classList.remove('active');
@@ -139,11 +132,11 @@ function snk_main_onBlogPostsLoaded(posts) {
     // Sadece onaylanmış postları filtrele
     const approvedPosts = posts.filter(post => post.status === 'approved' || !post.status);
     
+    console.log('Onaylanmış yazı sayısı:', approvedPosts.length);
+    console.log('Toplam yazı sayısı:', posts.length);
+    
     // Tüm gönderileri göster
     snk_main_displayBlogPosts(approvedPosts);
-    
-    // En popüler yazıları göster
-    snk_main_displayPopularPosts(approvedPosts, snk_main_activeFilter);
 }
 
 /**
@@ -154,23 +147,7 @@ function snk_main_setupFilterButtons() {
     const popularBtn = document.getElementById('snk_filterPopular');
     
     if (newestBtn && popularBtn) {
-        newestBtn.addEventListener('click', () => {
-            snk_main_activeFilter = 'newest';
-            newestBtn.classList.add('active');
-            popularBtn.classList.remove('active');
-            const sortedPosts = [...snk_main_blogPosts].sort((a, b) => new Date(b.date) - new Date(a.date));
-            snk_main_displayBlogPosts(sortedPosts);
-            snk_main_displayPopularPosts(sortedPosts, 'newest');
-        });
-        
-        popularBtn.addEventListener('click', () => {
-            snk_main_activeFilter = 'popular';
-            popularBtn.classList.add('active');
-            newestBtn.classList.remove('active');
-            const sortedPosts = [...snk_main_blogPosts].sort((a, b) => b.views - a.views);
-            snk_main_displayBlogPosts(sortedPosts);
-            snk_main_displayPopularPosts(sortedPosts, 'popular');
-        });
+        console.log('Filtreleme butonları bulundu, ancak işlevleri kaldırıldı.');
     }
 }
 
@@ -369,10 +346,17 @@ function snk_main_setupPostInteractions(container) {
     // Devamını Oku butonları
     const readMoreButtons = container.querySelectorAll('.snk-read-more');
     readMoreButtons.forEach(button => {
-        button.addEventListener('click', function(event) {
+        // Önceki event listenerları temizle (bu önemli, aksi halde çift çalışabilir)
+        const newButton = button.cloneNode(true);
+        button.parentNode.replaceChild(newButton, button);
+        
+        newButton.addEventListener('click', function(event) {
             event.preventDefault();
+            event.stopPropagation(); // Event yayılmasını önle
+            
             const postId = parseInt(this.dataset.postId);
-            console.log("Devamını Oku butonuna tıklandı. Post ID:", postId);
+            console.log(`"Devamını Oku" butonuna tıklandı. Post ID: ${postId}`);
+            
             snk_main_showBlogPopup(postId);
         });
     });
@@ -418,164 +402,181 @@ function snk_main_setupPostInteractions(container) {
 }
 
 /**
- * Blog popup'ını gösterme fonksiyonu (Reddit tarzı tasarım için yenilendi)
+ * Blog popup'ını gösterme fonksiyonu
  * @param {number} postId - Gösterilecek yazının ID'si
- * @param {boolean} focusComments - Yorum bölümüne odaklanılacak mı
  */
-function snk_main_showBlogPopup(postId, focusComments = false) {
+function snk_main_showBlogPopup(postId) {
     console.log("Blog popup gösteriliyor. Post ID:", postId);
     
-    // İlgili gönderiyi bul
-    const post = snk_main_blogPosts.find(p => p.id === postId);
-    
-    if (!post) {
-        console.error("Gösterilen yazı bulunamadı. ID:", postId);
-        return;
-    }
-    
-    // Popup HTML'ini oluştur
-    const popupHTML = `
-        <div class="snk-popup-overlay">
+    try {
+        // Blog yazılarını localStorage'dan al
+        const allPosts = JSON.parse(localStorage.getItem('snk_blog_posts') || '[]');
+        console.log("Tüm yazılar:", allPosts);
+        
+        // ID'ye göre yazıyı bul
+        const post = allPosts.find(p => parseInt(p.id) === parseInt(postId));
+        
+        if (!post) {
+            console.error(`ID: ${postId} olan yazı bulunamadı`);
+            alert("Bu blog yazısı bulunamadı.");
+            return;
+        }
+        
+        console.log("Gösterilecek yazı:", post);
+        
+        // Var olan popupları temizle
+        const existingPopups = document.querySelectorAll('.snk-popup-overlay');
+        existingPopups.forEach(popup => popup.remove());
+        
+        // Yeni popup oluştur
+        const popupEl = document.createElement('div');
+        popupEl.className = 'snk-popup-overlay';
+        
+        // İçerik HTML'ini oluştur
+        popupEl.innerHTML = `
             <div class="snk-popup-content">
                 <button class="snk-popup-close">&times;</button>
                 <article class="snk-popup-article">
                     <header class="snk-popup-header">
                         <div class="snk-popup-meta">
-                            <span class="snk-popup-category">${post.category}</span>
+                            <span class="snk-popup-category">${post.category || 'Genel'}</span>
                             <span class="snk-popup-author">Yazar: ${post.author || 'Anonim'}</span>
                             <span class="snk-popup-date">${post.date || 'Tarih bilgisi yok'}</span>
-                            <span class="snk-popup-views"><i class="far fa-eye"></i> ${post.views || 0} görüntülenme</span>
                         </div>
-                        <h1 class="snk-popup-title">${post.title}</h1>
+                        <h1 class="snk-popup-title">${post.title || 'Başlıksız Yazı'}</h1>
                     </header>
                     
+                    ${post.image ? `
                     <div class="snk-popup-featured-image">
-                        <img src="${post.image || 'assets/images/default-post.jpg'}" alt="${post.title}">
+                        <img src="${post.image}" alt="${post.title}">
                     </div>
+                    ` : ''}
                     
                     <div class="snk-popup-content-body">
-                        ${post.content || post.summary}
-                    </div>
-                    
-                    <footer class="snk-popup-footer">
-                        <div class="snk-popup-tags">
-                            ${post.tags ? post.tags.map(tag => `<span class="snk-popup-tag">#${tag}</span>`).join('') : ''}
-                        </div>
-                        
-                        <div class="snk-popup-actions">
-                            <button class="snk-popup-action-btn snk-popup-like">
-                                <i class="far fa-thumbs-up"></i> Beğen
-                                <span class="snk-popup-like-count">${post.likes || 0}</span>
-                            </button>
-                            <button class="snk-popup-action-btn snk-popup-share">
-                                <i class="far fa-share-square"></i> Paylaş
-                            </button>
-                        </div>
-                    </footer>
-                    
-                    <div class="snk-popup-comments" id="snk-popup-comments">
-                        <h3 class="snk-comments-title">Yorumlar</h3>
-                        <div class="snk-comment-form">
-                            <textarea placeholder="Yorumunuzu buraya yazın..." class="snk-comment-textarea" id="snk_comment_textarea_${postId}"></textarea>
-                            <button class="snk-comment-submit" id="snk_comment_submit_${postId}">Gönder</button>
-                            <button class="snk-comment-cancel" id="snk_comment_cancel_${postId}">İptal</button>
-                        </div>
-                        <div class="snk-comments-list">
-                            ${post.comments && post.comments.length > 0 
-                                ? post.comments.map(comment => `
-                                    <div class="snk-comment">
-                                        <div class="snk-comment-avatar">
-                                            <img src="${comment.avatar || 'assets/images/default-avatar.jpg'}" alt="${comment.author}">
-                                        </div>
-                                        <div class="snk-comment-content">
-                                            <div class="snk-comment-header">
-                                                <span class="snk-comment-author">${comment.author}</span>
-                                                <span class="snk-comment-date">${comment.date}</span>
-                                            </div>
-                                            <div class="snk-comment-text">${comment.text}</div>
-                                        </div>
-                                    </div>
-                                `).join('') 
-                                : '<div class="snk-no-comments">Henüz yorum yapılmamış. İlk yorumu sen yap!</div>'
-                            }
-                        </div>
+                        ${post.content || post.summary || 'İçerik bulunamadı.'}
                     </div>
                 </article>
             </div>
-        </div>
-    `;
-    
-    // Popup'ı DOM'a ekle
-    const popupElement = document.createElement('div');
-    popupElement.innerHTML = popupHTML;
-    const popup = popupElement.firstElementChild;
-    document.body.appendChild(popup);
-    
-    // Popup kapatma olaylarını ekle
-    if (popup) {
-        const closeButton = popup.querySelector('.snk-popup-close');
+        `;
         
-        // Kapatma butonuna tıklama
-        if (closeButton) {
-            closeButton.addEventListener('click', function() {
-                if (document.body.contains(popup)) {
-                    document.body.removeChild(popup);
-                }
+        // Popup'ı sayfaya ekle
+        document.body.appendChild(popupEl);
+        
+        // Dark mode kontrolü
+        const isDarkMode = document.body.classList.contains('eren-dark-theme');
+        if (isDarkMode) {
+            popupEl.querySelector('.snk-popup-content').classList.add('eren-dark-theme');
+        }
+        
+        // Popup'ı görünür yap
+        setTimeout(() => popupEl.classList.add('active'), 10);
+        
+        // Kapatma butonu işlevselliği
+        const closeBtn = popupEl.querySelector('.snk-popup-close');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                popupEl.classList.remove('active');
+                setTimeout(() => popupEl.remove(), 300);
             });
         }
         
-        // Overlay'e tıklama ile kapatma
-        popup.addEventListener('click', function(event) {
-            if (event.target === popup && document.body.contains(popup)) {
-                document.body.removeChild(popup);
+        // Popup dışına tıklayınca kapat
+        popupEl.addEventListener('click', (e) => {
+            if (e.target === popupEl) {
+                popupEl.classList.remove('active');
+                setTimeout(() => popupEl.remove(), 300);
             }
         });
         
-        // ESC tuşu ile kapatma
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape' && document.body.contains(popup)) {
-                document.body.removeChild(popup);
+        // Dark mode değişikliklerini dinle
+        document.addEventListener('darkModeChanged', (e) => {
+            if (e.detail.darkMode) {
+                popupEl.querySelector('.snk-popup-content').classList.add('eren-dark-theme');
+            } else {
+                popupEl.querySelector('.snk-popup-content').classList.remove('eren-dark-theme');
+            }
+        });
+        
+    } catch (error) {
+        console.error("Blog popup gösterme hatası:", error);
+        alert("Blog yazısı gösterilirken bir hata oluştu.");
+    }
+}
+
+/**
+ * Yazı etkileşimlerini kuran fonksiyon
+ * @param {HTMLElement} container - İçinde etkileşimli elemanların olduğu konteyner
+ */
+function snk_main_setupPostInteractions(container) {
+    if (!container) {
+        console.error("Post etkileşimleri kurulamadı: Konteyner bulunamadı");
+        return;
+    }
+    
+    console.log("Post etkileşimleri kuruluyor...");
+    
+    // Devamını Oku butonları
+    const readMoreButtons = container.querySelectorAll('.snk-read-more');
+    console.log(`${readMoreButtons.length} adet "Devamını Oku" butonu bulundu`);
+    
+    if (readMoreButtons.length === 0) {
+        console.log("Devamını Oku butonları bulunamadı, tüm kart butonlarına event listener ekleniyor...");
+        
+        // Tüm blog kartlarını bul ve direkt kartlara tıklama olayı ekle (devamını oku butonları yoksa)
+        const blogCards = container.querySelectorAll('.snk-blog-card');
+        blogCards.forEach(card => {
+            const postId = card.dataset.postId;
+            if (postId) {
+                card.style.cursor = 'pointer';
+                card.addEventListener('click', function(e) {
+                    // Eğer tıklanan yer bir buton değilse popup'ı aç
+                    if (!e.target.closest('button')) {
+                        e.preventDefault();
+                        console.log(`Blog kartına tıklandı. Post ID: ${postId}`);
+                        snk_main_showBlogPopup(parseInt(postId));
+                    }
+                });
             }
         });
     }
     
-    // Yorumlara odaklan (eğer isteniyorsa)
-    if (focusComments && document.getElementById('snk-popup-comments')) {
-        document.getElementById('snk-popup-comments').scrollIntoView({ behavior: 'smooth' });
-        setTimeout(() => {
-            document.querySelector('.snk-comment-textarea').focus();
-        }, 500);
-    }
+    // Her "Devamını Oku" butonuna olay dinleyicisi ekle
+    readMoreButtons.forEach(btn => {
+        // Önceki dinleyicileri temizle
+        const newBtn = btn.cloneNode(true);
+        if (btn.parentNode) {
+            btn.parentNode.replaceChild(newBtn, btn);
+        }
+        
+        // Yeni dinleyici ekle
+        newBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const postId = this.dataset.postId;
+            if (postId) {
+                console.log(`"Devamını Oku" butonuna tıklandı. Post ID: ${postId}`);
+                snk_main_showBlogPopup(parseInt(postId));
+            } else {
+                console.error("Post ID bulunamadı");
+            }
+        });
+    });
+    
+    // Diğer butonlar için etkileşimler burada korundu
 }
 
 /**
  * Blog yazılarını aktif filtreye göre filtreler
  */
-function snk_main_filterPosts() {
-    let filteredPosts = [...snk_main_blogPosts]; // Tüm yazıların bir kopyasını oluşt
+function snk_main_filterPosts(posts) {
+    console.log(`Yazılar filtreleniyor`);
     
-    console.log("Yazılar filtreleniyor:", snk_main_activeFilter);
-    
-    // Filtreleme türüne göre sırala
-    switch (snk_main_activeFilter) {
-        case 'newest':
-            // Tarihe göre en yeniden eskiye sırala
-            filteredPosts.sort((a, b) => {
-                const dateA = new Date(a.date.split('.').reverse().join('-'));
-                const dateB = new Date(b.date.split('.').reverse().join('-'));
-                return dateB - dateA;
-            });
-            break;
-            
-        case 'popular':
-            // Görüntülenme sayısına göre sırala
-            filteredPosts.sort((a, b) => (b.views || 0) - (a.views || 0));
-            break;
-    }
+    // Sadece onaylanmış yazıları filtrele
+    let filteredPosts = posts.filter(post => post.status === 'approved' || !post.status);
     
     // Filtrelenmiş yazıları göster
     snk_main_displayBlogPosts(filteredPosts);
-    snk_main_displayPopularPosts(filteredPosts, snk_main_activeFilter);
 }
 
 /**
@@ -584,83 +585,7 @@ function snk_main_filterPosts() {
  * @param {string} filterType - Filtreleme türü (newest/popular)
  */
 function snk_main_displayPopularPosts(posts, filterType = 'newest') {
-    const popularPostsContainer = document.getElementById('snk_popularPosts');
-    
-    if (!popularPostsContainer) return;
-    
-    // Filtreleme işlemi
-    let sortedPosts;
-    
-    if (filterType === 'popular') {
-        // En popüler yazılar - görüntülenme sayısına göre sırala
-        sortedPosts = [...posts].sort((a, b) => b.views - a.views);
-    } else if (filterType === 'newest') {
-        // En yeni yazılar - tarihe göre sırala
-        sortedPosts = [...posts].sort((a, b) => new Date(b.date) - new Date(a.date));
-    } else {
-        // Varsayılan olarak görüntülenme sayısına göre sırala
-        sortedPosts = [...posts].sort((a, b) => b.views - a.views);
-    }
-    
-    // En popüler/yeni 5 yazıyı al
-    const topPosts = sortedPosts.slice(0, 5);
-    
-    // HTML içeriğini hazırla
-    let popularPostsHTML = '';
-    
-    // Widget başlığını filtre tipine göre güncelle
-    const widgetTitle = document.querySelector('.snk-sidebar-widget-title');
-    if (widgetTitle) {
-        if (filterType === 'popular') {
-            widgetTitle.innerHTML = '<i class="fas fa-fire"></i> En Popüler Yazılar';
-        } else if (filterType === 'newest') {
-            widgetTitle.innerHTML = '<i class="fas fa-clock"></i> En Yeni Yazılar';
-        } else {
-            widgetTitle.innerHTML = '<i class="fas fa-star"></i> En Çok Okunan Yazılar';
-        }
-    }
-    
-    topPosts.forEach(post => {
-        popularPostsHTML += `
-            <div class="snk-popular-post-item" data-post-id="${post.id}">
-                <div class="snk-popular-post-meta">
-                    <span class="snk-popular-post-category">${post.category}</span>
-                    <span class="snk-popular-post-views">
-                        ${filterType === 'newest' ? 
-                            `<i class="fas fa-calendar-alt"></i> ${new Date(post.date).toLocaleDateString('tr-TR', {day: 'numeric', month: 'short'})}` : 
-                            `<i class="fas fa-eye"></i> ${post.views.toLocaleString()}`
-                        }
-                    </span>
-                </div>
-                <h4 class="snk-popular-post-title">${post.title}</h4>
-            </div>
-        `;
-    });
-    
-    // Eğer hiç yazı yoksa
-    if (topPosts.length === 0) {
-        popularPostsHTML = '<div class="snk-no-posts">Henüz gösterilecek yazı bulunmuyor.</div>';
-    }
-    
-    // İçeriği DOM'a ekle
-    popularPostsContainer.innerHTML = popularPostsHTML;
-    
-    // Tıklama olaylarını ekle
-    const popularPostItems = popularPostsContainer.querySelectorAll('.snk-popular-post-item');
-    
-    popularPostItems.forEach(item => {
-        item.addEventListener('click', function() {
-            const postId = parseInt(this.getAttribute('data-post-id'));
-            const post = posts.find(p => p.id === postId);
-            
-            if (post) {
-                // İlgili blog yazısını popup olarak göster
-                snk_main_showBlogPopup(postId);
-            } else {
-                console.error('Post bulunamadı, ID:', postId);
-            }
-        });
-    });
+    // Bu fonksiyon kaldırıldı
 }
 
 /**
@@ -942,9 +867,6 @@ function snk_main_replyToComment(commentId, button) {
     const commentElement = document.querySelector(`.snk-comment[data-comment-id="${commentId}"]`);
     if (!commentElement) return;
     
-    // Post ID'sini al (yorum elementinden)
-    const postId = commentElement.closest('.snk-post-comments').id.replace('snk_comment_section_', '');
-    
     // Varsa mevcut yanıt formunu kontrol et
     let replyForm = commentElement.querySelector('.snk-reply-form-container');
     
@@ -957,17 +879,17 @@ function snk_main_replyToComment(commentId, button) {
     // Yanıt formunu oluştur
     replyForm = document.createElement('div');
     replyForm.className = 'snk-reply-form-container';
-    replyForm.id = `snk_reply_form_container_${postId}_${commentId}`;
+    replyForm.id = `snk_reply_form_container_${commentId}`;
     
     // Formun HTML içeriğini oluştur
     replyForm.innerHTML = `
-        <form class="snk-reply-form" id="snk_reply_form_${postId}_${commentId}">
-            <textarea placeholder="Yanıtınızı buraya yazın..." class="snk-reply-textarea" id="snk_reply_textarea_${postId}_${commentId}"></textarea>
+        <form class="snk-reply-form" id="snk_reply_form_${commentId}">
+            <textarea placeholder="Yanıtınızı buraya yazın..." class="snk-reply-textarea" id="snk_reply_textarea_${commentId}"></textarea>
             <div class="snk-reply-form-actions">
-                <button type="button" class="snk-reply-btn snk-reply-cancel" id="snk_reply_cancel_${postId}_${commentId}">
+                <button type="button" class="snk-reply-btn snk-reply-cancel" id="snk_reply_cancel_${commentId}">
                     İptal
                 </button>
-                <button type="submit" class="snk-reply-btn snk-reply-submit" id="snk_reply_submit_${postId}_${commentId}">
+                <button type="submit" class="snk-reply-btn snk-reply-submit" id="snk_reply_submit_${commentId}">
                     Yanıtla
                 </button>
             </div>
@@ -984,11 +906,11 @@ function snk_main_replyToComment(commentId, button) {
     }, 10);
     
     // Textarea'ya otomatik odaklanma
-    const textarea = document.getElementById(`snk_reply_textarea_${postId}_${commentId}`);
+    const textarea = document.getElementById(`snk_reply_textarea_${commentId}`);
     textarea.focus();
     
     // İptal butonuna tıklama
-    const cancelBtn = document.getElementById(`snk_reply_cancel_${postId}_${commentId}`);
+    const cancelBtn = document.getElementById(`snk_reply_cancel_${commentId}`);
     cancelBtn.addEventListener('click', () => {
         replyForm.style.maxHeight = '0';
         replyForm.style.opacity = '0';
@@ -996,7 +918,7 @@ function snk_main_replyToComment(commentId, button) {
     });
     
     // Yanıt formunun gönderilmesi
-    const form = document.getElementById(`snk_reply_form_${postId}_${commentId}`);
+    const form = document.getElementById(`snk_reply_form_${commentId}`);
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         
@@ -1008,7 +930,7 @@ function snk_main_replyToComment(commentId, button) {
             
             // Rastgele bir ID oluştur (gerçek uygulamada API'den gelir)
             const replyId = Math.floor(Math.random() * 1000) + commentId + 100;
-            newReply.id = `snk_comment_reply_item_${postId}_${replyId}`;
+            newReply.id = `snk_comment_reply_item_${replyId}`;
             newReply.dataset.commentId = replyId;
             
             // Yanıt içeriğini oluştur
@@ -1023,7 +945,7 @@ function snk_main_replyToComment(commentId, button) {
                     ${replyText}
                 </div>
                 <div class="snk-comment-actions">
-                    <button class="snk-comment-action snk-comment-like" id="snk_comment_like_${postId}_${replyId}">
+                    <button class="snk-comment-action snk-comment-like" id="snk_comment_like_${replyId}">
                         <i class="fas fa-thumbs-up"></i> Beğen (0)
                     </button>
                 </div>
@@ -1033,7 +955,7 @@ function snk_main_replyToComment(commentId, button) {
             commentElement.after(newReply);
             
             // Yeni yanıta beğenme fonksiyonu ekle
-            const newLikeButton = document.getElementById(`snk_comment_like_${postId}_${replyId}`);
+            const newLikeButton = document.getElementById(`snk_comment_like_${replyId}`);
             newLikeButton.addEventListener('click', function() {
                 snk_main_likeComment(replyId, this);
             });
@@ -1382,7 +1304,7 @@ function snk_main_setupPostInteractions(postElement, postData) {
                 summary.innerHTML = content;
                 
                 // Buton metnini değiştir
-                this.innerHTML = '<i class="fas fa-angle-up"></i> Küçült';
+                this.innerHTML = '<i class="fas fa-angle-up"></i> Daralt';
                 this.dataset.expanded = 'true';
                 
                 // Gradient ve animasyon sınıflarını ekle
@@ -1701,8 +1623,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 filterPopular.click(); // Popüler filtresine tıklamayı simüle et
             } else {
                 // Popüler filtresi bulunamazsa manuel olarak uygula
-                snk_main_activeFilter = 'popular';
-                
                 // UI güncelleme
                 document.querySelectorAll('.snk-filter-btn').forEach(btn => {
                     btn.classList.remove('active');
@@ -1740,7 +1660,7 @@ document.addEventListener('DOMContentLoaded', function() {
             snk_main_openLoginPopup();
         });
     }
-});
+} );
 
 /**
  * Belirli bir kategoriye göre yazıları filtreler (kategori sayfası için)
@@ -1783,3 +1703,440 @@ function snk_main_filterByCategory(category) {
 
 // Global erişim için
 window.snk_main_filterByCategory = snk_main_filterByCategory;
+
+/**
+ * Blog yazılarını JSON dosyasından yükler
+ */
+function snk_main_loadBlogPosts() {
+    fetch('../utils/blogPosts.json')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Blog yazıları yüklenemedi');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // localStorage'dan kullanıcı gönderilerini al ve birleştir
+            const localPosts = JSON.parse(localStorage.getItem('snk_blog_posts') || '[]');
+            let allPosts = [...data.posts, ...localPosts];
+            
+            // Tekrarlı gönderileri önle (ID'ye göre kontrol)
+            const uniquePosts = [];
+            const postIds = new Set();
+            
+            allPosts.forEach(post => {
+                if (!postIds.has(post.id)) {
+                    postIds.add(post.id);
+                    uniquePosts.push(post);
+                }
+            });
+            
+            // Yüklenen gönderileri global değişkene kaydet ve işle
+            snk_main_blogPosts = uniquePosts;
+            
+            console.log('Blog yazıları yüklendi, toplam:', snk_main_blogPosts.length);
+            snk_main_onBlogPostsLoaded(snk_main_blogPosts);
+        })
+        .catch(error => {
+            console.error('Blog yazıları yüklenirken hata oluştu:', error);
+            document.getElementById('snk_postsContainer').innerHTML = `
+                <div class="snk-error">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>Blog yazıları yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.</p>
+                </div>
+            `;
+        });
+}
+
+/**
+ * Blog yazılarının yüklenmesi tamamlandığında çağrılacak işlev
+ * @param {Array} posts - Yüklenen blog yazıları dizisi
+ */
+function snk_main_onBlogPostsLoaded(posts) {
+    // Sadece onaylanmış postları filtrele
+    const approvedPosts = posts.filter(post => post.status === 'approved' || !post.status);
+    
+    console.log('Onaylanmış yazı sayısı:', approvedPosts.length);
+    console.log('Toplam yazı sayısı:', posts.length);
+    
+    // Tüm gönderileri göster
+    snk_main_displayBlogPosts(approvedPosts);
+    
+    // Sağ sütun temizlendi
+}
+
+// Filtreleme butonları kaldırıldı
+function snk_main_setupFilterButtons() {
+    console.log('Filtreleme butonları kaldırıldı');
+}
+
+/**
+ * Blog yazılarını filtreler ve gösterir
+ * @param {Array} posts - Tüm blog yazıları
+ */
+function snk_main_filterPosts(posts) {
+    console.log(`Yazılar filtreleniyor`);
+    
+    // Sadece onaylanmış yazıları filtrele
+    let filteredPosts = posts.filter(post => post.status === 'approved' || !post.status);
+    
+    // Filtrelenmiş yazıları göster
+    snk_main_displayBlogPosts(filteredPosts);
+}
+
+// En popüler yazıları gösterme fonksiyonu kaldırıldı
+function snk_main_displayPopularPosts() {
+    // Bu fonksiyon kaldırıldı
+    console.log('Popüler yazılar gösterme özelliği kaldırıldı');
+    
+    // Sağ sütundaki popüler yazılar alanını temizle
+    const popularPostsContainer = document.getElementById('snk_popularPosts');
+    if (popularPostsContainer) {
+        popularPostsContainer.innerHTML = '<div class="snk-no-posts">Bu özellik kaldırıldı.</div>';
+    }
+}
+
+/**
+ * Blog popupları için style ekle
+ */
+(function() {
+    // Eğer style elementimiz daha önce eklendiyse, tekrar ekleme
+    if (document.getElementById('snk-blog-popup-styles')) return;
+    
+    // Popup için CSS ekle
+    const style = document.createElement('style');
+    style.id = 'snk-blog-popup-styles';
+    style.innerHTML = `
+        .snk-popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        
+        .snk-popup-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .snk-popup-content {
+            background-color: #fff;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border-radius: 8px;
+            padding: 25px;
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .snk-popup-overlay.active .snk-popup-content {
+            transform: translateY(0);
+        }
+        
+        .snk-popup-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #333;
+            transition: color 0.2s;
+        }
+        
+        .snk-popup-close:hover {
+            color: #f44336;
+        }
+        
+        .snk-popup-header {
+            margin-bottom: 20px;
+        }
+        
+        .snk-popup-title {
+            font-size: 24px;
+            margin: 10px 0;
+        }
+        
+        .snk-popup-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .snk-popup-category {
+            background-color: #e0f7fa;
+            padding: 3px 8px;
+            border-radius: 4px;
+            color: #0097a7;
+        }
+        
+        .snk-popup-featured-image {
+            margin-bottom: 20px;
+        }
+        
+        .snk-popup-featured-image img {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .snk-popup-content-body {
+            line-height: 1.6;
+        }
+        
+        /* Dark mode için uyumlu renkler */
+        .eren-dark-theme .snk-popup-content {
+            background-color: #333;
+            color: #fff;
+        }
+        
+        .eren-dark-theme .snk-popup-close {
+            color: #eee;
+        }
+        
+        .eren-dark-theme .snk-popup-meta {
+            color: #ccc;
+        }
+        
+        .eren-dark-theme .snk-popup-category {
+            background-color: #263238;
+            color: #4fc3f7;
+        }
+    `;
+    
+    document.head.appendChild(style);
+})();
+
+/**
+ * Blog popup'ını gösterme fonksiyonu
+ * @param {number} postId - Gösterilecek yazının ID'si
+ */
+function snk_main_showBlogPopup(postId) {
+    console.log("Blog popup gösteriliyor. Post ID:", postId);
+    
+    try {
+        // localStorage'dan yazıları al - hem 'snk_blog_posts' hem de 'posts' anahtarlarını kontrol et
+        let allPosts = [];
+        try {
+            // Ana depolama 'snk_blog_posts' anahtarını kontrol et
+            const storedPosts = localStorage.getItem('snk_blog_posts');
+            if (storedPosts) {
+                allPosts = JSON.parse(storedPosts);
+                console.log("Yazılar 'snk_blog_posts' anahtarından alındı:", allPosts.length);
+            } else {
+                console.log("'snk_blog_posts' anahtarında veri bulunamadı");
+            }
+        } catch (e) {
+            console.warn("'snk_blog_posts' okuma hatası:", e);
+        }
+        
+        // Eğer allPosts bir array değilse veya boşsa başka kaynakları kontrol et
+        if (!Array.isArray(allPosts) || allPosts.length === 0) {
+            try {
+                const blogPostsJson = localStorage.getItem('posts');
+                if (blogPostsJson) {
+                    const parsed = JSON.parse(blogPostsJson);
+                    // posts anahtarı içinde bir array varsa onu kullan
+                    if (parsed && Array.isArray(parsed.posts)) {
+                        allPosts = parsed.posts;
+                        console.log("Yazılar 'posts' anahtarından alındı:", allPosts.length);
+                    } else if (parsed && Array.isArray(parsed)) {
+                        allPosts = parsed;
+                        console.log("Yazılar 'posts' anahtarından array olarak alındı:", allPosts.length);
+                    }
+                }
+            } catch (e) {
+                console.warn("'posts' okuma hatası:", e);
+            }
+        }
+        
+        console.log("Tüm yazılar:", allPosts);
+        
+        // Eğer hala post bulunamazsa hata göster
+        if (!Array.isArray(allPosts) || allPosts.length === 0) {
+            console.error("Hiç blog yazısı bulunamadı");
+            alert("Blog yazıları yüklenemedi. Lütfen sayfayı yenileyip tekrar deneyin.");
+            return;
+        }
+        
+        // ID'ye göre yazıyı bul
+        const post = allPosts.find(p => {
+            const postIdInt = parseInt(p.id);
+            const targetIdInt = parseInt(postId);
+            const match = postIdInt === targetIdInt;
+            if (match) {
+                console.log(`Eşleşme bulundu: Post ID ${postIdInt} = Hedef ID ${targetIdInt}`);
+            }
+            return match;
+        });
+        
+        if (!post) {
+            console.error(`ID: ${postId} olan yazı bulunamadı`);
+            console.log("Mevcut ID'ler:", allPosts.map(p => p.id));
+            alert("Bu blog yazısı bulunamadı.");
+            return;
+        }
+        
+        console.log("Gösterilecek yazı:", post);
+        
+        // Var olan popupları temizle
+        const existingPopups = document.querySelectorAll('.snk-popup-overlay');
+        existingPopups.forEach(popup => popup.remove());
+        
+        // Yeni popup oluştur
+        const popupEl = document.createElement('div');
+        popupEl.className = 'snk-popup-overlay';
+        
+        // İçerik HTML'ini oluştur
+        popupEl.innerHTML = `
+            <div class="snk-popup-content">
+                <button class="snk-popup-close">&times;</button>
+                <article class="snk-popup-article">
+                    <header class="snk-popup-header">
+                        <div class="snk-popup-meta">
+                            <span class="snk-popup-category">${post.category || 'Genel'}</span>
+                            <span class="snk-popup-author">Yazar: ${post.author || 'Anonim'}</span>
+                            <span class="snk-popup-date">${post.date || 'Tarih bilgisi yok'}</span>
+                        </div>
+                        <h1 class="snk-popup-title">${post.title || 'Başlıksız Yazı'}</h1>
+                    </header>
+                    
+                    ${post.image ? `
+                    <div class="snk-popup-featured-image">
+                        <img src="${post.image}" alt="${post.title || 'Blog yazısı'}">
+                    </div>
+                    ` : ''}
+                    
+                    <div class="snk-popup-content-body">
+                        ${post.content || post.summary || 'İçerik bulunamadı.'}
+                    </div>
+                </article>
+            </div>
+        `;
+        
+        // Popup'ı sayfaya ekle
+        document.body.appendChild(popupEl);
+        
+        // Dark mode kontrolü
+        const isDarkMode = document.body.classList.contains('eren-dark-theme');
+        if (isDarkMode) {
+            popupEl.querySelector('.snk-popup-content').classList.add('eren-dark-theme');
+        }
+        
+        // Popup'ı görünür yap
+        setTimeout(() => popupEl.classList.add('active'), 10);
+        
+        // Kapatma butonu işlevselliği
+        const closeBtn = popupEl.querySelector('.snk-popup-close');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                popupEl.classList.remove('active');
+                setTimeout(() => popupEl.remove(), 300);
+            });
+        }
+        
+        // Popup dışına tıklayınca kapat
+        popupEl.addEventListener('click', (e) => {
+            if (e.target === popupEl) {
+                popupEl.classList.remove('active');
+                setTimeout(() => popupEl.remove(), 300);
+            }
+        });
+        
+        // ESC tuşuna basınca kapat
+        const escHandler = (e) => {
+            if (e.key === 'Escape') {
+                popupEl.classList.remove('active');
+                setTimeout(() => {
+                    popupEl.remove();
+                    document.removeEventListener('keydown', escHandler);
+                }, 300);
+            }
+        };
+        document.addEventListener('keydown', escHandler);
+        
+    } catch (error) {
+        console.error("Blog popup gösterme hatası:", error);
+        alert("Blog yazısı gösterilirken bir hata oluştu.");
+    }
+}
+
+/**
+ * Yazı etkileşimlerini kuran fonksiyon
+ * @param {HTMLElement} container - İçinde etkileşimli elemanların olduğu konteyner
+ */
+function snk_main_setupPostInteractions(container) {
+    if (!container) {
+        console.error("Post etkileşimleri kurulamadı: Konteyner bulunamadı");
+        return;
+    }
+    
+    console.log("Post etkileşimleri kuruluyor...");
+    
+    // Devamını Oku butonları
+    const readMoreButtons = container.querySelectorAll('.snk-read-more');
+    console.log(`${readMoreButtons.length} adet "Devamını Oku" butonu bulundu`);
+    
+    if (readMoreButtons.length === 0) {
+        console.log("Devamını Oku butonları bulunamadı, tüm kart butonlarına event listener ekleniyor...");
+        
+        // Tüm blog kartlarını bul ve direkt kartlara tıklama olayı ekle (devamını oku butonları yoksa)
+        const blogCards = container.querySelectorAll('.snk-blog-card');
+        blogCards.forEach(card => {
+            const postId = card.dataset.postId;
+            if (postId) {
+                card.style.cursor = 'pointer';
+                card.addEventListener('click', function(e) {
+                    // Eğer tıklanan yer bir buton değilse popup'ı aç
+                    if (!e.target.closest('button')) {
+                        e.preventDefault();
+                        console.log(`Blog kartına tıklandı. Post ID: ${postId}`);
+                        snk_main_showBlogPopup(parseInt(postId));
+                    }
+                });
+            }
+        });
+    }
+    
+    // Her "Devamını Oku" butonuna olay dinleyicisi ekle
+    readMoreButtons.forEach(btn => {
+        // Önceki dinleyicileri temizle
+        const newBtn = btn.cloneNode(true);
+        if (btn.parentNode) {
+            btn.parentNode.replaceChild(newBtn, btn);
+        }
+        
+        // Yeni dinleyici ekle
+        newBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const postId = this.dataset.postId;
+            if (postId) {
+                console.log(`"Devamını Oku" butonuna tıklandı. Post ID: ${postId}`);
+                snk_main_showBlogPopup(parseInt(postId));
+            } else {
+                console.error("Post ID bulunamadı");
+            }
+        });
+    });
+    
+    // Diğer butonlar için etkileşimler burada korundu
+}
