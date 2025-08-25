@@ -1,0 +1,552 @@
+﻿/* Auth Forms - Senirkent Blog */
+
+.snk-form-message {
+    padding: 10px;
+    margin: 15px 0;
+    border-radius: 4px;
+    font-size: 14px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.snk-error-message {
+    background-color: rgba(231, 76, 60, 0.15);
+    color: #e74c3c;
+    border-left: 3px solid #e74c3c;
+}
+
+.snk-success-message {
+    background-color: rgba(46, 204, 113, 0.15);
+    color: #2ecc71;
+    border-left: 3px solid #2ecc71;
+}
+
+.snk-email-info {
+    display: block;
+    font-size: 12px;
+    color: #7f8c8d;
+    margin-top: 5px;
+}
+
+/* E-posta doğrulama sayfası stilleri */
+.snk-verification-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #fff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    text-align: center;
+}
+
+.snk-verification-success {
+    color: #2ecc71;
+    margin-bottom: 20px;
+}
+
+.snk-verification-error {
+    color: #e74c3c;
+    margin-bottom: 20px;
+}
+
+.snk-verification-btn {
+    display: inline-block;
+    background: linear-gradient(45deg, #3498db, #2980b9);
+    color: white;
+    padding: 12px 25px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 25px;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+    .snk-verification-btn:hover {
+        background: linear-gradient(45deg, #2980b9, #3498db);
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+/* E-posta test modu bilgisi */
+.mail-test-info {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-left: 4px solid #17a2b8;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+    .mail-test-info a {
+        color: #17a2b8;
+        text-decoration: underline;
+        font-weight: bold;
+    }
+
+        .mail-test-info a:hover {
+            color: #138496;
+        }
+
+/* E-posta başarı mesajı */
+.mail-success-info {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #f1f9f1;
+    border-left: 4px solid #28a745;
+    border-radius: 4px;
+    font-size: 0.9em;
+    color: #155724;
+}
+
+    .mail-success-info strong {
+        font-weight: bold;
+    }
+
+/* E-posta doğrulama sonrası animasyon */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.snk-animation-fadeInUp {
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+/* Responsive tasarım */
+@media screen and (max-width: 768px) {
+    .snk-verification-container {
+        margin: 30px 15px;
+        padding: 20px;
+    }
+}
+
+/* Auth Forms CSS - Senirkent Blog */
+
+/* Popup Container */
+.snk-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+.snk-popup-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.snk-popup-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 420px;
+    overflow: hidden;
+    position: relative;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: transform 0.3s, opacity 0.3s;
+}
+
+.snk-popup-overlay.active .snk-popup-container {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Popup Header */
+.snk-popup-header {
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+    position: relative;
+}
+
+.snk-popup-title {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+}
+
+.snk-popup-close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #888;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.snk-popup-close-btn:hover {
+    color: #333;
+}
+
+/* Popup Content */
+.snk-popup-content {
+    padding: 20px;
+}
+
+/* Forms */
+.snk-auth-form {
+    position: relative;
+}
+
+.snk-form-group {
+    margin-bottom: 20px;
+}
+
+.snk-form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    color: #555;
+}
+
+.snk-form-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 15px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.snk-form-input:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+    outline: none;
+}
+
+.snk-password-input-container {
+    position: relative;
+}
+
+.snk-password-toggle-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #aaa;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.snk-password-toggle-btn:hover {
+    color: #333;
+}
+
+/* Form Options */
+.snk-form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.snk-remember-me {
+    display: flex;
+    align-items: center;
+}
+
+.snk-remember-me input {
+    margin-right: 8px;
+}
+
+.snk-forgot-password {
+    color: #4a90e2;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.snk-forgot-password:hover {
+    color: #2a6fc9;
+    text-decoration: underline;
+}
+
+/* Submit Button */
+.snk-submit-btn {
+    width: 100%;
+    padding: 14px;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.snk-submit-btn:hover {
+    background-color: #2a6fc9;
+}
+
+/* Popup Footer */
+.snk-popup-footer {
+    text-align: center;
+    padding: 15px 20px;
+    border-top: 1px solid #eee;
+    font-size: 14px;
+    color: #666;
+}
+
+.snk-popup-footer a {
+    color: #4a90e2;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.snk-popup-footer a:hover {
+    color: #2a6fc9;
+    text-decoration: underline;
+}
+
+/* Terms Container */
+.snk-terms-container {
+    margin-bottom: 20px;
+}
+
+.snk-form-checkbox {
+    display: flex;
+    align-items: flex-start;
+}
+
+.snk-form-checkbox input {
+    margin-right: 10px;
+    margin-top: 3px;
+}
+
+.snk-form-checkbox label {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 0;
+}
+
+.snk-form-checkbox a {
+    color: #4a90e2;
+    text-decoration: none;
+}
+
+.snk-form-checkbox a:hover {
+    text-decoration: underline;
+    color: #2a6fc9;
+}
+
+/* Verification Code */
+.snk-verification-message {
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 15px;
+    color: #555;
+}
+
+.snk-verification-code-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.snk-verification-input {
+    width: 14%;
+    height: 50px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.snk-verification-input:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+    outline: none;
+}
+
+.snk-verification-timer {
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: #666;
+}
+
+.snk-verification-resend {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #666;
+}
+
+.snk-verification-resend a {
+    color: #4a90e2;
+    text-decoration: none;
+}
+
+.snk-verification-resend a:hover {
+    text-decoration: underline;
+    color: #2a6fc9;
+}
+
+/* Error and Success Messages */
+.snk-auth-error,
+.snk-auth-success {
+    padding: 12px 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.snk-auth-error.visible,
+.snk-auth-success.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.snk-auth-error {
+    background-color: #feebeb;
+    border-left: 4px solid #ff4a4a;
+    color: #e41919;
+}
+
+.snk-auth-success {
+    background-color: #eaffeb;
+    border-left: 4px solid #32cf32;
+    color: #1a9e1a;
+}
+
+.snk-auth-error i,
+.snk-auth-success i {
+    margin-right: 8px;
+}
+
+/* Dark Mode */
+.dark-mode .snk-popup-container {
+    background-color: #222;
+    color: #eee;
+}
+
+.dark-mode .snk-popup-header {
+    border-bottom-color: #333;
+}
+
+.dark-mode .snk-popup-title {
+    color: #fff;
+}
+
+.dark-mode .snk-popup-close-btn {
+    color: #aaa;
+}
+
+.dark-mode .snk-popup-close-btn:hover {
+    color: #fff;
+}
+
+.dark-mode .snk-form-group label {
+    color: #ccc;
+}
+
+.dark-mode .snk-form-input {
+    background-color: #333;
+    border-color: #444;
+    color: #eee;
+}
+
+.dark-mode .snk-form-input:focus {
+    border-color: #5a9de2;
+    box-shadow: 0 0 0 2px rgba(90, 157, 226, 0.2);
+}
+
+.dark-mode .snk-password-toggle-btn {
+    color: #aaa;
+}
+
+.dark-mode .snk-password-toggle-btn:hover {
+    color: #fff;
+}
+
+.dark-mode .snk-popup-footer {
+    border-top-color: #333;
+    color: #ccc;
+}
+
+.dark-mode .snk-form-checkbox label {
+    color: #ccc;
+}
+
+.dark-mode .snk-verification-input {
+    background-color: #333;
+    border-color: #444;
+    color: #eee;
+}
+
+.dark-mode .snk-verification-input:focus {
+    border-color: #5a9de2;
+}
+
+.dark-mode .snk-verification-message,
+.dark-mode .snk-verification-timer,
+.dark-mode .snk-verification-resend {
+    color: #ccc;
+}
+
+.dark-mode .snk-auth-error {
+    background-color: rgba(255, 74, 74, 0.2);
+    border-left-color: #ff4a4a;
+    color: #ff7070;
+}
+
+.dark-mode .snk-auth-success {
+    background-color: rgba(50, 207, 50, 0.2);
+    border-left-color: #32cf32;
+    color: #5beb5b;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 480px) {
+    .snk-popup-container {
+        width: 95%;
+    }
+    
+    .snk-verification-input {
+        width: 13%;
+        height: 45px;
+        font-size: 16px;
+    }
+    
+    .snk-form-options {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .snk-remember-me {
+        margin-bottom: 10px;
+    }
+}

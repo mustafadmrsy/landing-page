@@ -1,0 +1,274 @@
+﻿/* İletişim Sayfası Stilleri */
+.snk-contact-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #212121; /* Arka plan rengini siyah yaptım */
+    color: #f5f5f5; /* Metin rengini açık renge çevirdim */
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.snk-contact-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.snk-contact-subtitle {
+    color: #bdbdbd; /* Metin rengini daha açık bir gri yaptım */
+    font-size: 16px;
+    max-width: 700px;
+    margin: 10px auto 0;
+}
+
+.snk-contact-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.snk-contact-form-container {
+    flex: 1;
+    min-width: 300px;
+}
+
+.snk-contact-info-container {
+    flex: 1;
+    min-width: 300px;
+}
+
+.snk-contact-section-title {
+    font-size: 18px;
+    color: #e0e0e0; /* Başlık rengini açık yaptım */
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #424242; /* Ayraç çizgisini daha koyu yaptım */
+}
+
+    .snk-contact-section-title i {
+        margin-right: 8px;
+        color: #64b5f6; /* İkon rengini mavi tonda bıraktım ama daha uyumlu bir ton */
+    }
+
+/* Form Stilleri */
+.snk-contact-form {
+    background-color: #2c2c2c; /* Form arka planını koyu gri yaptım */
+    padding: 25px;
+    border-radius: 6px;
+}
+
+.snk-form-group {
+    margin-bottom: 20px;
+}
+
+    .snk-form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: #e0e0e0; /* Etiket rengini açık yaptım */
+    }
+
+        .snk-form-group label i {
+            margin-right: 6px;
+            color: #64b5f6; /* İkon rengini değiştirdim */
+        }
+
+.snk-form-input,
+.snk-form-textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #424242; /* Kenarlık rengini daha koyu yaptım */
+    background-color: #333333; /* Input arka planını koyu gri yaptım */
+    color: #f5f5f5; /* Yazı rengini açık yaptım */
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+    .snk-form-input:focus,
+    .snk-form-textarea:focus {
+        border-color: #64b5f6; /* Odaklandığında kenarlık rengini değiştirdim */
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(100, 181, 246, 0.2);
+    }
+
+.snk-form-textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.snk-contact-submit-btn {
+    display: inline-block;
+    background-color: #2196f3; /* Buton rengini değiştirdim */
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+    text-align: center;
+}
+
+    .snk-contact-submit-btn:hover {
+        background-color: #1976d2; /* Hover durumunda rengi değiştirdim */
+    }
+
+    .snk-contact-submit-btn i {
+        margin-right: 8px;
+    }
+
+/* İletişim Bilgileri Stilleri */
+.snk-contact-info {
+    background-color: #2c2c2c; /* İletişim bilgileri arka planını koyu gri yaptım */
+    padding: 25px;
+    border-radius: 6px;
+}
+
+.snk-contact-info-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+    .snk-contact-info-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .snk-contact-info-item i {
+        font-size: 20px;
+        color: #64b5f6; /* İkon rengini değiştirdim */
+        margin-right: 15px;
+        margin-top: 4px;
+    }
+
+    .snk-contact-info-item h4 {
+        margin: 0 0 6px 0;
+        font-size: 16px;
+        color: #e0e0e0; /* Başlık rengini açık yaptım */
+    }
+
+    .snk-contact-info-item p {
+        margin: 0;
+        color: #bdbdbd; /* Metin rengini gri tonda açık yaptım */
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+/* Sosyal Medya Stilleri */
+.snk-social-media {
+    margin-top: 30px;
+}
+
+.snk-social-icons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    padding: 15px;
+    background-color: #2c2c2c; /* Sosyal medya arka planını koyu gri yaptım */
+    border-radius: 6px;
+}
+
+.snk-social-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: #2196f3; /* İkon arka planını değiştirdim */
+    color: white;
+    border-radius: 50%;
+    text-decoration: none;
+    transition: transform 0.3s, background-color 0.3s;
+}
+
+    .snk-social-icon:hover {
+        transform: translateY(-3px);
+        background-color: #1976d2; /* Hover durumunda rengi değiştirdim */
+    }
+
+/* Harita Bölümü */
+.snk-map-container {
+    margin-top: 40px;
+}
+
+.snk-map {
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Duyarlı Tasarım */
+@media (max-width: 768px) {
+    .snk-contact-content {
+        flex-direction: column;
+    }
+
+    .snk-contact-form-container,
+    .snk-contact-info-container {
+        width: 100%;
+    }
+
+    .snk-social-icons {
+        flex-wrap: wrap;
+    }
+}
+
+/* Dark Mode Uyumluluğu - Sayfamız zaten karanlık tema olduğu için 
+   bu kısma bir değişiklik yapmaya gerek yok, ama yine de tutuyoruz */
+body.dark-mode .snk-contact-container {
+    background-color: #212121;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode .snk-contact-subtitle {
+    color: #bdbdbd;
+}
+
+body.dark-mode .snk-contact-section-title {
+    color: #e5e7eb;
+    border-bottom-color: #424242;
+}
+
+body.dark-mode .snk-contact-form,
+body.dark-mode .snk-contact-info,
+body.dark-mode .snk-social-icons {
+    background-color: #2c2c2c;
+}
+
+body.dark-mode .snk-form-group label {
+    color: #e0e0e0;
+}
+
+body.dark-mode .snk-form-input,
+body.dark-mode .snk-form-textarea {
+    background-color: #333333;
+    border-color: #424242;
+    color: #e5e7eb;
+}
+
+    body.dark-mode .snk-form-input:focus,
+    body.dark-mode .snk-form-textarea:focus {
+        border-color: #64b5f6;
+        box-shadow: 0 0 0 2px rgba(100, 181, 246, 0.2);
+    }
+
+body.dark-mode .snk-contact-info-item h4 {
+    color: #e5e7eb;
+}
+
+body.dark-mode .snk-contact-info-item p {
+    color: #bdbdbd;
+}
+
+body.dark-mode .snk-social-icon {
+    background-color: #2196f3;
+}
+
+    body.dark-mode .snk-social-icon:hover {
+        background-color: #1976d2;
+    }

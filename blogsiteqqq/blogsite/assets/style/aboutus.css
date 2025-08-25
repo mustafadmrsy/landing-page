@@ -1,0 +1,479 @@
+﻿/* Hakkımızda Sayfası Stilleri */
+.snk-about-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 30px;
+    background-color: var(--snk-black);
+    color: var(--snk-white);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.snk-about-header {
+    text-align: center;
+    margin-bottom: 60px;
+    position: relative;
+    padding-bottom: 25px;
+}
+
+    .snk-about-header:after {
+        content: '';
+        position: absolute;
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, var(--snk-vivid-blue), var(--snk-light-blue));
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 2px;
+    }
+
+.snk-about-title {
+    font-size: 42px;
+    margin-bottom: 20px;
+    color: var(--snk-white);
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.snk-about-subtitle {
+    font-size: 18px;
+    color: var(--snk-gray);
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Hakkımızda Grid ve Kartlar */
+.snk-about-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    margin-bottom: 60px;
+}
+
+.snk-about-card {
+    background-color: var(--snk-light-gray);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+    .snk-about-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    }
+
+    .snk-about-card:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: linear-gradient(90deg, var(--snk-vivid-blue), var(--snk-light-blue));
+    }
+
+.snk-about-card-icon {
+    width: 80px;
+    height: 80px;
+    background-color: rgba(0, 121, 211, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 25px;
+    position: relative;
+    border: 1px solid rgba(0, 121, 211, 0.3);
+}
+
+    .snk-about-card-icon i {
+        font-size: 32px;
+        color: var(--snk-vivid-blue);
+    }
+
+.snk-about-card-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--snk-white);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.snk-about-card-text {
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--snk-dark-gray);
+    text-align: center;
+    flex-grow: 1;
+}
+
+.snk-about-section {
+    margin-bottom: 60px;
+    background-color: var(--snk-light-gray);
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.15);
+    border-left: 4px solid var(--snk-vivid-blue);
+    position: relative;
+    overflow: hidden;
+}
+
+    .snk-about-section:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, transparent 0%, rgba(0, 121, 211, 0.03) 100%);
+        pointer-events: none;
+    }
+
+.snk-about-section-title {
+    font-size: 28px;
+    margin-bottom: 25px;
+    color: var(--snk-white);
+    padding-bottom: 15px;
+    position: relative;
+    font-weight: 600;
+    display: inline-block;
+}
+
+    .snk-about-section-title:after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(90deg, var(--snk-vivid-blue), transparent);
+        bottom: 0;
+        left: 0;
+    }
+
+.snk-about-text {
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--snk-dark-gray);
+    text-align: justify;
+}
+
+/* Ekip Bölümü Stilleri */
+.snk-team-title {
+    font-size: 32px;
+    text-align: center;
+    margin-bottom: 50px;
+    color: var(--snk-white);
+    position: relative;
+    padding-bottom: 20px;
+    font-weight: 700;
+}
+
+    .snk-team-title:after {
+        content: '';
+        position: absolute;
+        width: 60px;
+        height: 4px;
+        background: linear-gradient(90deg, var(--snk-vivid-blue), var(--snk-light-blue));
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 2px;
+    }
+
+.snk-team-container {
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+}
+
+.snk-team-category {
+    margin-bottom: 40px;
+}
+
+.snk-team-category-title {
+    font-size: 24px;
+    margin-bottom: 35px;
+    color: var(--snk-white);
+    text-align: center;
+    position: relative;
+    font-weight: 600;
+}
+
+    .snk-team-category-title:after {
+        content: '';
+        position: absolute;
+        width: 50px;
+        height: 3px;
+        background-color: var(--snk-vivid-blue);
+        bottom: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+.snk-team-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+}
+
+.snk-team-card {
+    flex: 0 0 calc(33.333% - 30px);
+    min-width: 250px;
+    max-width: 350px;
+    background-color: var(--snk-light-gray);
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.4s, box-shadow 0.4s;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--snk-border-color);
+}
+
+    .snk-team-card:hover {
+        transform: translateY(-15px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+
+.snk-team-card-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 20px;
+    position: relative;
+    z-index: 1;
+}
+
+    .snk-team-card-inner:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(180deg, rgba(0, 121, 211, 0.05) 0%, rgba(0, 0, 0, 0) 100%);
+        z-index: -1;
+    }
+
+.snk-team-avatar {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 25px;
+    border: 4px solid var(--snk-vivid-blue);
+    box-shadow: 0 10px 25px rgba(0, 121, 211, 0.4);
+    position: relative;
+}
+
+    .snk-team-avatar:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, rgba(0, 121, 211, 0.2), transparent);
+        z-index: 1;
+    }
+
+    .snk-team-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s;
+    }
+
+.snk-team-card:hover .snk-team-avatar img {
+    transform: scale(1.15);
+}
+
+.snk-team-info {
+    text-align: center;
+    width: 100%;
+}
+
+.snk-team-name {
+    font-size: 22px;
+    margin-bottom: 8px;
+    color: var(--snk-white);
+    font-weight: 600;
+}
+
+.snk-team-role {
+    font-size: 15px;
+    color: var(--snk-vivid-blue);
+    margin-bottom: 20px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.snk-team-social {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.snk-team-social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(0, 121, 211, 0.1);
+    color: var(--snk-white);
+    border-radius: 50%;
+    text-decoration: none;
+    transition: all 0.4s;
+    border: 1px solid rgba(0, 121, 211, 0.3);
+}
+
+    .snk-team-social-link:hover {
+        background-color: var(--snk-vivid-blue);
+        color: #fff;
+        transform: translateY(-5px) rotate(360deg);
+        box-shadow: 0 5px 15px rgba(0, 121, 211, 0.4);
+    }
+
+/* Responsive Tasarım */
+@media (max-width: 992px) {
+    .snk-about-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+
+    .snk-team-card {
+        flex: 0 0 calc(50% - 30px);
+    }
+
+    .snk-about-title {
+        font-size: 36px;
+    }
+
+    .snk-about-section-title {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 768px) {
+    .snk-about-container {
+        padding: 30px 20px;
+    }
+
+    .snk-about-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .snk-about-title {
+        font-size: 32px;
+    }
+
+    .snk-about-subtitle {
+        font-size: 16px;
+    }
+
+    .snk-about-section {
+        padding: 25px;
+    }
+
+    .snk-about-section-title {
+        font-size: 22px;
+    }
+
+    .snk-team-title {
+        font-size: 28px;
+    }
+
+    .snk-team-category-title {
+        font-size: 20px;
+    }
+
+    .snk-about-card-icon {
+        width: 70px;
+        height: 70px;
+    }
+
+        .snk-about-card-icon i {
+            font-size: 28px;
+        }
+}
+
+@media (max-width: 576px) {
+    .snk-team-card {
+        flex: 0 0 100%;
+        max-width: 320px;
+    }
+
+    .snk-about-title {
+        font-size: 28px;
+    }
+
+    .snk-team-category-title {
+        font-size: 18px;
+    }
+
+    .snk-about-section {
+        padding: 20px;
+    }
+
+    .snk-about-card {
+        padding: 25px;
+    }
+}
+
+/* Dark Mode Uyumu */
+body.dark-mode .snk-about-container {
+    background-color: var(--snk-black);
+    color: var(--snk-white);
+}
+
+body.dark-mode .snk-about-section {
+    background-color: var(--snk-light-gray);
+}
+
+body.dark-mode .snk-about-card {
+    background-color: var(--snk-light-gray);
+}
+
+body.dark-mode .snk-about-title,
+body.dark-mode .snk-about-section-title,
+body.dark-mode .snk-about-card-title,
+body.dark-mode .snk-team-title,
+body.dark-mode .snk-team-category-title,
+body.dark-mode .snk-team-name {
+    color: var(--snk-white);
+}
+
+body.dark-mode .snk-about-subtitle {
+    color: var(--snk-gray);
+}
+
+body.dark-mode .snk-about-text,
+body.dark-mode .snk-about-card-text {
+    color: var(--snk-dark-gray);
+}
+
+body.dark-mode .snk-team-card {
+    background-color: var(--snk-light-gray);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--snk-border-color);
+}
+
+body.dark-mode .snk-team-social-link,
+body.dark-mode .snk-about-card-icon {
+    background-color: rgba(0, 121, 211, 0.1);
+    color: var(--snk-white);
+    border: 1px solid rgba(0, 121, 211, 0.3);
+}
+
+    body.dark-mode .snk-team-social-link:hover {
+        background-color: var(--snk-vivid-blue);
+    }

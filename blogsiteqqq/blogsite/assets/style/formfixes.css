@@ -1,0 +1,50 @@
+﻿/* Form Fixes - Specifically for form messages in popups */
+
+/* Improve form message display within popups */
+.snk-form-message {
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 6px;
+    font-size: 14px;
+    text-align: center;
+    transition: all 0.3s ease;
+    word-wrap: break-word;
+    max-width: 100%;
+    line-height: 1.5;
+    overflow: visible;
+}
+
+.snk-error-message {
+    background-color: rgba(231, 76, 60, 0.15);
+    color: #e74c3c;
+    border-left: 3px solid #e74c3c;
+}
+
+.snk-success-message {
+    background-color: rgba(46, 204, 113, 0.15);
+    color: #2ecc71;
+    border-left: 3px solid #2ecc71;
+}
+
+/* Improve popup content spacing */
+.snk-popup-content {
+    padding: 20px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+/* Ensure form elements have proper spacing */
+.snk-auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Ensure error messages don't get cut off */
+#snk_register_message,
+#snk_login_message {
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+}

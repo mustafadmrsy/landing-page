@@ -1,0 +1,2475 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPage" %>
+
+<!DOCTYPE html>
+<html lang="tr">
+<head runat="server">
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SNK Blog</title>
+    
+    <!-- jQuery ve Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Konsol bastırma (tüm console.* çağrılarını kapatır) -->
+    <script>
+        (function () {
+            try {
+                var noop = function () { };
+                var methods = ['log','warn','error','info','debug','trace','group','groupCollapsed','groupEnd','table','time','timeEnd'];
+                window.console = window.console || {};
+                for (var i = 0; i < methods.length; i++) {
+                    try { window.console[methods[i]] = noop; } catch (e) { }
+                }
+            } catch (e) { /* ignore */ }
+        })();
+    </script>
+    
+    <!-- Oturum yönetim scripti -->
+    <script type="text/javascript">
+        // Hata mesajlarını gizle
+        $(document).ready(function() {
+            // Oturum süresi doldu mesajlarını gizle
+            hideSessionMessages();
+        });
+        
+        // Oturum mesajlarını gizlemek için
+        function hideSessionMessages() {
+            // JavaScript alert'leri engelle
+            var originalAlert = window.alert;
+            window.alert = function(message) {
+                if (message && typeof message === 'string' && 
+                   (message.indexOf('Oturum süreniz doldu') > -1 || 
+                    message.indexOf('session') > -1 || 
+                    message.indexOf('süre') > -1)) {
+                    console.log("Engellenen mesaj: " + message);
+                    return;
+                }
+                originalAlert(message);
+            };
+            
+            // Timeout veya session mesajını içeren tüm elementleri gizle
+            setTimeout(function() {
+                var allElements = document.querySelectorAll('*');
+                for (var i = 0; i < allElements.length; i++) {
+                    var element = allElements[i];
+                    if (element.innerText && 
+                       (element.innerText.indexOf('Oturum süreniz doldu') > -1 || 
+                        element.innerText.indexOf('tekrar giriş') > -1)) {
+                        element.style.display = 'none';
+                    }
+                }
+            }, 500);
+        }
+    </script>
+    
+    <!-- CSS Dosyaları -->
+    <link rel="stylesheet" href="assets/style/modern-ui.css?v=1.0" />
+    <link rel="stylesheet" href="assets/style/indexspesific.css" />
+    <link rel="stylesheet" href="assets/style/blogcard.css" />
+    <link rel="stylesheet" href="assets/style/blogpopup.css" />
+    <link rel="stylesheet" href="assets/style/notification.css" />
+    <link rel="stylesheet" href="assets/style/commentsystem.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="assets/style/auth-forms.css" />
+    <link rel="stylesheet" href="assets/style/formfixes.css" />
+    <link rel="stylesheet" href="assets/style/terms-policy.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <style>
+        /* Genel Stiller */
+        :root {
+            --primary-color: #1a73e8; /* VividBlue */
+            --primary-dark: #0d47a1;
+            --primary-light: #4e92df;
+            --dark-bg: #121212;
+            --darker-bg: #0a0a0a;
+            --dark-surface: #1e1e1e;
+            --dark-text: #202124;
+            --light-text: #ffffff;
+            --vivid-text: #1a73e8;
+            --light-bg: #f8f9fa;
+            --gray-light: #303030;
+            --gray-medium: #757575;
+            --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            --box-shadow-hover: 0 5px 15px rgba(0, 0, 0, 0.4);
+            --transition: all 0.3s ease;
+            --header-height: 64px;
+            --sidebar-width: 260px;
+            --sidebar-collapsed: 70px;
+            --border-radius: 8px;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            color: var(--light-text);
+            background-color: var(--dark-bg);
+            overflow-x: hidden;
+            width: 100vw;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+        
+        html {
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+        
+        form {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--dark-bg);
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+        
+        button {
+            cursor: pointer;
+            font-family: inherit;
+        }
+        
+        /* Header Stiller - Siyah Arka Plan */
+        .header {
+            height: var(--header-height);
+            background-color: var(--darker-bg);
+            color: var(--light-text);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--box-shadow);
+            border-bottom: 1px solid var(--gray-light);
+        }
+        
+        .header-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 200px;
+            height: var(--header-height);
+            background-color: var(--darker-bg);
+        }
+        
+        .logo-img {
+            width: 180px;
+            height: 60px;
+            border-radius: 0;
+            background-color: transparent;
+            padding: 0;
+            object-fit: contain;
+        }
+        
+        .site-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0;
+            color: var(--primary-color);
+        }
+        
+        .header-search {
+            flex: 1;
+            max-width: 500px;
+            position: relative;
+            margin: 0 1rem;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 0.6rem 1rem 0.6rem 2.5rem;
+            border: none;
+            border-radius: 20px;
+            background-color: var(--dark-surface);
+            color: var(--light-text);
+            font-size: 0.95rem;
+            border: 1px solid var(--gray-light);
+        }
+        
+        .search-input::placeholder {
+            color: var(--gray-medium);
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+        }
+        
+        /* Arama dropdown menüsü */
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background-color: #262626;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 10px;
+            max-height: 450px;
+            overflow-y: auto;
+            display: none;
+            scrollbar-width: thin;
+            scrollbar-color: #4a4a4a #262626;
+        }
+        
+        .search-results::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .search-results::-webkit-scrollbar-track {
+            background: #262626;
+            border-radius: 0 12px 12px 0;
+        }
+        
+        .search-results::-webkit-scrollbar-thumb {
+            background-color: #4a4a4a;
+            border-radius: 20px;
+            border: 2px solid #262626;
+        }
+
+        .search-loader {
+            padding: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .search-loader-spinner {
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: search-loader-spin 1s infinite linear;
+            margin: 0 auto;
+        }
+
+        @keyframes search-loader-spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .search-no-results {
+            padding: 20px;
+            text-align: center;
+            color: #999;
+            font-style: italic;
+        }
+
+        .search-result-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-result-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .search-result-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 12px;
+            flex-shrink: 0;
+            background-color: #333;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .search-result-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .search-result-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            background-color: rgba(26, 115, 232, 0.1);
+            border-radius: 50%;
+            color: var(--primary-color);
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        
+        .search-result-content {
+            flex-grow: 1;
+            min-width: 0;
+        }
+
+        .search-result-title {
+            display: block;
+            font-weight: 500;
+            color: #fff;
+            margin-bottom: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+            line-height: 1.3;
+        }
+
+        .search-result-subtitle {
+            display: block;
+            font-size: 0.85rem;
+            color: #aaa;
+            line-height: 1.3;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .search-result-bio {
+            display: block;
+            font-size: 0.8rem;
+            color: #999;
+            margin-top: 3px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.3;
+        }
+
+        .search-result-type {
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 12px;
+            color: #fff;
+            margin-left: 10px;
+            flex-shrink: 0;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .search-result-type.user {
+            background-color: rgba(26, 115, 232, 0.2);
+            color: #1a73e8;
+        }
+
+        .search-result-type.post {
+            background-color: rgba(76, 175, 80, 0.2);
+            color: #4caf50;
+        }
+        
+        /* Arama kutusu iyileştirmeleri */
+        .header-search {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            border-radius: 24px;
+            background-color: #333;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            background-color: #3a3a3a;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 14px;
+            pointer-events: none;
+            transition: color 0.3s ease;
+        }
+
+        .search-input:focus + .search-icon,
+        .search-input:not(:placeholder-shown) + .search-icon {
+            color: var(--primary-color);
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-right: 1rem;
+            height: 100%;
+        }
+        
+        .user-actions-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            height: 100%;
+        }
+        
+        .auth-buttons {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            transition: var(--transition);
+            border: none;
+        }
+        
+        .btn i {
+            margin-right: 0.5rem;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(26, 115, 232, 0.1);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Content Wrapper */
+        .content-wrapper {
+            display: flex;
+            flex: 1;
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+            min-height: calc(100vh - var(--header-height));
+            position: relative;
+        }
+        
+        /* Sidebar Stiller - Siyah Fon */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--dark-bg);
+            height: calc(100vh - var(--header-height));
+            position: sticky;
+            top: var(--header-height);
+            overflow-y: auto;
+            transition: var(--transition);
+            padding: 1rem 0;
+            z-index: 900;
+            border-right: 1px solid var(--gray-light);
+            align-self: flex-start;
+        }
+        
+        /* Sidebar kapalı durum */
+        .sidebar.collapsed {
+            width: var(--sidebar-collapsed);
+            overflow-x: hidden;
+        }
+        
+        /* Toggle button için stil */
+        .sidebar-toggle {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+            box-shadow: var(--box-shadow);
+            z-index: 1001;
+            transition: var(--transition);
+        }
+        
+        .sidebar-toggle:hover {
+            background-color: var(--primary-dark);
+            transform: scale(1.05);
+        }
+        
+        /* Kapalı sidebar durumunda menü öğelerinin metinlerini gizle */
+        .sidebar.collapsed .sidebar-item span {
+            display: none;
+        }
+        
+        .sidebar.collapsed .sidebar-heading {
+            opacity: 0;
+        }
+        
+        .sidebar.collapsed .sidebar-item {
+            justify-content: center;
+            padding: 0.75rem;
+        }
+        
+        .sidebar.collapsed .sidebar-item i {
+            margin-right: 0;
+            font-size: 1.3rem;
+        }
+        
+        /* Özel Scrollbar */
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .sidebar::-webkit-scrollbar-track {
+            background: var(--dark-surface);
+        }
+        
+        .sidebar::-webkit-scrollbar-thumb {
+            background-color: var(--gray-light);
+            border-radius: 10px;
+        }
+        
+        .sidebar-section {
+            margin-bottom: 1.5rem;
+        }
+        
+        .sidebar-heading {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--primary-color);
+            padding: 0 1.5rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+        
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: var(--light-text);
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+            margin: 0.2rem 0;
+        }
+        
+        .sidebar-item:hover {
+            background-color: rgba(26, 115, 232, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+        }
+        
+        .sidebar-item.active {
+            background-color: rgba(26, 115, 232, 0.15);
+            color: var(--primary-color);
+            font-weight: 500;
+            border-left-color: var(--primary-color);
+        }
+        
+        .sidebar-item i {
+            margin-right: 0.75rem;
+            width: 20px;
+            font-size: 1.1rem;
+            text-align: center;
+            color: var(--gray-medium);
+        }
+        
+        .sidebar-item:hover i,
+        .sidebar-item.active i {
+            color: var(--primary-color);
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 1rem;
+            min-height: calc(100vh - var(--header-height));
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            width: calc(100% - var(--sidebar-width));
+            box-sizing: border-box;
+            overflow-x: hidden;
+        }
+        
+        .sidebar.collapsed ~ .main-content {
+            width: calc(100% - var(--sidebar-collapsed));
+        }
+        
+        /* Profile Dropdown Menu */
+        .profile-dropdown {
+            position: relative;
+        }
+        
+        .profile-dropdown-trigger {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            background-color: var(--dark-surface);
+            color: var(--light-text);
+        }
+        
+        .profile-dropdown-trigger:hover {
+            background-color: rgba(26, 115, 232, 0.1);
+        }
+        
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 8px;
+            overflow: hidden;
+        }
+        
+        .user-avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .user-avatar i {
+            font-size: 16px;
+        }
+        
+        .profile-dropdown-trigger .fa-chevron-down {
+            margin-left: 8px;
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+        
+        .profile-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 5px);
+            right: 0;
+            width: 240px;
+            background-color: var(--dark-surface);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            border: 1px solid var(--gray-light);
+            display: none;
+            z-index: 1010;
+        }
+        
+        .profile-dropdown-menu.active {
+            display: block;
+        }
+        
+        .dropdown-header {
+            padding: 15px;
+            border-bottom: 1px solid var(--gray-light);
+        }
+        
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .user-info strong {
+            font-size: 0.95rem;
+            margin-bottom: 3px;
+            color: var(--light-text);
+        }
+        
+        .user-info small {
+            font-size: 0.85rem;
+            color: var(--gray-medium);
+        }
+        
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: var(--light-text);
+            transition: var(--transition);
+        }
+        
+        .dropdown-item i {
+            width: 20px;
+            margin-right: 10px;
+            opacity: 0.8;
+        }
+        
+        .dropdown-item:hover {
+            background-color: rgba(26, 115, 232, 0.1);
+            color: var(--primary-color);
+        }
+        
+        .dropdown-divider {
+            height: 1px;
+            background-color: var(--gray-light);
+            margin: 5px 0;
+        }
+        
+        .dropdown-item.logout {
+            color: #f44336; /* Kırmızı renk ile çıkış butonu */
+            border: 0;
+            width: 100%;
+            text-align: left;
+            font-family: inherit;
+            font-size: inherit;
+            background: transparent;
+            cursor: pointer;
+        }
+        
+        .dropdown-item.logout:hover {
+            background-color: rgba(244, 67, 54, 0.1);
+        }
+        
+        .dropdown-item.admin-link {
+            background-color: rgba(26, 115, 232, 0.1);
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+        
+        .dropdown-item.admin-link:hover {
+            background-color: rgba(26, 115, 232, 0.2);
+        }
+        
+        .dropdown-item.admin-link i {
+            color: var(--primary-color);
+            opacity: 1;
+        }
+        
+        /* Modern İkon Wrapper Stilleri */
+        .icons-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-right: 16px;
+            flex-direction: row;
+            height: 100%;
+        }
+
+        /* Modern Bildirim ve Mesaj İkonu Stilleri */
+        .notification-icon-wrapper,
+        .message-icon-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+        
+        .notification-icon,
+        .message-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(26, 115, 232, 0.1), rgba(26, 115, 232, 0.05));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: var(--light-text);
+            position: relative;
+            border: 1px solid rgba(26, 115, 232, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .notification-icon:hover,
+        .message-icon:hover {
+            background: linear-gradient(135deg, rgba(26, 115, 232, 0.2), rgba(26, 115, 232, 0.1));
+            color: var(--primary-color);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(26, 115, 232, 0.3);
+        }
+        
+        .notification-icon svg,
+        .message-icon svg {
+            width: 18px;
+            height: 18px;
+            transition: all 0.3s ease;
+        }
+        
+        .notification-badge,
+        .message-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: linear-gradient(135deg, #ff3d71, #ff6b9d);
+            color: white;
+            font-size: 10px;
+            min-width: 20px;
+            height: 20px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            border: 2px solid var(--darker-bg);
+            animation: pulse 2s infinite;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 2px 8px rgba(255, 61, 113, 0.4);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .notification-dropdown {
+            position: absolute;
+            top: calc(100% + 12px);
+            right: -140px;
+            width: 380px;
+            background: linear-gradient(135deg, rgba(30, 30, 30, 0.95), rgba(40, 40, 40, 0.95));
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1);
+            border: none;
+            display: none;
+            z-index: 1010;
+            max-height: 480px;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+            animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .notification-dropdown.active {
+            display: block;
+        }
+        
+        .notification-header {
+            padding: 20px 20px 16px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: linear-gradient(135deg, rgba(26, 115, 232, 0.1), rgba(26, 115, 232, 0.05));
+        }
+        
+        .notification-header h3 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--light-text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .notification-header h3::before {
+            content: '🔔';
+            font-size: 16px;
+        }
+        
+        .notification-list {
+            max-height: 320px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(26, 115, 232, 0.5) transparent;
+        }
+
+        .notification-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .notification-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .notification-list::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, rgba(26, 115, 232, 0.5), rgba(26, 115, 232, 0.3));
+            border-radius: 3px;
+        }
+        
+        .notification-item {
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: flex-start;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .notification-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .notification-item:hover {
+            background: linear-gradient(135deg, rgba(26, 115, 232, 0.1), rgba(26, 115, 232, 0.05));
+            transform: translateX(4px);
+        }
+
+        .notification-item:hover::before {
+            background: linear-gradient(135deg, var(--primary-color), rgba(26, 115, 232, 0.6));
+        }
+        
+        .notification-item.unread {
+            background: linear-gradient(135deg, rgba(26, 115, 232, 0.15), rgba(26, 115, 232, 0.08));
+            border-left: none;
+        }
+
+        .notification-item.unread::before {
+            background: linear-gradient(135deg, #ff3d71, #ff6b9d);
+        }
+        
+        .notification-item.unread:hover {
+            background: linear-gradient(135deg, rgba(26, 115, 232, 0.2), rgba(26, 115, 232, 0.12));
+        }
+        
+        .notification-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 14px;
+            color: white;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .notification-avatar::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            border-radius: 12px;
+        }
+        
+        /* Bildirim tipine göre modern gradient renkler */
+        .notification-avatar i.fa-heart {
+            background: linear-gradient(135deg, #ff3d71, #ff6b9d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 18px;
+        }
+        
+        .notification-avatar:has(i.fa-heart) {
+            background: linear-gradient(135deg, #ff3d71, #ff6b9d);
+        }
+        
+        .notification-avatar i.fa-comment {
+            color: #00d68f;
+            font-size: 18px;
+        }
+        
+        .notification-avatar:has(i.fa-comment) {
+            background: linear-gradient(135deg, #00d68f, #00c9a7);
+        }
+        
+        .notification-avatar i.fa-user-plus {
+            color: #0095ff;
+            font-size: 18px;
+        }
+        
+        .notification-avatar:has(i.fa-user-plus) {
+            background: linear-gradient(135deg, #0095ff, #00b4d8);
+        }
+        
+        .notification-avatar i.fa-newspaper {
+            color: #ffd500;
+            font-size: 18px;
+        }
+        
+        .notification-avatar:has(i.fa-newspaper) {
+            background: linear-gradient(135deg, #ffd500, #ffaa00);
+        }
+        
+        .notification-avatar i.fa-bell {
+            color: #a16eff;
+            font-size: 18px;
+        }
+        
+        .notification-avatar:has(i.fa-bell) {
+            background: linear-gradient(135deg, #a16eff, #8b5cf6);
+        }
+        
+        .notification-content {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .notification-text {
+            margin: 0 0 6px 0;
+            font-size: 14px;
+            color: var(--light-text);
+            line-height: 1.4;
+            font-weight: 500;
+        }
+        
+        .notification-time {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .notification-time::before {
+            content: '•';
+            color: var(--primary-color);
+        }
+        
+        .notification-empty {
+            padding: 40px 20px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-style: normal;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .notification-empty::before {
+            content: '🔔';
+            font-size: 32px;
+            opacity: 0.7;
+        }
+        
+        .notification-empty::after {
+            content: 'Henüz bildiriminiz yok';
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .notification-footer {
+            padding: 16px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            background: linear-gradient(135deg, rgba(26, 115, 232, 0.05), rgba(26, 115, 232, 0.02));
+        }
+
+        .notification-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .notification-action-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            flex: 1;
+            padding: 10px 12px;
+            font-size: 13px;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid transparent;
+        }
+        
+        .notification-action-btn i {
+            font-size: 12px;
+        }
+
+        .mark-read-btn {
+            color: var(--primary-color);
+            background: linear-gradient(135deg, rgba(26, 115, 232, 0.1), rgba(26, 115, 232, 0.05));
+            border-color: rgba(26, 115, 232, 0.2);
+        }
+        
+        .mark-read-btn:hover {
+            background: linear-gradient(135deg, rgba(26, 115, 232, 0.2), rgba(26, 115, 232, 0.1));
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.3);
+        }
+
+        .clear-btn {
+            color: #ff4757;
+            background: linear-gradient(135deg, rgba(255, 71, 87, 0.1), rgba(255, 71, 87, 0.05));
+            border-color: rgba(255, 71, 87, 0.2);
+        }
+        
+        .clear-btn:hover {
+            background: linear-gradient(135deg, rgba(255, 71, 87, 0.2), rgba(255, 71, 87, 0.1));
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(255, 71, 87, 0.3);
+        }
+
+        /* Deprecated old style - can be removed */
+        .view-all-link {
+            display: none;
+        }
+        
+        /* Footer Stiller */
+        .footer {
+            background-color: var(--darker-bg);
+            color: var(--gray-medium);
+            padding: 1.5rem;
+            text-align: center;
+            border-top: 1px solid var(--gray-light);
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-link {
+            color: var(--gray-medium);
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+        
+        .footer-link:hover {
+            color: var(--primary-color);
+        }
+        
+        .footer-copyright {
+            font-size: 0.85rem;
+            color: var(--gray-medium);
+        }
+        
+        /* Mobil Menü Butonu */
+        .mobile-menu-btn {
+            display: none;
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            align-items: center;
+            justify-content: center;
+            z-index: 1002;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            border: none;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-menu-btn:hover, .mobile-menu-btn:focus {
+            transform: scale(1.05);
+            background-color: var(--primary-dark);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 0 1rem;
+            }
+            
+            .header-search {
+                display: none;
+            }
+            
+            .sidebar {
+                position: fixed;
+                left: -100%;
+                width: var(--sidebar-width) !important; /* Genişliği koruyun */
+                height: 100vh !important; /* Tam ekran yüksekliği */
+                top: 0 !important; /* Sayfanın en üstünden başla */
+                z-index: 1001;
+                transition: left 0.3s ease;
+                box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
+                padding-top: calc(var(--header-height) + 1rem); /* Header'ın altından başla */
+            }
+            
+            .sidebar.active {
+                left: 0;
+            }
+            
+            .main-content {
+                width: 100% !important;
+                padding: 1rem;
+            }
+            
+            .btn span {
+                display: none;
+            }
+            
+            .btn i {
+                margin-right: 0;
+            }
+            
+            .mobile-menu-btn {
+                display: flex !important;
+            }
+            
+            .sidebar-toggle {
+                display: none; /* Mobilde gizle */
+            }
+            
+            /* Profile dropdown mobil uyumluluğu */
+            .profile-dropdown-menu {
+                position: fixed;
+                top: calc(var(--header-height) + 5px);
+                right: 10px;
+                width: calc(100% - 20px);
+                max-width: 300px;
+                z-index: 1200;
+            }
+            
+            /* Bildirim dropdown mobil uyumluluğu */
+            .notification-dropdown {
+                position: fixed;
+                top: calc(var(--header-height) + 5px);
+                right: 10px;
+                width: calc(100% - 20px);
+                max-width: 350px;
+                left: auto;
+                max-height: calc(100vh - 80px);
+                z-index: 1200;
+            }
+            
+            /* Mobil cihazlarda blog detay sayfası düzenlemeleri */
+            body.blog-page .blog-detail-container {
+                padding: 0 10px !important;
+            }
+            
+            .search-results {
+                position: fixed;
+                top: 60px;
+                left: 10px;
+                right: 10px;
+                max-height: calc(100vh - 70px);
+                z-index: 1500;
+            }
+            
+            .search-input {
+                border-radius: 20px;
+                padding: 8px 15px 8px 35px;
+            }
+            
+            .search-icon {
+                left: 12px;
+            }
+            
+            /* Mobil görünümde user-actions container düzeni */
+            .user-actions-container {
+                position: relative;
+            }
+        }
+
+        /* Chat Widget */
+        .chat-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 360px;
+            background: linear-gradient(to bottom, rgba(30, 30, 30, 0.98), rgba(20, 20, 20, 0.98));
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform: translateY(calc(100% - 60px));
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .chat-widget.active {
+            transform: translateY(0);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+        }
+        
+        .chat-widget-header {
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.3s ease;
+            border-radius: 20px 20px 0 0;
+            background: linear-gradient(135deg, rgba(26, 115, 232, 0.1), rgba(26, 115, 232, 0.05));
+        }
+        
+        .chat-widget-header:hover {
+            background: linear-gradient(135deg, rgba(26, 115, 232, 0.15), rgba(26, 115, 232, 0.08));
+        }
+        
+        .chat-widget-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--light-text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .chat-widget-header h3::before {
+            content: '💬';
+            font-size: 1.2rem;
+        }
+        
+        .chat-widget-toggle {
+            width: 32px;
+            height: 32px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--light-text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+        
+        .chat-widget-toggle i,
+        .chat-widget-toggle svg {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 16px;
+            height: 16px;
+        }
+        
+        .chat-widget-content {
+            height: 480px;
+            overflow-y: auto;
+            padding: 10px;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+        
+        .chat-widget-content::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .chat-widget-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .chat-widget-content::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+        
+        .chat-widget-conversations {
+            display: none;
+        }
+        
+        .chat-widget-empty {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.6);
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .chat-widget-empty i,
+        .chat-widget-empty svg {
+            font-size: 48px;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            opacity: 0.7;
+        }
+        
+        .chat-widget-empty p {
+            margin: 0 0 1.5rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .chat-widget-empty .new-message-btn {
+            padding: 12px 24px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            border: none;
+            color: white;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(26, 115, 232, 0.3);
+        }
+        
+        .chat-widget-empty .new-message-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(26, 115, 232, 0.4);
+        }
+        
+        .chat-widget-empty .new-message-btn i,
+        .chat-widget-empty .new-message-btn svg {
+            font-size: 16px;
+            margin: 0;
+            opacity: 1;
+        }
+        
+        /* Konuşma Öğesi */
+        .chat-widget-conversation-item {
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .chat-widget-conversation-item:hover {
+            background: rgba(26, 115, 232, 0.1);
+            transform: translateX(4px);
+        }
+        
+        .chat-widget-conversation-item.unread {
+            background: linear-gradient(135deg, rgba(26, 115, 232, 0.15), rgba(26, 115, 232, 0.08));
+            border-color: rgba(26, 115, 232, 0.2);
+        }
+        
+        .conversation-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            overflow: hidden;
+            flex-shrink: 0;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+        }
+        
+        .conversation-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .chat-widget-conversation-item:hover .conversation-avatar img {
+            transform: scale(1.1);
+        }
+        
+        .conversation-content {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .conversation-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 4px;
+        }
+        
+        .conversation-header h4 {
+            margin: 0;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .conversation-header span {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.5);
+            flex-shrink: 0;
+        }
+        
+        .conversation-content p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.4;
+        }
+        
+        .conversation-badge {
+            background: linear-gradient(135deg, #ff3d71, #ff6b9d);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            min-width: 20px;
+            height: 20px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 6px;
+            box-shadow: 0 2px 8px rgba(255, 61, 113, 0.4);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .chat-widget {
+                display: none;
+            }
+        }
+
+        /* Header sağ kısım düzeni */
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            height: 100%;
+        }
+
+        /* İkon wrapper'ları */
+        .notification-icon-wrapper,
+        .message-icon-wrapper {
+            position: relative;
+            height: 42px;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        /* İkonların kendisi */
+        .notification-icon,
+        .message-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(26, 115, 232, 0.1), rgba(26, 115, 232, 0.05));
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: var(--light-text);
+            border: 1px solid rgba(26, 115, 232, 0.2);
+        }
+
+        /* Badge stilleri */
+        .notification-badge,
+        .message-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: linear-gradient(135deg, #ff3d71, #ff6b9d);
+            color: white;
+            font-size: 10px;
+            min-width: 20px;
+            height: 20px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            border: 2px solid var(--darker-bg);
+        }
+
+        /* Hover efektleri */
+        .notification-icon:hover,
+        .message-icon:hover {
+            background: linear-gradient(135deg, rgba(26, 115, 232, 0.2), rgba(26, 115, 232, 0.1));
+            color: var(--primary-color);
+            transform: translateY(-1px);
+        }
+
+        /* Profile dropdown düzeni */
+        .profile-dropdown {
+            margin-left: 8px;
+        }
+    </style>
+</head>
+<body>
+    <form id="form1" runat="server" enctype="multipart/form-data">
+        <div class="container">
+            <!-- Modern Header - Siyah Arka Plan -->
+            <header class="header">
+                <div class="header-logo">
+                    <a href="default.aspx">
+                        <img src="assets/img/logo4.svg" alt="SNK Blog Logo" class="logo-img">
+                    </a>
+                </div>
+                
+                <div class="header-search">
+                    <i class="fas fa-search search-icon"></i>
+                    <asp:TextBox ID="txtHeaderSearch" runat="server" CssClass="search-input" placeholder="Blog'da ara..." autocomplete="off"></asp:TextBox>
+                    <asp:Button ID="btnHeaderSearch" runat="server" Text="Ara" OnClick="btnHeaderSearch_Click" CssClass="d-none" />
+                </div>
+                
+                <div class="header-actions">
+                    <asp:Panel ID="pnlUyeGirisYok" runat="server">
+                        <div class="auth-buttons">
+                        <a href="login.aspx" class="btn btn-outline">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>Giriş Yap</span>
+                        </a>
+                        <a href="register.aspx" class="btn btn-primary">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Kaydol</span>
+                        </a>
+                        </div>
+                    </asp:Panel>
+                    
+                    <asp:Panel ID="pnlUyeGirisVar" runat="server" Visible="false">
+                        <div class="header-right">
+                            <div class="notification-icon-wrapper">
+                                <div class="notification-icon" id="notificationIcon">
+                                    <i class="fas fa-bell"></i>
+                                    <span class="notification-badge" id="notificationBadge" style="display: none;">0</span>
+                                </div>
+                                <div class="notification-dropdown" id="notificationDropdown">
+                                    <div class="notification-header">
+                                        <h3>Bildirimler</h3>
+                                    </div>
+                                    <div class="notification-list" id="notificationList">
+                                        <div class="notification-empty">Bildiriminiz bulunmuyor.</div>
+                                    </div>
+                                    <div class="notification-footer">
+                                        <div class="notification-actions">
+                                            <a href="#" class="notification-action-btn mark-read-btn" id="markAllAsReadLink">
+                                                <i class="fas fa-check"></i>
+                                                <span>Tümünü Oku</span>
+                                            </a>
+                                            <a href="#" class="notification-action-btn clear-btn" id="clearAllNotificationsLink">
+                                                <i class="fas fa-trash-alt"></i>
+                                                <span>Temizle</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="message-icon-wrapper">
+                                <a href="messages.aspx" class="message-icon" id="messageIcon">
+                                    <i class="fas fa-envelope"></i>
+                                    <span class="message-badge" id="messageBadge" style="display: none;">0</span>
+                                </a>
+                            </div>
+                            
+                            <div class="profile-dropdown">
+                            <div class="profile-dropdown-trigger" id="profileDropdownTrigger">
+                                <div class="user-avatar">
+                                    <% if (!string.IsNullOrEmpty(GetUserProfileImage())) { %>
+                                        <img src="<%= GetUserProfileImage() %>" alt="<%= Session["KullaniciAdi"] %>" class="user-avatar-img" onerror="this.src='assets/img/default-profile.png';" />
+                                    <% } else { %>
+                                    <i class="fas fa-user"></i>
+                                    <% } %>
+                                </div>
+                                <asp:Literal ID="ltlKullaniciAdi" runat="server"></asp:Literal>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="profile-dropdown-menu" id="profileDropdownMenu">
+                                <div class="dropdown-header">
+                                    <div class="user-info">
+                                        <strong><asp:Literal ID="ltlKullaniciAdiMenu" runat="server"></asp:Literal></strong>
+                                        <small><asp:Literal ID="ltlKullaniciEmail" runat="server"></asp:Literal></small>
+                                    </div>
+                                </div>
+                                <a href='<%= "create-blog.aspx?id=" + Session["KullaniciID"] %>' class="dropdown-item">
+                                    <i class="fas fa-edit"></i> Blog Oluştur
+                                </a>
+                                <a href='<%= "userpage.aspx?id=" + Session["KullaniciID"] %>' class="dropdown-item">
+                                    <i class="fas fa-user"></i> Profilim
+                                </a>
+                                <asp:Panel ID="pnlAdminLink" runat="server" Visible="false">
+                                    <a href="admin.aspx" class="dropdown-item admin-link">
+                                        <i class="fas fa-shield-alt"></i> Admin Paneli
+                                    </a>
+                                </asp:Panel>
+                                <a href="contact.aspx" class="dropdown-item">
+                                    <i class="fas fa-question-circle"></i> Yardım
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <asp:LinkButton ID="lnkLogout" runat="server" CssClass="dropdown-item logout" OnClick="lnkLogout_Click">
+                                    <i class="fas fa-sign-out-alt"></i> Çıkış Yap
+                                </asp:LinkButton>
+                            </div>
+                        </div>
+                    </div>
+                    </asp:Panel>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <!-- Modern Sidebar - Siyah Fon -->
+                <aside class="sidebar" id="sidebar">
+                    <div class="sidebar-section">
+                        <a href="default.aspx" class="sidebar-item active">
+                            <i class="fas fa-home"></i>
+                            <span>Ana Sayfa</span>
+                        </a>
+                        <a href="categories.aspx" class="sidebar-item">
+                            <i class="fas fa-th-large"></i>
+                            <span>Kategoriler</span>
+                        </a>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-heading">KEŞFET</h3>
+                        <a href="default.aspx?sort=popular" class="sidebar-item">
+                            <i class="fas fa-star"></i>
+                            <span>Popüler İçerikler</span>
+                        </a>
+                        <a href="default.aspx?sort=recent" class="sidebar-item">
+                            <i class="fas fa-history"></i>
+                            <span>Son Eklenenler</span>
+                        </a>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-heading">BİLGİ</h3>
+                        <a href="aboutus.aspx" class="sidebar-item">
+                            <i class="fas fa-info-circle"></i>
+                            <span>Hakkımızda</span>
+                        </a>
+                        <a href="contact.aspx" class="sidebar-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>İletişim</span>
+                        </a>
+                    </div>
+                </aside>
+                
+                <!-- Sidebar Toggle Button -->
+                <button type="button" class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-chevron-left" id="toggleIcon"></i>
+                </button>
+                
+                <!-- Main Content -->
+                <main class="main-content">
+                    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                    </asp:ContentPlaceHolder>
+                </main>
+            </div>
+            
+            <!-- Modern Footer -->
+            <footer class="footer">
+                <div class="footer-links">
+                    <a href="aboutus.aspx" class="footer-link">Hakkımızda</a>
+                    <a href="contact.aspx" class="footer-link">İletişim</a>
+                    <a href="#" class="footer-link modal-trigger" data-doc="privacy">Gizlilik Politikası</a>
+                    <a href="#" class="footer-link modal-trigger" data-doc="terms">Kullanım Şartları</a>
+                    <a href="#" class="footer-link modal-trigger" data-doc="faq">SSS</a>
+                </div>
+                <div class="footer-copyright">
+                    &copy; <%= DateTime.Now.Year %> SNK Blog. Tüm hakları saklıdır.
+                </div>
+            </footer>
+        </div>
+
+        <!-- Hukuki Metin Modalı (Bootstrap 5) -->
+        <div class="modal fade" id="legalModal" tabindex="-1" aria-labelledby="legalModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content" style="background-color:#1e1e1e; color:#fff;">
+              <div class="modal-header" style="border-bottom:1px solid rgba(255,255,255,0.1);">
+                <h5 class="modal-title" id="legalModalLabel">Bilgilendirme</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Kapat"></button>
+              </div>
+              <div class="modal-body" id="legalModalBody" style="line-height:1.6;">
+                <!-- İçerik JS ile doldurulur -->
+              </div>
+              <div class="modal-footer" style="border-top:1px solid rgba(255,255,255,0.1);">
+                <button type="button" class="btn btn-outline" data-bs-dismiss="modal">Kapat</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <script>
+            (function(){
+                var modalEl = document.getElementById('legalModal');
+                var modal = null;
+                document.addEventListener('click', function(e){
+                    var trg = e.target.closest('.modal-trigger');
+                    if(!trg) return;
+                    e.preventDefault();
+                    var doc = trg.getAttribute('data-doc');
+                    var title = 'Bilgilendirme';
+                    var body = '';
+                    if(doc === 'privacy'){
+                        title = 'Gizlilik Politikası';
+                        body = `
+<p><strong>1. Veri Sorumlusu:</strong> SNK Blog olarak, kişisel verilerinizi 6698 sayılı KVKK ve ilgili mevzuat uyarınca işlemekteyiz.</p>
+<p><strong>2. İşlenen Kişisel Veriler:</strong> Kimlik (ad-soyad, kullanıcı adı), iletişim (e-posta), işlem güvenliği (log kayıtları), görsel-veri (profil resmi) ve kullanım verileridir.</p>
+<p><strong>3. İşleme Amaçları:</strong> Üyelik ve kimlik doğrulama, içerik paylaşımı, bildirim yönetimi, güvenlik ve kötüye kullanımın önlenmesi, sistem bakım faaliyetleri.</p>
+<p><strong>4. Hukuki Sebepler:</strong> Sözleşmenin ifası, açık rıza, meşru menfaat, hukuki yükümlülükler.</p>
+<p><strong>5. Aktarım:</strong> Yalnızca teknik hizmet sağlayıcılar (barındırma/altyapı) ve hukuken yetkili kurumlarla, mevzuata uygun şekilde paylaşılabilir.</p>
+<p><strong>6. Saklama Süresi:</strong> Mevzuata ve amaçla bağlantılı makul süre boyunca saklanır; süresi dolan veriler mevzuata uygun şekilde imha edilir.</p>
+<p><strong>7. Haklarınız:</strong> KVKK m.11 kapsamındaki haklarınızı kullanmak için iletişim sayfamızdan talep iletebilirsiniz.</p>`;
+                    } else if(doc === 'terms'){
+                        title = 'Kullanım Şartları';
+                        body = `
+<p><strong>1. Kabul:</strong> Platformu kullanmanız, bu şartları kabul ettiğiniz anlamına gelir.</p>
+<p><strong>2. Hesap Güvenliği:</strong> Giriş bilgilerinin korunması kullanıcı sorumluluğundadır. Şüpheli faaliyetlerde hesap geçici olarak kısıtlanabilir.</p>
+<p><strong>3. İçerik:</strong> Kullanıcılar paylaştıkları içerikten bizzat sorumludur. Hukuka aykırı, telif ihlali içeren veya üçüncü kişi haklarını zedeleyen içerikler kaldırılabilir.</p>
+<p><strong>4. Yasaklı Faaliyetler:</strong> Spam, zararlı yazılım, sistem açıklarını suistimal etme, kişisel verileri hukuka aykırı işleme ve taciz kesinlikle yasaktır.</p>
+<p><strong>5. Fikri Mülkiyet:</strong> Platform arayüzü ve bileşenleri SNK Blog'a aittir; izinsiz kopyalama yasaktır.</p>
+<p><strong>6. Hizmet Değişiklikleri:</strong> Gerekli hallerde hizmetler geçici/kalıcı olarak değiştirilebilir veya durdurulabilir.</p>
+<p><strong>7. Sorumluluk Reddi:</strong> Makul özen gösterilmekle birlikte, kesintisiz ve hatasız hizmet garantisi verilmez.</p>`;
+                    } else if(doc === 'faq'){
+                        title = 'Sıkça Sorulan Sorular (SSS)';
+                        body = `
+<p><strong>S: Hesabımı nasıl doğrularım?</strong><br>C: Kayıt sonrası gönderilen e-postadaki doğrulama bağlantısını takip edin.</p>
+<p><strong>S: Şifremi unuttum, ne yapmalıyım?</strong><br>C: Giriş sayfasındaki “Şifremi Unuttum” bağlantısından e-posta ile sıfırlama talep edin.</p>
+<p><strong>S: Uygunsuz içeriği nasıl bildiririm?</strong><br>C: İçerik kartındaki “Bildir” seçeneğini kullanın veya iletişim sayfasından bize ulaşın.</p>
+<p><strong>S: Verilerim nasıl korunuyor?</strong><br>C: Kişisel veriler KVKK ve ilgili mevzuata uygun olarak, teknik/idari tedbirlerle korunur.</p>`;
+                    }
+                    document.getElementById('legalModalLabel').textContent = title;
+                    document.getElementById('legalModalBody').innerHTML = body;
+                    if(!modal){ modal = new bootstrap.Modal(modalEl, { backdrop: true, keyboard: true }); }
+                    modal.show();
+                });
+            })();
+        </script>
+
+        <!-- Mobil Menü Butonu -->
+        <button type="button" class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Mesajlaşma Kutucuğu -->
+        <% if (Session["KullaniciID"] != null) { %>
+        <div class="chat-widget" id="chatWidget">
+            <div class="chat-widget-header" id="chatWidgetHeader">
+                <h3>Mesajlar</h3>
+                <button type="button" class="chat-widget-toggle" id="chatWidgetToggle">
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+            </div>
+            
+            <div class="chat-widget-content">
+                <div class="chat-widget-conversations">
+                    <!-- Konuşmalar buraya dinamik olarak eklenecek -->
+                </div>
+                
+                <div class="chat-widget-empty">
+                    <i class="fas fa-comments"></i>
+                    <p>Henüz mesajınız yok</p>
+                    <button type="button" class="new-message-btn" id="chatWidgetNewMessage">
+                        <i class="fas fa-edit"></i>
+                        Yeni Mesaj
+                    </button>
+                </div>
+            </div>
+        </div>
+        <% } %>
+    </form>
+
+    <!-- JavaScript -->
+    <script src="assets/components/modern-ui.js?v=1.0.1"></script>
+    <script src="assets/components/popup-handler.js?v=1.0.1"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <asp:ContentPlaceHolder ID="scripts" runat="server">
+    </asp:ContentPlaceHolder>
+
+    <!-- Profil resmi güncelleyici -->
+    <script type="text/javascript">
+        // Sayfa yüklendiğinde ve belirli aralıklarla profil resmini yenile
+        $(document).ready(function() {
+            // Profil resmini yenileme fonksiyonu
+            function refreshProfileImage() {
+                // Önbelleği atlamak için timestamp ekleyerek
+                var timestamp = new Date().getTime();
+                var currentSrc = $('.user-avatar-img').attr('src');
+                
+                // Eğer src varsa ve varsayılan resim değilse (önbelleklenmiş resmi yenilemek için)
+                if (currentSrc && currentSrc.indexOf('default-profile.png') === -1) {
+                    // Cache temizleme için timestamp ekle
+                    var newSrc = currentSrc.split('?')[0] + '?t=' + timestamp;
+                    $('.user-avatar-img').attr('src', newSrc);
+                    console.log("Profil resmi yenilendi: " + newSrc);
+                }
+            }
+            
+            // İlk yükleme ve her 30 saniyede bir kontrol et
+            refreshProfileImage();
+            setInterval(refreshProfileImage, 30000);
+            
+            // Ayrıca sayfaya dönüldüğünde yenile (örn. başka sayfadan dönüş)
+            $(window).focus(function() {
+                refreshProfileImage();
+            });
+        });
+    </script>
+
+    <!-- SignalR JavaScript -->
+    <script src="https://ajax.aspnetcdn.com/ajax/signalr/jquery.signalr-2.4.3.min.js"></script>
+
+    <!-- Gerçek Zamanlı Bildirim Sistemi JavaScript -->
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // Kullanıcı ID'sini al (session'dan)
+            var currentUserId = <%= Session["KullaniciID"] != null ? Session["KullaniciID"].ToString() : "0" %>;
+            
+            if (currentUserId <= 0) {
+                console.log("Kullanıcı giriş yapmamış, bildirim sistemi başlatılmadı.");
+                return;
+            }
+
+            // SignalR devre dışı, sadece AJAX kullan
+            var connection = null;
+            var notificationHub = null;
+            
+            // DOM elementleri
+            const notificationIcon = document.getElementById('notificationIcon');
+            const notificationDropdown = document.getElementById('notificationDropdown');
+            const notificationBadge = document.getElementById('notificationBadge');
+            const notificationList = document.getElementById('notificationList');
+            
+            if (!notificationIcon || !notificationDropdown) {
+                console.log("Bildirim elementleri bulunamadı.");
+                return;
+            }
+
+            // SignalR devre dışı bırakıldı - sadece AJAX polling kullanılıyor
+            console.log("AJAX bildirim sistemi başlatıldı");
+            startPollingSystem();
+                    
+            // Bildirim yükleme fonksiyonu
+            function loadNotifications() {
+                checkNotificationsViaAjax();
+            }
+
+            // Bildirimleri görüntüleme fonksiyonu
+            function displayNotifications(notifications) {
+                    notificationList.innerHTML = '';
+                    
+                if (notifications.length === 0) {
+                    notificationList.innerHTML = '<div class="notification-empty">Bildiriminiz bulunmuyor.</div>';
+                    return;
+                }
+
+                notifications.forEach(function(notification) {
+                        const notificationItem = document.createElement('div');
+                        notificationItem.className = 'notification-item';
+                        notificationItem.setAttribute('data-id', notification.id);
+                        
+                        if (!notification.isRead) {
+                            notificationItem.classList.add('unread');
+                        }
+                        
+                        const iconClass = notification.type === 'like' ? 'fas fa-heart' :
+                                         notification.type === 'comment' ? 'fas fa-comment' :
+                                         notification.type === 'follow' ? 'fas fa-user-plus' :
+                                         notification.type === 'new_post' ? 'fas fa-newspaper' :
+                                         'fas fa-bell';
+                        
+                        notificationItem.innerHTML = `
+                            <div class="notification-avatar">
+                                <i class="${iconClass}"></i>
+                            </div>
+                            <div class="notification-content">
+                                <p class="notification-text">${notification.content}</p>
+                                <small class="notification-time">${notification.createdAt}</small>
+                            </div>
+                        `;
+                        
+                        notificationItem.addEventListener('click', function() {
+                        const notificationId = this.getAttribute('data-id');
+                            
+                        // Bildirimi okundu olarak işaretle (AJAX ile)
+                        markNotificationAsRead(parseInt(notificationId));
+                        
+                        // Visual olarak okundu işaretle
+                            this.classList.remove('unread');
+                            
+                        // İçerik sayfasına git
+                            if (notification.type !== 'follow' && notification.contentId) {
+                            window.location.href = "blog.aspx?id=" + notification.contentId;
+                            } else if (notification.type === 'follow') {
+                            window.location.href = "userpage.aspx?id=" + notification.senderId;
+                            }
+                        });
+                        
+                        notificationList.appendChild(notificationItem);
+                    });
+            }
+
+            // Toast bildirim gösterme fonksiyonu
+            function showToastNotification(message, type) {
+                const toast = document.createElement('div');
+                toast.className = `snk-notification ${type || 'info'}`;
+                
+                const iconClass = type === 'like' ? 'fa-heart' :
+                                 type === 'comment' ? 'fa-comment' :
+                                 type === 'follow' ? 'fa-user-plus' :
+                                 type === 'new_post' ? 'fa-newspaper' :
+                                 'fa-bell';
+                
+                toast.innerHTML = `
+                    <div class="snk-notification-content">
+                        <i class="fas ${iconClass}"></i>
+                        <p>${message}</p>
+                    </div>
+                    <button class="snk-notification-close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                
+                document.body.appendChild(toast);
+                
+                // Kapanma düğmesi
+                const closeButton = toast.querySelector('.snk-notification-close');
+                closeButton.addEventListener('click', function() {
+                    toast.classList.add('snk-notification-closing');
+                    setTimeout(() => toast.remove(), 300);
+                });
+                
+                // Otomatik kapanma
+                setTimeout(() => {
+                    toast.classList.add('snk-notification-closing');
+                    setTimeout(() => toast.remove(), 300);
+                }, 5000);
+            }
+
+            // Polling sistemi (SignalR başarısız olursa)
+            function startPollingSystem() {
+                console.log("Polling sistemi başlatıldı");
+                
+                // Her 10 saniyede bir bildirim kontrol et
+                setInterval(function() {
+                    checkNotificationsViaAjax();
+                }, 10000);
+                
+                // İlk kontrolü hemen yap
+                checkNotificationsViaAjax();
+            }
+
+            function checkNotificationsViaAjax() {
+                console.log("AJAX bildirim kontrolü başlıyor, userId:", currentUserId);
+                
+                $.ajax({
+                    url: 'NotificationService.asmx/GetUserNotifications',
+                    type: 'POST',
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify({ userId: currentUserId, page: 1, pageSize: 10 }),
+                    dataType: 'json',
+                    success: function(response) {
+                        console.log("RAW AJAX response:", response);
+                        console.log("Response type:", typeof response);
+                        console.log("Response.d:", response.d);
+                        console.log("Response direct:", response);
+                        
+                        // Her iki format için de kontrol et
+                        var data = response.d || response;
+                        console.log("Final data:", data);
+                            
+                        if (data && data.notifications) {
+                            console.log("Bildirimler bulundu:", data.notifications.length);
+                            displayNotifications(data.notifications);
+                            
+                            if (data.unreadCount !== undefined) {
+                                console.log("Okunmamış bildirim sayısı:", data.unreadCount);
+                                notificationBadge.textContent = data.unreadCount;
+                                if (data.unreadCount > 0) {
+                                notificationBadge.style.display = 'flex';
+                            } else {
+                                notificationBadge.style.display = 'none';
+                            }
+                            }
+                        } else {
+                            console.log("Bildirim verisi bulunamadı");
+                            console.log("Data structure:", data);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("AJAX bildirim kontrolü hatası:", error);
+                        console.error("Status:", status);
+                        console.error("Response Text:", xhr.responseText);
+                        console.error("Status Code:", xhr.status);
+                    }
+                });
+            }
+
+            // Bildirimi okundu olarak işaretle
+            function markNotificationAsRead(notificationId) {
+                $.ajax({
+                    url: 'NotificationService.asmx/MarkNotificationAsRead',
+                    type: 'POST',
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify({ notificationId: notificationId }),
+                    dataType: 'json',
+                    success: function(response) {
+                        console.log("Bildirim okundu olarak işaretlendi:", notificationId);
+                        // Bildirimleri yeniden yükle
+                        checkNotificationsViaAjax();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Bildirimi okundu işaretleme hatası:", error);
+                    }
+                });
+            }
+
+            // Bildirim dropdown click handler
+            notificationIcon.addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                // Önce profil menüsünü kapat (varsa)
+                const profileDropdownMenu = document.querySelector('.user-dropdown-menu');
+                if (profileDropdownMenu && profileDropdownMenu.classList.contains('active')) {
+                    profileDropdownMenu.classList.remove('active');
+                }
+                
+                notificationDropdown.classList.toggle('active');
+                
+                // Dropdown açıldığında bildirimleri yenile
+                if (notificationDropdown.classList.contains('active')) {
+                    loadNotifications();
+                }
+            });
+            
+            // Sayfa click'i dropdown'ı kapatır
+            document.addEventListener('click', function() {
+                notificationDropdown.classList.remove('active');
+            });
+            
+            // Dropdown içeriği click'i event'i durdur
+            notificationDropdown.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+
+            // "Tümünü Oku" linki event handler
+            const markAllAsReadLink = document.getElementById('markAllAsReadLink');
+            if (markAllAsReadLink) {
+                markAllAsReadLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // AJAX ile tüm bildirimleri okundu işaretle
+                    $.ajax({
+                        url: 'NotificationService.asmx/MarkAllNotificationsAsRead',
+                        type: 'POST',
+                        contentType: 'application/json; charset=utf-8',
+                        data: JSON.stringify({ userId: currentUserId }),
+                        dataType: 'json',
+                        success: function(response) {
+                            console.log("Tüm bildirimler okundu olarak işaretlendi");
+                            
+                            // UI'da tüm bildirimleri okundu olarak göster
+                            const unreadItems = document.querySelectorAll('.notification-item.unread');
+                            unreadItems.forEach(function(item) {
+                                item.classList.remove('unread');
+                            });
+                            
+                            // Badge'ı gizle
+                            notificationBadge.style.display = 'none';
+                            notificationBadge.textContent = '0';
+                            
+                            // Bildirimleri yeniden yükle (sunucudan güncel durumu al)
+                            checkNotificationsViaAjax();
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Tümünü okundu işaretleme hatası:", error);
+                            }
+                        });
+                });
+            }
+
+            // "Temizle" linki event handler
+            const clearAllNotificationsLink = document.getElementById('clearAllNotificationsLink');
+            if (clearAllNotificationsLink) {
+                clearAllNotificationsLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Kullanıcıdan onay al
+                    if (confirm('Tüm bildirimleri kalıcı olarak silmek istediğinizden emin misiniz?\n\nBu işlem geri alınamaz.')) {
+                        // AJAX ile tüm bildirimleri sil
+                        $.ajax({
+                            url: 'NotificationService.asmx/DeleteAllNotifications',
+                            type: 'POST',
+                            contentType: 'application/json; charset=utf-8',
+                            data: JSON.stringify({ userId: currentUserId }),
+                            dataType: 'json',
+                            success: function(response) {
+                                console.log("Tüm bildirimler silindi");
+                                
+                                // UI'yı temizle
+                                notificationList.innerHTML = '<div class="notification-empty">Bildiriminiz bulunmuyor.</div>';
+                                
+                                // Badge'ı gizle
+                                notificationBadge.style.display = 'none';
+                                notificationBadge.textContent = '0';
+                                
+                                // Başarı mesajı (opsiyonel)
+                                console.log("Tüm bildirimler temizlendi!");
+                                
+                                // Bildirimleri yeniden yükle (sunucudan güncel durumu al)
+                                checkNotificationsViaAjax();
+                            },
+                            error: function(xhr, status, error) {
+                                console.error("Bildirim temizleme hatası:", error);
+                                alert('Bildirimler silinirken bir hata oluştu. Lütfen tekrar deneyin.');
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+
+    <!-- Session popup engelleyici -->
+    <script type="text/javascript">
+        // MutationObserver kullanarak dinamik olarak eklenen popup'ları engelle
+        var observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.addedNodes && mutation.addedNodes.length > 0) {
+                    for (var i = 0; i < mutation.addedNodes.length; i++) {
+                        var node = mutation.addedNodes[i];
+                        if (node.innerText && (
+                            node.innerText.indexOf('Oturum süreniz doldu') > -1 || 
+                            node.innerText.indexOf('tekrar giriş') > -1)) {
+                            node.style.display = 'none';
+                            console.log("Session popup engellendi");
+                        }
+                    }
+                }
+            });
+        });
+        
+        // Tüm sayfayı izle
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+        
+        // Sayfa yüklendiğinde mevcut mesajları gizle
+        $(document).ready(function() {
+            // Session mesajını içeren elementleri gizle
+            $('div:contains("Oturum süreniz doldu")').css('display', 'none');
+            $('div:contains("tekrar giriş")').css('display', 'none');
+            
+            // 500ms aralıklarla kontrol et
+            setInterval(function() {
+                $('div:contains("Oturum süreniz doldu")').css('display', 'none');
+                $('div:contains("tekrar giriş")').css('display', 'none');
+                
+                // Mesaj içeren tüm modalları bul ve gizle
+                $('.modal, [role="dialog"]').each(function() {
+                    if ($(this).text().indexOf('Oturum') > -1 || 
+                        $(this).text().indexOf('oturum') > -1 || 
+                        $(this).text().indexOf('giriş') > -1) {
+                        $(this).hide();
+                    }
+                });
+            }, 500);
+        });
+    </script>
+
+    <!-- JavaScript eklemeleri -->
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            // Widget elementlerini seç
+            const chatWidget = document.getElementById('chatWidget');
+            if (!chatWidget) return; // Widget yoksa çık
+            
+            const chatWidgetHeader = document.getElementById('chatWidgetHeader');
+            const chatWidgetNewMessage = document.getElementById('chatWidgetNewMessage');
+            const chatWidgetConversations = chatWidget.querySelector('.chat-widget-conversations');
+            const chatWidgetEmpty = chatWidget.querySelector('.chat-widget-empty');
+            let isLoadingConversations = false;
+            let updateInterval;
+            
+            // Konuşmaları yükle
+            function loadConversations() {
+                if (isLoadingConversations) return;
+                isLoadingConversations = true;
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'messages.aspx/GetConversations',
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    data: JSON.stringify({}),
+                    success: function(response) {
+                        if (response && response.d && response.d.success) {
+                            const conversations = response.d.conversations;
+                            if (conversations && conversations.length > 0) {
+                                chatWidgetConversations.innerHTML = '';
+                                chatWidgetEmpty.style.display = 'none';
+                                chatWidgetConversations.style.display = 'block';
+
+                                conversations.forEach(conversation => {
+                                    const conversationItem = document.createElement('div');
+                                    conversationItem.className = 'chat-widget-conversation-item';
+                                    conversationItem.innerHTML = `
+                                        <div class="conversation-avatar">
+                                            <img src="${conversation.otherUser.profileImage}" 
+                                                 alt="${conversation.otherUser.name}"
+                                                 onerror="this.src='assets/img/default-profile.png'">
+                                        </div>
+                                        <div class="conversation-content">
+                                            <div class="conversation-header">
+                                                <h4>${conversation.otherUser.name}</h4>
+                                                <span>${formatTime(conversation.lastMessageTime)}</span>
+                                            </div>
+                                            <p>${conversation.lastMessage || 'Henüz mesaj yok'}</p>
+                                        </div>
+                                        ${conversation.unreadCount > 0 ? 
+                                            `<span class="conversation-badge">${conversation.unreadCount}</span>` : ''}
+                                    `;
+
+                                    conversationItem.addEventListener('click', () => {
+                                        window.location.href = `messages.aspx?conversation=${conversation.id}`;
+                                    });
+
+                                    chatWidgetConversations.appendChild(conversationItem);
+                                });
+                            } else {
+                                chatWidgetConversations.style.display = 'none';
+                                chatWidgetEmpty.style.display = 'flex';
+                            }
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Konuşmalar yüklenirken hata:', error);
+                        chatWidgetConversations.style.display = 'none';
+                        chatWidgetEmpty.style.display = 'flex';
+                    },
+                    complete: function() {
+                        isLoadingConversations = false;
+                    }
+                });
+            }
+
+            // Zaman formatı
+            function formatTime(timestamp) {
+                const date = new Date(timestamp);
+                const now = new Date();
+                const diff = now - date;
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                
+                if (days === 0) {
+                    return date.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+                } else if (days === 1) {
+                    return 'Dün';
+                } else if (days < 7) {
+                    return date.toLocaleDateString('tr-TR', { weekday: 'long' });
+                } else {
+                    return date.toLocaleDateString('tr-TR', { day: '2-digit', month: 'short' });
+                }
+            }
+
+            // Header'a tıklandığında widget'ı aç/kapa
+            if (chatWidgetHeader) {
+                chatWidgetHeader.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    chatWidget.classList.toggle('active');
+                    
+                    // İkon rotasyonunu güncelle
+                    const icon = this.querySelector('.fa-chevron-down');
+                    if (icon) {
+                        icon.style.transform = chatWidget.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0)';
+                    }
+                    
+                    if (chatWidget.classList.contains('active')) {
+                        loadConversations();
+                        // Her 30 saniyede bir güncelle
+                        updateInterval = setInterval(loadConversations, 30000);
+                    } else {
+                        if (updateInterval) {
+                            clearInterval(updateInterval);
+                        }
+                    }
+                });
+            }
+            
+            // Dışarı tıklandığında kapat
+            document.addEventListener('click', function(e) {
+                if (chatWidget && !chatWidget.contains(e.target)) {
+                    chatWidget.classList.remove('active');
+                    // İkonu sıfırla
+                    const icon = chatWidgetHeader?.querySelector('.fa-chevron-down');
+                    if (icon) {
+                        icon.style.transform = 'rotate(0)';
+                    }
+                    // Interval'i temizle
+                    if (updateInterval) {
+                        clearInterval(updateInterval);
+                    }
+                }
+            });
+            
+            // Widget içine tıklandığında event'i durdur
+            chatWidget.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+            
+            // Yeni mesaj butonuna tıklandığında
+            if (chatWidgetNewMessage) {
+                chatWidgetNewMessage.addEventListener('click', function() {
+                    window.location.href = 'messages.aspx';
+                });
+            }
+        });
+    </script>
+
+    <!-- Chat Widget Script -->
+</body>
+</html> 

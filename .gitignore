@@ -1,0 +1,79 @@
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Tt]est[Rr]esult*/
+*.Cache
+*.ilk
+*.log
+*.pch
+*.pdb
+*.obj
+*.tmp
+*.tmp_proj
+*.svclog
+
+# Packages (restore via NuGet)
+packages/
+# Keep a packages folder's build files, if necessary
+!packages/*/build/
+
+# Publish profiles
+*.pubxml
+*.publishproj
+
+# Resharper/JustCode/CodeRush
+_ReSharper*/
+*.DotSettings.user
+
+# Rider
+.idea/
+*.sln.iml
+
+# User-specific files
+*.rsuser
+*.sln.docstates
+
+# IIS/ASP.NET
+_AppStart.cshtml
+App_Data/*.mdf
+App_Data/*.ldf
+
+# Others
+*.sqlite
+*.db
+*.db3
+*.zip
+*.7z
+*.gz
+*.tgz
+*.bak
+*.orig
+Thumbs.db
+Desktop.ini
+
+# Node/npm (if any)
+node_modules/
+
+# Images cache
+**/*.psd
+**/*.ai
+
+# OS files
+.DS_Store
+ehthumbs.db
+Icon?
+
+# Logs
+*.log
+
+# Temp
+[Tt]emp/
+*.tmp

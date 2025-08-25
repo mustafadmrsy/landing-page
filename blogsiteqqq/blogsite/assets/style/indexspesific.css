@@ -1,0 +1,342 @@
+﻿/* index-specific.css - Sadece index.html için özel stiller */
+/* Önek: snk- (Kod çakışmalarını önlemek için her seçicide kullanılacak) */
+
+/* Header Tasarımı - Reddit Benzeri */
+.snk-header {
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    height: 50px;
+    background-color: #1A1A1B;
+    border-bottom: 1px solid #343536;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    gap: 16px;
+}
+
+/* Logo Alanı */
+.snk-header-logo {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.snk-logo-img {
+    height: 32px;
+    width: auto;
+    margin-right: 8px;
+}
+
+.snk-site-title {
+    font-size: 20px;
+    font-weight: 500;
+    color: white;
+    white-space: nowrap;
+}
+
+/* Arama */
+.snk-header-search {
+    position: relative;
+    flex: 1;
+    max-width: 650px;
+}
+
+.snk-search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #818384;
+    font-size: 14px;
+}
+
+.snk-search-input {
+    width: 100%;
+    background-color: #272729;
+    border: 1px solid #343536;
+    border-radius: 4px;
+    padding: 8px 12px 8px 35px;
+    color: #D7DADC;
+    font-size: 14px;
+}
+
+    .snk-search-input:focus {
+        border-color: #D7DADC;
+        outline: none;
+    }
+
+    .snk-search-input::placeholder {
+        color: #818384;
+    }
+
+/* Header Butonları ve Profil */
+.snk-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: auto;
+}
+
+.snk-header-btn {
+    background-color: transparent;
+    color: #D7DADC;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+    .snk-header-btn:hover {
+        background-color: #272729;
+    }
+
+.snk-create-btn {
+    background-color: transparent;
+}
+
+/* Oturum Açma ve Kaydolma Butonları */
+.snk-login-btn,
+.snk-register-btn {
+    background-color: transparent;
+    border: 1px solid #343536;
+    transition: all 0.2s ease;
+    margin-left: 10px;
+}
+
+    .snk-login-btn:hover,
+    .snk-register-btn:hover {
+        background-color: #343536;
+        transform: translateY(-2px);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+.snk-login-btn {
+    color: #D7DADC;
+}
+
+.snk-register-btn {
+    background-color: #0079D3;
+    color: white;
+    border-color: #0079D3;
+}
+
+    .snk-register-btn:hover {
+        background-color: #0061A9;
+        border-color: #0061A9;
+    }
+
+    /* Butona animasyon ekleme */
+    .snk-login-btn i,
+    .snk-register-btn i {
+        transition: transform 0.3s ease;
+    }
+
+    .snk-login-btn:hover i,
+    .snk-register-btn:hover i {
+        transform: translateY(-2px);
+    }
+
+/* Profil */
+.snk-profile-container {
+    position: relative;
+}
+
+.snk-profile-img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.snk-profile-menu {
+    display: none;
+    position: absolute;
+    top: 45px;
+    right: 0;
+    width: 260px;
+    background-color: #1A1A1B;
+    border: 1px solid #343536;
+    border-radius: 4px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    z-index: 200;
+    overflow: hidden;
+}
+
+    .snk-profile-menu.active {
+        display: block;
+        animation: fadeIn 0.2s ease-out;
+    }
+
+.snk-profile-header {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    border-bottom: 1px solid #343536;
+}
+
+.snk-menu-profile-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 12px;
+}
+
+.snk-profile-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.snk-profile-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #D7DADC;
+}
+
+.snk-profile-username {
+    font-size: 12px;
+    color: #818384;
+}
+
+.snk-menu-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    color: #D7DADC;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+    .snk-menu-item:hover {
+        background-color: #272729;
+    }
+
+    .snk-menu-item i {
+        margin-right: 12px;
+        width: 20px;
+        text-align: center;
+    }
+
+.snk-menu-divider {
+    height: 1px;
+    background-color: #343536;
+    margin: 4px 0;
+}
+
+.snk-toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 36px;
+    height: 18px;
+    margin-left: auto;
+}
+
+    .snk-toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+.snk-toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #343536;
+    transition: 0.4s;
+    border-radius: 10px;
+}
+
+    .snk-toggle-slider:before {
+        position: absolute;
+        content: "";
+        height: 14px;
+        width: 14px;
+        left: 2px;
+        bottom: 2px;
+        background-color: white;
+        transition: 0.4s;
+        border-radius: 50%;
+    }
+
+input:checked + .snk-toggle-slider {
+    background-color: #0079D3;
+}
+
+    input:checked + .snk-toggle-slider:before {
+        transform: translateX(18px);
+    }
+
+/* Animasyonlar */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Mobil Uyumluluk */
+@media (max-width: 768px) {
+    .snk-header {
+        padding: 0 10px;
+    }
+
+    .snk-site-title {
+        display: none;
+    }
+
+    .snk-header-search {
+        max-width: none;
+    }
+
+    .snk-btn-text {
+        display: none;
+    }
+
+    .snk-header-btn {
+        padding: 8px;
+    }
+
+    .snk-login-btn,
+    .snk-register-btn {
+        margin-left: 0;
+    }
+}
+
+/* Sidebar özel stilleri sidebar.css'e taşındı */
+
+/* Content Layout */
+.snk-content-layout {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin: 20px auto;
+    max-width: 1200px;
+    padding: 0 15px;
+}
+
+.snk-content-main {
+    flex: 1;
+    min-width: 0;
+}
+
+.snk-content-sidebar {
+    width: 300px;
+    position: sticky;
+    top: calc(var(--header-height) + 20px);
+    height: fit-content;
+    align-self: flex-start;
+}

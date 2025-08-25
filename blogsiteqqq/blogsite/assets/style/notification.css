@@ -1,0 +1,230 @@
+﻿/* Bildirim stilleri */
+.snk-notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 400px;
+    animation: slideIn 0.3s ease-out forwards;
+}
+
+.snk-notification-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+    .snk-notification-content i {
+        font-size: 24px;
+        color: #8effa0;
+    }
+
+    .snk-notification-content p {
+        margin: 0;
+        font-size: 14px;
+    }
+
+    .snk-notification-content a {
+        color: #8effa0;
+        text-decoration: underline;
+        font-weight: 500;
+    }
+
+.snk-notification-close {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 5px;
+    transition: transform 0.3s;
+}
+
+    .snk-notification-close:hover {
+        transform: rotate(90deg);
+    }
+
+.snk-notification-closing {
+    animation: slideOut 0.3s ease-in forwards;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+}
+
+/* Bildirim türlerine göre renkler */
+.snk-notification.success {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+}
+
+.snk-notification.error {
+    background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%);
+}
+
+.snk-notification.warning {
+    background: linear-gradient(135deg, #ffc107 0%, #ff8c00 100%);
+    color: #212529;
+}
+
+.snk-notification.like {
+    background: linear-gradient(135deg, #e91e63 0%, #f8bbd9 100%);
+}
+
+.snk-notification.comment {
+    background: linear-gradient(135deg, #007bff 0%, #6610f2 100%);
+}
+
+.snk-notification.follow {
+    background: linear-gradient(135deg, #17a2b8 0%, #6f42c1 100%);
+}
+
+.snk-notification.new_post {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+}
+
+/* Bildirim kapama animasyonu */
+.snk-notification-closing {
+    animation: slideOut 0.3s ease-in forwards;
+}
+
+/* Mobil uyumlu düzenlemeler */
+@media (max-width: 768px) {
+    .snk-notification {
+        bottom: 10px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+        margin: 0 auto;
+    }
+}
+
+/* Bildirim dropdown stilleri */
+.notification-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+}
+
+.notification-dropdown.show {
+    display: block;
+}
+
+.notification-item {
+    padding: 12px 16px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.notification-item:hover {
+    background-color: #f8f9fa;
+}
+
+.notification-item.unread {
+    background-color: #e8f4fd;
+    position: relative;
+}
+
+.notification-item.unread::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: #007bff;
+}
+
+.notification-avatar {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    background: #007bff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 14px;
+}
+
+.notification-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.notification-text {
+    margin: 0 0 4px 0;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #333;
+}
+
+.notification-time {
+    font-size: 12px;
+    color: #666;
+}
+
+.notification-empty {
+    padding: 20px;
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+}
+
+/* Bildirim badge */
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #dc3545;
+    color: white;
+    border-radius: 50%;
+    min-width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: bold;
+}

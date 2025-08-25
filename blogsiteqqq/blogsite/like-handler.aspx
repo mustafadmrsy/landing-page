@@ -1,0 +1,1 @@
+<%@ Page Language="C#" AutoEventWireup="true" CodeFile="like-handler.aspx.cs" Inherits="LikeHandler" %> 

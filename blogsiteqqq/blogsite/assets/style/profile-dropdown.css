@@ -1,0 +1,263 @@
+/* 
+ * Senirkent Blog - Profil Dropdown Stilleri
+ */
+
+.snk-profile-dropdown {
+    position: relative;
+}
+
+.snk-profile-dropdown-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.snk-profile-dropdown-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.snk-profile-dropdown-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.snk-profile-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 240px;
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transform-origin: top right;
+    transition: all 0.2s ease;
+    z-index: 100;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 8px;
+    overflow: hidden;
+}
+
+.snk-profile-menu.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.snk-profile-header {
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: linear-gradient(to right, #1e1e1e, #2d2d2d);
+}
+
+.snk-profile-header img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 12px;
+    border: 2px solid #0079d3;
+}
+
+.snk-profile-header-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.snk-profile-header-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 2px;
+}
+
+.snk-profile-header-username {
+    font-size: 12px;
+    color: #818384;
+}
+
+.snk-profile-menu-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    color: #d7dadc;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.snk-profile-menu-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.snk-profile-menu-item i {
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.snk-dark-mode-toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    color: #d7dadc;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.snk-profile-divider {
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.1);
+    margin: 5px 0;
+}
+
+.snk-logout {
+    color: #ff4500 !important;
+}
+
+/* Toggle Switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 22px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #333;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #0079d3;
+}
+
+input:checked + .slider:before {
+    transform: translateX(18px);
+}
+
+/* Animation Classes */
+.fadeIn {
+    animation: fadeIn 0.2s ease-in forwards;
+}
+
+.fadeOut {
+    animation: fadeOut 0.2s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+}
+
+/* Dark mode settings section */
+body.dark-mode {
+    background-color: #1a1a1a;
+    color: #f5f5f5;
+}
+
+body.dark-mode .snk-profile-menu {
+    background-color: #2d2d2d;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .snk-profile-header {
+    border-bottom: 1px solid #444;
+}
+
+body.dark-mode .snk-profile-header-name {
+    color: #f5f5f5;
+}
+
+body.dark-mode .snk-profile-header-username {
+    color: #aaa;
+}
+
+body.dark-mode .snk-profile-menu-item {
+    color: #f5f5f5;
+}
+
+body.dark-mode .snk-profile-menu-item:hover {
+    background-color: #3d3d3d;
+}
+
+body.dark-mode .snk-profile-divider {
+    background-color: #444;
+}
+
+body.dark-mode .snk-dark-mode-toggle span {
+    color: #f5f5f5;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .snk-profile-menu {
+        width: 100%;
+        right: 0;
+        left: 0;
+        top: 100%;
+        border-radius: 0;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .snk-profile-dropdown {
+        position: static;
+    }
+} 

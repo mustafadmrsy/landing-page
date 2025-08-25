@@ -1,0 +1,145 @@
+﻿/* Terms & Privacy Policy Popup Styles */
+
+.snk-terms-policy-container {
+    padding: 20px;
+    max-width: 100%;
+    color: var(--snk-white, #D7DADC);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.snk-terms-policy-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: var(--snk-white, #D7DADC);
+    text-align: center;
+}
+
+.snk-terms-policy-date {
+    text-align: center;
+    color: var(--snk-gray, #818384);
+    font-size: 13px;
+    margin-bottom: 20px;
+    font-style: italic;
+}
+
+.snk-terms-policy-section {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+    .snk-terms-policy-section:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+    }
+
+    .snk-terms-policy-section h3 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: var(--snk-blue, #0079D3);
+    }
+
+    .snk-terms-policy-section p {
+        margin-bottom: 10px;
+    }
+
+.snk-terms-policy-list {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin: 10px 0;
+}
+
+    .snk-terms-policy-list li {
+        margin-bottom: 8px;
+    }
+
+/* Back Button Styles */
+.snk-terms-policy-back {
+    margin-top: 30px;
+    text-align: center;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.snk-back-button {
+    background-color: var(--snk-blue, #0079D3);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+    .snk-back-button:hover {
+        background-color: #005ca0;
+    }
+
+    .snk-back-button:active {
+        transform: scale(0.98);
+    }
+
+    .snk-back-button i {
+        font-size: 16px;
+    }
+
+/* Popup container styling improvements */
+.snk-popup-container {
+    max-width: 650px;
+    max-height: 80vh;
+}
+
+.snk-popup-content {
+    max-height: calc(80vh - 60px); /* Header height is around 60px */
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--snk-gray) transparent;
+}
+
+    /* Custom scrollbar for webkit browsers */
+    .snk-popup-content::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .snk-popup-content::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .snk-popup-content::-webkit-scrollbar-thumb {
+        background-color: var(--snk-gray, #818384);
+        border-radius: 20px;
+    }
+
+/* Mobile responsive adjustments */
+@media screen and (max-width: 768px) {
+    .snk-terms-policy-container {
+        padding: 15px;
+        font-size: 13px;
+    }
+
+    .snk-terms-policy-title {
+        font-size: 20px;
+    }
+
+    .snk-terms-policy-section h3 {
+        font-size: 16px;
+    }
+
+    .snk-popup-container {
+        width: 95%;
+        max-width: 95%;
+    }
+
+    .snk-back-button {
+        padding: 8px 16px;
+        font-size: 13px;
+    }
+}
